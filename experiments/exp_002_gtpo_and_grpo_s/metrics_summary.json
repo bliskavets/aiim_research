@@ -1,0 +1,59 @@
+{
+  "grpo": {
+    "steps": 500,
+    "step1": {
+      "reward": -1.375,
+      "format_exact": 0.0,
+      "kl": 0.0004429877153597772
+    },
+    "step250": {
+      "reward": 5.75,
+      "format_exact": 2.25,
+      "kl": 0.09507322032004595
+    },
+    "step500": {
+      "reward": 3.0,
+      "format_exact": 3.0,
+      "kl": 0.08548272680491209
+    },
+    "train_loss": 0.0001
+  },
+  "gtpo": {
+    "steps": 500,
+    "step1": {
+      "reward": -1.375,
+      "format_exact": 0.0,
+      "kl": 0.0004429877153597772
+    },
+    "step250": {
+      "reward": 2.0,
+      "format_exact": 0.0,
+      "kl": 0.031492053996771574
+    },
+    "step500": {
+      "reward": 0.0,
+      "format_exact": 0.0,
+      "kl": 0.022874353686347604
+    },
+    "train_loss": 0.0
+  },
+  "grpo_s": {
+    "steps": 500,
+    "step1": {
+      "reward": -1.0,
+      "format_exact": 0.0,
+      "kl": -4.716500454082784e-10
+    },
+    "step250": {
+      "reward": 1.0,
+      "format_exact": 0.0,
+      "kl": 0.020572164561599493
+    },
+    "step500": {
+      "reward": 3.0,
+      "format_exact": 3.0,
+      "kl": 0.1171940490603447
+    },
+    "train_loss": 0.0001
+  }
+}

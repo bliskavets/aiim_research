@@ -1,0 +1,11 @@
+You are evaluating whether a response correctly follows all instructions given.
+
+Instruction:
+{prompt}
+
+Response:
+{answer}
+
+Check each requirement in the instruction carefully. Does the response satisfy ALL of the stated requirements?
+Analyze each requirement one by one, then provide your overall verdict.
+<verdict>yes</verdict> if all requirements are met, or <verdict>no</verdict> if any requirement is violated.

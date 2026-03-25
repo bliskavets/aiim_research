@@ -1,0 +1,10 @@
+{
+  "instruction_following": {
+    "pos_labels": ["yes"],
+    "neg_labels": ["no"],
+    "labels": ["yes", "no"],
+    "opening_tag": "<verdict>",
+    "closing_tag": "</verdict>",
+    "weight": 1.0
+  }
+}

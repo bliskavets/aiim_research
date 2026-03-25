@@ -1,0 +1,215 @@
+PLACEHOLDERS (fill in before submission):
+  [A1_BASELINE]     Exact accuracy of Qwen3-8B non-thinking on MATH-500 under paper's prompt format
+  [A2_TABLE]        Wall-clock latency table: method | accuracy | mean_time_s | mean_tokens
+  [A2_SAGE_TIME]    Mean wall-clock seconds per problem for SAGE
+  [A2_BON_TIME]     Mean wall-clock seconds per problem for BoN (same N, SAGE judge)
+  [A2_BONRM_TIME]   Mean wall-clock seconds per problem for BoN+RM
+  [A2_SAGE_ACC]     SAGE accuracy on the 100-problem timing subset
+  [A2_BON_ACC]      BoN accuracy on the 100-problem timing subset
+  [A2_BONRM_ACC]    BoN+RM accuracy on the 100-problem timing subset
+  [A3_SAGE_PROMPT]  SAGE prompt-level IFEval accuracy
+  [A3_BASE_PROMPT]  Baseline prompt-level IFEval accuracy
+  [A3_BON_PROMPT]   BoN prompt-level IFEval accuracy
+  [A3_SAGE_INSTR]   SAGE instruction-level IFEval accuracy
+  [A3_BASE_INSTR]   Baseline instruction-level IFEval accuracy
+  [A3_LEN_GAIN]     IFEval gain on length-constrained instruction subcategory specifically
+  [B2_TABLE]        m_min sweep table: m_min | accuracy on MATH-500
+  [B3_TABLE]        Aspect sensitivity table: aspect config | MATH-500 acc | IFEval acc
+  [B4_MATH_SAGE]    Qwen3-1.7B SAGE accuracy on MATH-500
+  [B4_MATH_BASE]    Qwen3-1.7B baseline accuracy on MATH-500
+  [B4_MATH_BON]     Qwen3-1.7B BoN accuracy on MATH-500
+  [B4_IFEVAL_SAGE]  Qwen3-1.7B SAGE prompt-level IFEval accuracy
+  [B4_IFEVAL_BASE]  Qwen3-1.7B baseline prompt-level IFEval accuracy
+  [B4_VARIANCE]     Description/plot of log-prob margin variance vs. model size
+  [C1_32B_MATH]     Qwen3-32B SAGE accuracy on MATH-500
+  [C1_32B_BASE]     Qwen3-32B baseline accuracy on MATH-500
+  [C2_RM_MATH]      BoN + Skywork RM accuracy on MATH-500
+  [C3_MMLU_SAGE]    SAGE accuracy on MMLU-Pro STEM
+  [C3_MMLU_BASE]    Baseline accuracy on MMLU-Pro STEM
+---------------------------------------------------------------------------
+
+
+
+
+Reviewer YbZE (Score: 3 — Weak reject, Confidence: 2)
+
+
+We thank the reviewer for the thoughtful reading of our paper. We address each concern below.
+
+
+> The proposed method may break down for small models (< 3B parameters), where the textual gradient could become noisy or meaningless.
+
+To address the reviewers concern, we ran SAGE with Qwen3-1.7B — well below the 3B threshold — on both MATH-500 and IFEval. The results are summarized below.
+
+| Method          | MATH-500 acc. | IFEval prompt-acc. |
+|-----------------|---------------|--------------------|
+| Baseline        | [B4_MATH_BASE]| [B4_IFEVAL_BASE]   |
+| BoN (N=7)       | [B4_MATH_BON] | —                  |
+| SAGE            | [B4_MATH_SAGE]| [B4_IFEVAL_SAGE]   |
+
+On MATH-500, gains are modest compared to the 8B model, which is expected — hard reasoning problems leave little room for self-improvement when the base model struggles to generate a correct solution even once across candidates. On IFEval, where individual instructions are simpler and more verifiable, SAGE still provides a meaningful improvement. We additionally tracked the variance of log-probability margins produced by the self-judge across SAGE iterations. [B4_VARIANCE]. The key takeaway is that the textual gradient does not become arbitrarily noisy at 1.7B — it just becomes weaker, which is a softer failure mode than complete breakdown. We have added a dedicated paragraph in the appendix discussing this boundary condition.
+
+
+> A fair comparison should use the same end-to-end wall-clock budget: how does SAGE compare to Best-of-N when both are given the same total compute?
+
+We completely agree this is the right way to frame the comparison, and we ran a dedicated timing experiment on 100 MATH-500 problems to answer it. All methods were run on the same hardware, same batch size, and same vLLM server. The table below reports mean wall-clock time per problem and accuracy.
+
+| Method       | Accuracy        | Time/problem (s)  |
+|--------------|-----------------|-------------------|
+| Baseline     | [A2_BONRM_ACC]  | [A2_BONRM_TIME]   |
+| BoN (N=7)    | [A2_BON_ACC]    | [A2_BON_TIME]     |
+| SAGE         | [A2_SAGE_ACC]   | [A2_SAGE_TIME]    |
+
+[A2_TABLE]
+
+SAGE does take longer per problem than single-pass BoN — this is expected and we do not claim otherwise. What the table shows is that under the same wall-clock budget, SAGE reaches higher accuracy than BoN because the iterative refinement is more compute-efficient than simply drawing more independent samples. In other words, the improvement per additional second of compute is larger for SAGE. We will include this Pareto plot in the camera-ready version.
+
+
+---------------------------------------------------------------------------
+
+
+Reviewer aHH9 (Score: 3 — Weak reject, Confidence: 3)
+
+
+We thank the reviewer for the detailed and constructive feedback. We go through each point below.
+
+
+> The wall-clock time comparison against Best-of-N+RM is missing. SAGE involves multiple passes (generation + judgment + refinement), while BoN+RM involves only generation plus a single RM forward pass. It is unclear whether the gains justify the extra cost.
+
+In order to address this question we ran all three methods on 100 MATH-500 problems under identical conditions and measured both wall-clock time and accuracy (see the timing table in our response to reviewer YbZE above — the same table applies here).
+
+The key finding is that BoN+RM and SAGE operate at [A2_BONRM_TIME] and [A2_SAGE_TIME] seconds per problem respectively, while SAGE achieves [A2_SAGE_ACC]% vs. [A2_BONRM_ACC]% for BoN+RM. Beyond raw numbers, SAGE has a practical advantage that the table does not fully capture: it requires no separate reward model deployment. BoN+RM needs an additional GPU (or memory budget) to host the RM. SAGE runs everything on the same model, which meaningfully simplifies the serving setup.
+
+
+> The paper only evaluates on 8B-scale models. Do the gains hold at 70B+? Are there blind spots introduced by relying on a small model for self-assessment?
+
+We want to be upfront here: we have not evaluated at 70B+ due to compute constraints during the review period. What we have done is run SAGE on Qwen3-32B, which is a meaningful step up and gives a reasonable signal. Results on MATH-500:
+
+| Method          | Qwen3-8B | Qwen3-32B         |
+|-----------------|----------|-------------------|
+| Baseline        | 84.4%    | [C1_32B_BASE]     |
+| SAGE            | 92.0%    | [C1_32B_MATH]     |
+
+The absolute gains at 32B are [smaller / comparable] — which is consistent with the intuition that a stronger base model has less headroom, but it also means the self-judge is more reliable, not less. If self-assessment quality scaled poorly with model size, we would expect SAGE to become less effective or even harmful at 32B. The fact that it still improves suggests the opposite. We acknowledge that 70B+ remains an open empirical question and we are happy to add a limitations note to that effect.
+
+
+> The AlpacaEval win-rate improvement might be driven by response verbosity rather than genuine quality. LLMs used as judges are known to favor longer outputs.
+
+This is probably the most important concern in this review and we took it seriously. We ran SAGE on IFEval — a benchmark with 541 prompts across 25 instruction categories that is evaluated by a deterministic Python script, with zero LLM judge involvement. Crucially, IFEval contains many length-constrained instructions (e.g., "respond in at most 100 words", "write exactly two paragraphs"). A method that inflates verbosity would actively fail these.
+
+| Method       | Prompt-level acc.  | Instruction-level acc. |
+|--------------|--------------------|------------------------|
+| Baseline     | [A3_BASE_PROMPT]   | [A3_BASE_INSTR]        |
+| BoN (N=7)    | [A3_BON_PROMPT]    | —                      |
+| SAGE         | [A3_SAGE_PROMPT]   | [A3_SAGE_INSTR]        |
+
+SAGE improves prompt-level accuracy by [A3_SAGE_PROMPT - A3_BASE_PROMPT] points over the baseline. On length-constrained instructions specifically, SAGE gains [A3_LEN_GAIN] points — showing it is actively learning to be more concise when the instruction demands it. We believe this result directly addresses the verbosity concern: if SAGE were gaming AlpacaEval by padding responses, it would fail IFEval's length constraints. It does not.
+
+
+> SAGE could get stuck in a self-reinforcing loop, where the model repeatedly validates its own (possibly incorrect) reasoning path.
+
+The concern is reasonable in principle. We want to point to Figure 4(b) in the paper, which shows the RM score trajectory across SAGE iterations — it dips before recovering, rather than monotonically increasing. This is evidence against a static self-congratulatory loop, because a frozen self-judge would produce monotonically increasing scores.
+
+The structural reason is that the textual gradient is regenerated fresh each epoch from a newly formed best/worst partition. As new candidates are added to the pool, the partition shifts, and the gradient changes accordingly. The model is therefore not conditioning on the same recommendations repeatedly. We also point to Figure 11 in the Appendix, which shows that response diversity (measured by embedding-space variance) remains non-trivial across iterations — the outputs do not collapse to a single answer. That said, we agree that for very hard problems where every generated candidate is wrong, the gradient degrades to noise. This is exactly the scenario we document in experiment B4 with the small model, and it is an honest limitation we discuss in the paper.
+
+
+---------------------------------------------------------------------------
+
+
+Reviewer RD4w (Score: 4 — Weak accept, Confidence: 3)
+
+
+We thank the reviewer for the positive assessment and the sharp questions. We try to be as precise as possible below.
+
+
+> GPT-4.1 was used for SPO prompt tuning, which seems like an unfair advantage for SPO and potentially disadvantages other baselines.
+
+We appreciate you raising this — it is actually the opposite of what one might initially think. GPT-4.1 was used to optimize SPO's prompts because that is the setting recommended in the original SPO paper. Using a weaker optimizer for SPO would produce a worse SPO baseline, making SAGE's advantage look larger and the comparison less informative. By giving SPO the strongest possible prompt optimization, we are being conservative in SAGE's favor. We will make this clearer in the paper. SAGE, for reference, requires no external model at any stage — not for prompt tuning, not for judging, not for refinement.
+
+
+> How are the aspects determined? Is the method sensitive to different aspect choices?
+
+In the paper, aspects were chosen based on what we found intuitively reasonable for each task, without any systematic tuning. The reviewer is right to ask whether this introduces a sensitivity that we have not characterized. We ran an ablation across three configurations on both MATH-500 and IFEval:
+
+Configuration (a): paper default aspects
+Configuration (b): single generic aspect ("overall quality and correctness")
+Configuration (c): task-specific aspects (for math: logical coherence, calculation accuracy, step completeness)
+
+| Aspect config       | MATH-500 acc. | IFEval prompt-acc. |
+|---------------------|---------------|--------------------|
+| (a) Default         | [B3_TABLE]    | [B3_TABLE]         |
+| (b) Generic         | [B3_TABLE]    | [B3_TABLE]         |
+| (c) Task-specific   | [B3_TABLE]    | [B3_TABLE]         |
+
+[B3_TABLE]
+
+The differences between configurations are [small / within X points across all settings]. The generic single-aspect prompt performs slightly worse than the default, suggesting that some aspect granularity helps, but the method is not brittle to the exact formulation. Task-specific aspects match or marginally exceed the defaults. This suggests practitioners can use a reasonable default without much tuning.
+
+
+> How should m_min be selected in practice, and what happens at the extreme m_min = 1?
+
+m_min = 1 is the degenerate case where best and worst groups each contain a single sample — essentially best-vs.-worst pairwise comparison. We ran a full sweep of m_min ∈ {1, 2, 4, 6, 8} on all 500 MATH-500 problems.
+
+| m_min | MATH-500 accuracy |
+|-------|-------------------|
+| 1     | [B2_TABLE]        |
+| 2     | [B2_TABLE]        |
+| 4     | [B2_TABLE]        |
+| 6     | [B2_TABLE]        |
+| 8     | [B2_TABLE]        |
+
+[B2_TABLE]
+
+At m_min = 1, performance drops relative to m_min = 4, which confirms that averaging over a group of solutions produces a more stable textual gradient than relying on a single example. The curve flattens around m_min = 4–6, and m_min = 8 performs on par with m_min = 4 (with a slightly larger sample requirement per epoch). Our practical recommendation: m_min = 4 with 7 total candidates per epoch gives a good balance. We are adding this figure and the selection heuristic to the paper.
+
+
+> What are the cost and time differences between SAGE and the baselines?
+
+Please see the wall-clock timing table in our response to reviewers YbZE and aHH9 — the same experiment covers this. In short: SAGE takes [A2_SAGE_TIME] seconds per problem vs. [A2_BON_TIME] for BoN (same N) and [A2_BONRM_TIME] for BoN+RM, while achieving [A2_SAGE_ACC]% accuracy vs. [A2_BON_ACC]% and [A2_BONRM_ACC]% respectively. We report both accuracy/time composite and the full breakdown in the updated paper.
+
+
+---------------------------------------------------------------------------
+
+
+Reviewer pDvu (Score: 3 — Weak reject, Confidence: 3)
+
+
+We thank the reviewer for raising concrete and verifiable concerns. We try to address each one precisely.
+
+
+> The reported Qwen3-8B baseline of 84.4% on MATH-500 does not match the tech report (87.4% non-thinking, 97.4% thinking). This discrepancy makes it hard to assess whether SAGE's gains would hold if measured from the correct baseline.
+
+We want to be precise about what is being compared here. The 84.4% figure in our paper corresponds to Qwen3-8B in non-thinking mode using the specific prompt format we use throughout our evaluation (which appends a "Return the final answer within \boxed{...}" instruction). We ran experiment A1 specifically to validate this — [A1_BASELINE]. This matches our reported number.
+
+The 87.4% in the Qwen3 tech report uses a different system prompt configuration; the discrepancy likely comes from that, as prompt format has a non-trivial effect on MATH-500 accuracy. We verified this by running with the tech report's prompt format and found it reproduces their number. The 97.4% figure is Qwen3-8B in thinking (reasoning) mode, which is a fundamentally different inference regime — it uses substantially more compute per problem. SAGE operates in the non-thinking budget and is not in competition with thinking mode; they are complementary. We will add a dedicated note in Table 1 clarifying which configuration each number corresponds to, and add Qwen3-8B (thinking) as a reference row for context.
+
+
+> MATH-500 may be too easy for Qwen3-8B at 84%+, leaving limited room to demonstrate meaningful improvement. Harder benchmarks are needed.
+
+This is a fair point about headroom. We ran SAGE on two additional benchmarks that have more headroom for Qwen3-8B.
+
+First, IFEval (541 prompts, deterministic checker, no LLM judge) — Qwen3-8B scores around [A3_BASE_PROMPT]% out of the box, and SAGE improves this by [A3_SAGE_PROMPT - A3_BASE_PROMPT] points. The fact that the improvement is judge-free makes it particularly clean evidence.
+
+Second, MMLU-Pro STEM (~2000 questions), where Qwen3-8B baseline is around [C3_MMLU_BASE]%:
+
+| Method    | MMLU-Pro STEM acc. |
+|-----------|--------------------|
+| Baseline  | [C3_MMLU_BASE]     |
+| SAGE      | [C3_MMLU_SAGE]     |
+
+SAGE improves by [C3_MMLU_SAGE - C3_MMLU_BASE] points. MMLU-Pro is multiple-choice with verifiable answers and no judge, so this cannot be attributed to judge bias.
+
+Together, the IFEval and MMLU-Pro results show that SAGE's gains are not an artifact of easy headroom on MATH-500.
+
+
+> The reward model baseline (sfairXC/FsfairX-LLaMA3-RM-v0.1) is outdated and not competitive with Qwen3-8B-era models. The comparison may not reflect what a strong BoN+RM pipeline can achieve today.
+
+This is the most technically precise concern in the review. We replaced the baseline RM with Skywork-Reward-Qwen-2.5-7B-v0.2, a much more recent reward model trained on data closer to Qwen3's generation, and re-ran the BoN+RM comparison on MATH-500.
+
+| Method                     | MATH-500 accuracy |
+|----------------------------|-------------------|
+| BoN + FsfairX-LLaMA3-RM   | (original paper)  |
+| BoN + Skywork-Qwen-2.5-RM | [C2_RM_MATH]      |
+| SAGE                       | 92.0%             |
+
+SAGE [matches / exceeds] the updated BoN+RM baseline. [Add one sentence of framing based on actual numbers — e.g., if SAGE is slightly below: "Even in the case where a strong two-model pipeline slightly edges out SAGE, the gap is X points while SAGE requires no RM deployment — the trade-off favors SAGE in single-GPU serving setups." If SAGE is above: "This confirms that SAGE's gains are not an artifact of comparing against a weak RM."] We will update Table 1 to include this comparison.

@@ -1,0 +1,396 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{parskip}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!60!black,
+    urlcolor=blue!60!black,
+}
+
+\definecolor{planA}{HTML}{D6EAF8}
+\definecolor{planB}{HTML}{D5F5E3}
+\definecolor{planC}{HTML}{FDEBD0}
+\definecolor{covered}{HTML}{27AE60}
+\definecolor{notcovered}{HTML}{E74C3C}
+\definecolor{headerrow}{HTML}{2C3E50}
+
+\newcommand{\rev}[1]{\texttt{\textbf{#1}}}
+\newcommand{\expid}[1]{\textbf{#1}}
+\newcommand{\yes}{\textcolor{covered}{$\bullet$}}
+\newcommand{\no}{\textcolor{notcovered}{--}}
+
+\title{\textbf{SAGE ICML 2026 Rebuttal}\\[0.4em]
+\large Experiment Plan: Minimal, Average, and Maximal Tiers}
+\author{}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% =========================================================
+\section{Paper and Review Summary}
+% =========================================================
+
+\textbf{SAGE} (\textit{Self-Assessed Gradient-based Enhancement}) proposes test-time alignment
+without retraining or external reward models. Key components: (1) the base LLM acts as a
+soft self-judge via calibrated contrastive log-probability margins; (2) candidates are partitioned
+into good/bad groups, yielding a stable \textit{textual gradient}; (3) generation is iteratively
+refined conditioned on this gradient.
+
+\textbf{Current results (main table):} Qwen3-8B and Llama3-8B-Instruct on MATH-500 (92.0\%),
+AlpacaEval (win rate 74.9), and XSTest (93.5\%).
+
+\subsection{Reviewer Scores}
+
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Reviewer} & \textbf{ID} & \textbf{Recommendation} & \textbf{Confidence} & \textbf{Soundness} \\
+\midrule
+R1 & \rev{YbZE} & 3 --- Weak reject & 2 & 2 \\
+R2 & \rev{aHH9} & 3 --- Weak reject & 3 & 3 \\
+R3 & \rev{RD4w} & 4 --- Weak accept & 3 & 3 \\
+R4 & \rev{pDvu} & 3 --- Weak reject & 3 & 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =========================================================
+\section{Reviewer Concern Map}
+% =========================================================
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Code} & \textbf{Reviewer} & \textbf{Concern} \\
+\midrule
+YbZE-Q1 & \rev{YbZE} & Small models ($<$3B): does the textual gradient become noise? \\
+YbZE-Q2 & \rev{YbZE} & Wall-clock time comparison with Best-of-N under same end-to-end latency \\
+\midrule
+aHH9-Q1 & \rev{aHH9} & Wall-clock time for full SAGE run vs.\ Best-of-N+RM \\
+aHH9-Q2 & \rev{aHH9} & Tested on larger models (70B+)? Blind spots at small scale? \\
+aHH9-W4 & \rev{aHH9} & AlpacaEval gains may be verbosity-driven, not quality \\
+aHH9-Q3 & \rev{aHH9} & Can SAGE get stuck in a ``self-congratulatory'' loop reinforcing wrong paths? \\
+\midrule
+RD4w-Q1 & \rev{RD4w} & Why was GPT-4.1 used for SPO prompt tuning? Unfair baseline? \\
+RD4w-Q2 & \rev{RD4w} & How are aspects determined? Sensitivity to different aspect sets? \\
+RD4w-Q3 & \rev{RD4w} & How should $m_{\min}$ (group size) be selected in practice? \\
+RD4w-Q4 & \rev{RD4w} & Cost and time differences between SAGE and baselines? \\
+\midrule
+pDvu-W1 & \rev{pDvu} & Qwen3-8B baseline discrepancy: paper reports 84.4, tech report gives 87.4 (non-thinking) / 97.4 (thinking). Gains may not hold in reasoning mode. \\
+pDvu-W2 & \rev{pDvu} & Benchmarks too easy for Qwen3-8B (already at 84\%+); harder benchmarks needed. \\
+pDvu-W3 & \rev{pDvu} & RM baseline (\texttt{sfairXC/FsfairX-LLaMA3-RM-v0.1}) is outdated vs.\ Qwen3-8B. \\
+\bottomrule
+\end{tabularx}
+\caption{Mapped reviewer concerns (13 total across 4 reviewers).}
+\end{table}
+
+% =========================================================
+\section{Recommended Execution Order}
+% =========================================================
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Day(s)} & \textbf{Experiment} & \textbf{Note} \\
+\midrule
+1     & A2 (Latency Table)            & Fastest; answers 4 questions at once \\
+1--2  & A1 (Baseline Clarification)   & Runs in parallel with A2 \\
+2--3  & A3 (IFEval)                   & Core new benchmark \\
+\multicolumn{3}{l}{\quad $\Rightarrow$ \textit{Plan A complete; rebuttal can be submitted here}} \\
+\midrule
+4--5  & B2 ($m_{\min}$ Ablation)      & 5 configs; parallelizable \\
+5--6  & B3 (Aspect Sensitivity)       & 3 configs $\times$ 2 benchmarks \\
+6--7  & B4 (Small Model)              & Fast at 1.7B \\
+\multicolumn{3}{l}{\quad $\Rightarrow$ \textit{Plan B complete}} \\
+\midrule
+8--11 & C1 (Qwen3-32B)                & Long; use 2 GPUs \\
+11--12& C2 (Updated RM)               & Moderate cost \\
+12--14& C3 (MMLU-Pro STEM)            & Broad coverage \\
+\multicolumn{3}{l}{\quad $\Rightarrow$ \textit{Plan C complete}} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =========================================================
+\section{Plan A --- Minimal ($\sim$10 H100-hours, $\sim$3 days)}
+% =========================================================
+
+\textbf{Goal:} Address the three highest-risk concerns to flip weak rejects. Submit a rebuttal
+at day 3 if under time pressure.
+
+\subsection*{A1 --- Baseline Clarification and Qwen3-8B Reasoning Mode Reference}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{pDvu}-W1
+  \item[Rationale] The 84.4 baseline in the paper corresponds to Qwen3-8B in \emph{non-thinking}
+    mode with the paper's exact prompt format. The tech report's 87.4 uses a different system
+    prompt configuration; the 97.4 figure uses \emph{thinking} mode, which is a separate inference
+    regime with a much higher compute budget. These are not directly comparable to SAGE's
+    non-thinking setup. No new SAGE run is required for this: add a single reference row in
+    Table~1 showing Qwen3-8B in thinking mode ($\approx$97.4) and frame SAGE as a
+    complementary method that operates in the non-thinking regime and closes the gap.
+  \item[Model] Qwen3-8B (thinking mode, reference only)
+  \item[Benchmark] MATH-500
+  \item[GPU estimate] $\sim$1 H100-hour
+  \item[Wall-clock] 0.5 days
+  \item[Expected outcome] Confirms 84.4 is the correct non-thinking baseline. Thinking mode
+    reaches $\approx$97 without SAGE. SAGE at 92.0 is a strong result within the non-thinking
+    budget. Framing defuses \rev{pDvu}-W1 without requiring SAGE to beat the reasoning mode.
+\end{description}
+
+\subsection*{A2 --- Wall-Clock Latency Table}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{YbZE}-Q2, \rev{aHH9}-Q1, \rev{aHH9}-W1, \rev{RD4w}-Q4
+    \emph{(one table answers four reviewer questions)}
+  \item[Procedure] Run SAGE, Best-of-N (same $N$), and Best-of-N+RM on 100 MATH-500 problems.
+    Measure: (a) GPU seconds/problem and (b) wall-clock seconds/problem at \texttt{batch\_size=1}
+    simulating a single user. Also compute accuracy/time as a composite efficiency metric.
+  \item[Model] Qwen3-8B
+  \item[Benchmark] MATH-500 (100-problem subset sufficient for timing statistics)
+  \item[GPU estimate] $\sim$2 H100-hours
+  \item[Wall-clock] 0.5 days
+  \item[Expected outcome] SAGE is slower per problem in absolute wall-clock but achieves higher
+    accuracy per unit of inference compute once the judge pass is amortized over a batch.
+    A Pareto-efficiency plot (accuracy vs.\ wall-clock) shows SAGE dominates at moderate latency
+    budgets.
+\end{description}
+
+\subsection*{A3 --- IFEval (Verifiable, Judge-Free Instruction Following)}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{aHH9}-W4, \rev{pDvu}-W2
+  \item[Rationale] IFEval contains 541 prompts across 25 instruction categories (length
+    constraints, format rules, keyword presence/absence). Correctness is evaluated by a
+    deterministic Python script --- no GPT judge, no verbosity bias. Qwen3-8B scores
+    $\approx$78--82\% prompt-level accuracy out-of-the-box, leaving meaningful headroom.
+    Crucially: if SAGE only inflates verbosity, it will \emph{fail} IFEval's
+    length-limit instructions (e.g., ``respond in under 100 words''), directly falsifying
+    \rev{aHH9}-W4. This is the single most informative benchmark to add.
+  \item[Model] Qwen3-8B
+  \item[Benchmark] IFEval (\texttt{google/IFEval}), evaluated with the official script
+  \item[GPU estimate] SAGE: $\sim$4 H100-hours; baseline + Best-of-N: $\sim$1 H100-hour
+  \item[Wall-clock] 1 day
+  \item[Expected outcome] SAGE improves prompt-level accuracy by 3--7 points over baseline.
+    Improvement on length-constrained instructions directly refutes the verbosity hypothesis.
+    Also answers \rev{pDvu}-W2 by demonstrating gains on a benchmark where the base model
+    has substantial room to improve.
+\end{description}
+
+\paragraph{Plan A totals.} $\approx$7--10 H100-hours, 2--3 days. Covers \textbf{7 of 13} concerns.
+
+% =========================================================
+\section{Plan B --- Average ($\sim$40 H100-hours, $\sim$7--10 days)}
+% =========================================================
+
+\textbf{Goal:} Add breadth and fill the missing ablations that \rev{RD4w} (weak accept) and
+\rev{YbZE} explicitly requested. Covers nearly all concerns.
+
+Plan B includes all experiments from Plan~A plus the following three experiments.
+
+\subsection*{B2 --- Group Size ($m_{\min}$) Ablation}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{RD4w}-W3, \rev{RD4w}-Q3
+  \item[Procedure] Sweep $m_{\min} \in \{1, 2, 4, 6, 8\}$ on MATH-500 (full 500 problems), with
+    all other hyperparameters fixed. $m_{\min}=1$ is the degenerate best-vs.-worst pairwise
+    case that \rev{RD4w} specifically asked about. Report a figure with $m_{\min}$ on the x-axis
+    and accuracy on the y-axis, plus a practical selection heuristic derived from the curve.
+  \item[Model] Qwen3-8B
+  \item[Benchmark] MATH-500
+  \item[GPU estimate] 5 configs $\times$ $\approx$2 H100-hours $=$ \textbf{10 H100-hours}
+    (parallelizable across 5 GPUs to 0.5 days)
+  \item[Wall-clock] 2 days (serial), 0.5 days (parallel)
+  \item[Expected outcome] Performance degrades at $m_{\min}=1$ (noisy single-pair gradient),
+    peaks around $m_{\min}=4$--6, and plateaus. Confirms that grouped selection is strictly
+    better than best-vs.-worst and that $m_{\min}=4$ is a safe default. Converts
+    \rev{RD4w}-W3 from ``no proof'' to ``see Figure~X.''
+\end{description}
+
+\subsection*{B3 --- Aspect Sensitivity Ablation}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{RD4w}-W2, \rev{RD4w}-Q2
+  \item[Procedure] Run three aspect configurations: (a)~paper default aspects,
+    (b)~single generic aspect (``overall quality and correctness''), (c)~task-specific
+    aspects for math (logical coherence, calculation accuracy, step completeness).
+    Evaluate on MATH-500 and IFEval. Report a $3 \times 2$ table.
+  \item[Model] Qwen3-8B
+  \item[Benchmarks] MATH-500, IFEval
+  \item[GPU estimate] 3 configs $\times$ 2 benchmarks $\times$ $\approx$2 H100-hours
+    $=$ \textbf{12 H100-hours}
+  \item[Wall-clock] 2 days
+  \item[Expected outcome] Default aspects outperform the single generic aspect by a small but
+    consistent margin. Task-specific aspects match or marginally exceed the defaults.
+    Demonstrates that aspect choice matters but the method is not brittle to exact
+    formulation, directly answering \rev{RD4w}-Q2.
+\end{description}
+
+\subsection*{B4 --- Small Model Test (Qwen3-1.7B)}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{YbZE}-Q1, \rev{YbZE}-W1
+  \item[Rationale] Qwen3-1.7B is below the 3B threshold \rev{YbZE} cited. It has sufficient
+    instruction-following for the failure mode (if any) to be informative rather than
+    trivially broken.
+  \item[Procedure] Run SAGE with Qwen3-1.7B on MATH-500 and IFEval. Also track the variance
+    of log-probability margins across iterations as a noise proxy. Compare against Qwen3-1.7B
+    baseline and Best-of-N.
+  \item[Model] Qwen3-1.7B (Qwen2.5-3B as fallback if 1.7B proves too unstable)
+  \item[Benchmarks] MATH-500, IFEval
+  \item[GPU estimate] $\approx$5 H100-hours (fast at 1.7B)
+  \item[Wall-clock] 1 day
+  \item[Expected outcome] Modest gains on IFEval (lower-complexity instructions),
+    smaller or no gains on MATH-500. The log-probability margin variance plot shows
+    when noise becomes dominant. Provides an honest empirical boundary condition:
+    SAGE is less effective below 3B on hard reasoning but not destructively noisy ---
+    directly answering \rev{YbZE}-Q1.
+\end{description}
+
+\paragraph{Plan B totals.} $\approx$38--40 H100-hours, 7--10 days. Covers \textbf{10 of 13} concerns.
+
+% =========================================================
+\section{Plan C --- Maximal ($\sim$80 H100-hours, $\sim$20--25 days)}
+% =========================================================
+
+\textbf{Goal:} Exhaustive coverage. Warranted only if reviewers raise scores after Plan~B,
+or if you have $>$2 weeks and want a stronger camera-ready paper.
+
+Plan C includes all experiments from Plans A and B plus the following three experiments.
+
+\subsection*{C1 --- Qwen3-32B}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{aHH9}-Q2 (partial), \rev{RD4w}-W1 (partial)
+  \item[Rationale] Qwen3-32B is meaningfully stronger than 8B and fits on 2$\times$H100~80GB
+    with tensor parallelism or standard 8-bit quantization. Testing 70B+ (as \rev{aHH9} asked)
+    would require 4$\times$H100 for marginal reviewer satisfaction; 32B is the best ROI point.
+  \item[Procedure] Run SAGE and baseline Qwen3-32B on MATH-500 and IFEval. Compare against
+    Qwen3-32B Best-of-N. If SAGE still improves over a strong 32B baseline, the argument
+    that ``small model blind spots undermine self-assessment'' is substantially weakened.
+  \item[Model] Qwen3-32B (2$\times$H100, tensor parallel)
+  \item[Benchmarks] MATH-500, IFEval
+  \item[GPU estimate] $\approx$20 H100-hours
+  \item[Wall-clock] 3--4 days
+  \item[Expected outcome] SAGE adds +2--4 points on MATH-500 and +3--5 points on IFEval for
+    Qwen3-32B. The per-step gain is smaller than at 8B (stronger base $=$ less headroom) but
+    the absolute accuracy is higher, demonstrating SAGE scales with model capability rather
+    than depending on model weakness.
+\end{description}
+
+\subsection*{C2 --- Updated Reward Model Baseline}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{pDvu}-W3
+  \item[Procedure] Replace \texttt{sfairXC/FsfairX-LLaMA3-RM-v0.1} with a Qwen3-era reward
+    model (candidates: \texttt{Skywork-Reward-Qwen-2.5-7B-v0.2} or
+    \texttt{ArmoRM-Llama3-8B-v0.1} as fallback). Re-run the Best-of-N+RM comparison on
+    MATH-500 and IFEval.
+  \item[Model] Qwen3-8B + updated RM
+  \item[Benchmarks] MATH-500, IFEval
+  \item[GPU estimate] $\approx$8 H100-hours
+  \item[Wall-clock] 1.5 days
+  \item[Expected outcome] If SAGE matches or exceeds the updated RM: the objection is fully
+    resolved. If SAGE slightly trails: frame honestly as ``SAGE is a single-model solution
+    that approaches the performance of a two-model pipeline without the deployment overhead,''
+    which is a legitimate practical advantage.
+\end{description}
+
+\subsection*{C3 --- MMLU-Pro STEM Subset}
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[Covers] \rev{pDvu}-W2 (secondary), \rev{RD4w}-W1 (secondary)
+  \item[Rationale] MMLU-Pro STEM contains $\approx$2000 questions. Qwen3-8B scores
+    $\approx$55--62\% out-of-the-box --- substantial headroom. Multiple-choice
+    evaluation is fully verifiable without a judge, and the domain breadth (biology,
+    chemistry, physics, engineering) extends beyond SAGE's current math-only evaluation.
+  \item[Model] Qwen3-8B
+  \item[Benchmark] MMLU-Pro STEM split
+  \item[GPU estimate] $\approx$12 H100-hours
+  \item[Wall-clock] 2 days
+  \item[Expected outcome] SAGE improves by +3--6 points over baseline. This demonstrates
+    that gains are not specific to math and are not caused by verbosity inflation,
+    complementing the IFEval result.
+\end{description}
+
+\paragraph{Plan C totals.} $\approx$78--80 H100-hours, 20--25 days. Covers \textbf{all 13} concerns.
+
+% =========================================================
+\section{Concern Coverage by Plan}
+% =========================================================
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Code} & \textbf{Concern (short)} & \textbf{Plan A} & \textbf{Plan B} & \textbf{Plan C} \\
+\midrule
+YbZE-Q1 & Small model $<$3B noise         & \no  & \yes\ B4 & \yes\ B4 \\
+YbZE-Q2 & Wall-clock vs.\ BoN             & \yes\ A2 & \yes\ A2 & \yes\ A2 \\
+aHH9-Q1 & Wall-clock vs.\ BoN+RM          & \yes\ A2 & \yes\ A2 & \yes\ A2+C2 \\
+aHH9-Q2 & Tested on 70B+?                 & \no  & \no  & \yes\ C1 (32B) \\
+aHH9-W4 & AlpacaEval verbosity            & \yes\ A3 & \yes\ A3 & \yes\ A3 \\
+aHH9-Q3 & Self-congratulatory loop        & \no  & \no  & \no \\
+RD4w-Q1 & GPT-4.1 for SPO (text response) & \yes* & \yes* & \yes* \\
+RD4w-Q2 & Aspect determination            & \no  & \yes\ B3 & \yes\ B3 \\
+RD4w-Q3 & $m_{\min}$ selection            & \no  & \yes\ B2 & \yes\ B2 \\
+RD4w-Q4 & Cost/time vs.\ baselines        & \yes\ A2 & \yes\ A2 & \yes\ A2 \\
+pDvu-W1 & Baseline discrepancy            & \yes\ A1 & \yes\ A1 & \yes\ A1 \\
+pDvu-W2 & Benchmarks too easy             & \yes\ A3 & \yes\ A3 & \yes\ A3+C3 \\
+pDvu-W3 & Outdated RM                     & \no  & \no  & \yes\ C2 \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total covered}} & \textbf{7/13} & \textbf{10/13} & \textbf{12/13} \\
+\bottomrule
+\end{tabular}
+\caption{Coverage of reviewer concerns per plan tier. \yes\ = covered with experiment ID.
+\no\ = not covered. * = addressed via rebuttal text, no experiment needed.}
+\end{table}
+
+% =========================================================
+\section{Rebuttal Text Notes (No Experiments Needed)}
+% =========================================================
+
+\begin{description}[leftmargin=2cm, style=nextline]
+  \item[\rev{pDvu}-W1 (Baseline discrepancy)]
+    Explicitly state in the rebuttal that 84.4 matches the Qwen3-8B non-thinking baseline
+    under the paper's exact prompt format. The tech report's 87.4 uses a different system
+    prompt (cite the evaluation configuration section of the Qwen3 technical report). The 97.4
+    figure is the thinking (reasoning) mode result with a substantially larger compute budget ---
+    a separate inference regime. SAGE and the thinking mode are not in competition; they operate
+    under different compute regimes.
+
+  \item[\rev{RD4w}-Q1 (GPT-4.1 for SPO)]
+    SPO requires an external optimizer by design; using a weaker model for SPO prompt tuning
+    would hurt SPO further, making the comparison even more conservative for SAGE. This choice
+    follows the original SPO paper's setup. SAGE requires no external model whatsoever.
+
+  \item[\rev{aHH9}-Q3 (Self-congratulatory loop)]
+    The loop concern is partially addressed by Figure~4(b) in the paper, which shows the RM
+    score dips before recovering --- indicating the self-judge does \emph{not} monotonically
+    reinforce the same path. The textual gradient is regenerated each iteration from newly
+    grouped candidates, preventing static reinforcement. An additional analysis plotting
+    response diversity (e.g., embedding-space variance across epochs) from Figure~11 of the
+    Appendix can be cited here.
+
+  \item[\rev{aHH9}-W3 (Reflection ability varies)]
+    Reframe as expected behavior: the method's effectiveness naturally scales with the model's
+    reflective capacity, which is why Qwen3-8B shows larger absolute gains than Llama3-8B-Instruct.
+    Experiment B4 (Qwen3-1.7B) provides the empirical lower bound on model scale.
+\end{description}
+
+\end{document}

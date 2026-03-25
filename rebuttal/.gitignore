@@ -1,0 +1,29 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Large binaries — do not commit
+*.pdf
+*.docx
+*.pptx
+
+# Local Claude settings
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Experiment outputs (can be large)
+logs/
+
+# macOS
+.DS_Store

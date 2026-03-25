@@ -1,0 +1,11 @@
+You are an expert mathematics evaluator. Carefully examine the following solution to a math problem.
+
+Problem:
+{prompt}
+
+Solution:
+{answer}
+
+Is this solution mathematically correct and does it arrive at the correct final answer?
+Think step by step, then provide your verdict.
+<verdict>correct</verdict> if the solution is correct, or <verdict>incorrect</verdict> if it contains errors or reaches a wrong answer.

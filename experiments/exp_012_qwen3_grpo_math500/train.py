@@ -7,7 +7,7 @@ import re
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B",
-    "max_seq_length": 2048, "lora_rank": 64, "load_in_4bit": False,
+    "max_seq_length": 4096, "lora_rank": 64, "load_in_4bit": False,
     "fast_inference": True, "gpu_memory_utilization": 0.9,
 }
 LORA_CONFIG = {

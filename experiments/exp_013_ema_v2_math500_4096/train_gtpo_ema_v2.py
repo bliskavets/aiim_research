@@ -4,7 +4,7 @@ GTPO-EMA v2 on MATH-500 with Qwen3-4B (exp_011)
 + /workspace/exp_010 fixed EMA trainer (no z-score normalization)
 """
 import re, sys
-sys.path.insert(0, "/workspace//workspace/exp_010")
+sys.path.insert(0, "/workspace/exp_010")
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B",

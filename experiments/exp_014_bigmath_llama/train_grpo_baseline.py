@@ -63,7 +63,7 @@ def prepare_dataset():
     ds = load_dataset("SynthLabsAI/Big-Math-RL-Verified", split="train")
     print(f"Dataset loaded: {len(ds)} examples")
     # Filter: only problems with verifiable numeric/symbolic answers
-    ds = ds.filter(lambda x: x.get("answer") is not None and str(x.get("answer","")).strip() != "")
+    ds = ds.filter(lambda x: x.get("answer") is not None and str(x.get("answer","")).strip() != "" and float(x.get("llama8b_solve_rate") or 1.0) < 0.2)
     print(f"After filter: {len(ds)} examples")
     return ds.map(lambda x: {
         "prompt": [

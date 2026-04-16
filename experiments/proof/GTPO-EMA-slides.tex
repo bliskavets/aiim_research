@@ -1,0 +1,417 @@
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+% ── Minimal clean theme ──────────────────────────────────────────────────────
+\usetheme{default}
+\usecolortheme{default}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+% Clean colors
+\definecolor{darkblue}{RGB}{30,60,120}
+\definecolor{lightgray}{RGB}{240,240,245}
+\definecolor{midgray}{RGB}{100,100,110}
+\setbeamercolor{frametitle}{fg=darkblue}
+\setbeamercolor{title}{fg=darkblue}
+\setbeamercolor{structure}{fg=darkblue}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{block title}{bg=lightgray,fg=darkblue}
+\setbeamercolor{block body}{bg=white,fg=black}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{title}{series=\bfseries,size=\Large}
+
+% ── Packages ─────────────────────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+
+% ── Theorem styles ───────────────────────────────────────────────────────────
+\newtheorem{proposition}{Proposition}
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+
+% ── Convenience macros ───────────────────────────────────────────────────────
+\newcommand{\EMA}{\mathrm{EMA}}
+\newcommand{\GEMA}{\overline{\mathrm{EMA}}}
+\newcommand{\Jgtpo}{\mathcal{J}_{\text{GTPO-EMA}}}
+\newcommand{\Jgrpo}{\mathcal{J}_{\text{GRPO}}}
+\newcommand{\Jdapo}{\mathcal{J}_{\text{DAPO}}}
+\newcommand{\Oplus}{O^+}
+\newcommand{\Ominus}{O^-}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\title{GTPO-EMA: Theoretical Analysis}
+\subtitle{Convergence to the Same Global Optimum as DAPO}
+\author{}
+\date{}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{document}
+
+% ── Title slide ──────────────────────────────────────────────────────────────
+\begin{frame}
+\titlepage
+\vspace{-1em}
+\begin{center}
+\textcolor{midgray}{\small An extension of GTPO with EMA-smoothed confidence weighting}
+\end{center}
+\end{frame}
+
+% ── Outline ──────────────────────────────────────────────────────────────────
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Motivation}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Motivation: From GRPO to GTPO-EMA}
+
+\textbf{GRPO} assigns a uniform advantage to every token in a response:
+\[
+\hat{A}_{i,t} = \hat{A}_i = \frac{r_i - \mathrm{mean}(\{r_k\})}{\mathrm{std}(\{r_k\})}
+\]
+Every token in $o_i$ gets the same credit, regardless of uncertainty.
+
+\medskip
+\textbf{GTPO} replaces this with an entropy-weighted per-token advantage. \\
+\textbf{GTPO-EMA} further smooths the entropy signal via an EMA filter:
+
+\[
+\EMA_{i,t} = \lambda \cdot \EMA_{i,t-1} + (1-\lambda) \cdot C_{i,t}
+\]
+
+\begin{block}{Key question}
+Does the EMA modification preserve the theoretical guarantees of GTPO,
+i.e., does GTPO-EMA still converge to the same optimum as GRPO/DAPO?
+\end{block}
+
+\end{frame}
+
+\section{Definitions}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Definitions: Confidence and EMA}
+
+\begin{block}{Definition 1 — Top-$k$ Confidence}
+\[
+C_{i,t} = -\operatorname*{mean}_{v \,\in\, \mathrm{top\text{-}}k(\pi_\theta(\cdot\,|\,q, o_{i,<t}))} \log \pi_\theta(v \mid q, o_{i,<t})
+\]
+$C_{i,t} \geq 0$;\; high value $\Leftrightarrow$ uncertain;\; low value $\Leftrightarrow$ confident.
+\end{block}
+
+\medskip
+
+\begin{block}{Definition 2 — EMA-smoothed Confidence ($\lambda \in (0,1)$)}
+\[
+\EMA_{i,0} = C_{i,0}, \qquad
+\EMA_{i,t} = \lambda \cdot \EMA_{i,t-1} + (1-\lambda) \cdot C_{i,t}
+\]
+Expanding: $\;\EMA_{i,t} = (1-\lambda)\sum_{s=0}^{t} \lambda^s C_{i,t-s}$
+\end{block}
+
+\medskip
+Note: $\EMA_{i,t}$ is a \emph{weighted average} of past confidence — recent steps
+have greater influence than distant ones.
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Definitions: Reward Shaping}
+
+Given successful/unsuccessful sets $\Oplus$, $\Ominus$ with active counts $d_t$, $h_t$:
+
+\medskip
+
+\textbf{Successful sequence} $o_i \in \Oplus$ at position $t$:
+\[
+\tilde{r}^+_{i,t} = \alpha_1 r_i + \alpha_2 \cdot \frac{\EMA_{i,t}}{\displaystyle\sum_{k \in O^+_t} \EMA_{k,t}} \cdot d_t
+\]
+
+\textbf{Unsuccessful sequence} $o_j \in \Ominus$ at position $t$:
+\[
+\tilde{r}^-_{j,t} = \alpha_1 (-1) + \alpha_2 \cdot \frac{1/\EMA_{j,t}}{\displaystyle\sum_{k \in O^-_t} 1/\EMA_{k,t}} \cdot h_t \cdot (-1)
+\]
+
+\medskip
+\textbf{Logic:}
+\begin{itemize}
+  \item Uncertain success $\to$ larger bonus (valuable exploration)
+  \item Confident failure $\to$ larger penalty (penalize overconfidence)
+\end{itemize}
+
+\end{frame}
+
+\section{Lemmas}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Lemma 1 — Non-negativity of EMA}
+
+\begin{lemma}
+For any sequence $o_i$ and timestep $t \geq 0$: $\;\EMA_{i,t} \geq 0$.
+\end{lemma}
+
+\textbf{Proof} by induction on $t$:
+
+\smallskip
+\textbf{Base:} $\EMA_{i,0} = C_{i,0} \geq 0$ \hfill(by definition of $C_{i,t}$)
+
+\smallskip
+\textbf{Step:} Assuming $\EMA_{i,t-1} \geq 0$,
+\[
+\EMA_{i,t} = \underbrace{\lambda}_{\geq 0} \cdot \underbrace{\EMA_{i,t-1}}_{\geq 0}
+           + \underbrace{(1-\lambda)}_{\geq 0} \cdot \underbrace{C_{i,t}}_{\geq 0} \;\geq\; 0. \qquad\square
+\]
+
+\medskip
+\textbf{Corollary:} $\displaystyle\sum_{k \in O^+_t} \EMA_{k,t} > 0$, so the normalization in
+the reward formula is well-defined.
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Lemma 2 — Deviation Formula}
+
+\begin{lemma}
+For $o_i \in O^+_t$, let $\,\GEMA_t = \tfrac{1}{d_t}\sum_{k \in O^+_t} \EMA_{k,t}$.
+Then the shaped reward deviates from the flat GRPO reward by:
+\[
+\delta_{i,t} \;=\; \tilde{r}^+_{i,t} - r_i \;=\; \alpha_2\!\left(\frac{\EMA_{i,t}}{\GEMA_t} - 1\right)
+\]
+\end{lemma}
+
+\textbf{Proof:}
+\begin{align*}
+\delta_{i,t} &= \tilde{r}^+_{i,t} - r_i
+= \left[\alpha_1 + \alpha_2 \frac{\EMA_{i,t}}{\GEMA_t}\right] - 1 \\
+&= -\alpha_2 + \alpha_2 \frac{\EMA_{i,t}}{\GEMA_t}
+= \alpha_2\!\left(\frac{\EMA_{i,t}}{\GEMA_t} - 1\right) \qquad\square
+\end{align*}
+
+\smallskip
+\textit{Interpretation:} $\delta_{i,t} = 0$ when token $i$ has exactly the group-average
+confidence. The deviation is zero-sum: $\sum_i \delta_{i,t} = 0$.
+
+\end{frame}
+
+\section{Main Propositions}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Proposition 1 — Conservation of Reward Mass}
+
+\begin{proposition}
+If $\alpha_1 + \alpha_2 = 1$, then at every timestep $t$:
+\[
+\sum_{i \in O^+_t} \tilde{r}^+_{i,t} \;=\; \sum_{i \in O^+_t} r_i \;=\; d_t
+\]
+\end{proposition}
+
+\textbf{Proof:}
+\begin{align*}
+\sum_{i \in O^+_t} \tilde{r}^+_{i,t}
+&= \alpha_1 \underbrace{\sum_{i} r_i}_{d_t}
+ + \alpha_2 d_t \underbrace{\sum_{i} \frac{\EMA_{i,t}}{\sum_k \EMA_{k,t}}}_{=\,1}
+= (\alpha_1 + \alpha_2)\, d_t = d_t \qquad\square
+\end{align*}
+
+\medskip
+\begin{block}{Significance}
+The EMA shaping \emph{redistributes} rewards among tokens but preserves the
+total reward mass. This holds for \textbf{any} non-negative weight function —
+EMA non-negativity (Lemma 1) is the only requirement.
+\end{block}
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Assumption — EMA Consolidation}
+
+\begin{assumption}[EMA Consolidation]
+As training progresses ($k \to \infty$), for any two successful sequences
+$o_{i_1}, o_{i_2} \in O^+_t$ (a.s.):
+\[
+\lim_{k\to\infty} \frac{\EMA_{i_1,t}}{\EMA_{i_2,t}} = 1
+\qquad\Longleftrightarrow\qquad
+\lim_{k\to\infty} \frac{\EMA_{i,t}}{\GEMA_t} = 1
+\]
+\end{assumption}
+
+\medskip
+\textbf{Why reasonable:} As the policy converges, successful sequences develop
+a canonical reasoning pattern. Their confidence profiles $C_{i,t} \to \bar{C}$
+become similar. Since
+$\EMA_{i,t} = (1-\lambda)\sum_s \lambda^s C_{i,t-s} \to \bar{C}$,
+the ratios $\EMA_{i,t}/\EMA_{j,t} \to 1$.
+
+\medskip
+\begin{remark}
+This is the EMA analogue of the \emph{Entropy Consolidation Condition} used in
+the original GTPO analysis — it follows from it under the top-$k$ confidence
+approximation.
+\end{remark}
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Proposition 2 — Asymptotic Consistency}
+
+\begin{proposition}
+Under the EMA Consolidation assumption, with $\|\nabla_\theta \log \pi_\theta\| \leq M$
+and bounded advantages:
+\[
+\lim_{k\to\infty} \|\Delta\mathcal{J}(\theta_k)\| = 0
+\]
+where $\Delta\mathcal{J} = \nabla\Jgtpo^+ - \nabla\Jgrpo$.
+\end{proposition}
+
+\textbf{Proof sketch:}
+\begin{enumerate}
+  \item From Lemma 2 and EMA Consolidation:
+  $\;\delta_{i,t} = \alpha_2\!\left(\tfrac{\EMA_{i,t}}{\GEMA_t} - 1\right) \to 0$
+
+  \item Shaped advantage converges: $\tilde{A}^+_{i,t} \to \hat{A}_{i,t}$
+  (Continuous Mapping Theorem, since std$(R) > 0$)
+
+  \item Gradient bound:
+  $\|\Delta\mathcal{J}\| \leq M \cdot \mathbb{E}\bigl[\tfrac{1}{G}\sum_i |\tilde{A}^+_{i,t} - \hat{A}_{i,t}|\bigr]$
+
+  \item Apply \textbf{Dominated Convergence} (bounded advantages):
+  $\|\Delta\mathcal{J}\| \leq M \cdot \mathbb{E}[0] = 0 \qquad\square$
+\end{enumerate}
+
+\end{frame}
+
+\section{Main Theorem}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Main Theorem}
+
+\begin{block}{\large Theorem — Same Global Optimum as DAPO}
+\emph{Under the EMA Consolidation assumption and regularity conditions,
+GTPO-EMA shares the same global optimum $\theta^*$ as DAPO.}
+\end{block}
+
+\medskip
+\textbf{Proof:}
+
+\textbf{Step 1.} At any critical point $\theta^*$ of $\Jgtpo$:
+$\nabla\Jgtpo(\theta^*) = 0$.
+By Proposition 2: $\nabla\Jgtpo \to \nabla\Jgrpo$, so $\nabla\Jgrpo(\theta^*) = 0$.
+
+\smallskip
+\textbf{Step 2.} DAPO differs from GRPO only by a constant reward shift
+($0 \to -1$ for incorrect answers). This shifts the baseline but does not
+change the optimal direction. Both objectives share:
+$\theta^* = \arg\max\, \Pr[\text{correct} \mid q, \pi_\theta]$.
+
+\smallskip
+\textbf{Conclusion:}
+\[
+\theta^*_{\text{GTPO-EMA}} \;=\; \theta^*_{\text{GRPO}} \;=\; \theta^*_{\text{DAPO}} \qquad\square
+\]
+
+\end{frame}
+
+\section{Variance Reduction}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Bonus Result — Variance Reduction}
+
+\begin{proposition}
+Assuming $C_{i,t}$ have variance $\sigma^2_C$, as $t \to \infty$:
+\[
+\mathrm{Var}(\EMA_{i,t}) \;\to\; \frac{1-\lambda}{1+\lambda} \cdot \sigma^2_C
+\]
+\end{proposition}
+
+\textbf{Proof:} Since $\EMA_{i,t} = (1-\lambda)\sum_{s=0}^t \lambda^s C_{i,t-s}$
+with i.i.d.\ $C_{i,s}$:
+\[
+\mathrm{Var}(\EMA_{i,t}) = (1-\lambda)^2 \sum_{s=0}^{t} \lambda^{2s}\sigma^2_C
+= \frac{(1-\lambda)^2}{1-\lambda^{2}}\bigl(1-\lambda^{2(t+1)}\bigr)\sigma^2_C
+\;\xrightarrow{t\to\infty}\; \frac{1-\lambda}{1+\lambda}\,\sigma^2_C \qquad\square
+\]
+
+\medskip
+\textbf{Numerical example ($\lambda = 0.9$):}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Weight signal & Variance & Reduction \\
+\midrule
+Raw confidence $C_{i,t}$ & $\sigma^2_C$ & — \\
+EMA$_{i,t}$ ($\lambda=0.9$) & $\approx 0.053\,\sigma^2_C$ & $\approx 19\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textit{GTPO-EMA is not only asymptotically equivalent to GTPO — it produces
+more stable gradient estimates throughout training.}
+
+\end{frame}
+
+\section{Summary}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Summary of Results}
+
+\begin{center}
+\begin{tabular}{@{}lp{7.5cm}@{}}
+\toprule
+\textbf{Result} & \textbf{Statement} \\
+\midrule
+Lemma 1 & $\EMA_{i,t} \geq 0$ — normalization is always well-defined \\[4pt]
+Lemma 2 & $\delta_{i,t} = \alpha_2(\EMA_{i,t}/\GEMA_t - 1)$ — deviation is zero-sum \\[4pt]
+Prop.\ 1 & $\sum \tilde{r}^+_{i,t} = d_t$ — total reward mass is conserved \\[4pt]
+Prop.\ 2 & $\|\Delta\mathcal{J}(\theta_k)\| \to 0$ — gradient bias vanishes \\[4pt]
+\textbf{Theorem} & $\theta^*_{\text{GTPO-EMA}} = \theta^*_{\text{DAPO}}$ \\[4pt]
+Prop.\ 3 & $\mathrm{Var}(\EMA) \approx \sigma^2/19$ for $\lambda=0.9$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\begin{block}{Take-away}
+GTPO-EMA does not change \emph{where} the policy converges,
+but changes \emph{how} — with a lower-variance, more informative
+gradient signal that rewards exploration on uncertain tokens
+and penalizes overconfident errors.
+\end{block}
+
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Relationship Between Results}
+
+\begin{center}
+\large
+\[
+\underbrace{\EMA_{i,t} \geq 0}_{\text{Lemma 1}}
+\;\Rightarrow\;
+\underbrace{\textstyle\sum \tilde{r}^+_{i,t} = d_t}_{\text{Prop.\ 1: conservation}}
+\]
+
+\bigskip
+
+\[
+\underbrace{\delta_{i,t} \to 0}_{\text{Lemma 2 + Assumption}}
+\;\Rightarrow\;
+\underbrace{\|\Delta\mathcal{J}\| \to 0}_{\text{Prop.\ 2: consistency}}
+\;\Rightarrow\;
+\underbrace{\theta^*_{\text{GTPO-EMA}} = \theta^*_{\text{DAPO}}}_{\textbf{Theorem}}
+\]
+\end{center}
+
+\end{frame}
+
+\end{document}

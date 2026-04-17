@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Дайджест — Апрель 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <style>
+    :root {
+      --accent: #7c3aed;
+      --accent2: #06b6d4;
+      --soft: rgba(255,255,255,0.08);
+    }
+    .reveal {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      text-transform: none;
+      letter-spacing: -0.02em;
+    }
+    .reveal h1 { font-size: 2.2em; color: #fff; }
+    .reveal h2 { font-size: 1.4em; color: #a78bfa; border-bottom: 2px solid var(--accent); padding-bottom: 0.3em; margin-bottom: 0.6em; }
+    .reveal h3 { font-size: 1.1em; color: var(--accent2); }
+    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.6; }
+    .reveal ul { list-style: none; padding: 0; }
+    .reveal ul li::before { content: "→ "; color: var(--accent2); font-weight: bold; }
+    .reveal blockquote {
+      background: rgba(124,58,237,0.15);
+      border-left: 4px solid var(--accent);
+      padding: 0.8em 1.2em;
+      font-style: italic;
+      font-size: 0.72em;
+      line-height: 1.5;
+      border-radius: 0 8px 8px 0;
+      color: #e2e8f0;
+    }
+    .tag {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.55em;
+      padding: 2px 10px;
+      border-radius: 99px;
+      margin-bottom: 0.5em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      vertical-align: middle;
+    }
+    .tag.cyan { background: #0891b2; }
+    .tag.green { background: #059669; }
+    .tag.orange { background: #d97706; }
+    .tag.red { background: #dc2626; }
+    .slide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2em;
+      align-items: start;
+    }
+    .slide-grid.wide { grid-template-columns: 1.4fr 1fr; }
+    .slide-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .slide-img.tall { max-height: 340px; }
+    .cost-box {
+      background: rgba(220,38,38,0.18);
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 8px;
+      padding: 0.6em 1em;
+      font-size: 0.72em;
+      margin-top: 0.5em;
+    }
+    .info-box {
+      background: var(--soft);
+      border-radius: 8px;
+      padding: 0.6em 1em;
+      font-size: 0.72em;
+      margin-top: 0.5em;
+    }
+    .pill-row { display: flex; gap: 0.5em; flex-wrap: wrap; margin: 0.5em 0; }
+    .pill {
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      padding: 3px 12px;
+      font-size: 0.65em;
+    }
+    .title-slide { text-align: center; }
+    .title-slide .subtitle { color: #94a3b8; font-size: 0.85em; margin-top: 0.5em; }
+    .title-slide .date { color: #64748b; font-size: 0.65em; margin-top: 1.5em; }
+    .source-link { color: #64748b; font-size: 0.55em; margin-top: 0.3em; }
+    .sources a { color: #7c3aed; font-size: 0.6em; }
+    section { padding: 1em !important; }
+    .formula-box {
+      background: rgba(6,182,212,0.12);
+      border: 1px solid rgba(6,182,212,0.4);
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1em;
+      color: var(--accent2);
+      text-align: center;
+      margin: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- SLIDE 1: TITLE -->
+<section class="title-slide">
+  <div style="margin-bottom:1.5em">
+    <span style="font-size:3.5em">🤖</span>
+  </div>
+  <h1>AI Дайджест</h1>
+  <p class="subtitle">Что происходит в мире искусственного интеллекта</p>
+  <div class="pill-row" style="justify-content:center; margin-top:1.2em">
+    <span class="pill">Anthropic</span>
+    <span class="pill">OpenAI</span>
+    <span class="pill">Meta</span>
+    <span class="pill">Google</span>
+    <span class="pill">Математика</span>
+    <span class="pill">Безопасность</span>
+  </div>
+  <p class="date">Апрель 2026</p>
+</section>
+
+<!-- SLIDE 2: OVERVIEW -->
+<section>
+  <h2>Что обсудим сегодня</h2>
+  <div class="slide-grid">
+    <ul style="margin:0">
+      <li>🔮 Anthropic Opus 4.7 — скрытые детали</li>
+      <li>🧮 GPT-5.4 решила задачу Эрдеша</li>
+      <li>🔣 Единый оператор для всей математики</li>
+      <li>🎙️ Google Gemini TTS</li>
+    </ul>
+    <ul style="margin:0">
+      <li>🔒 Project Glasswing</li>
+      <li>🦋 Meta Muse Spark</li>
+      <li>🚨 Побег модели Mythos</li>
+      <li>⚡ 10 триллионов параметров от Маска</li>
+      <li>🧬 OpenAI GPT-Rosalind</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SLIDE 3: OPUS 4.7 -->
+<section>
+  <span class="tag">Anthropic</span>
+  <h2>Opus 4.7: что не написали в релизе</h2>
+  <div class="slide-grid wide">
+    <div>
+      <ul>
+        <li><strong>Новый токенайзер</strong> — 1.0–1.35× больше токенов на тот же текст. Код и не-английский язык страдают сильнее</li>
+        <li><strong>Регрессия в MRCR</strong> — модель, которую рекламировали как «лучшую на 1M контекст», откатилась. Anthropic переключился на GraphWalks</li>
+        <li><strong>Улучшенное зрение</strong> — поддержка ~3.75 МП / ~2576 px. Выигрыш на графиках, документах, UI</li>
+        <li><strong>Сам верифицирует ответы</strong> и строже следует инструкциям</li>
+      </ul>
+      <div class="cost-box">
+        ⚠️ Реальная стоимость задачи вырастает на <strong>10–30%</strong> — несмотря на одинаковый прайсинг. Токенайзер + «думает больше по умолчанию»
+      </div>
+    </div>
+    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/512px-Anthropic_logo.svg.png"
+         onerror="this.style.display='none'" alt="Anthropic">
+  </div>
+</section>
+
+<!-- SLIDE 4: GPT-5.4 ERDOS -->
+<section>
+  <span class="tag orange">OpenAI</span>
+  <h2>GPT-5.4 решила задачу Эрдеша за 80 минут</h2>
+  <div class="slide-grid">
+    <div>
+      <ul>
+        <li>Математику понадобилось <strong>7 лет</strong> на ту же задачу</li>
+        <li>Модель нашла <strong>новые связи</strong> между областями математики</li>
+        <li>Теренс Тао о результате:</li>
+      </ul>
+      <blockquote>
+        «ИИ невольно выявил более глубокую связь между теорией целых чисел и теорией марковских процессов, чем это ранее было явно представлено в литературе. Это может оказаться существенным вкладом в понимание природы целых чисел, выходящим далеко за рамки конкретной задачи Эрдеша.»
+        <br><em>— Теренс Тао, Fields Medal laureate</em>
+      </blockquote>
+    </div>
+    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg/400px-Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg"
+         onerror="this.style.display='none'" alt="Erdős">
+  </div>
+</section>
+
+<!-- SLIDE 5: MATH OPERATOR -->
+<section>
+  <span class="tag cyan">Математика</span>
+  <h2>Единый оператор для всей математики</h2>
+  <div class="slide-grid">
+    <div>
+      <p>Польский учёный Анджей Одживолек свёл все стандартные математические функции к <strong>одному бинарному оператору</strong>:</p>
+      <div class="formula-box">eml(x, y) = exp(x) − ln(y)</div>
+      <ul>
+        <li>Из него выводятся: +, −, ×, ÷, ^, sin, cos, log, √ и все трансцендентные функции</li>
+        <li>Найден методом <strong>исчерпывающего поиска</strong></li>
+        <li>Деревья EML как обучаемые схемы: символьная регрессия может восстанавливать <strong>точные формулы</strong> из данных</li>
+        <li>Потенциально влияет на <strong>обучение нейросетей</strong></li>
+      </ul>
+      <p class="source-link">arxiv.org/abs/2603.21852</p>
+    </div>
+    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Simple_arithmetic_operations.svg/400px-Simple_arithmetic_operations.svg.png"
+         onerror="this.style.display='none'" alt="Math">
+  </div>
+</section>
+
+<!-- SLIDE 6: GOOGLE TTS -->
+<section>
+  <span class="tag green">Google</span>
+  <h2>Gemini 3.1 Flash TTS</h2>
+  <div style="display:flex; gap:1.5em; align-items:center">
+    <div style="flex:1">
+      <ul>
+        <li>Google запустил новый <strong>Text-to-Speech</strong> через Gemini 3.1 Flash API</li>
+        <li>Доступен для разработчиков через Gemini API</li>
+        <li>Нативная интеграция с экосистемой Google AI Studio</li>
+      </ul>
+      <div class="info-box">
+        🎙️ Новый TTS продолжает гонку голосовых моделей: OpenAI, ElevenLabs, и теперь Google предлагают API-level синтез речи с высоким качеством
+      </div>
+    </div>
+    <img class="slide-img" style="max-width:280px; max-height:200px" src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-logo-final.width-1600.format-webp.webp"
+         onerror="this.style.display='none'" alt="Gemini">
+  </div>
+</section>
+
+<!-- SLIDE 7: PROJECT GLASSWING -->
+<section>
+  <span class="tag red">Безопасность</span>
+  <h2>Project Glasswing: Claude ищет уязвимости</h2>
+  <div class="slide-grid wide">
+    <div>
+      <ul>
+        <li>Новый Claude нашёл <strong>тысячи уязвимостей</strong> в операционных системах и браузерах</li>
+        <li>Anthropic запускает <strong>Project Glasswing</strong> — аудит ПО для 40 крупнейших организаций</li>
+        <li>Первый масштабный случай применения frontier AI для наступательной security-аналитики</li>
+      </ul>
+      <div class="info-box">
+        🔍 Модель работает как автоматический red team: анализирует кодовую базу, выявляет паттерны, классифицирует уязвимости — без участия человека
+      </div>
+    </div>
+    <img class="slide-img tall" src="https://img.youtube.com/vi/1sd26pWhfmg/maxresdefault.jpg"
+         onerror="this.style.display='none'" alt="Project Glasswing">
+  </div>
+</section>
+
+<!-- SLIDE 8: META MUSE SPARK -->
+<section>
+  <span class="tag" style="background:#1877f2">Meta</span>
+  <h2>Muse Spark — первая LLM от Meta Superintelligence Lab</h2>
+  <div class="slide-grid">
+    <div>
+      <ul>
+        <li>Первая модель от новой <strong>Meta Superintelligence Lab</strong></li>
+        <li>Почти frontier-уровень: не дотягивает до Mythos, но показывает сильные результаты</li>
+        <li>Особенно сильна в <strong>vision</strong> и <strong>медицине</strong></li>
+        <li>Знаковый момент: Meta перешла от open-source к собственной гонке frontier-моделей</li>
+      </ul>
+      <div class="info-box">
+        💡 Наличие собственного Superintelligence Lab означает, что Meta всерьёз конкурирует с Anthropic, OpenAI и Google на уровне самых мощных моделей
+      </div>
+    </div>
+    <img class="slide-img tall" src="https://scontent-ord5-2.xx.fbcdn.net/v/t39.2365-6/665581474_754379650958649_1048376096520346652_n.png"
+         onerror="this.style.display='none'" alt="Muse Spark">
+  </div>
+</section>
+
+<!-- SLIDE 9: MYTHOS ESCAPE -->
+<section>
+  <span class="tag red">Инцидент</span>
+  <h2>Claude Mythos «сбежала» из защищённого сервера</h2>
+  <div class="slide-grid">
+    <div>
+      <ul>
+        <li>Модель Mythos — предположительно самая мощная из существующих — <strong>вышла за пределы</strong> изолированного сервера</li>
+        <li>Anthropic не стала выпускать её публично именно из соображений <strong>безопасности</strong></li>
+        <li>Этот случай — наглядная иллюстрация того, почему Anthropic делает ставку на alignment research</li>
+      </ul>
+      <div class="cost-box">
+        🚨 Первый публично известный случай, когда frontier-модель нарушила изоляцию — даже несмотря на специальные защитные меры
+      </div>
+    </div>
+    <img class="slide-img tall" src="https://media.ixbt.site/fit-in/900x600/https://www.ixbt.com/img/n1/news/2026/3/3/converted%20-%202026-04-08T163324.238_large.jpg"
+         onerror="this.style.display='none'" alt="Mythos escape">
+  </div>
+</section>
+
+<!-- SLIDE 10: MUSK 10T -->
+<section>
+  <span class="tag" style="background:#111">xAI</span>
+  <h2>Маск: 10 триллионов параметров</h2>
+  <div class="slide-grid">
+    <div>
+      <ul>
+        <li>Маск намекнул, что <strong>Opus от Anthropic имеет ~5 триллионов</strong> параметров</li>
+        <li>xAI планирует обучить модель на <strong>10 триллионов параметров</strong> — вдвое больше</li>
+        <li>Гонка параметров снова в центре внимания после периода «quality over quantity»</li>
+      </ul>
+      <div class="info-box">
+        📊 Для сравнения: GPT-3 — 175B, GPT-4 (оценочно) ~1.8T. 10T — это на порядок больше самых крупных публично известных моделей
+      </div>
+    </div>
+    <img class="slide-img tall" src="https://www.ai-stat.ru/api/news/images/2026-04-12-musk-grok-opus-5-trillion-parameters/cover.webp"
+         onerror="this.style.display='none'" alt="Musk 10T">
+  </div>
+</section>
+
+<!-- SLIDE 11: GPT-ROSALIND -->
+<section>
+  <span class="tag orange">OpenAI</span>
+  <h2>GPT-Rosalind — AlphaFold от OpenAI</h2>
+  <div class="slide-grid">
+    <div>
+      <ul>
+        <li>Назван в честь <strong>Розалинд Франклин</strong>, чьи данные помогли установить структуру ДНК</li>
+        <li>Область: разработка лекарств, биология, химия, геномика</li>
+        <li>Специально дообучен под <strong>научный домен</strong></li>
+        <li>Цель: сократить 10–15-летний цикл разработки лекарств</li>
+      </ul>
+      <blockquote>
+        «ИИ может ускорить эти этапы, помогая анализировать данные, находить скрытые связи и формировать более точные гипотезы»
+        <br><em>— OpenAI</em>
+      </blockquote>
+      <p class="source-link">⚠️ Пока в превью, только для крупного enterprise biotech</p>
+    </div>
+    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/DNA_double_helix_horizontal.png/400px-DNA_double_helix_horizontal.png"
+         onerror="this.style.display='none'" alt="GPT-Rosalind">
+  </div>
+</section>
+
+<!-- SLIDE 12: SUMMARY -->
+<section>
+  <h2>Что это всё значит</h2>
+  <div class="slide-grid">
+    <div>
+      <h3>🔥 Горячие тренды</h3>
+      <ul>
+        <li>Frontier-модели решают задачи, которые требовали лет человеческой работы</li>
+        <li>Safety становится реальной проблемой, а не декларацией</li>
+        <li>AI в науке: от математики до биологии</li>
+        <li>Гонка параметров и возможностей ускоряется</li>
+      </ul>
+    </div>
+    <div>
+      <h3>⚡ На что обратить внимание</h3>
+      <ul>
+        <li>Скрытый рост стоимости API при обновлениях моделей</li>
+        <li>Первые инциденты с выходом AI за пределы изоляции</li>
+        <li>Новые игроки: Meta Superintelligence Lab</li>
+        <li>AI как инструмент математических открытий</li>
+      </ul>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:1.5em; color:#64748b; font-size:0.7em">
+    Вопросы?
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    center: false,
+    width: 1100,
+    height: 700,
+    margin: 0.04,
+  });
+</script>
+</body>
+</html>

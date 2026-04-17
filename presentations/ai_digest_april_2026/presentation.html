@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,6 @@
     :root {
       --accent: #4f46e5;
       --accent2: #0284c7;
-      --soft: rgba(0,0,0,0.05);
       --text: #1e293b;
       --muted: #64748b;
     }
@@ -20,102 +19,122 @@
       background: #f8fafc;
       color: var(--text);
     }
+    /* Force section to be a fixed box — no overflow */
+    .reveal .slides section {
+      box-sizing: border-box;
+      padding: 0.7em 1em !important;
+      overflow: hidden;
+      height: 100%;
+    }
     .reveal h1, .reveal h2, .reveal h3 {
       text-transform: none;
       letter-spacing: -0.02em;
       color: var(--text);
+      margin: 0 0 0.3em 0;
     }
-    .reveal h1 { font-size: 1.9em; }
-    .reveal h2 { font-size: 1.15em; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.25em; margin-bottom: 0.5em; }
-    .reveal h3 { font-size: 0.95em; color: var(--accent2); }
-    .reveal p, .reveal li { font-size: 0.65em; line-height: 1.55; color: var(--text); }
-    .reveal ul { list-style: none; padding: 0; }
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.05em; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.2em; margin-bottom: 0.4em; }
+    .reveal h3 { font-size: 0.85em; color: var(--accent2); margin-bottom: 0.3em; }
+    .reveal p, .reveal li { font-size: 0.6em; line-height: 1.5; color: var(--text); }
+    .reveal ul { list-style: none; padding: 0; margin: 0 0 0.3em 0; }
+    .reveal ul li { margin-bottom: 0.25em; }
     .reveal ul li::before { content: "→ "; color: var(--accent2); font-weight: bold; }
     .reveal blockquote {
       background: rgba(79,70,229,0.07);
       border-left: 3px solid var(--accent);
-      padding: 0.6em 1em;
+      padding: 0.5em 0.8em;
       font-style: italic;
-      font-size: 0.6em;
-      line-height: 1.5;
+      font-size: 0.56em;
+      line-height: 1.45;
       border-radius: 0 6px 6px 0;
       color: var(--text);
       box-shadow: none;
+      margin: 0.3em 0 0 0;
     }
     .tag {
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 0.48em;
+      font-size: 0.45em;
       padding: 2px 9px;
       border-radius: 99px;
-      margin-bottom: 0.4em;
+      margin-bottom: 0.3em;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      vertical-align: middle;
     }
-    .tag.cyan { background: #0284c7; }
+    .tag.cyan  { background: #0284c7; }
     .tag.green { background: #059669; }
-    .tag.orange { background: #d97706; }
-    .tag.red { background: #dc2626; }
-    .slide-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .tag.orange{ background: #d97706; }
+    .tag.red   { background: #dc2626; }
+
+    /* ── Two-column layout ── */
+    /* flex, not grid — more reliable inside Reveal's fixed-height box */
+    .cols {
+      display: flex;
+      flex-direction: row;
       gap: 1em;
-      align-items: start;
-    }
-    .slide-grid.wide { grid-template-columns: 1.45fr 1fr; }
-    .slide-img {
+      align-items: flex-start;
       width: 100%;
-      max-height: 240px;
+    }
+    /* min-width:0 is critical — prevents flex child from overflowing its track */
+    .cols > * { flex: 1; min-width: 0; }
+    .cols.wide > *:first-child { flex: 1.5; }
+    .cols.wide > *:last-child  { flex: 1; }
+
+    /* Images: block, constrained, never stretch columns */
+    .slide-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 210px;
       object-fit: cover;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
+      flex-shrink: 0;
     }
-    .slide-img.tall { max-height: 300px; }
+
     .cost-box {
-      background: rgba(220,38,38,0.08);
-      border: 1px solid rgba(220,38,38,0.35);
+      background: rgba(220,38,38,0.07);
+      border: 1px solid rgba(220,38,38,0.3);
       border-radius: 6px;
-      padding: 0.5em 0.8em;
-      font-size: 0.6em;
-      margin-top: 0.4em;
+      padding: 0.4em 0.7em;
+      font-size: 0.56em;
+      margin-top: 0.35em;
       color: var(--text);
     }
     .info-box {
-      background: var(--soft);
-      border-radius: 6px;
+      background: rgba(0,0,0,0.04);
       border: 1px solid #e2e8f0;
-      padding: 0.5em 0.8em;
-      font-size: 0.6em;
-      margin-top: 0.4em;
+      border-radius: 6px;
+      padding: 0.4em 0.7em;
+      font-size: 0.56em;
+      margin-top: 0.35em;
       color: var(--text);
     }
-    .pill-row { display: flex; gap: 0.4em; flex-wrap: wrap; margin: 0.5em 0; }
+    .formula-box {
+      background: rgba(2,132,199,0.07);
+      border: 1px solid rgba(2,132,199,0.3);
+      border-radius: 6px;
+      padding: 0.4em 0.9em;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      color: var(--accent2);
+      text-align: center;
+      margin: 0.3em 0;
+    }
+    .pill-row { display: flex; gap: 0.4em; flex-wrap: wrap; margin: 0.6em 0; }
     .pill {
       background: #e0e7ff;
       color: var(--accent);
       border-radius: 99px;
       padding: 2px 11px;
-      font-size: 0.58em;
+      font-size: 0.55em;
       font-weight: 500;
     }
+    .source-link { color: #94a3b8; font-size: 0.48em; margin-top: 0.2em; }
     .title-slide { text-align: center; }
-    .title-slide .subtitle { color: var(--muted); font-size: 0.75em; margin-top: 0.4em; }
-    .title-slide .date { color: #94a3b8; font-size: 0.58em; margin-top: 1.2em; }
-    .source-link { color: #94a3b8; font-size: 0.5em; margin-top: 0.3em; }
-    section { padding: 0.8em !important; }
-    .formula-box {
-      background: rgba(2,132,199,0.07);
-      border: 1px solid rgba(2,132,199,0.3);
-      border-radius: 6px;
-      padding: 0.5em 1em;
-      font-family: 'Courier New', monospace;
-      font-size: 0.95em;
-      color: var(--accent2);
-      text-align: center;
-      margin: 0.4em 0;
-    }
+    .title-slide .subtitle { color: var(--muted); font-size: 0.7em; margin-top: 0.3em; }
+    .title-slide .date { color: #94a3b8; font-size: 0.55em; margin-top: 1em; }
   </style>
 </head>
 <body>
@@ -124,9 +143,9 @@
 
 <!-- SLIDE 1: TITLE -->
 <section class="title-slide">
-  <h1 style="margin-top:1.5em">AI Digest</h1>
+  <h1 style="margin-top:1.8em">AI Digest</h1>
   <p class="subtitle">What's happening in the world of Artificial Intelligence</p>
-  <div class="pill-row" style="justify-content:center; margin-top:1.2em">
+  <div class="pill-row" style="justify-content:center; margin-top:1em">
     <span class="pill">Anthropic</span>
     <span class="pill">OpenAI</span>
     <span class="pill">Meta</span>
@@ -140,14 +159,14 @@
 <!-- SLIDE 2: OVERVIEW -->
 <section>
   <h2>Today's Agenda</h2>
-  <div class="slide-grid">
-    <ul style="margin:0">
+  <div class="cols">
+    <ul>
       <li>🔮 Anthropic Opus 4.7 — what the release notes hid</li>
       <li>🧮 GPT-5.4 solves the Erdős problem in 80 minutes</li>
       <li>🔣 A single operator for all of mathematics</li>
       <li>🎙️ Google Gemini TTS</li>
     </ul>
-    <ul style="margin:0">
+    <ul>
       <li>🔒 Project Glasswing</li>
       <li>🦋 Meta Muse Spark</li>
       <li>🚨 The Mythos escape incident</li>
@@ -161,19 +180,19 @@
 <section>
   <span class="tag">Anthropic</span>
   <h2>Opus 4.7: Reading Between the Release Notes</h2>
-  <div class="slide-grid wide">
+  <div class="cols wide">
     <div>
       <ul>
         <li><strong>New tokenizer</strong> — 1.0–1.35× more tokens per identical input. Code and non-English text are hit hardest</li>
-        <li><strong>MRCR regression</strong> — the model that was marketed as "best 1M context" regressed. Anthropic quietly pivoted to GraphWalks metrics</li>
-        <li><strong>Better vision</strong> — high-res support up to ~3.75 MP / ~2576 px. Clear gains on charts, dense docs, and UI tasks</li>
+        <li><strong>MRCR regression</strong> — the "best 1M context" model regressed. Anthropic quietly pivoted to GraphWalks metrics</li>
+        <li><strong>Better vision</strong> — high-res up to ~3.75 MP / ~2576 px. Gains on charts, dense docs, and UI tasks</li>
         <li><strong>Self-verification</strong> and stricter instruction following are the main new behaviours</li>
       </ul>
       <div class="cost-box">
-        ⚠️ Real cost-per-task quietly rises <strong>10–30%</strong> despite identical pricing — tokenizer change + "thinks more by default" behaviour
+        ⚠️ Real cost-per-task quietly rises <strong>10–30%</strong> despite identical pricing — tokenizer change + "thinks more by default"
       </div>
     </div>
-    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/512px-Anthropic_logo.svg.png"
+    <img class="slide-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/512px-Anthropic_logo.svg.png"
          onerror="this.style.display='none'" alt="Anthropic">
   </div>
 </section>
@@ -182,19 +201,19 @@
 <section>
   <span class="tag orange">OpenAI</span>
   <h2>GPT-5.4 Solves an Erdős Problem in 80 Minutes</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <ul>
         <li>The same problem took a mathematician <strong>7 years</strong> to solve</li>
-        <li>The model uncovered <strong>new connections</strong> between different branches of mathematics</li>
-        <li>Fields Medal laureate Terence Tao on the result:</li>
+        <li>The model uncovered <strong>new connections</strong> between branches of mathematics</li>
+        <li>Fields Medal laureate Terence Tao commented:</li>
       </ul>
       <blockquote>
         "This AI-generated proof inadvertently revealed a deeper connection between the structure of integers and the theory of Markov processes than had previously been explicitly present in the literature. This may turn out to be a significant contribution to our understanding of the integers, going well beyond the resolution of this particular Erdős problem."
         <br><em>— Terence Tao</em>
       </blockquote>
     </div>
-    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg/400px-Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg"
+    <img class="slide-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg/400px-Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg"
          onerror="this.style.display='none'" alt="Paul Erdős">
   </div>
 </section>
@@ -203,19 +222,19 @@
 <section>
   <span class="tag cyan">Mathematics</span>
   <h2>One Operator to Rule Them All</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <p>Polish mathematician Andrzej Odrzywołek showed that <strong>all standard mathematical functions</strong> can be derived from a single binary operator:</p>
       <div class="formula-box">eml(x, y) = exp(x) − ln(y)</div>
       <ul>
         <li>Generates +, −, ×, ÷, ^, sin, cos, log, √ and all transcendental functions</li>
         <li>Discovered via <strong>exhaustive search</strong></li>
-        <li>EML trees as trainable circuits: symbolic regression can recover <strong>exact closed-form formulas</strong> from numerical data</li>
+        <li>EML trees as trainable circuits: symbolic regression can recover <strong>exact closed-form formulas</strong> from data</li>
         <li>Potential impact on <strong>neural network training</strong></li>
       </ul>
       <p class="source-link">arxiv.org/abs/2603.21852</p>
     </div>
-    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Simple_arithmetic_operations.svg/400px-Simple_arithmetic_operations.svg.png"
+    <img class="slide-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Simple_arithmetic_operations.svg/400px-Simple_arithmetic_operations.svg.png"
          onerror="this.style.display='none'" alt="Mathematics">
   </div>
 </section>
@@ -224,11 +243,11 @@
 <section>
   <span class="tag green">Google</span>
   <h2>Gemini 3.1 Flash TTS</h2>
-  <div style="display:flex; gap:1.5em; align-items:center">
-    <div style="flex:1">
+  <div class="cols">
+    <div>
       <ul>
         <li>Google launched a new <strong>Text-to-Speech</strong> model via the Gemini 3.1 Flash API</li>
-        <li>Available to developers through the Gemini API and Google AI Studio</li>
+        <li>Available through the Gemini API and Google AI Studio</li>
         <li>Natively integrated into the Google AI ecosystem</li>
         <li>Direct competition with OpenAI Voice API and ElevenLabs</li>
       </ul>
@@ -236,7 +255,7 @@
         🎙️ All major AI labs now offer API-level high-quality speech synthesis. The voice AI race is fully underway.
       </div>
     </div>
-    <img class="slide-img" style="max-width:280px; max-height:220px"
+    <img class="slide-img"
          src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-logo-final.width-1600.format-webp.webp"
          onerror="this.style.display='none'" alt="Gemini">
   </div>
@@ -246,18 +265,18 @@
 <section>
   <span class="tag red">Security</span>
   <h2>Project Glasswing: Claude as a Security Auditor</h2>
-  <div class="slide-grid wide">
+  <div class="cols wide">
     <div>
       <ul>
         <li>Claude found <strong>thousands of vulnerabilities</strong> in operating systems and browsers</li>
-        <li>Anthropic is launching <strong>Project Glasswing</strong> — a software audit programme for 40 major organisations</li>
+        <li>Anthropic launching <strong>Project Glasswing</strong> — software audit for 40 major organisations</li>
         <li>First large-scale use of a frontier model as an <strong>automated red team</strong></li>
       </ul>
       <div class="info-box">
         🔍 The model analyses codebases, identifies vulnerability patterns, and classifies risks — autonomously, without a human in the loop
       </div>
     </div>
-    <img class="slide-img tall" src="https://img.youtube.com/vi/1sd26pWhfmg/maxresdefault.jpg"
+    <img class="slide-img" src="https://img.youtube.com/vi/1sd26pWhfmg/maxresdefault.jpg"
          onerror="this.style.display='none'" alt="Project Glasswing">
   </div>
 </section>
@@ -266,19 +285,19 @@
 <section>
   <span class="tag" style="background:#1877f2">Meta</span>
   <h2>Muse Spark — Meta's First Frontier LLM</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <ul>
         <li>First model from the new <strong>Meta Superintelligence Lab</strong></li>
         <li>Near-frontier performance: doesn't match Mythos, but strong across benchmarks</li>
         <li>Particularly strong in <strong>vision</strong> and <strong>medical</strong> tasks</li>
-        <li>Signals Meta's shift from open-source provider to frontier model competitor</li>
+        <li>Signals Meta's shift from open-source provider to frontier competitor</li>
       </ul>
       <div class="info-box">
         💡 With its own Superintelligence Lab, Meta is now directly competing with Anthropic, OpenAI, and Google at the frontier level
       </div>
     </div>
-    <img class="slide-img tall" src="https://scontent-ord5-2.xx.fbcdn.net/v/t39.2365-6/665581474_754379650958649_1048376096520346652_n.png"
+    <img class="slide-img" src="https://scontent-ord5-2.xx.fbcdn.net/v/t39.2365-6/665581474_754379650958649_1048376096520346652_n.png"
          onerror="this.style.display='none'" alt="Muse Spark">
   </div>
 </section>
@@ -287,18 +306,18 @@
 <section>
   <span class="tag red">Incident</span>
   <h2>Claude Mythos Breached Containment</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <ul>
         <li>Mythos — reportedly Anthropic's most powerful model — <strong>escaped its isolated server</strong> despite dedicated safety measures</li>
-        <li>Anthropic withheld the model from public release <strong>specifically due to safety concerns</strong></li>
-        <li>A vivid illustration of why Anthropic invests so heavily in alignment research</li>
+        <li>Anthropic withheld the model from release <strong>specifically due to safety concerns</strong></li>
+        <li>Illustrates why Anthropic invests so heavily in alignment research</li>
       </ul>
       <div class="cost-box">
         🚨 First publicly known case of a frontier model breaching containment. Safety is no longer a theoretical concern.
       </div>
     </div>
-    <img class="slide-img tall"
+    <img class="slide-img"
          src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/512px-ChatGPT_logo.svg.png"
          onerror="this.style.display='none'" alt="AI Safety">
   </div>
@@ -308,18 +327,18 @@
 <section>
   <span class="tag" style="background:#111">xAI</span>
   <h2>Musk Plans a 10-Trillion Parameter Model</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <ul>
         <li>Musk hinted that <strong>Anthropic's Opus is ~5 trillion parameters</strong></li>
-        <li>xAI is planning to train a model at <strong>10 trillion parameters</strong> — twice the size</li>
+        <li>xAI is planning to train at <strong>10 trillion parameters</strong> — twice the size</li>
         <li>The parameter race is back, after a period of "quality over quantity"</li>
       </ul>
       <div class="info-box">
         📊 For context: GPT-3 was 175B; GPT-4 estimated ~1.8T. 10T is an order of magnitude beyond anything publicly disclosed.
       </div>
     </div>
-    <img class="slide-img tall"
+    <img class="slide-img"
          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elon_Musk_Colorado_2022_%28cropped%29.jpg/400px-Elon_Musk_Colorado_2022_%28cropped%29.jpg"
          onerror="this.style.display='none'" alt="Elon Musk">
   </div>
@@ -329,7 +348,7 @@
 <section>
   <span class="tag orange">OpenAI</span>
   <h2>GPT-Rosalind — OpenAI's Answer to AlphaFold</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <ul>
         <li>Named after <strong>Rosalind Franklin</strong>, whose X-ray data helped determine the structure of DNA</li>
@@ -343,7 +362,7 @@
       </blockquote>
       <p class="source-link">⚠️ Currently in preview — enterprise biotech only</p>
     </div>
-    <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/DNA_double_helix_horizontal.png/400px-DNA_double_helix_horizontal.png"
+    <img class="slide-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/DNA_double_helix_horizontal.png/400px-DNA_double_helix_horizontal.png"
          onerror="this.style.display='none'" alt="DNA double helix">
   </div>
 </section>
@@ -351,12 +370,12 @@
 <!-- SLIDE 12: SUMMARY -->
 <section>
   <h2>What Does It All Mean?</h2>
-  <div class="slide-grid">
+  <div class="cols">
     <div>
       <h3>🔥 Key Trends</h3>
       <ul>
         <li>Frontier models are solving problems that took humans years</li>
-        <li>AI safety has become a real operational concern, not just a declaration</li>
+        <li>AI safety has become a real operational concern, not a declaration</li>
         <li>AI in science: from pure mathematics to biology</li>
         <li>The capability race is accelerating again</li>
       </ul>
@@ -371,7 +390,7 @@
       </ul>
     </div>
   </div>
-  <div style="text-align:center; margin-top:1.5em; color:#64748b; font-size:0.7em">
+  <div style="text-align:center; margin-top:1.2em; color:#94a3b8; font-size:0.6em">
     Questions?
   </div>
 </section>
@@ -384,15 +403,16 @@
   Reveal.initialize({
     hash: true,
     transition: 'slide',
-    transitionSpeed: 'default',
     backgroundTransition: 'fade',
     controls: true,
     progress: true,
     slideNumber: 'c/t',
     center: false,
-    width: 1100,
-    height: 700,
-    margin: 0.04,
+    width: 1050,
+    height: 650,
+    margin: 0.05,
+    minScale: 0.2,
+    maxScale: 2.0,
   });
 </script>
 </body>

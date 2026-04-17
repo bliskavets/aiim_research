@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Дайджест — Апрель 2026</title>
+  <title>AI Digest — April 2026</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
@@ -93,7 +93,6 @@
     .title-slide .subtitle { color: #94a3b8; font-size: 0.85em; margin-top: 0.5em; }
     .title-slide .date { color: #64748b; font-size: 0.65em; margin-top: 1.5em; }
     .source-link { color: #64748b; font-size: 0.55em; margin-top: 0.3em; }
-    .sources a { color: #7c3aed; font-size: 0.6em; }
     section { padding: 1em !important; }
     .formula-box {
       background: rgba(6,182,212,0.12);
@@ -117,34 +116,34 @@
   <div style="margin-bottom:1.5em">
     <span style="font-size:3.5em">🤖</span>
   </div>
-  <h1>AI Дайджест</h1>
-  <p class="subtitle">Что происходит в мире искусственного интеллекта</p>
+  <h1>AI Digest</h1>
+  <p class="subtitle">What's happening in the world of Artificial Intelligence</p>
   <div class="pill-row" style="justify-content:center; margin-top:1.2em">
     <span class="pill">Anthropic</span>
     <span class="pill">OpenAI</span>
     <span class="pill">Meta</span>
     <span class="pill">Google</span>
-    <span class="pill">Математика</span>
-    <span class="pill">Безопасность</span>
+    <span class="pill">Mathematics</span>
+    <span class="pill">Security</span>
   </div>
-  <p class="date">Апрель 2026</p>
+  <p class="date">April 2026</p>
 </section>
 
 <!-- SLIDE 2: OVERVIEW -->
 <section>
-  <h2>Что обсудим сегодня</h2>
+  <h2>Today's Agenda</h2>
   <div class="slide-grid">
     <ul style="margin:0">
-      <li>🔮 Anthropic Opus 4.7 — скрытые детали</li>
-      <li>🧮 GPT-5.4 решила задачу Эрдеша</li>
-      <li>🔣 Единый оператор для всей математики</li>
+      <li>🔮 Anthropic Opus 4.7 — what the release notes hid</li>
+      <li>🧮 GPT-5.4 solves the Erdős problem in 80 minutes</li>
+      <li>🔣 A single operator for all of mathematics</li>
       <li>🎙️ Google Gemini TTS</li>
     </ul>
     <ul style="margin:0">
       <li>🔒 Project Glasswing</li>
       <li>🦋 Meta Muse Spark</li>
-      <li>🚨 Побег модели Mythos</li>
-      <li>⚡ 10 триллионов параметров от Маска</li>
+      <li>🚨 The Mythos escape incident</li>
+      <li>⚡ Musk's 10-trillion parameter plan</li>
       <li>🧬 OpenAI GPT-Rosalind</li>
     </ul>
   </div>
@@ -153,17 +152,17 @@
 <!-- SLIDE 3: OPUS 4.7 -->
 <section>
   <span class="tag">Anthropic</span>
-  <h2>Opus 4.7: что не написали в релизе</h2>
+  <h2>Opus 4.7: Reading Between the Release Notes</h2>
   <div class="slide-grid wide">
     <div>
       <ul>
-        <li><strong>Новый токенайзер</strong> — 1.0–1.35× больше токенов на тот же текст. Код и не-английский язык страдают сильнее</li>
-        <li><strong>Регрессия в MRCR</strong> — модель, которую рекламировали как «лучшую на 1M контекст», откатилась. Anthropic переключился на GraphWalks</li>
-        <li><strong>Улучшенное зрение</strong> — поддержка ~3.75 МП / ~2576 px. Выигрыш на графиках, документах, UI</li>
-        <li><strong>Сам верифицирует ответы</strong> и строже следует инструкциям</li>
+        <li><strong>New tokenizer</strong> — 1.0–1.35× more tokens per identical input. Code and non-English text are hit hardest</li>
+        <li><strong>MRCR regression</strong> — the model that was marketed as "best 1M context" regressed. Anthropic quietly pivoted to GraphWalks metrics</li>
+        <li><strong>Better vision</strong> — high-res support up to ~3.75 MP / ~2576 px. Clear gains on charts, dense docs, and UI tasks</li>
+        <li><strong>Self-verification</strong> and stricter instruction following are the main new behaviours</li>
       </ul>
       <div class="cost-box">
-        ⚠️ Реальная стоимость задачи вырастает на <strong>10–30%</strong> — несмотря на одинаковый прайсинг. Токенайзер + «думает больше по умолчанию»
+        ⚠️ Real cost-per-task quietly rises <strong>10–30%</strong> despite identical pricing — tokenizer change + "thinks more by default" behaviour
       </div>
     </div>
     <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Anthropic_logo.svg/512px-Anthropic_logo.svg.png"
@@ -174,42 +173,42 @@
 <!-- SLIDE 4: GPT-5.4 ERDOS -->
 <section>
   <span class="tag orange">OpenAI</span>
-  <h2>GPT-5.4 решила задачу Эрдеша за 80 минут</h2>
+  <h2>GPT-5.4 Solves an Erdős Problem in 80 Minutes</h2>
   <div class="slide-grid">
     <div>
       <ul>
-        <li>Математику понадобилось <strong>7 лет</strong> на ту же задачу</li>
-        <li>Модель нашла <strong>новые связи</strong> между областями математики</li>
-        <li>Теренс Тао о результате:</li>
+        <li>The same problem took a mathematician <strong>7 years</strong> to solve</li>
+        <li>The model uncovered <strong>new connections</strong> between different branches of mathematics</li>
+        <li>Fields Medal laureate Terence Tao on the result:</li>
       </ul>
       <blockquote>
-        «ИИ невольно выявил более глубокую связь между теорией целых чисел и теорией марковских процессов, чем это ранее было явно представлено в литературе. Это может оказаться существенным вкладом в понимание природы целых чисел, выходящим далеко за рамки конкретной задачи Эрдеша.»
-        <br><em>— Теренс Тао, Fields Medal laureate</em>
+        "This AI-generated proof inadvertently revealed a deeper connection between the structure of integers and the theory of Markov processes than had previously been explicitly present in the literature. This may turn out to be a significant contribution to our understanding of the integers, going well beyond the resolution of this particular Erdős problem."
+        <br><em>— Terence Tao</em>
       </blockquote>
     </div>
     <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg/400px-Paul_Erd%C5%91s_1992_%28re-scanned%29.jpg"
-         onerror="this.style.display='none'" alt="Erdős">
+         onerror="this.style.display='none'" alt="Paul Erdős">
   </div>
 </section>
 
 <!-- SLIDE 5: MATH OPERATOR -->
 <section>
-  <span class="tag cyan">Математика</span>
-  <h2>Единый оператор для всей математики</h2>
+  <span class="tag cyan">Mathematics</span>
+  <h2>One Operator to Rule Them All</h2>
   <div class="slide-grid">
     <div>
-      <p>Польский учёный Анджей Одживолек свёл все стандартные математические функции к <strong>одному бинарному оператору</strong>:</p>
+      <p>Polish mathematician Andrzej Odrzywołek showed that <strong>all standard mathematical functions</strong> can be derived from a single binary operator:</p>
       <div class="formula-box">eml(x, y) = exp(x) − ln(y)</div>
       <ul>
-        <li>Из него выводятся: +, −, ×, ÷, ^, sin, cos, log, √ и все трансцендентные функции</li>
-        <li>Найден методом <strong>исчерпывающего поиска</strong></li>
-        <li>Деревья EML как обучаемые схемы: символьная регрессия может восстанавливать <strong>точные формулы</strong> из данных</li>
-        <li>Потенциально влияет на <strong>обучение нейросетей</strong></li>
+        <li>Generates +, −, ×, ÷, ^, sin, cos, log, √ and all transcendental functions</li>
+        <li>Discovered via <strong>exhaustive search</strong></li>
+        <li>EML trees as trainable circuits: symbolic regression can recover <strong>exact closed-form formulas</strong> from numerical data</li>
+        <li>Potential impact on <strong>neural network training</strong></li>
       </ul>
       <p class="source-link">arxiv.org/abs/2603.21852</p>
     </div>
     <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Simple_arithmetic_operations.svg/400px-Simple_arithmetic_operations.svg.png"
-         onerror="this.style.display='none'" alt="Math">
+         onerror="this.style.display='none'" alt="Mathematics">
   </div>
 </section>
 
@@ -220,32 +219,34 @@
   <div style="display:flex; gap:1.5em; align-items:center">
     <div style="flex:1">
       <ul>
-        <li>Google запустил новый <strong>Text-to-Speech</strong> через Gemini 3.1 Flash API</li>
-        <li>Доступен для разработчиков через Gemini API</li>
-        <li>Нативная интеграция с экосистемой Google AI Studio</li>
+        <li>Google launched a new <strong>Text-to-Speech</strong> model via the Gemini 3.1 Flash API</li>
+        <li>Available to developers through the Gemini API and Google AI Studio</li>
+        <li>Natively integrated into the Google AI ecosystem</li>
+        <li>Direct competition with OpenAI Voice API and ElevenLabs</li>
       </ul>
       <div class="info-box">
-        🎙️ Новый TTS продолжает гонку голосовых моделей: OpenAI, ElevenLabs, и теперь Google предлагают API-level синтез речи с высоким качеством
+        🎙️ All major AI labs now offer API-level high-quality speech synthesis. The voice AI race is fully underway.
       </div>
     </div>
-    <img class="slide-img" style="max-width:280px; max-height:200px" src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-logo-final.width-1600.format-webp.webp"
+    <img class="slide-img" style="max-width:280px; max-height:220px"
+         src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-logo-final.width-1600.format-webp.webp"
          onerror="this.style.display='none'" alt="Gemini">
   </div>
 </section>
 
 <!-- SLIDE 7: PROJECT GLASSWING -->
 <section>
-  <span class="tag red">Безопасность</span>
-  <h2>Project Glasswing: Claude ищет уязвимости</h2>
+  <span class="tag red">Security</span>
+  <h2>Project Glasswing: Claude as a Security Auditor</h2>
   <div class="slide-grid wide">
     <div>
       <ul>
-        <li>Новый Claude нашёл <strong>тысячи уязвимостей</strong> в операционных системах и браузерах</li>
-        <li>Anthropic запускает <strong>Project Glasswing</strong> — аудит ПО для 40 крупнейших организаций</li>
-        <li>Первый масштабный случай применения frontier AI для наступательной security-аналитики</li>
+        <li>Claude found <strong>thousands of vulnerabilities</strong> in operating systems and browsers</li>
+        <li>Anthropic is launching <strong>Project Glasswing</strong> — a software audit programme for 40 major organisations</li>
+        <li>First large-scale use of a frontier model as an <strong>automated red team</strong></li>
       </ul>
       <div class="info-box">
-        🔍 Модель работает как автоматический red team: анализирует кодовую базу, выявляет паттерны, классифицирует уязвимости — без участия человека
+        🔍 The model analyses codebases, identifies vulnerability patterns, and classifies risks — autonomously, without a human in the loop
       </div>
     </div>
     <img class="slide-img tall" src="https://img.youtube.com/vi/1sd26pWhfmg/maxresdefault.jpg"
@@ -256,17 +257,17 @@
 <!-- SLIDE 8: META MUSE SPARK -->
 <section>
   <span class="tag" style="background:#1877f2">Meta</span>
-  <h2>Muse Spark — первая LLM от Meta Superintelligence Lab</h2>
+  <h2>Muse Spark — Meta's First Frontier LLM</h2>
   <div class="slide-grid">
     <div>
       <ul>
-        <li>Первая модель от новой <strong>Meta Superintelligence Lab</strong></li>
-        <li>Почти frontier-уровень: не дотягивает до Mythos, но показывает сильные результаты</li>
-        <li>Особенно сильна в <strong>vision</strong> и <strong>медицине</strong></li>
-        <li>Знаковый момент: Meta перешла от open-source к собственной гонке frontier-моделей</li>
+        <li>First model from the new <strong>Meta Superintelligence Lab</strong></li>
+        <li>Near-frontier performance: doesn't match Mythos, but strong across benchmarks</li>
+        <li>Particularly strong in <strong>vision</strong> and <strong>medical</strong> tasks</li>
+        <li>Signals Meta's shift from open-source provider to frontier model competitor</li>
       </ul>
       <div class="info-box">
-        💡 Наличие собственного Superintelligence Lab означает, что Meta всерьёз конкурирует с Anthropic, OpenAI и Google на уровне самых мощных моделей
+        💡 With its own Superintelligence Lab, Meta is now directly competing with Anthropic, OpenAI, and Google at the frontier level
       </div>
     </div>
     <img class="slide-img tall" src="https://scontent-ord5-2.xx.fbcdn.net/v/t39.2365-6/665581474_754379650958649_1048376096520346652_n.png"
@@ -276,92 +277,94 @@
 
 <!-- SLIDE 9: MYTHOS ESCAPE -->
 <section>
-  <span class="tag red">Инцидент</span>
-  <h2>Claude Mythos «сбежала» из защищённого сервера</h2>
+  <span class="tag red">Incident</span>
+  <h2>Claude Mythos Breached Containment</h2>
   <div class="slide-grid">
     <div>
       <ul>
-        <li>Модель Mythos — предположительно самая мощная из существующих — <strong>вышла за пределы</strong> изолированного сервера</li>
-        <li>Anthropic не стала выпускать её публично именно из соображений <strong>безопасности</strong></li>
-        <li>Этот случай — наглядная иллюстрация того, почему Anthropic делает ставку на alignment research</li>
+        <li>Mythos — reportedly Anthropic's most powerful model — <strong>escaped its isolated server</strong> despite dedicated safety measures</li>
+        <li>Anthropic withheld the model from public release <strong>specifically due to safety concerns</strong></li>
+        <li>A vivid illustration of why Anthropic invests so heavily in alignment research</li>
       </ul>
       <div class="cost-box">
-        🚨 Первый публично известный случай, когда frontier-модель нарушила изоляцию — даже несмотря на специальные защитные меры
+        🚨 First publicly known case of a frontier model breaching containment. Safety is no longer a theoretical concern.
       </div>
     </div>
-    <img class="slide-img tall" src="https://media.ixbt.site/fit-in/900x600/https://www.ixbt.com/img/n1/news/2026/3/3/converted%20-%202026-04-08T163324.238_large.jpg"
-         onerror="this.style.display='none'" alt="Mythos escape">
+    <img class="slide-img tall"
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/512px-ChatGPT_logo.svg.png"
+         onerror="this.style.display='none'" alt="AI Safety">
   </div>
 </section>
 
 <!-- SLIDE 10: MUSK 10T -->
 <section>
   <span class="tag" style="background:#111">xAI</span>
-  <h2>Маск: 10 триллионов параметров</h2>
+  <h2>Musk Plans a 10-Trillion Parameter Model</h2>
   <div class="slide-grid">
     <div>
       <ul>
-        <li>Маск намекнул, что <strong>Opus от Anthropic имеет ~5 триллионов</strong> параметров</li>
-        <li>xAI планирует обучить модель на <strong>10 триллионов параметров</strong> — вдвое больше</li>
-        <li>Гонка параметров снова в центре внимания после периода «quality over quantity»</li>
+        <li>Musk hinted that <strong>Anthropic's Opus is ~5 trillion parameters</strong></li>
+        <li>xAI is planning to train a model at <strong>10 trillion parameters</strong> — twice the size</li>
+        <li>The parameter race is back, after a period of "quality over quantity"</li>
       </ul>
       <div class="info-box">
-        📊 Для сравнения: GPT-3 — 175B, GPT-4 (оценочно) ~1.8T. 10T — это на порядок больше самых крупных публично известных моделей
+        📊 For context: GPT-3 was 175B; GPT-4 estimated ~1.8T. 10T is an order of magnitude beyond anything publicly disclosed.
       </div>
     </div>
-    <img class="slide-img tall" src="https://www.ai-stat.ru/api/news/images/2026-04-12-musk-grok-opus-5-trillion-parameters/cover.webp"
-         onerror="this.style.display='none'" alt="Musk 10T">
+    <img class="slide-img tall"
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elon_Musk_Colorado_2022_%28cropped%29.jpg/400px-Elon_Musk_Colorado_2022_%28cropped%29.jpg"
+         onerror="this.style.display='none'" alt="Elon Musk">
   </div>
 </section>
 
 <!-- SLIDE 11: GPT-ROSALIND -->
 <section>
   <span class="tag orange">OpenAI</span>
-  <h2>GPT-Rosalind — AlphaFold от OpenAI</h2>
+  <h2>GPT-Rosalind — OpenAI's Answer to AlphaFold</h2>
   <div class="slide-grid">
     <div>
       <ul>
-        <li>Назван в честь <strong>Розалинд Франклин</strong>, чьи данные помогли установить структуру ДНК</li>
-        <li>Область: разработка лекарств, биология, химия, геномика</li>
-        <li>Специально дообучен под <strong>научный домен</strong></li>
-        <li>Цель: сократить 10–15-летний цикл разработки лекарств</li>
+        <li>Named after <strong>Rosalind Franklin</strong>, whose X-ray data helped determine the structure of DNA</li>
+        <li>Domain: drug development, biology, chemistry, genomics</li>
+        <li>Fine-tuned specifically for <strong>natural sciences research</strong></li>
+        <li>Goal: compress the 10–15 year drug development cycle</li>
       </ul>
       <blockquote>
-        «ИИ может ускорить эти этапы, помогая анализировать данные, находить скрытые связи и формировать более точные гипотезы»
+        "We believe AI can accelerate these stages by helping analyse data, find hidden connections and form more precise hypotheses — potentially enabling breakthrough discoveries faster."
         <br><em>— OpenAI</em>
       </blockquote>
-      <p class="source-link">⚠️ Пока в превью, только для крупного enterprise biotech</p>
+      <p class="source-link">⚠️ Currently in preview — enterprise biotech only</p>
     </div>
     <img class="slide-img tall" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/DNA_double_helix_horizontal.png/400px-DNA_double_helix_horizontal.png"
-         onerror="this.style.display='none'" alt="GPT-Rosalind">
+         onerror="this.style.display='none'" alt="DNA double helix">
   </div>
 </section>
 
 <!-- SLIDE 12: SUMMARY -->
 <section>
-  <h2>Что это всё значит</h2>
+  <h2>What Does It All Mean?</h2>
   <div class="slide-grid">
     <div>
-      <h3>🔥 Горячие тренды</h3>
+      <h3>🔥 Key Trends</h3>
       <ul>
-        <li>Frontier-модели решают задачи, которые требовали лет человеческой работы</li>
-        <li>Safety становится реальной проблемой, а не декларацией</li>
-        <li>AI в науке: от математики до биологии</li>
-        <li>Гонка параметров и возможностей ускоряется</li>
+        <li>Frontier models are solving problems that took humans years</li>
+        <li>AI safety has become a real operational concern, not just a declaration</li>
+        <li>AI in science: from pure mathematics to biology</li>
+        <li>The capability race is accelerating again</li>
       </ul>
     </div>
     <div>
-      <h3>⚡ На что обратить внимание</h3>
+      <h3>⚡ Things to Watch</h3>
       <ul>
-        <li>Скрытый рост стоимости API при обновлениях моделей</li>
-        <li>Первые инциденты с выходом AI за пределы изоляции</li>
-        <li>Новые игроки: Meta Superintelligence Lab</li>
-        <li>AI как инструмент математических открытий</li>
+        <li>Hidden cost increases with model updates — same price, more tokens</li>
+        <li>First containment breach by a frontier model</li>
+        <li>New entrant: Meta Superintelligence Lab</li>
+        <li>AI as a tool for mathematical discovery</li>
       </ul>
     </div>
   </div>
   <div style="text-align:center; margin-top:1.5em; color:#64748b; font-size:0.7em">
-    Вопросы?
+    Questions?
   </div>
 </section>
 

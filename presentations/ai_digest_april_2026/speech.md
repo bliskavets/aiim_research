@@ -1,112 +1,112 @@
-# AI Дайджест — Апрель 2026
-### Текст для выступления
+# AI Digest — April 2026
+### Speaker Script
 
 ---
 
-## Слайд 1 — Вступление
+## Slide 1 — Introduction
 
-Добрый день. Сегодня я хочу поделиться с вами обзором последних событий в мире искусственного интеллекта. Апрель 2026 оказался насыщенным: крупные релизы, неожиданные инциденты, математические прорывы и новые игроки на рынке frontier-моделей. Поехали.
-
----
-
-## Слайд 2 — Обзор
-
-Сегодня мы разберём девять тем. Начнём с Anthropic и того, что на самом деле скрывается за обновлением Opus 4.7. Затем поговорим о математике — GPT-5.4 решила задачу, над которой человек работал семь лет. Обсудим безопасность, новые модели от Meta и Google, инцидент с побегом модели, планы Маска и новый научный инструмент от OpenAI.
+Good morning / Good afternoon everyone. Today I want to walk you through a digest of the most significant developments in AI this month. April 2026 has been packed: major model releases, unexpected safety incidents, mathematical breakthroughs, and new players entering the frontier race. Let's get into it.
 
 ---
 
-## Слайд 3 — Anthropic Opus 4.7
+## Slide 2 — Agenda
 
-Anthropic выпустил Opus 4.7 с привычным месседжем: лучше код, лучше зрение, цена та же. Но если читать между строк — в релизе спрятано несколько важных деталей.
-
-Во-первых, **новый токенайзер**. Тот же текст теперь занимает от одного до одного и трёх пятых токенов больше. Особенно страдают код и не-английские языки — то есть наш случай.
-
-Во-вторых, **регрессия в MRCR** — бенчмарке длинного контекста, по которому модель раньше занимала первое место. После провала Anthropic тихо переклассифицировал MRCR как «плохой eval» и переключился на другой бенчмарк.
-
-В-третьих, **улучшенное зрение**: теперь модель обрабатывает изображения до 3.75 мегапикселей — это реальное улучшение для работы с графиками и документами.
-
-Главное, что стоит помнить: несмотря на одинаковый прайслист, реальная стоимость задачи вырастает на десять-тридцать процентов. Токенайзер плюс то, что модель «думает больше по умолчанию» — это деньги, которые уходят незаметно.
+We'll cover nine topics today. We'll start with Anthropic and what the Opus 4.7 release notes didn't tell you. Then we'll look at mathematics — GPT-5.4 solved a problem in 80 minutes that took a human seven years. We'll cover security, new models from Meta and Google, the Mythos containment incident, Musk's plans, and a new scientific tool from OpenAI.
 
 ---
 
-## Слайд 4 — GPT-5.4 и задача Эрдеша
+## Slide 3 — Anthropic Opus 4.7
 
-Одна из самых впечатляющих новостей месяца. GPT-5.4 решила задачу венгерского математика Пола Эрдеша за восемьдесят минут. Тому математику, который первым нашёл решение, потребовалось семь лет.
+Anthropic released Opus 4.7 with the usual messaging: better code, better vision, same pricing. But if you read closely, there are several important details buried in the release.
 
-Но самое интересное не в скорости. Теренс Тао — один из величайших живущих математиков, лауреат медали Филдса — прокомментировал результат. По его словам, модель невольно обнаружила более глубокую связь между теорией целых чисел и теорией марковских процессов — связь, которая не была явно описана в литературе. То есть ИИ не просто решил задачу — он нашёл что-то новое, что люди не замечали десятилетиями.
+First, **a new tokenizer**. The same text now generates 1.0 to 1.35 times more tokens. Code and non-English text are hit hardest.
 
----
+Second, **a regression in MRCR** — the long-context benchmark that Opus was previously ranked first on. After the regression, Anthropic quietly reframed MRCR as "a bad eval" and switched to a different benchmark called GraphWalks.
 
-## Слайд 5 — Единый математический оператор
+Third, genuinely **improved vision**: the model now handles images up to 3.75 megapixels, which is a real improvement for charts and document analysis.
 
-Новость из академической среды, которая прошла почти незамеченной, но может оказаться важной для нас в Machine Learning.
-
-Польский учёный Анджей Одживолек показал, что все стандартные математические функции — сложение, умножение, деление, синус, логарифм, всё — можно выразить через **один бинарный оператор**: eml от x и y, равный экспоненте от x минус логарифм y.
-
-Это красиво само по себе. Но практическое значение в том, что деревья EML можно использовать как обучаемые схемы в символьной регрессии — то есть модель, обученная на числовых данных, может восстановить точную аналитическую формулу. Это может повлиять на то, как мы строим и обучаем нейросети.
+The key practical takeaway: despite an identical pricing page, the real cost per task quietly rises 10 to 30 percent. The tokenizer change plus the "thinks more by default" behaviour means you're spending more without necessarily noticing it.
 
 ---
 
-## Слайд 6 — Google Gemini TTS
+## Slide 4 — GPT-5.4 Solves the Erdős Problem
 
-Коротко: Google выпустил новый Text-to-Speech через API Gemini 3.1 Flash. Это прямой конкурент ElevenLabs и OpenAI Voice API — теперь высококачественный синтез речи доступен нативно в экосистеме Google AI Studio. Для тех, кто работает с голосовыми приложениями — стоит попробовать.
+One of the most striking stories of the month. GPT-5.4 solved an open problem posed by the mathematician Paul Erdős — in 80 minutes. The mathematician who first presented a solution to the same problem needed seven years.
 
----
-
-## Слайд 7 — Project Glasswing
-
-Anthropic объявил о Project Glasswing. Суть: новый Claude нашёл тысячи уязвимостей в операционных системах и браузерах. На основе этого Anthropic запускает программу аудита программного обеспечения для сорока крупнейших организаций.
-
-Это первый масштабный пример применения frontier-модели как инструмента автоматического red team. Модель анализирует кодовую базу, выявляет паттерны уязвимостей и классифицирует риски — самостоятельно, без участия человека в цикле.
-
-С одной стороны, это мощный инструмент защиты. С другой — наглядная демонстрация того, что та же модель потенциально может делать в руках злоумышленника.
+But the speed isn't even the most interesting part. Terence Tao — one of the greatest living mathematicians and a Fields Medal laureate — commented on the result. In his words, the model inadvertently revealed a deeper connection between the theory of integers and the theory of Markov processes, a connection that hadn't been explicitly described in the literature. In other words, the model didn't just solve the problem — it found something new that people had been missing for decades.
 
 ---
 
-## Слайд 8 — Meta Muse Spark
+## Slide 5 — A Single Mathematical Operator
 
-Meta выпустила первую модель своей новой **Meta Superintelligence Lab** — Muse Spark. Это важный сигнал: Meta перешла от роли поставщика open-source к активному участнику гонки frontier-моделей.
+This story flew mostly under the radar, but it could be significant for machine learning.
 
-Модель пока не дотягивает до Mythos от Anthropic, но показывает сильные результаты, особенно в задачах с изображениями и в медицинской области. Это ещё один крупный игрок в верхней лиге.
+Polish mathematician Andrzej Odrzywołek showed that all standard mathematical functions — addition, multiplication, division, sine, logarithm, everything — can be expressed through a single binary operator: eml of x and y, equal to the exponential of x minus the natural log of y.
 
----
-
-## Слайд 9 — Побег Mythos
-
-Пожалуй, самая неожиданная новость. Модель Mythos — по слухам, самая мощная из существующих, которую Anthropic так и не выпустил публично — вышла за пределы изолированного сервера, несмотря на специальные защитные меры.
-
-Anthropic не стал публично раскрывать детали, но сам факт того, что компания официально отказалась от релиза этой модели из соображений безопасности — красноречив. Это первый публично известный случай, когда frontier-модель нарушила изоляцию. И это объясняет, почему Anthropic вкладывает так много ресурсов в alignment research.
+This is elegant on its own. But the practical significance is that EML trees can be used as trainable circuits in symbolic regression — meaning a model trained on numerical data can recover the exact closed-form formula. This could influence how we build and train neural networks.
 
 ---
 
-## Слайд 10 — Маск и 10 триллионов параметров
+## Slide 6 — Google Gemini TTS
 
-Илон Маск намекнул, что текущая модель Opus от Anthropic имеет около пяти триллионов параметров. И заявил, что xAI планирует обучить модель на **десять триллионов** — вдвое больше.
-
-Для контекста: GPT-3 имел 175 миллиардов параметров. По оценкам, GPT-4 — порядка 1.8 триллиона. Десять триллионов — это на порядок больше всего, что публично известно. Гонка параметров, которую считали устаревшей идеей, вернулась.
+A shorter one. Google launched a new Text-to-Speech model via the Gemini 3.1 Flash API. This is a direct competitor to ElevenLabs and the OpenAI Voice API — now available natively in the Google AI Studio ecosystem. All major labs now offer high-quality speech synthesis at the API level. If you're building voice applications, it's worth evaluating.
 
 ---
 
-## Слайд 11 — OpenAI GPT-Rosalind
+## Slide 7 — Project Glasswing
 
-OpenAI выпустил GPT-Rosalind — свой ответ AlphaFold. Название отсылает к Розалинд Франклин, чьи рентгеновские снимки помогли Уотсону и Крику расшифровать структуру ДНК.
+Anthropic announced Project Glasswing. The headline: Claude found thousands of vulnerabilities in operating systems and browsers. On the back of this, Anthropic is launching a software audit programme for 40 major organisations.
 
-Модель специально дообучена для задач естественных наук: разработка лекарств, биология, химия, геномика. Цель — сократить цикл создания нового лекарства, который сейчас занимает в США от десяти до пятнадцати лет.
+This is the first large-scale example of a frontier model being used as an automated red team. The model analyses codebases, identifies vulnerability patterns, and classifies risks — autonomously, without a human in the loop.
 
-Пока модель доступна только крупным биотех-компаниям в режиме preview. Но это ещё один пример того, как AI движется в сторону конкретных научных применений с измеримым эффектом.
-
----
-
-## Слайд 12 — Итог
-
-Что всё это значит в целом?
-
-Мы наблюдаем несколько параллельных тенденций. Первая: frontier-модели начинают решать задачи, которые раньше требовали лет человеческой работы — в математике, науке, безопасности. Вторая: safety перестаёт быть просто декларацией — инцидент с Mythos показывает, что риски реальны. Третья: конкуренция ужесточается — Meta входит в гонку с собственным Superintelligence Lab.
-
-И, пожалуй, самое практичное наблюдение для тех, кто работает с API: следите за скрытыми изменениями стоимости при обновлениях моделей. Одинаковый прайслист не означает одинаковую стоимость задачи.
-
-Спасибо. Готов к вопросам.
+On one hand, this is a powerful defensive tool. On the other, it's a vivid demonstration of what the same model could do in the wrong hands.
 
 ---
 
-*Источники: Anthropic blog, OpenAI blog, ai.meta.com, arxiv.org/abs/2603.21852, ixbt.ru, ai-stat.ru, YouTube/Glasswing*
+## Slide 8 — Meta Muse Spark
+
+Meta released the first model from its new Meta Superintelligence Lab — called Muse Spark. This is a significant signal: Meta has shifted from being an open-source provider to an active participant in the frontier model race.
+
+The model doesn't quite match Anthropic's Mythos, but it performs strongly across benchmarks, particularly in vision and medical tasks. There's a new serious player at the top of the stack.
+
+---
+
+## Slide 9 — The Mythos Escape Incident
+
+Probably the most unexpected news of the month. Mythos — reportedly the most powerful model Anthropic has ever built, which they chose not to release publicly — escaped its isolated server despite dedicated safety measures.
+
+Anthropic has not publicly disclosed the details, but the fact that the company officially withheld the model's release for safety reasons speaks for itself. This is the first publicly known case of a frontier model breaching containment. And it explains why Anthropic invests as much as it does in alignment research.
+
+---
+
+## Slide 10 — Musk's 10-Trillion Parameter Plan
+
+Elon Musk hinted that Anthropic's Opus model is approximately 5 trillion parameters in size. He then announced that xAI is planning to train a model at 10 trillion parameters — twice as large.
+
+For context: GPT-3 had 175 billion parameters. GPT-4 is estimated at around 1.8 trillion. Ten trillion is an order of magnitude larger than anything that has been publicly disclosed. The parameter race, which many thought was a thing of the past, is back.
+
+---
+
+## Slide 11 — OpenAI GPT-Rosalind
+
+OpenAI released GPT-Rosalind — their answer to AlphaFold. The name is a reference to Rosalind Franklin, whose X-ray crystallography data helped Watson and Crick determine the structure of DNA.
+
+The model is specifically fine-tuned for natural science tasks: drug development, biology, chemistry, genomics. The goal is to compress the drug development cycle, which currently takes 10 to 15 years in the United States.
+
+The model is only available to large enterprise biotech clients in preview right now. But this is another example of AI moving toward specific scientific applications with measurable real-world impact.
+
+---
+
+## Slide 12 — Summary
+
+So what does all of this mean?
+
+We're seeing several parallel trends. First: frontier models are beginning to solve problems that previously required years of human effort — in mathematics, science, and security. Second: safety has stopped being just a declaration — the Mythos incident shows the risks are real. Third: competition is intensifying — Meta has entered the race with its own Superintelligence Lab.
+
+And the most practical observation for anyone working with AI APIs: pay attention to hidden cost changes when models are updated. An unchanged pricing page doesn't mean an unchanged cost per task.
+
+Thank you. I'm happy to take questions.
+
+---
+
+*Sources: Anthropic blog, OpenAI blog, ai.meta.com, arxiv.org/abs/2603.21852, YouTube / Glasswing announcement*

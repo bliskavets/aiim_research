@@ -1,109 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Digest — April 2026</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
   <style>
     :root {
-      --accent: #7c3aed;
-      --accent2: #06b6d4;
-      --soft: rgba(255,255,255,0.08);
+      --accent: #4f46e5;
+      --accent2: #0284c7;
+      --soft: rgba(0,0,0,0.05);
+      --text: #1e293b;
+      --muted: #64748b;
     }
     .reveal {
       font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f8fafc;
+      color: var(--text);
     }
     .reveal h1, .reveal h2, .reveal h3 {
       text-transform: none;
       letter-spacing: -0.02em;
+      color: var(--text);
     }
-    .reveal h1 { font-size: 2.2em; color: #fff; }
-    .reveal h2 { font-size: 1.4em; color: #a78bfa; border-bottom: 2px solid var(--accent); padding-bottom: 0.3em; margin-bottom: 0.6em; }
-    .reveal h3 { font-size: 1.1em; color: var(--accent2); }
-    .reveal p, .reveal li { font-size: 0.78em; line-height: 1.6; }
+    .reveal h1 { font-size: 1.9em; }
+    .reveal h2 { font-size: 1.15em; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.25em; margin-bottom: 0.5em; }
+    .reveal h3 { font-size: 0.95em; color: var(--accent2); }
+    .reveal p, .reveal li { font-size: 0.65em; line-height: 1.55; color: var(--text); }
     .reveal ul { list-style: none; padding: 0; }
     .reveal ul li::before { content: "→ "; color: var(--accent2); font-weight: bold; }
     .reveal blockquote {
-      background: rgba(124,58,237,0.15);
-      border-left: 4px solid var(--accent);
-      padding: 0.8em 1.2em;
+      background: rgba(79,70,229,0.07);
+      border-left: 3px solid var(--accent);
+      padding: 0.6em 1em;
       font-style: italic;
-      font-size: 0.72em;
+      font-size: 0.6em;
       line-height: 1.5;
-      border-radius: 0 8px 8px 0;
-      color: #e2e8f0;
+      border-radius: 0 6px 6px 0;
+      color: var(--text);
+      box-shadow: none;
     }
     .tag {
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 0.55em;
-      padding: 2px 10px;
+      font-size: 0.48em;
+      padding: 2px 9px;
       border-radius: 99px;
-      margin-bottom: 0.5em;
+      margin-bottom: 0.4em;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       vertical-align: middle;
     }
-    .tag.cyan { background: #0891b2; }
+    .tag.cyan { background: #0284c7; }
     .tag.green { background: #059669; }
     .tag.orange { background: #d97706; }
     .tag.red { background: #dc2626; }
     .slide-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.2em;
+      gap: 1em;
       align-items: start;
     }
-    .slide-grid.wide { grid-template-columns: 1.4fr 1fr; }
+    .slide-grid.wide { grid-template-columns: 1.45fr 1fr; }
     .slide-img {
       width: 100%;
-      max-height: 280px;
+      max-height: 240px;
       object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .slide-img.tall { max-height: 340px; }
-    .cost-box {
-      background: rgba(220,38,38,0.18);
-      border: 1px solid rgba(220,38,38,0.5);
       border-radius: 8px;
-      padding: 0.6em 1em;
-      font-size: 0.72em;
-      margin-top: 0.5em;
+      border: 1px solid #e2e8f0;
+    }
+    .slide-img.tall { max-height: 300px; }
+    .cost-box {
+      background: rgba(220,38,38,0.08);
+      border: 1px solid rgba(220,38,38,0.35);
+      border-radius: 6px;
+      padding: 0.5em 0.8em;
+      font-size: 0.6em;
+      margin-top: 0.4em;
+      color: var(--text);
     }
     .info-box {
       background: var(--soft);
-      border-radius: 8px;
-      padding: 0.6em 1em;
-      font-size: 0.72em;
-      margin-top: 0.5em;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      padding: 0.5em 0.8em;
+      font-size: 0.6em;
+      margin-top: 0.4em;
+      color: var(--text);
     }
-    .pill-row { display: flex; gap: 0.5em; flex-wrap: wrap; margin: 0.5em 0; }
+    .pill-row { display: flex; gap: 0.4em; flex-wrap: wrap; margin: 0.5em 0; }
     .pill {
-      background: rgba(255,255,255,0.1);
+      background: #e0e7ff;
+      color: var(--accent);
       border-radius: 99px;
-      padding: 3px 12px;
-      font-size: 0.65em;
+      padding: 2px 11px;
+      font-size: 0.58em;
+      font-weight: 500;
     }
     .title-slide { text-align: center; }
-    .title-slide .subtitle { color: #94a3b8; font-size: 0.85em; margin-top: 0.5em; }
-    .title-slide .date { color: #64748b; font-size: 0.65em; margin-top: 1.5em; }
-    .source-link { color: #64748b; font-size: 0.55em; margin-top: 0.3em; }
-    section { padding: 1em !important; }
+    .title-slide .subtitle { color: var(--muted); font-size: 0.75em; margin-top: 0.4em; }
+    .title-slide .date { color: #94a3b8; font-size: 0.58em; margin-top: 1.2em; }
+    .source-link { color: #94a3b8; font-size: 0.5em; margin-top: 0.3em; }
+    section { padding: 0.8em !important; }
     .formula-box {
-      background: rgba(6,182,212,0.12);
-      border: 1px solid rgba(6,182,212,0.4);
-      border-radius: 8px;
-      padding: 0.7em 1.2em;
+      background: rgba(2,132,199,0.07);
+      border: 1px solid rgba(2,132,199,0.3);
+      border-radius: 6px;
+      padding: 0.5em 1em;
       font-family: 'Courier New', monospace;
-      font-size: 1.1em;
+      font-size: 0.95em;
       color: var(--accent2);
       text-align: center;
-      margin: 0.5em 0;
+      margin: 0.4em 0;
     }
   </style>
 </head>
@@ -113,10 +124,7 @@
 
 <!-- SLIDE 1: TITLE -->
 <section class="title-slide">
-  <div style="margin-bottom:1.5em">
-    <span style="font-size:3.5em">🤖</span>
-  </div>
-  <h1>AI Digest</h1>
+  <h1 style="margin-top:1.5em">AI Digest</h1>
   <p class="subtitle">What's happening in the world of Artificial Intelligence</p>
   <div class="pill-row" style="justify-content:center; margin-top:1.2em">
     <span class="pill">Anthropic</span>

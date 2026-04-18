@@ -30,13 +30,13 @@ skills/                 ← reusable procedures and Claude Code commands
 
 ## Credentials
 
-Tokens are stored in environment variables on the host — never hardcode them in files.
+Tokens are stored in Claude's persistent memory (check memory at session start).
+Never hardcode tokens in committed files.
 
-- **GitHub token**: stored in env var `GITHUB_TOKEN`
-  - Usage: `git clone https://$GITHUB_TOKEN@github.com/bliskavets/aiim_research.git`
-  - Push: configure remote with token in URL
-- **HuggingFace token**: stored in env var `HF_TOKEN`
-  - Usage: `export HF_TOKEN=$HF_TOKEN` before training (already set in Docker via -e flag)
+- **GitHub token**: stored in Claude memory as `github_token`
+  - Usage: `git remote set-url origin https://<token>@github.com/bliskavets/aiim_research.git`
+- **HuggingFace token**: stored in Claude memory as `hf_token`
+  - Usage: set as `HF_TOKEN` env var before training
   - Or pass as `token=os.environ["HF_TOKEN"]` to `from_pretrained()`
 
 ## Infrastructure
@@ -95,25 +95,28 @@ Format: `exp_NNN_short_description`
 
 Sub-experiments: `exp_NNNb_...`, `exp_NNNc_...`
 
-## Key Findings Summary (as of exp_014)
+## Key Findings Summary (as of exp_016)
+
+**Next experiment number: exp_017** (exp_015 was skipped)
 
 | Exp | Model | Dataset | Method | Final Reward | Notes |
 |-----|-------|---------|--------|-------------|-------|
-| 001 | Llama-3.2-3B | GSM8K | GRPO | 3.0 | Baseline, format hacking |
-| 002 | Llama-3.2-3B | GSM8K | GTPO/GRPO-S entropy | 0.0 / 3.0 | GTPO fails on GSM8K |
-| 003 | Llama-3.2-3B | MATH-500 | GRPO | 0.62 | Collapse on small dataset |
-| 004 | Llama-3.2-3B | MATH-500 | GTPO/GRPO-S entropy | 2.38 | Entropy = regularization |
-| 005 | Llama-3.2-3B | GSM8K | GTPO/GRPO-S confidence | 2.375 / 0.0 | Confidence > entropy at token level |
-| 006 | Llama-3.2-3B | GSM8K | GTPO-EMA / GRPO-S-EMA | 3.0 / 3.0 | **EMA breakthrough** |
-| 007 | Llama-3.2-3B | MATH-500 | GTPO-EMA | 2.38 | Faster convergence |
-| 008 | Qwen3-4B | GSM8K | GRPO | 3.0 | 6× faster, KL=0.006 |
-| 009 | Qwen3-4B | GSM8K | GTPO-EMA | 3.0 | Format hacking at max_seq=2048 |
-| 009b | Qwen3-4B | GSM8K | GTPO-EMA | 4.44 | max_seq=4096 helps |
-| 010 | Qwen3-4B | GSM8K | EMA v2 (fixed) | - | Fixed z-score bug |
-| 011 | Qwen3-4B | MATH-500 | EMA v2 | -2.5 | Clipping issue, need >4096 |
-| 012 | Qwen3-4B | MATH-500 | GRPO | - | Baseline for Qwen3+MATH500 |
-| 013 | Qwen3-4B | MATH-500 | EMA v2 | -0.875 | max_seq=4096, still clipping |
-| 014 | Llama-3.2-3B | Big-Math | GRPO | -1.84 | Failed: too large dataset |
+| 001 | Llama-3.2-3B | GSM8K | GRPO | 3.0 | Baseline, peak 8.4@step169 |
+| 002 | Llama-3.2-3B | GSM8K | GTPO/GRPO-S entropy | 0.0 / 3.0 | GTPO fails on GSM8K; GRPO-S ✅ |
+| 003 | Llama-3.2-3B | MATH-500 | GRPO | 0.62 | Peak 10.0@150, collapses (small dataset) |
+| 004 | Llama-3.2-3B | MATH-500 | GTPO/GRPO-S entropy | 2.38 / 2.38 | **GTPO works on MATH-500**; KL 10× lower |
+| 005 | Llama-3.2-3B | GSM8K | GTPO/GRPO-S confidence | 2.375 / 0.0 | Token confidence > seq-level |
+| 006 | Llama-3.2-3B | GSM8K | GTPO-EMA / GRPO-S-EMA | 3.0 / 3.0 | **EMA breakthrough** — both methods ✅ |
+| 007 | Llama-3.2-3B | MATH-500 | GTPO-EMA / GRPO-S-EMA | 2.38 / 2.38 | Peak faster (steps ~97-104 vs ~150) |
+| 008 | Qwen3-4B | GSM8K | GRPO | 3.0 | **6× faster convergence**, KL=0.006 |
+| 009 | Qwen3-4B | GSM8K | GTPO-EMA / GRPO-S-EMA | 3.0 / 3.0 | EMA works with Qwen thinking mode |
+| 009b | Qwen3-4B | GSM8K | GTPO-EMA + 4096ctx | 4.44 | max_seq=4096, no completion clipping |
+| 010 | Qwen3-4B | GSM8K | EMA v2 (bug fix) | - | **Fixed z-score norm bug** destroying EMA signal |
+| 011 | Qwen3-4B | MATH-500 | EMA v2 | -2.5 | alpha2=0.5; clipping issue |
+| 012 | Qwen3-4B | MATH-500 | GRPO | - | Qwen3+MATH500 baseline |
+| 013 | Qwen3-4B | MATH-500 | EMA v2 + 4096ctx | -0.875 | GRPO-S early stop |
+| 014 | Llama-3.2-3B | Big-Math | GRPO + EMA variants | -1.84 | Multiple variants; needs curriculum |
+| 016 | Llama-3.2-3B | Big-Math | GRPO (clean baseline) | - | Integer-filtered Big-Math (~1000 problems) |
 
 ## Key Insights for Future Experiments
 

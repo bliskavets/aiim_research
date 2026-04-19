@@ -20,7 +20,7 @@ giving GRPO a cleaner O+/O- signal and more stable advantage estimates.
 
 MODEL_CONFIG = {
     "model_name": "meta-llama/Llama-3.2-3B-Instruct",
-    "max_seq_length": 2048,
+    "max_seq_length": 4096,         # 512 prompt + 3072 completion + headroom
     "lora_rank": 64,
     "load_in_4bit": False,          # no quantization — clean bf16 gradients
     "fast_inference": True,         # vLLM for generation
@@ -62,8 +62,8 @@ DATASET_CONFIG = {
     "split": "train",
     # cap prompt length to avoid OOM from outlier-long problems
     "max_prompt_tokens": 512,
-    # cap completion length; integer solutions don't need > 768 tokens
-    "max_completion_tokens": 768,
+    # allow long chain-of-thought solutions (complex math may need >1000 tokens)
+    "max_completion_tokens": 3072,
 }
 
 REASONING_START = "<start_working_out>"

@@ -47,7 +47,7 @@ match_format = re.compile(
 )
 
 NUM_SAMPLES = 5
-MAX_NEW_TOKENS = 400
+MAX_NEW_TOKENS = 3072
 
 
 # ─────────────────────────────────────────────────────────────────────────────

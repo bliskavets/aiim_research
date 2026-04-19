@@ -1,0 +1,11 @@
+unsloth
+trl>=0.15.0
+transformers>=4.48.0
+datasets>=3.0.0
+torch>=2.7.0
+peft>=0.15.0
+accelerate>=0.34.0
+bitsandbytes>=0.44.0
+matplotlib
+numpy
+pytest

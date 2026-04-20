@@ -1,20 +1,20 @@
 {
-  "steps": 135,
+  "steps": 1000,
   "step1": {
     "reward": -1.4375,
     "rewards/reward_format_exact/mean": 0.0,
     "kl": 0.0
   },
   "step500": {
-    "reward": null,
-    "rewards/reward_format_exact/mean": null,
-    "kl": null
+    "reward": 3.15625,
+    "rewards/reward_format_exact/mean": 3.0,
+    "kl": 35.07431411743164
   },
   "step1000": {
-    "reward": -0.5,
-    "rewards/reward_format_exact/mean": 0.0,
-    "kl": 0.01257175300270319
+    "reward": 3.53125,
+    "rewards/reward_format_exact/mean": 3.0,
+    "kl": 4.1333136558532715
   },
-  "peak_reward": 0.8125,
-  "peak_step": 126
+  "peak_reward": 9.5,
+  "peak_step": 203
 }

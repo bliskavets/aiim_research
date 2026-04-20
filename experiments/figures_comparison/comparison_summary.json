@@ -1,0 +1,41 @@
+{
+  "exp_017": {
+    "label": "GRPO baseline",
+    "steps": 1000,
+    "step1_reward": -1.75,
+    "latest_reward": 3.53125,
+    "peak_reward": 9.5,
+    "peak_step": 242,
+    "latest_kl": 0.26632004976272583
+  },
+  "exp_018": {
+    "label": "GTPO-EMA",
+    "steps": 1000,
+    "step1_reward": -1.4375,
+    "latest_reward": 3.53125,
+    "peak_reward": 9.5,
+    "peak_step": 203,
+    "latest_kl": 4.1333136558532715
+  },
+  "exp_019": {
+    "label": "GRPO-S entropy",
+    "steps": 1000,
+    "step1_reward": -1.4375,
+    "latest_reward": 3.125,
+    "peak_reward": 9.5,
+    "peak_step": 215,
+    "latest_kl": 56.879554748535156
+  },
+  "exp_020": {
+    "label": "GTPO entropy",
+    "steps": 657,
+    "step1_reward": -1.40625,
+    "latest_reward": 8.4375,
+    "peak_reward": 9.5,
+    "peak_step": 187,
+    "latest_kl": 0.6483816504478455
+  },
+  "exp_021": {
+    "status": "no log"
+  }
+}

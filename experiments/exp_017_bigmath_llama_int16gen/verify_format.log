@@ -1,0 +1,139 @@
+exp_017 — Pre-training verification
+Model: meta-llama/Llama-3.2-3B-Instruct
+Dataset: SynthLabsAI/Big-Math-RL-Verified (integer filter)
+
+======================================================================
+STEP 4: GPU memory check
+======================================================================
+  GPU 0: 85.1 GB total, 0.0 GB used, 85.1 GB free
+
+  Training will use batch_size=4, num_generations=16
+  → 64 sequences/step for loss computation
+  → Estimated VRAM needed: ~30-40 GB (model + activations + vLLM KV cache)
+
+======================================================================
+STEP 1: Dataset filter check
+======================================================================
+Total examples: 251122
+Filter:   0%|          | 0/251122 [00:00<?, ? examples/s]Filter:   7%|▋         | 17000/251122 [00:00<00:01, 158318.15 examples/s]Filter:  14%|█▍        | 35000/251122 [00:00<00:01, 166104.82 examples/s]Filter:  21%|██        | 53000/251122 [00:00<00:01, 168652.76 examples/s]Filter:  28%|██▊       | 71000/251122 [00:00<00:01, 170455.88 examples/s]Filter:  36%|███▌      | 91000/251122 [00:00<00:00, 174573.08 examples/s]Filter:  43%|████▎     | 109000/251122 [00:00<00:00, 175429.11 examples/s]Filter:  51%|█████     | 127000/251122 [00:00<00:00, 172647.00 examples/s]Filter:  58%|█████▊    | 145000/251122 [00:00<00:00, 171049.08 examples/s]Filter:  67%|██████▋   | 169000/251122 [00:00<00:00, 166284.92 examples/s]Filter:  77%|███████▋  | 194000/251122 [00:01<00:00, 165447.08 examples/s]Filter:  84%|████████▍ | 212000/251122 [00:01<00:00, 166268.61 examples/s]Filter:  92%|█████████▏| 230000/251122 [00:01<00:00, 165706.35 examples/s]Filter:  99%|█████████▉| 248000/251122 [00:01<00:00, 166245.37 examples/s]Filter: 100%|██████████| 251122/251122 [00:01<00:00, 167757.17 examples/s]
+Integer-answer examples: 131812 (52.5%)
+
+Sample problems:
+  [0] answer=    '-1'  problem=Given that $f(x)$ and $g(x)$ are both odd functions, and $F(x) = af(x) + bg(x) +...
+  [1] answer=    '-3'  problem=If $\left(3x-y+5\right)^{2}+|2x-y+3|=0$, then $x+y=\_\_\_\_\_\_$....
+  [2] answer=    '36'  problem=Simplify first, then evaluate: $3(a^{2}-ab+7)-2(3ab-a^{2}+1)+3$, where $a=2$ and...
+
+======================================================================
+Loading model (bf16, no quantization)...
+======================================================================
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.32it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.27it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.05it/s]
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+
+======================================================================
+STEP 2: Vocabulary / tokenization check
+======================================================================
+  '<start_working_out>'          → 5 token(s): [27, 2527, 82201, 6196, 29]
+  '<end_working_out>'            → 5 token(s): [27, 408, 82201, 6196, 29]
+  '<SOLUTION>'                   → 3 token(s): [19389, 47077, 29]
+  '</SOLUTION>'                  → 4 token(s): [524, 50, 47077, 29]
+  WARNING: '<start_working_out>' splits into 5 tokens — model may struggle to generate it
+  WARNING: '<end_working_out>' splits into 5 tokens — model may struggle to generate it
+
+======================================================================
+STEP 3: Generation check (base model, no LoRA)
+======================================================================
+
+--- Sample 0 ---
+Problem (first 120 chars): Given that $f(x)$ and $g(x)$ are both odd functions, and $F(x) = af(x) + bg(x) + 2$ has a maximum value of 5 on the inte
+Ground truth answer: -1
+Generated (1146 chars):
+<start_working_out>
+To find the minimum value of F(x) on the interval (-∞, 0), we need to use the properties of odd functions and the given information about the maximum value of F(x) on the interval (0, +∞).
+Since f(x) and g(x) are both odd functions, we know that f(-x) = -f(x) and g(-x) = -g(x).
+We also know that F(x) = af(x) + bg(x) + 2. 
+We are given that F(x) has a maximum value of 5 on the interval (0, +∞).
+To find the minimum value of F(x) on the interval (-∞, 0), we can use the fact that
+Format match: ❌
+
+--- Sample 1 ---
+Problem (first 120 chars): If $\left(3x-y+5\right)^{2}+|2x-y+3|=0$, then $x+y=\_\_\_\_\_\_$.
+Ground truth answer: -3
+Generated (1118 chars):
+<start_working_out>
+To solve the equation $\left(3x-y+5\right)^{2}+|2x-y+3|=0$, we can start by noticing that the square of a real number is always non-negative, and the absolute value of a real number is always non-negative. Therefore, the sum of the square of a real number and the absolute value of a real number can only be zero if both the square and the absolute value are individually zero.
+
+So, we can set up the following equations:
+$\left(3x-y+5\right)^{2}=0$
+and
+$|2x-y+3|=0$
+Solving these
+Format match: ❌
+
+--- Sample 2 ---
+Problem (first 120 chars): Simplify first, then evaluate: $3(a^{2}-ab+7)-2(3ab-a^{2}+1)+3$, where $a=2$ and $b=\frac{1}{3}$.
+Ground truth answer: 36
+Generated (1179 chars):
+<start_working_out>
+To simplify the given expression, we will first distribute the coefficients to the terms inside the parentheses, then combine like terms.
+
+The given expression is: $3(a^{2}-ab+7)-2(3ab-a^{2}+1)+3$
+
+Distribute the coefficients:
+$3a^{2}-3ab+21-6ab+2a^{2}-2+3$
+
+Combine like terms:
+$(3a^{2}+2a^{2}) + (-3ab-6ab) + (21-2+3)$
+
+Simplify further:
+$5a^{2}-9ab+22$
+
+Now that we have simplified the expression, we can substitute the values of a and b.
+
+Substitute $a=2$ and $b=\frac{1}{3}$ 
+Format match: ❌
+
+--- Sample 3 ---
+Problem (first 120 chars): A unit has 200 employees. Now, 40 employees need to be selected as a sample using the systematic sampling method. All em
+Ground truth answer: 48
+Generated (1379 chars):
+<start_working_out>
+
+In systematic sampling, the sampling interval is calculated by dividing the total population size by the desired sample size. 
+
+Population size = 200 employees
+Sample size = 40 employees
+
+Sampling interval = Population size / Sample size
+Sampling interval = 200 / 40
+Sampling interval = 5
+
+Since the number drawn from the 5th group is 23, we can calculate the number drawn from the 10th group by adding the sampling interval 5 to the given number.
+
+First, we need to find the num
+Format match: ❌
+
+--- Sample 4 ---
+Problem (first 120 chars): The remainder of $3^{20}$ divided by 5 is __________.
+Ground truth answer: 1
+Generated (680 chars):
+<start_working_out>
+To find the remainder of $3^{20}$ divided by 5, we can use the property of modular arithmetic that states if $a \equiv b \pmod{m}$, then $a^c \equiv b^c \pmod{m}$.
+We start by finding the remainder of some small powers of 3 when divided by 5:
+$3^1 \equiv 3 \pmod{5}$
+$3^2 \equiv 9 \equiv 4 \pmod{5}$
+$3^3 \equiv 27 \equiv 2 \pmod{5}$
+$3^4 \equiv 81 \equiv 1 \pmod{5}$
+
+We can see that the remainders repeat after every 4 powers of 3. Since $3^4 \equiv 1 \pmod{5}$, we can write $3
+Format match: ❌
+
+======================================================================
+SUMMARY: 5/5 non-empty, 0/5 format-match
+OK: model generates coherent text
+NOTE: format match at 0/5 is expected for base model (no LoRA)
+      what matters: coherent math reasoning in output
+
+======================================================================
+VERIFICATION COMPLETE
+If generation looks coherent → safe to run train.py
+======================================================================

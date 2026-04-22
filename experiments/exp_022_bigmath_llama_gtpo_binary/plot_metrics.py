@@ -173,7 +173,7 @@ def main():
 
     rec_017 = parse_log(LOG_017)
     if rec_017:
-        plot_comparison(rec, rec_017, os.path.join(OUT_DIR, "compare_017_vs_020.png"))
+        plot_comparison(rec, rec_017, os.path.join(OUT_DIR, "compare_017_vs_022.png"))
 
 
 if __name__ == "__main__":

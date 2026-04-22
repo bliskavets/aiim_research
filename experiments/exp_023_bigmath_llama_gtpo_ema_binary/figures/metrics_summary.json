@@ -1,0 +1,20 @@
+{
+  "steps": 1000,
+  "step1": {
+    "reward": -1.40625,
+    "rewards/reward_format_exact/mean": 0.0,
+    "kl": 0.0
+  },
+  "step500": {
+    "reward": 2.96875,
+    "rewards/reward_format_exact/mean": 2.8125,
+    "kl": 0.08112886548042297
+  },
+  "step1000": {
+    "reward": 3.1875,
+    "rewards/reward_format_exact/mean": 2.625,
+    "kl": 0.18818451464176178
+  },
+  "peak_reward": 9.5,
+  "peak_step": 215
+}

@@ -22,3 +22,12 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Pytest
+.pytest_cache/
+
+# Unsloth / training artifacts (not source)
+experiments/**/unsloth_compiled_cache/
+experiments/**/grpo_trainer_lora_model/
+experiments/**/outputs_*/
+experiments/**/run_*.out

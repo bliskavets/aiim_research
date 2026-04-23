@@ -1,0 +1,62 @@
+{
+  "exp_005-GTPO": {
+    "label": "GTPO-Conf original (exp_005)",
+    "steps": 500,
+    "peak_reward": 9.5,
+    "peak_step": 268,
+    "latest_reward": 2.375,
+    "latest_fmt_exact": 2.25,
+    "latest_ans_exact": -1.125,
+    "latest_kl": 0.06912539526820183
+  },
+  "exp_024-GTPO": {
+    "label": "GTPO-Conf repro (exp_024)",
+    "steps": 500,
+    "peak_reward": 3.125,
+    "peak_step": 365,
+    "latest_reward": -0.125,
+    "latest_fmt_exact": 0.0,
+    "latest_ans_exact": 0.0,
+    "latest_kl": 0.024649515748023987
+  },
+  "exp_005-GRPOS": {
+    "label": "GRPO-S-Conf original (exp_005)",
+    "steps": 500,
+    "peak_reward": 2.0,
+    "peak_step": 147,
+    "latest_reward": 0.0,
+    "latest_fmt_exact": 0.0,
+    "latest_ans_exact": 0.0,
+    "latest_kl": 0.023263275623321533
+  },
+  "exp_024-GRPOS": {
+    "label": "GRPO-S-Conf repro (exp_024)",
+    "steps": 500,
+    "peak_reward": 9.5,
+    "peak_step": 215,
+    "latest_reward": 3.0,
+    "latest_fmt_exact": 3.0,
+    "latest_ans_exact": -1.5,
+    "latest_kl": 0.13155858404934406
+  },
+  "exp_025-PROOF": {
+    "label": "Pure-proof GTPO-EMA (exp_025)",
+    "steps": 500,
+    "peak_reward": 9.5,
+    "peak_step": 253,
+    "latest_reward": 3.0,
+    "latest_fmt_exact": 3.0,
+    "latest_ans_exact": -1.5,
+    "latest_kl": 0.1645035119727254
+  },
+  "exp_001": {
+    "label": "GRPO baseline (exp_001)",
+    "steps": 500,
+    "peak_reward": 8.375,
+    "peak_step": 169,
+    "latest_reward": 3.0,
+    "latest_fmt_exact": 3.0,
+    "latest_ans_exact": -1.5,
+    "latest_kl": 0.08548272680491209
+  }
+}

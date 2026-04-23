@@ -1,0 +1,3 @@
+# Same overlay recipe as exp_025 — base image + numpy<2.3 pin. run_026.sh
+# adds unsloth==2026.3.7 and unsloth_zoo with --no-deps to match exp_005/024/025.
+numpy<2.3

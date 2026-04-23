@@ -49,6 +49,9 @@ VARIANTS = [
     ("exp_025-PROOF", "Pure-proof GTPO-EMA (exp_025)",
      "tab:red",    "gsm8k_exp025_pure_proof_vs_grpo.png",
      "exp_025_pure_proof_gtpo_ema/train_gtpo_ema_proof.log"),
+    ("exp_026-FLIP",  "Flipped GTPO-EMA (exp_026)",
+     "tab:green",  "gsm8k_exp026_flipped_vs_grpo.png",
+     "exp_026_flipped_conf_gtpo_ema/train_gtpo_ema_flipped.log"),
 ]
 
 
@@ -175,7 +178,7 @@ def main(out_dir: str):
     )
     all_series = [(base_short, base_label, base_color, "-", base_records)] + [
         (s, l, c, ls, parse_log(os.path.join(EXP_ROOT, p)))
-        for (s, l, c, _, p), ls in zip(VARIANTS, ["-", "--", "-", "--", "-"])
+        for (s, l, c, _, p), ls in zip(VARIANTS, ["-", "--", "-", "--", "-", "-"])
     ]
     for short, label, color, ls, records in all_series:
         if not records:
@@ -204,7 +207,7 @@ def main(out_dir: str):
 
     print("\n=== SUMMARY ===")
     order = ["exp_001", "exp_005-GTPO", "exp_024-GTPO",
-             "exp_005-GRPOS", "exp_024-GRPOS", "exp_025-PROOF"]
+             "exp_005-GRPOS", "exp_024-GRPOS", "exp_025-PROOF", "exp_026-FLIP"]
     for short in order:
         if short not in summary: continue
         s = summary[short]

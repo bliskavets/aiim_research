@@ -1,0 +1,42 @@
+{
+  "exp_027 \u03b1=1.0/0.0 baseline": {
+    "steps": 500,
+    "peak": 9.5,
+    "peak_step": 205,
+    "reward_last": 2.25,
+    "reward_l50_avg": 5.9525,
+    "fmt_l50_avg": 2.79,
+    "ans_l50_avg": 0.84125,
+    "kl_l50_avg": 0.19762419477105142
+  },
+  "exp_028 \u03b1=0.9/0.1 with EMA": {
+    "steps": 500,
+    "peak": 9.5,
+    "peak_step": 194,
+    "reward_last": 2.5625,
+    "reward_l50_avg": 6.27875,
+    "fmt_l50_avg": 2.8875,
+    "ans_l50_avg": 0.9675,
+    "kl_l50_avg": 0.6794774270057679
+  },
+  "exp_032 \u03b1=0.95/0.05 with EMA": {
+    "steps": 500,
+    "peak": 9.5,
+    "peak_step": 219,
+    "reward_last": 3.6875,
+    "reward_l50_avg": 6.11625,
+    "fmt_l50_avg": 2.8425,
+    "ans_l50_avg": 0.8775,
+    "kl_l50_avg": 0.19581556886434556
+  },
+  "exp_033 \u03b1=0.9/0.1 no EMA (raw C)": {
+    "steps": 500,
+    "peak": 9.5,
+    "peak_step": 202,
+    "reward_last": 2.625,
+    "reward_l50_avg": 6.1525,
+    "fmt_l50_avg": 2.805,
+    "ans_l50_avg": 1.0075,
+    "kl_l50_avg": 0.14311084095388651
+  }
+}

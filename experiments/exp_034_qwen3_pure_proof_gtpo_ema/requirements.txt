@@ -1,0 +1,6 @@
+# Match exp_005 / exp_024 runtime exactly: unsloth 2026.3.7, trl 0.23.1,
+# torch 2.9.0+cu128, vllm 0.11.2, transformers 4.57.1.
+# Only numpy<2.3 in this file (base image ships 2.4.1 which breaks numba/vllm).
+# run_025.sh overlays unsloth==2026.3.7 + unsloth_zoo via --no-deps to keep
+# the image's torch/vllm/transformers intact.
+numpy<2.3

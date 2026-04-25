@@ -1,0 +1,16 @@
+{
+  "exp_034  pure-proof (not flipped)": {
+    "steps": 270,
+    "peak_reward": 9.5,
+    "peak_step": 19,
+    "last50_reward": 8.58,
+    "last50_kl": 0.0129
+  },
+  "exp_035  flipped pure-proof": {
+    "steps": 500,
+    "peak_reward": 9.5,
+    "peak_step": 37,
+    "last50_reward": 8.375,
+    "last50_kl": 0.0122
+  }
+}

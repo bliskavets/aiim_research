@@ -1,0 +1,11 @@
+# Overlay on top of the unsloth/unsloth:latest base (torch 2.9.0+cu128,
+# vllm 0.11.2, transformers 4.57.x, trl 0.23.1, unsloth 2026.1.4, numpy 2.4.1).
+#
+# We do NOT list unsloth here — resolving it as a full dependency drags in
+# torch 2.10 / transformers 5.3 / xformers 0.0.35, which breaks the stack
+# (pre-built vllm 0.11.2 is pinned to torch 2.9). run_024.sh handles that
+# package separately with `uv pip install --no-deps unsloth==2026.3.7`.
+#
+# Only numpy<2.3 here: numba (pulled in by vllm's ngram proposer) refuses
+# NumPy >= 2.3, and the base image ships 2.4.1.
+numpy<2.3

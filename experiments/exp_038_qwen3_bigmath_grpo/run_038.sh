@@ -25,11 +25,8 @@ docker run --rm --gpus all \
   unsloth/unsloth -c "
     set -e
     cd /workspace/${EXP_NAME}
-    uv venv /tmp/venv_${EXP_NAME} --system-site-packages --quiet
-    source /tmp/venv_${EXP_NAME}/bin/activate
-    uv pip install -r requirements.txt --quiet
-    uv pip install --no-deps --quiet unsloth==2026.3.7 unsloth_zoo
-    python -c 'import unsloth, trl, torch, numpy, vllm, transformers; print(\"unsloth\", unsloth.__version__, \"trl\", trl.__version__, \"torch\", torch.__version__, \"numpy\", numpy.__version__, \"vllm\", vllm.__version__, \"transformers\", transformers.__version__)'
+    pip install --no-deps --quiet unsloth==2026.3.7 unsloth_zoo
+    python -c 'import unsloth, trl, torch, vllm, transformers; print(\"unsloth\", unsloth.__version__, \"trl\", trl.__version__, \"torch\", torch.__version__, \"vllm\", vllm.__version__, \"transformers\", transformers.__version__)'
     python train.py
   " 2>&1 | tee "${EXP_DIR}/train.log"
 

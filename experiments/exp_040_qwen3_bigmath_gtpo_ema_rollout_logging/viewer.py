@@ -86,24 +86,33 @@ def load_step_full(step_id_val):
     topk_lp    = d["topk_log_probs"].astype(np.float32)   # (B, T, 20)
     topk_ids_arr = d["topk_token_ids"].astype(np.int32)   # (B, T, 20)
 
-    # Prompt text (available from step 41+ onwards)
+    # Prompt text
     problem_text = None
     if "prompt_ids" in d.files and "prompt_mask" in d.files:
         problem_text = extract_problem(tok, d["prompt_ids"], d["prompt_mask"])
+
+    # GT answer and per-rollout extracted answers
+    gt_answer = ""
+    if "gt_answer" in d.files:
+        raw = d["gt_answer"]
+        gt_answer = raw.item().decode("utf-8") if raw.ndim == 0 else str(raw[0], "utf-8")
+    extracted_answers = [""] * B
+    if "extracted_answers" in d.files:
+        extracted_answers = [x.decode("utf-8") for x in d["extracted_answers"]]
 
     rollouts = []
     for i in range(B):
         length = int(mask_arr[i].sum())
         ids_i  = comp_ids[i, :length]
         tokens = decode_ids(tok, ids_i)
-        # topk_log_probs for this rollout, valid tokens only
-        tlp = topk_lp[i, :length, :].tolist()   # list[T] of list[20]
+        tlp    = topk_lp[i, :length, :].tolist()
         rollouts.append({
             "is_correct":  bool(is_correct[i]),
             "advantage":   float(advantages[i]),
             "length":      length,
             "tokens":      tokens,
-            "topk_lp":     tlp,          # (T, 20) nested list – floats
+            "topk_lp":     tlp,
+            "extracted":   extracted_answers[i],
         })
 
     # Sort: correct first
@@ -112,6 +121,7 @@ def load_step_full(step_id_val):
     return {
         "step":         int(d["step"]),
         "problem_text": problem_text,
+        "gt_answer":    gt_answer,
         "rollouts":     rollouts,
     }
 
@@ -157,6 +167,11 @@ h1   { color:#58a6ff; margin:0 0 8px; font-size:18px; }
             margin-bottom:12px; font-size:12px; white-space:pre-wrap; word-break:break-word;
             max-height:160px; overflow-y:auto; border-radius:0 4px 4px 0; }
 .problem.na { color:#8b949e; font-style:italic; }
+.gt-answer  { background:#161b22; border-left:3px solid #3fb950; padding:5px 14px;
+              margin-bottom:12px; font-size:13px; border-radius:0 4px 4px 0; }
+.gt-answer span { color:#3fb950; font-weight:bold; }
+.extracted  { font-size:12px; color:#8b949e; margin-left:8px; }
+.extracted b { color:#c9d1d9; }
 #rollouts   { display:flex; flex-direction:column; gap:10px; }
 .rollout    { background:#161b22; border-radius:6px; padding:10px 14px; }
 .rollout-hdr{ display:flex; gap:12px; align-items:center; margin-bottom:6px; font-size:12px; }
@@ -190,6 +205,7 @@ h1   { color:#58a6ff; margin:0 0 8px; font-size:18px; }
   </label>
 </div>
 <div class="problem na" id="problem">Select a step to view rollouts.</div>
+<div class="gt-answer" id="gt-answer" style="display:none">GT answer: <span id="gt-val"></span></div>
 <div id="status"></div>
 <div id="rollouts"></div>
 
@@ -278,8 +294,15 @@ function render() {
     probEl.textContent = currentData.problem_text;
     probEl.className = 'problem';
   } else {
-    probEl.textContent = 'Prompt not saved in this step\'s data (available from step 41 onwards).';
+    probEl.textContent = 'Prompt not saved in this step\'s data.';
     probEl.className = 'problem na';
+  }
+  const gtEl = document.getElementById('gt-answer');
+  if (currentData.gt_answer) {
+    document.getElementById('gt-val').textContent = currentData.gt_answer;
+    gtEl.style.display = '';
+  } else {
+    gtEl.style.display = 'none';
   }
 
   const container = document.getElementById('rollouts');
@@ -314,6 +337,12 @@ function render() {
     info.textContent = `adv=${r.advantage.toFixed(3)}  len=${r.length}`;
     hdr.appendChild(badge);
     hdr.appendChild(info);
+    if (r.extracted !== undefined && r.extracted !== '') {
+      const ext = document.createElement('span');
+      ext.className = 'extracted';
+      ext.innerHTML = `ans: <b>${r.extracted}</b>`;
+      hdr.appendChild(ext);
+    }
     div.appendChild(hdr);
 
     const tokDiv = document.createElement('div');

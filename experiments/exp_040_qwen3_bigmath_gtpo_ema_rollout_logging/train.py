@@ -65,9 +65,10 @@ match_format = re.compile(
 )
 match_numbers = re.compile(SOLUTION_START + r".*?([-\d\.,]+)", flags=re.MULTILINE | re.DOTALL)
 
-# Shared buffer: reward_answer_exact writes True/False here;
-# RolloutLoggerTrainer drains it in _compute_loss.
-_correctness_buffer = []
+# Shared store: reward_answer_exact writes { text_prefix → bool } here;
+# RolloutLoggerTrainer looks up by decoding completion_ids (order-independent).
+_correctness_store = {}
+_PREFIX_LEN = 300
 
 
 def is_integer_answer(example):
@@ -128,9 +129,9 @@ def reward_answer_exact(prompts, completions, answer, **kwargs):
                 scores.append(1.0 if 0.9<=ratio<=1.1 else 0.5 if 0.8<=ratio<=1.2 else -1.5)
             except (ValueError, ZeroDivisionError):
                 scores.append(-1.5)
-    # Log correctness: True only if exact match (score == 3.0)
-    for s in scores:
-        _correctness_buffer.append(s == 3.0)
+    # Store correctness keyed by text prefix (order-independent lookup).
+    for r, s in zip(responses, scores):
+        _correctness_store[r[:_PREFIX_LEN]] = (s == 3.0)
     return scores
 
 _cnt = 0
@@ -187,7 +188,7 @@ def main():
         model=model, tokenizer=tokenizer, args=args,
         train_dataset=dataset, reward_funcs=REWARD_FUNCS,
         rollout_log_dir=rollout_log_dir,
-        correctness_buffer=_correctness_buffer,
+        correctness_store=_correctness_store,
         conf_top_k=20,
         save_every_steps=1,
     )

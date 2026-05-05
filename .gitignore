@@ -31,3 +31,5 @@ experiments/**/unsloth_compiled_cache/
 experiments/**/grpo_trainer_lora_model/
 experiments/**/outputs_*/
 experiments/**/run_*.out
+experiments/**/rollout_logs/
+experiments/**/*.log

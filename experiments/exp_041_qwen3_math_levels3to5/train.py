@@ -61,7 +61,7 @@ SYSTEM_PROMPT = (
 
 match_format = re.compile(
     rf"^[\s]{{0,}}{re.escape(REASONING_START)}.+?{re.escape(REASONING_END)}.*?"
-    rf"{re.escape(SOLUTION_START)}(.+?){re.escape(SOLUTION_END)}[\s]{{0,}}$",
+    rf"{re.escape(SOLUTION_START)}(.+?){re.escape(SOLUTION_END)}",
     flags=re.MULTILINE | re.DOTALL,
 )
 match_numbers = re.compile(SOLUTION_START + r".*?([-\d\.,]+)", flags=re.MULTILINE | re.DOTALL)

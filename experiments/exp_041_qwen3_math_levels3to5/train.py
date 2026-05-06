@@ -66,6 +66,44 @@ match_format = re.compile(
 )
 match_numbers = re.compile(SOLUTION_START + r".*?([-\d\.,]+)", flags=re.MULTILINE | re.DOTALL)
 
+def _extract_boxed(text):
+    """Return content of last \\boxed{} in text, or None."""
+    idx = text.rfind(r'\boxed{')
+    if idx == -1:
+        return None
+    depth, start = 0, idx + len(r'\boxed{')
+    for i, c in enumerate(text[start:]):
+        if c == '{':   depth += 1
+        elif c == '}':
+            if depth == 0: return text[start:start + i]
+            depth -= 1
+    return None
+
+def extract_solution_answer(raw):
+    """
+    Extract a numeric string from the raw content between <SOLUTION> tags.
+    Rule 1: raw.strip() is directly a number → return it.
+    Rule 2: find \\boxed{answer} inside raw → return answer if numeric.
+    Returns None if nothing found.
+    """
+    if raw is None:
+        return None
+    s = raw.strip().replace(',', '').replace('+', '').replace(' ', '')
+    try:
+        float(s)
+        return s
+    except ValueError:
+        pass
+    candidate = _extract_boxed(raw)
+    if candidate is not None:
+        c = candidate.strip().replace(',', '').replace('+', '').replace(' ', '')
+        try:
+            float(c)
+            return c
+        except ValueError:
+            pass
+    return None
+
 _correctness_store = {}
 
 
@@ -141,19 +179,18 @@ def reward_format_approximate(completions, **kwargs):
     return scores
 
 def reward_answer_exact(prompts, completions, answer, **kwargs):
-    responses  = [c[0]["content"] for c in completions]
-    extracted  = [m.group(1) if (m := match_format.search(r)) else None for r in responses]
+    responses = [c[0]["content"] for c in completions]
+    raw_inside = [m.group(1) if (m := match_format.search(r)) else None for r in responses]
+    extracted  = [extract_solution_answer(raw) for raw in raw_inside]
     scores = []
     for guess, true_answer in zip(extracted, answer):
         if guess is None:
             scores.append(0.0)
         elif guess == true_answer:
             scores.append(3.0)
-        elif guess.strip() == true_answer.strip():
-            scores.append(1.5)
         else:
             try:
-                ratio = float(guess.replace(",", "")) / float(true_answer)
+                ratio = float(guess) / float(true_answer)
                 scores.append(1.0 if 0.9 <= ratio <= 1.1 else 0.5 if 0.8 <= ratio <= 1.2 else -1.5)
             except (ValueError, ZeroDivisionError):
                 scores.append(-1.5)

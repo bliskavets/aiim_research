@@ -113,6 +113,19 @@ class GTPORolloutTrainer(GRPOTrainer):
 
         del logits, log_probs  # free memory before GTPO computation
 
+        # ── guard: no reward signal → zero loss, skip GTPO (mirrors GRPO behaviour) ──
+        # When all rollouts in the group have identical rewards, seq_advantages std=0
+        # and GRPO would produce zero gradients. Without this guard, GTPO would still
+        # backpropagate confidence-based "ghost gradients" that corrupt the model.
+        if seq_advantages.std() < EPS:
+            if self._log_step % self.save_every_steps == 0:
+                try:
+                    self._log_rollout(inputs, confidence.detach(), topk_lp, topk_ids)
+                except Exception:
+                    pass
+            self._log_step += 1
+            return per_token_logps.sum() * 0.0  # zero loss with grad_fn attached
+
         # ── reference logps (for old ratio) ──────────────────────────────────
         old_per_token_logps = inputs.get("old_per_token_logps")
         if old_per_token_logps is None:

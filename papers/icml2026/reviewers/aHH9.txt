@@ -1,0 +1,140 @@
+> Official Review of Submission11421 by Reviewer aHH9
+Official Reviewby Reviewer aHH913 Mar 2026, 13:08 (modified: 07 Apr 2026, 05:30)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors, Reviewer aHH9Revisions
+Summary:
+SAGE is a test-time alignment method that enables Large Language Models (LLMs) to refine their own outputs during inference without requiring additional training or external reward models. The system uses the base LLM as a "soft judge" by calculating a calibrated contrastive label margin from log-probabilities to serve as a continuous preference signal. It introduces an iterative algorithm that groups candidates into "good" and "bad" sets to extract a stable textual "gradient" for guiding subsequent generations.
+
+Strengths And Weaknesses:
+Strengths and Weaknesses
+Strengths
+Self-Sufficient Alignment: Moving away from external reward models (RMs) reduces system complexity and avoids the "proxy mismatch" where the RM is misaligned with the generator.
+Robust Feedback Heuristics: Using grouped selection (good sets vs. bad sets) rather than extreme-only comparisons makes the textual guidance much more stable and less sensitive to outliers.
+Continuous Signal: Converting discrete judge tags into a calibrated log-probability margin provides a fine-grained preference signal that supports better ranking than simple voting.
+Weaknesses
+Iterative refinement is a token hog. While the authors claim it’s "resource-lean," the sequential nature of generating (N) hypotheses over (T) epochs means high latency that might not fly in real-time applications.
+If the base model isn't smart enough to get the math right, can we really trust its internal "confidence" to judge it correctly?. There’s a risk of the judge simply reinforcing the model's own hallucinations.
+he "textual gradient" is just a summarization of differences. Its effectiveness depends entirely on the LLM’s ability to reflect, which varies wildly across different model scales and domains.
+The gains are most impressive on MATH-500. For more subjective tasks like AlpacaEval, the win rates might be partly driven by the model simply learning to be more "verbose" or "helpful-sounding" rather than actually better.
+Soundness: 3: good
+Presentation: 3: good
+Significance: 2: fair
+Originality: 3: good
+Key Questions For Authors:
+Can you provide a breakdown of the wall-clock time for a full SAGE run vs. a simple Best-of-
+ with an RM? If the improvement takes 
+ longer, is it worth it for production?
+Have you tested this on larger models (e.g., 70B+)? Smaller models often have "blind spots" where they are confident but wrong; I suspect SAGE works better as the model gets bigger and its self-assessment improves.
+In Figure 4(b), the RM score dips before rising. Does SAGE ever get stuck in a "self-congratulatory" loop where the textual gradient reinforces an incorrect but consistent reasoning path?
+Limitations:
+yes
+
+Overall Recommendation: 4: Weak accept: Technically solid paper that advances at least one sub-area of AI, with a contribution that others are likely to build on, but with some weaknesses that limit its impact (e.g., limited evaluation). Please use sparingly.
+Confidence: 3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked.
+Compliance With LLM Reviewing Policy: Affirmed.
+Code Of Conduct Acknowledgement: Affirmed.
+Final Justification:
+The authors have addressed some of the concerns. I have raised my score.
+
+
+
+=============
+
+
+
+Rebuttal by Authors
+Rebuttalby Authors (Mark Klibanov, Barys Liskavets, Maxim Ushakov, Shane K. Luke, +3 more)31 Mar 2026, 08:27 (modified: 31 Mar 2026, 15:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, AuthorsRevisions
+Rebuttal:
+We would like to thank the reviewer for their thoughtful feedback and comments. We are pleased the reviewer recognised the self-sufficient nature of the design — in particular, how a calibrated log-probability margin sidesteps the proxy mismatch that external reward models typically introduce. Below we have answered the questions. Please don't hesitate to let us know if anything was unclear or if you require additional clarification.
+
+We denote the following abbreviations:
+
+FsfairX = sfairXC/FsfairX-LLaMA3-RM-v0.1;
+SW-Qwen3 = Skywork/Skywork-Reward-V2-Qwen3-8B;
+SW-Llama = Skywork/Skywork-Reward-V2-Llama-3.1-8B
+Can you provide a wall-clock breakdown for SAGE vs. Best-of-N? If the improvement takes 3x longer, is it worth it?
+
+We ran wall-clock measurements on MATH-500 (A100 80 GB) for Qwen3-1.7B and Qwen3-8B across three RMs. SAGE consistently outperforms BoN at fixed N and at time-matched N. For the 1.7B model, SAGE requires ~5.7× less VRAM than BoN+8B RM yet achieves higher accuracy.
+
+MATH-500, Qwen3-1.7B
+
+Method	Accuracy	Wall-clock
+Baseline (greedy, t=0.0)	0.56	22.0s
+BoN (FsfairX, N=21)	0.62	43.0s
+BoN (FsfairX, N=70)	0.66	163.7s
+BoN (SW-Qwen3, N=70)	0.72	168.7s
+BoN (SW-Llama, N=21)	0.84	53.3s
+BoN (SW-Llama, N=70)	0.86	144.1s
+BoN (SAGE contrastive scores, N=7)	0.78	48.4s
+SAGE, 1 optimization epoch, N=7	0.84	105.5s
+SAGE, 2 optimization epochs, N=7	0.88	152.4s
+If the base model isn't smart enough to get math right, can we really trust its internal confidence to judge correctly?
+
+While our main experiments use 8B models as a practical balance between size and self-assessment quality, we find that even substantially smaller models retain meaningful self-evaluation ability. We ran Qwen3-1.7B on MATH-500, comparing SAGE's contrastive margin scores against three larger (8B) RMs:
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	0.56
+BoN (FsfairX, N=21)	0.62
+BoN (SW-Qwen3, N=21)	0.68
+BoN (SW-Llama, N=21)	0.84
+BoN (SAGE contrastive scores, N=7)	0.78
+Only SW-Llama achieves higher ranking accuracy. Yet SAGE with 2 epochs (0.88) still surpasses that best BoN+RM result (0.86), showing iterative refinement brings gains beyond what any ranking method achieves alone.
+
+The "textual gradient" is just a summarization of differences — effectiveness varies wildly across scales and domains.
+
+We agree reflective quality varies; we don't claim uniformity. It is consistently useful in practice: (1) experiments on Qwen and Llama families show similar relative gains on both architectures; (2) Qwen3-1.7B still yields meaningful and actionable gradients — accuracy improves from 0.56 to 0.88 over 2 epochs, confirming the gradients are not noise.
+
+AlpacaEval wins may be partly driven by verbosity rather than quality.
+
+In Table 1 we report LC-WinRate [1] (62.99 for Qwen, 47.1 for Llama), which explicitly corrects for length bias — confirming wins are not verbosity-driven. Supplementary experiments on MMLU-Pro STEM and IFEval subsets, where length is irrelevant, further support this:
+
+IFEval subset, Qwen3-8B-FP8, seed=42
+
+Method	Prompt acc	Instr acc
+Baseline (greedy, t=0.0)	42.0%	56.8%
+BoN (FsfairX, N=7)	46.0%	60.8%
+SAGE, 2 optimization epochs, N=7	70.0%	75.7%
+MMLU-Pro STEM subset, Qwen3-8B-FP8, seed=42
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	48.0%
+BoN (FsfairX, N=7)	52.0%
+SAGE, 2 optimization epochs, N=7	68.0%
+SAGE adds 28 pts on IFEval and 20 pts on MMLU-Pro STEM vs. only 4 pts for BoN on both.
+
+References:
+
+Dubois et al., Length-Controlled AlpacaEval, https://arxiv.org/abs/2404.04475
+Have you tested this on larger models (e.g., 70B+)?
+
+We ran Qwen3-32B-FP8 on MATH-500 subset (seed=42):
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	0.80
+BoN (SW-Llama, N=7)	0.94
+SAGE, 2 optimization epochs, N=7	0.97
+SAGE outperforms BoN+strong RM by 3 pts (0.97 vs. 0.94) from a strong 0.80 baseline.
+
+Does SAGE ever get stuck in a "self-congratulatory" loop where the gradient reinforces incorrect but consistent reasoning?
+
+We have not observed self-reinforcing loops. The initial RM score dip (Fig. 4b) is due to generator-RM distribution mismatch, which resolves as optimisation progresses. To support this, we tracked both metrics across epochs on a MATH-500 subset with Qwen3-1.7B, using Skywork/Skywork-Reward-V2-Qwen3-8B as the reward model. Since both models come from the Qwen family, the overlap in their training data is presumably large:
+
+Epoch	Mean RM score	Mean SAGE score
+Initial	+4.40	+5.91
+Epoch 0	+8.36	+10.82
+Epoch 1	+9.43	+12.96
+Pearson correlation >0.99 — both metrics improve monotonically illustrating that models trained on similar data can evaluate each other's generations more reliably. Using the model's own contrastive scores (as SAGE does) naturally avoids RM distribution mismatch.
+
+
+
+
+==============
+
+
+
+
+> Rebuttal Acknowledgement by Reviewer aHH9
+Rebuttal Acknowledgementby Reviewer aHH906 Apr 2026, 14:48Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors
+Acknowledgement: (a) Fully resolved - My concerns have been adequately addressed. If you select this option, please consider adjusting your score accordingly.
+Reasons:
+Thanks for the comprehensive responses. I have raised my score.
+
+

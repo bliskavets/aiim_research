@@ -1,0 +1,11 @@
+Paper Decision
+Decisionby Program Chairs30 Apr 2026, 17:58 (modified: 30 Apr 2026, 20:08)Program Chairs, AuthorsRevisions
+Decision: Reject
+Comment:
+The paper has received three positive reviews and one negative reviews, leading to the paper currently below the threshold. During the rebtual phase, the negative reviewer has also first engaged with the author, although there is lack a final confirm of the receipt of the last results the author provides.
+
+In the discussion phase (unseen to authors), reviewer pDvu is the only one who participates the discussion, and this happens after the authors' author-AC confidential discussion, suggest reviewer pDvu has noted the last response made by the author.
+
+Given the borderline situation, the AC has read through the reviews and unfortunately, the AC believe reviewer pDvu has a solid point: a method that improves non-reasoning models to solve reasoning benchmarks is probably not the best way to evaluate.
+
+Thus, the AC decides to consider all reviewers comments equally, which unfortunately leads to an average score below the threshold.

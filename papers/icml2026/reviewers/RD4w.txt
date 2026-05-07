@@ -1,0 +1,106 @@
+> Official Review of Submission11421 by Reviewer RD4w
+Official Reviewby Reviewer RD4w13 Mar 2026, 06:04 (modified: 07 Apr 2026, 05:30)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors, Reviewer RD4wRevisions
+Summary:
+The paper proposes a test-time alignment method that iteratively optimizes model outputs through post-evaluation grouping to improve accuracy without relying on retraining or external models.
+
+Strengths And Weaknesses:
+Strengths:
+
+The experimental results of the paper are significant.
+The proposed method does not require retraining and does not depend on external models.
+Weaknesses:
+
+The paper does not conduct experiments on stronger llms, such as Gemini, GPT, DeepSeek, Qwen3-235B, etc.
+The paper evaluates based on aspects, but does not clearly explain how these aspects are determined.
+In line 220, the paper claims that group-wise comparisons can achieve more stable guidance and improved downstream transfer, but no experimental proof is provided for this claim. If the group size is 1 (i.e., using only the best and the worst), how large is the performance gap?
+Soundness: 3: good
+Presentation: 3: good
+Significance: 3: good
+Originality: 3: good
+Key Questions For Authors:
+Why was GPT-4.1 used for prompt tuning when implementing SPO, and could this be one of the reasons for SPO's suboptimal performance?
+As mentioned in Weakness 2, in Section 3.2.2, a small set of human-interpretable aspects needs to be determined. How are these aspects determined? Do different tasks require different aspects? If aspects are modified, what is the impact on the final results?
+As mentioned in Weakness 3, how should the 
+ parameter be selected in practical applications?
+What are the differences in cost and time between the proposed method and other baselines?
+Limitations:
+yes
+
+Overall Recommendation: 4: Weak accept: Technically solid paper that advances at least one sub-area of AI, with a contribution that others are likely to build on, but with some weaknesses that limit its impact (e.g., limited evaluation). Please use sparingly.
+Confidence: 3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked.
+Compliance With LLM Reviewing Policy: Affirmed.
+Code Of Conduct Acknowledgement: Affirmed.
+Final Justification:
+The authors have addressed by initial concerns. My justification is totally from the contributions of the work itself. The proposed method is a simpe advancement of test-time alignment of LLMs.
+
+
+
+============
+
+
+
+Rebuttal by Authors
+Rebuttalby Authors (Mark Klibanov, Barys Liskavets, Maxim Ushakov, Shane K. Luke, +3 more)31 Mar 2026, 08:34 (modified: 31 Mar 2026, 15:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, AuthorsRevisions
+Rebuttal:
+We would like to thank the reviewer for their thoughtful feedback and comments. We are pleased the reviewer found the experimental results significant and noted the practical appeal of not requiring retraining or any external model. Below we have answered the questions. Please don't hesitate to let us know if anything was unclear or if you require additional clarification.
+
+We denote the following abbreviations:
+
+FsfairX = sfairXC/FsfairX-LLaMA3-RM-v0.1;
+SW-Qwen3 = Skywork/Skywork-Reward-V2-Qwen3-8B;
+SW-Llama = Skywork/Skywork-Reward-V2-Llama-3.1-8B
+The paper does not conduct experiments on stronger LLMs, such as Gemini, GPT, DeepSeek, Qwen3-235B, etc.
+
+Our method requires access to a model's log-probabilities, so we are limited to open-source models with publicly available weights. All experiments were conducted on a single A100 80 GB GPU during the review period.
+
+To address the reviewer's concern we ran additional experiments on Qwen3-32B-FP8 (MATH-500 subset, seed=42):
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	0.80
+BoN (SW-Llama, N=7)	0.94
+SAGE, 2 optimization epochs, N=7	0.97
+The 32B model confirms the trend at smaller scales: SAGE outperforms BoN by 3 pts (0.97 vs. 0.94) against a strong external RM (SW-Llama, top-ranked on RewardBench), and from a strong 0.80 baseline — the method does not lose effectiveness as model capability increases.
+
+How are aspects determined? Do different tasks require different aspects? What is the impact when aspects are modified?
+
+The aspects are determined by the user before running the method, by writing a judge prompt that describes what each aspect covers and asks the model to produce a verdict in a specific structured format. The judge prompt together with its aspect definitions acts as a hyperparameter controlling which dimensions of quality the candidate responses are evaluated on.
+
+Per-aspect soft contrastive margin scores are weighted and summed for candidate ranking (§3.2.2). Since each aspect is defined through natural language in the judge prompt, targeting a different quality profile is as simple as editing that prompt — no method changes required. Aspects are scored independently, so adding or redefining one does not disturb the others. The same method can simultaneously optimise for helpfulness and brevity, or helpfulness and a warm tone, just by describing those properties differently in the judge prompt.
+
+Why was GPT-4.1 used for prompt tuning when implementing SPO?
+
+To avoid deviating from the original method, we followed the SPO authors' library (MetaGPT), which recommends GPT-4o for prompt optimisation. The library's templates work well with GPT-4* models but transfer poorly to Qwen. Rather than modifying SPO's setup (which could bias the comparison) we used the most recent compatible GPT model as specified by the original implementation.
+
+Group-wise comparisons claim lacks experimental proof. How should m_min be selected?
+
+Using only the single best and worst candidate (group size 1) is often suboptimal: no scoring signal is perfect, and a genuinely good response can occasionally rank below a weaker one. With groups this small, the textual gradient becomes noisy and convergence suffers.
+
+We recommend 1 < m_min < N/2. In our experiments m_min=3 works well across tasks — on mathematical problems the initial top-3 hit rate is 0.93 (Figure 5b), so a positive group of that size reliably contains high-quality generations.
+
+What are the differences in cost and time between the proposed method and other baselines?
+
+We ran evaluations on MATH-500 subset (A100 80 GB). SAGE outperforms BoN when matched at N=7 and also when BoN is given enough budget to match SAGE's wall-clock time. SAGE with the 1.7B model uses ~5.7× less VRAM than BoN+8B RM. For TPO: ~80% ±5% of SAGE's wall-clock at default settings.
+
+MATH-500, Qwen3-1.7B
+
+Method	Accuracy	Wall-clock
+Baseline	0.56	22.0s
+BoN (FsfairX, N=21)	0.62	43.0s
+BoN (FsfairX, N=70)	0.66	163.7s
+BoN (SW-Llama, N=21)	0.84	47.2s
+BoN (SW-Llama, N=70)	0.86	144.1s
+SAGE, 1 epoch, N=7	0.84	105.5s
+SAGE, 2 epochs, N=7	0.88	152.4s
+For the 8B generator: SAGE 2-epoch (0.97, 245.6s) outperforms BoN (SW-Qwen3, N=120) at 0.76 in 270.7s.
+
+
+
+============
+
+
+
+Rebuttal Acknowledgement by Reviewer RD4w
+Rebuttal Acknowledgementby Reviewer RD4w03 Apr 2026, 06:48Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors
+Acknowledgement: (a) Fully resolved - My concerns have been adequately addressed. If you select this option, please consider adjusting your score accordingly.
+Reasons:
+I am satisfied with the authors’ response. However, I maintain my score, as I initially considered these questions to be straightforward to address.

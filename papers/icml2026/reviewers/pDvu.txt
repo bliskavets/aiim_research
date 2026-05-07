@@ -1,0 +1,168 @@
+> Official Review of Submission11421 by Reviewer pDvu
+Official Reviewby Reviewer pDvu10 Mar 2026, 07:04 (modified: 07 Apr 2026, 05:30)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors, Reviewer pDvuRevisions
+Summary:
+In this work the paper proposes SAGE. SAGE leverages the generator as a soft-judge to enhance its response quality at test-time. Initially the model generate multiple candidates, then the same model is prompted to function as a LLM-Judge for its own response. In this process they take the soft probabilities for reward signal.
+
+The paper uses two baseline models Qwen3-8B and Llama-3.1-8B on three benchmarks MATH-500, AlpacaEval, and XSTest. The baselines are tested agains three methods BoN, TPO, SPO.
+
+The performance gains are more pronounced with Qwen then Llama.
+
+Strengths And Weaknesses:
+Qwen3 technical reports Qwen3-8B MATH-500 scores to be 87.4 (non-reasoning), 97.4 (reasoning). The reported baseline in Table 1 of this paper reports the performance of a "base" model. Why is this? Additionally it seems like the paper is testing on a non-reasoning setting, are the gains generalizable in reasoning settings? From what we have now it seems like the default test-time scaling capability reported in the Qwen3 technical report outperforms SAGE.
+
+Lack of benchmarks. The paper uses three benchmarks MATH-500, AlpacaEval, XSTest, where the baseline Qwen3-8B model scores score 84.4, 57.8, 50.12 respectively. I wonder if SAGE will also work in questions that are way harder. I think the core of test-time scaling is giving a model the ability to solve something it couldnt have without it. It will be interesting to see how much they score on harder benchmarks.
+
+The RM baseline seems outdated. The paper uses sfairXC/FsfairXLLaMA3-RM-v0.1 as their RM which is old compared to Qwen3-8B. Im curious how recent RMs may change the score. GPT-4.1 used for SPO is also a few month older than Qwen3-8B.
+
+Soundness: 3: good
+Presentation: 3: good
+Significance: 2: fair
+Originality: 2: fair
+Key Questions For Authors:
+see strength and weaknesses.
+
+Limitations:
+yes
+
+Overall Recommendation: 3: Weak reject: A paper with clear merits, but also some weaknesses, which overall outweigh the merits. Papers in this category require revisions before they can be meaningfully built upon by others. Please use sparingly.
+Confidence: 3: You are fairly confident in your assessment. It is possible that you did not understand some parts of the submission or that you are unfamiliar with some pieces of related work. Math/other details were not carefully checked.
+Compliance With LLM Reviewing Policy: Affirmed.
+Code Of Conduct Acknowledgement: Affirmed.
+
+
+
+
+==============
+
+
+
+Rebuttal by Authors
+Rebuttalby Authors (Mark Klibanov, Barys Liskavets, Maxim Ushakov, Shane K. Luke, +3 more)31 Mar 2026, 08:43 (modified: 31 Mar 2026, 15:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, AuthorsRevisions
+Rebuttal:
+We would like to thank the reviewer for their thoughtful feedback and comments. We are glad the reviewer found the approach technically sound and the performance gains over baselines apparent. Below we have answered the questions. Please don't hesitate to let us know if anything was unclear or if you require additional clarification.
+
+Qwen3 technical report scores 87.4 (non-reasoning) and 97.4 (reasoning). Why is the baseline a "base" model? Are gains generalizable in reasoning mode?
+
+The reviewer is correct that we evaluate in non-reasoning mode. The reason is practical: in reasoning mode, Qwen3 occasionally produces very long chains of thought that either (1) get cut off before reaching a final answer within the token budget, or (2) become too long to fit as a group into the textual gradient prompt on a single A100 80 GB GPU. Non-reasoning mode avoids both issues and keeps the evaluation clean. That said, we have observed in our experiments that SAGE also improves outputs generated in reasoning mode — the mechanism is not specific to either setting.
+
+The paper uses only three benchmarks. Does SAGE work on harder tasks?
+
+To address this concern we ran two additional sets of experiments on IFEval and MMLU-Pro STEM subsets. Results are provided below:
+
+IFEval subset, Qwen3-8B-FP8, seed=42
+
+Method	Prompt acc	Instr acc
+Baseline (greedy, t=0.0)	42.0%	56.8%
+BoN (FsfairX, N=7)	46.0%	60.8%
+SAGE, 2 optimization epochs, N=7	70.0%	75.7%
+MMLU-Pro STEM subset, Qwen3-8B-FP8, seed=42
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	48.0%
+BoN (FsfairX, N=7)	52.0%
+SAGE, 2 optimization epochs, N=7	68.0%
+(FsfairX = sfairXC/FsfairX-LLaMA3-RM-v0.1)
+
+We observe that SAGE produces strong gains on both benchmarks. On IFEval — a benchmark that directly tests strict instruction-following — prompt accuracy improves from 42% to 70%, a 28-point gain that BoN (46%) falls well short of. MMLU-Pro STEM tells a similar story: BoN adds only 4 points while SAGE adds 20. These results confirm that iterative self-refinement generalises to harder and more diverse evaluation settings beyond MATH-500.
+
+The RM baseline (FsfairX-LLaMA3-RM) is outdated compared to Qwen3-8B. How do more recent RMs change the score?
+
+To answer this, we ran extensive experiments on MATH-500 subsets with Qwen3-1.7B and Qwen3-8B, using three reward models of varying recency: FsfairX, SW-Qwen3, and SW-Llama — the latter two being among the current top-performing models on RewardBench.
+
+The strongest BoN result with the updated RM (SW-Llama, N=70) reaches 0.86 for Qwen3-1.7B. SAGE with 2 optimization epochs still outperforms this at 0.88, using only the generator model and no external RM. For the 8B generator the gap is even larger: SAGE reaches 0.97 while the strongest BoN baselines are around 0.76.
+
+MATH-500 subset, Qwen3-1.7B
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	0.56
+BoN (FsfairX, N=21)	0.62
+BoN (FsfairX, N=70)	0.66
+BoN (SW-Qwen3, N=21)	0.68
+BoN (SW-Qwen3, N=70)	0.72
+BoN (SW-Llama, N=21)	0.84
+BoN (SW-Llama, N=70)	0.86
+BoN (SAGE contrastive scores, N=7)	0.78
+SAGE, 1 optimization epoch, N=7	0.84
+SAGE, 2 optimization epochs, N=7	0.88
+MATH-500 subset, Qwen3-8B
+
+Method	Accuracy
+Baseline (greedy, t=0.0)	0.61
+BoN (FsfairX, N=21)	0.69
+BoN (FsfairX, N=120)	0.72
+BoN (SW-Qwen3, N=21)	0.66
+BoN (SW-Qwen3, N=120)	0.76
+BoN (SW-Llama, N=21)	?
+BoN (SW-Llama, N=70)	?
+SAGE, 1 optimization epoch, N=7	0.93
+SAGE, 2 optimization epochs, N=7	0.97
+GPT-4.1 used for SPO is also a few months older than Qwen3-8B.
+
+We used GPT-4.1 because the SPO implementation from the authors' MetaGPT library [1] targets GPT-4o-class models. We found empirically that the prompt templates and generation hyperparameters bundled with the library transfer poorly to Qwen, but work as intended with GPT-4* models. To keep our SPO baseline faithful to the original implementation we chose the most recent GPT version that is compatible with it, rather than adapting the method to Qwen — which would have introduced a different confound.
+
+References:
+
+MetaGPT library by the SPO authors: https://github.com/FoundationAgents/MetaGPT
+
+
+
+============
+
+
+
+Rebuttal Acknowledgement by Reviewer pDvu
+Rebuttal Acknowledgement
+Reply type
+by Reviewer pDvu04 Apr 2026, 04:52Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors
+Acknowledgement: (b) Partially resolved - I have follow-up questions for the authors.
+Reasons:
+Performance reasoning models were not presented (please correct me if I've missed it). Still think the benchmarks are too easy. How about something like AIME2026? It has <100 instances, which sounds like a reasonable inference budget.
+
+
+
+============
+
+
+
+Reply Rebuttal Comment by Authors
+Reply Rebuttal Commentby Authors (Mark Klibanov, Barys Liskavets, Maxim Ushakov, Shane K. Luke, +3 more)05 Apr 2026, 14:38 (modified: 07 Apr 2026, 23:30)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, AuthorsRevisions
+Comment:
+Updated Response
+
+We would like to thank the reviewer for the suggestion: we ran additional experiments on AIME-2026 using two Qwen3 models in reasoning mode.
+
+Qwen3-8B results:
+
+Method	Accuracy
+Baseline (greedy)	0.57
+Best-of-N (Skywork-Reward-V2-Llama-3.1-8B, N=7)	0.70
+SAGE, 2 optimization epochs, N=7	0.77
+Notably, SAGE outperforms Best-of-N paired with Skywork-Reward-V2-Llama-3.1-8B, a top-ranked reward model on RewardBench [1], while requiring no external reward model at all.
+
+Qwen3.5-4B-Thinking-2507 newest generation model results (max sequence length = 32768):
+
+Method	Accuracy
+Baseline (greedy)	0.73
+SAGE, 2 optimization epochs, N=7	0.80
+A direct BoN+RM comparison for this model is left for the camera-ready version due to time constraints. Nevertheless, the results confirm that SAGE delivers consistent gains across model sizes and generations without relying on any external reward signal. The improvement comes entirely from the model's own contrastive self-evaluation and iterative refinement.
+
+Should the reviewer have any remaining questions or require further clarification on any aspect of our work, please do not hesitate to ask; we would be happy to provide additional details.
+
+References: [1] https://huggingface.co/spaces/allenai/reward-bench - RewardBench
+
+
+
+=============
+
+
+
+Author AC Confidential Comment by Authors
+Author AC Confidential Commentby Authors (Mark Klibanov, Barys Liskavets, Maxim Ushakov, Shane K. Luke, +3 more)08 Apr 2026, 13:37Program Chairs, Senior Area Chairs, Area Chairs, Authors
+Comment:
+Dear Area Chair,
+
+We would like to bring to your attention that we have attempted to address all concerns raised by Reviewer pDvu in our rebuttal. Unfortunately, we have not received a response from this reviewer, despite the Author-Reviewer discussion period is now almost closed.
+
+We hope our responses have adequately addressed their concerns, and we are happy to provide any further clarification if needed.
+
+Thank you for your time and consideration.

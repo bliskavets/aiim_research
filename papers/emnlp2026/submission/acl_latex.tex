@@ -594,48 +594,7 @@ Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
 \label{fig:ablation-qwen-math500}
 \end{figure}
 
-We analyze how the reward model score evolves across optimization epochs on AlpacaEval (see \cref{fig:ablation-rewardscore}). We also ablate compute allocation on MATH-500 by varying the number of samples per generation stage \(N\) and the number of optimization epochs, denoted \(T\), proportional to \(B/N\). We report subset scores in \cref{tab:ablation-N-epochs}. All experiments are conducted using the Qwen3-8B model.
-
-\begin{figure*}[t]
-\centering
-\begin{minipage}[t]{0.3333\textwidth}
-\centering
-\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot__w_rm_name.pdf}
-\end{minipage}%
-\begin{minipage}[t]{0.3333\textwidth}
-\centering
-\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot_llama_3_tulu_8b_rm__w_rm_name.pdf}
-\end{minipage}%
-\begin{minipage}[t]{0.3333\textwidth}
-\centering
-\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_boxplot_scientific.pdf}
-\end{minipage}
-\caption{Reward score across optimization epochs on AlpacaEval.}
-\label{fig:ablation-rewardscore}
-\end{figure*}
-
-\begin{table}[t]
-\centering
-\begin{small}
-\begin{sc}
-\begin{tabular}{lc}
-\toprule
-N, \(T\) & MATH-500 subset score \\
-\midrule
-5,4 & 93.9 \\
-7,3 & 90.9 \\
-10,2 & 87.8 \\
-20,1 & 81.9 \\
-\bottomrule
-\end{tabular}
-\end{sc}
-\end{small}
-\caption{Compute allocation ablation on MATH-500: subset score vs. sampling budget \(N\) and optimization epochs.}
-\label{tab:ablation-N-epochs}
-\end{table}
-
-
-\noindent For temperature selection, we evaluate judgment and generation separately. For judgment, lower temperatures yield higher ranking quality, as measured by NDCG@7 over pre-labeled top-7 candidates (\cref{fig:temp-ablation}a in Appendix). For generation, a higher temperature (\(\approx 0.9\)) maximizes correctness on a MATH-500 subset via Best-of-\(n\). This supports a diversify-then-anneal schedule in which generation is exploratory while judgment remains strict (\cref{fig:temp-ablation}b).
+\textcolor{blue}{AlpacaEval reward dynamics across epochs and the compute-allocation ablation (\(N\), \(T\) sweep on MATH-500) are in \cref{app:ablation-more}. Temperature ablations (\cref{fig:temp-ablation} in Appendix) confirm that lower judging temperature improves ranking quality while higher generation temperature (\(\approx 0.9\)) maximizes solution discovery.}
 
 % \begin{figure}[t]
 % \centering
@@ -1169,6 +1128,48 @@ X=100 & 0.802 \\
 \label{tab:judge-threshold-ndcg}
 \end{table}
 
+
+\section{Additional ablations}
+\label{app:ablation-more}
+\textcolor{blue}{\noindent We analyze how the reward model score evolves across optimization epochs on AlpacaEval (\cref{fig:ablation-rewardscore}) and ablate compute allocation on MATH-500 by varying the number of samples per generation stage \(N\) and the number of optimization epochs \(T\) (\cref{tab:ablation-N-epochs}). All experiments use Qwen3-8B.}
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot__w_rm_name.pdf}
+\end{minipage}%
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot_llama_3_tulu_8b_rm__w_rm_name.pdf}
+\end{minipage}%
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_boxplot_scientific.pdf}
+\end{minipage}
+\caption{Reward score across optimization epochs on AlpacaEval.}
+\label{fig:ablation-rewardscore}
+\end{figure*}
+
+\begin{table}[h]
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lc}
+\toprule
+N, \(T\) & MATH-500 subset score \\
+\midrule
+5,4 & 93.9 \\
+7,3 & 90.9 \\
+10,2 & 87.8 \\
+20,1 & 81.9 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\caption{Compute allocation ablation on MATH-500: subset score vs. sampling budget \(N\) and optimization epochs.}
+\label{tab:ablation-N-epochs}
+\end{table}
 
 \section{Additional experiments}
 \label{app:additional-experiments}

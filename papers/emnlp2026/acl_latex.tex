@@ -491,7 +491,7 @@ For MATH-500, we use AGIEval-Math \citep{zhongagieval}; for AlpacaEval we use a 
 By default, we use temperature of 0.7 for generation and 0.1 for judging. For math problems, we typically use a higher generation temperature in early stages to encourage solution diversity. We ablate both generation and judging temperatures on MATH-500, as reported in \cref{sec:ablations}. Prompts and evaluation criteria are provided in the Appendix.
 For math-oriented tasks, we anneal the generation temperature from 0.8--1.0 in the initial stage to 0.7 in subsequent stages. Unless otherwise noted, we sample \(N=7\) hypotheses per generation stage and run two optimization epochs per benchmark, excluding the initial generation stage. Because the good and bad sets are selected automatically, we do not fix their sizes; the median size of each group is two to three hypotheses.
 
-All Qwen3-8B experiments in \cref{tab:results-by-model} use non-thinking mode; reasoning-mode traces are substantially longer and increase per-iteration judging cost. \method{} is equally applicable in reasoning mode: results on AIME~2026 (Qwen3-8B and Qwen3.5-4B-Thinking), at additional model scales (Qwen3-1.7B, Qwen3-32B-FP8), and on further benchmarks (IFEval, MMLU-Pro STEM) are in \cref{app:additional-experiments}.
+\textcolor{blue}{All Qwen3-8B experiments in \cref{tab:results-by-model} use non-thinking mode; reasoning-mode traces are substantially longer and increase per-iteration judging cost. \method{} is equally applicable in reasoning mode: results on AIME~2026 (Qwen3-8B and Qwen3.5-4B-Thinking), at additional model scales (Qwen3-1.7B, Qwen3-32B-FP8), and on further benchmarks (IFEval, MMLU-Pro STEM) are in \cref{app:additional-experiments}.}
 
 \subsection{Main results}
 \noindent We report accuracy on MATH-500 and XSTest, and both pairwise win rate and length-controlled win rate on AlpacaEval. \Cref{tab:results-by-model} summarizes results for Qwen3-8B and Llama3-8B-Instruct under \method{} alongside competitive baselines including TPO \citep{litest}, SPO \citep{xiang2025self}, Best-of-\(N\), and the base models.
@@ -499,7 +499,7 @@ All Qwen3-8B experiments in \cref{tab:results-by-model} use non-thinking mode; r
 
 For Qwen3-8B, \method{} performs best on both math and general tasks. On MATH-500, it reaches the accuracy of \(92.0\), outperforming the base model as well as both Best-of-\(N\) and TPO. On AlpacaEval, it attains a win rate of \(74.9\) and LC win rate of \(62.99\), exceeding all baselines.  This advantage on math tasks appears to be driven by self-judging. Qwen3‑8B evaluates the correctness of its own generations more reliably than an external reward model, which leads to steadier improvements and higher final scores (\cref{fig:judge-rm-dynamics,tab:rm-ablation}).
 
-Llama3‑8B‑Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(49.2\) and LC win rate of \(47.1\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade‑off between safety and correctness. Overall, \method{} consistently outperforms strong inference‑time baselines without relying on an external reward model. The largest gains appear on math where self‑judged correctness is particularly effective. Results at additional model scales (1.7B, 32B) and on further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) are provided in \cref{app:additional-experiments}.
+Llama3‑8B‑Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(49.2\) and LC win rate of \(47.1\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade‑off between safety and correctness. Overall, \method{} consistently outperforms strong inference‑time baselines without relying on an external reward model. The largest gains appear on math where self‑judged correctness is particularly effective. \textcolor{blue}{Results at additional model scales (1.7B, 32B) and on further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) are provided in \cref{app:additional-experiments}.}
 
 
 \begin{table*}[t]
@@ -1041,6 +1041,7 @@ X=100 & 0.802 \\
 \label{app:ablation-more}
 \textcolor{blue}{\noindent We analyze how the reward model score evolves across optimization epochs on AlpacaEval (\cref{fig:ablation-rewardscore}) and ablate compute allocation on MATH-500 by varying the number of samples per generation stage \(N\) and the number of optimization epochs \(T\) (\cref{tab:ablation-N-epochs}). All experiments use Qwen3-8B.}
 
+{\color{blue}
 \begin{table}[h]
 \centering
 \begin{small}
@@ -1060,7 +1061,9 @@ N, \(T\) & MATH-500 subset score \\
 \caption{Compute allocation ablation on MATH-500: subset score vs. sampling budget \(N\) and optimization epochs.}
 \label{tab:ablation-N-epochs}
 \end{table}
+}
 
+\begingroup\color{blue}
 \section{Additional experiments}
 \label{app:additional-experiments}
 
@@ -1131,6 +1134,7 @@ BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
 \subsection{Evaluation on a broader range of benchmarks: IFEval and MMLU-Pro STEM}
 
 To assess generalization beyond \cref{sec:experiments}, we evaluate \method{} on IFEval, a strict instruction-following benchmark measuring prompt-level and instruction-level compliance, and on a subset of MMLU-Pro STEM covering multi-step reasoning across science and engineering domains. Results with Qwen3-8B-FP8 are shown in \Cref{tab:additional-benchmarks}. \method{} adds 28 percentage points on IFEval prompt accuracy and 20 points on MMLU-Pro STEM accuracy, compared to only 4 points for Best-of-\(N\) on both, confirming that iterative self-refinement generalizes to instruction-following and broad STEM reasoning beyond mathematical problem-solving.
+\endgroup
 
 \begin{figure}[h]
 \centering
@@ -1257,6 +1261,7 @@ following format exactly:
 \label{fig:appendix-qwen-alpaca-judge-attrs}
 \end{figure}
 
+{\color{blue}
 \begin{table*}[h]
 \centering
 \begin{small}
@@ -1277,8 +1282,10 @@ BoN (FsfairX-LLaMA3-RM-v0.1, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\
 \caption{IFEval and MMLU-Pro STEM results (Qwen3-8B-FP8, seed=42). IFEval reports prompt- and instruction-level accuracy; MMLU-Pro STEM reports overall accuracy.}
 \label{tab:additional-benchmarks}
 \end{table*}
+}
 
 
+{\color{blue}
 \begin{figure*}[t]
 \centering
 \begin{minipage}[t]{0.3333\textwidth}
@@ -1296,6 +1303,7 @@ BoN (FsfairX-LLaMA3-RM-v0.1, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\
 \caption{Reward score across optimization epochs on AlpacaEval.}
 \label{fig:ablation-rewardscore}
 \end{figure*}
+}
 
 \begin{figure}[h]
 \centering

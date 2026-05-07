@@ -1,0 +1,1321 @@
+\documentclass[11pt]{article}
+
+\usepackage[review]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% Figures
+\usepackage{subcaption}
+
+% Algorithm
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Plots (inline pgfplots figure)
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, shadows, calc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+
+% Colors (for any remaining color usage)
+\usepackage{xcolor}
+
+% Cross-references (load after hyperref, which acl.sty pulls in)
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\method}{SAGE}
+\newcommand{\budget}{B}
+\newcommand{\batchN}{N}
+
+\title{SAGE: Self-Assessed Gradient-based Enhancement for Test-Time Alignment of Large Language Models}
+
+\author{
+  \textbf{Anonymous submission}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present \method{}, a test-time alignment method for refining large language model (LLM) outputs at inference time without retraining or relying on external reward models. \method{} uses the same LLM as both generator and self-judge: candidate responses are scored using a calibrated contrastive label judgment prompt and the resulting log-probability margin serves as a continuous preference signal. An iterative refinement algorithm then uses these scores to form good and bad candidate sets, extract a textual gradient, and guide subsequent hypothesis generations under a token budget. 
+Across MATH-500, AlpacaEval, and XSTest, with Qwen3-8B and Llama3-8B-Instruct, \method{} consistently improves accuracy and preference metrics relative to existing test-time alignment approaches, with ablations showing that these gains are robust under fixed inference budgets and do not rely on external reward models. The approach is resource-lean and plug-and-play, and we release the code and prompts to facilitate adoption.
+\end{abstract}
+
+\section{Introduction}
+
+% \sout{Large language models (LLMs) pre-trained on vast amounts of unlabeled text have demonstrated strong generalization across a wide range of downstream tasks. Nonetheless, LLMs often require further tuning to ensure alignment, helpfulness, and appropriateness. Most traditional approaches, such as reinforcement learning from human feedback and direct preference optimization, are gradient-based methods that require iterative retraining, which hinders rapid adaptation across domains and data distributions. To address this limitation, test-time alignment techniques have been proposed that avoid fine-tuning and instead align LLMs during inference by leveraging interpretable textual feedback \cite{litest} rather than updating the pre-trained model.}
+
+Large language models (LLMs) pre-trained on vast amounts of unlabeled text have demonstrated strong generalization across a wide range of downstream tasks. Nonetheless, real deployments often require adapting behavior to new domains, user preferences, or safety constraints without the time, data access, or compute needed for retraining. Test-time alignment addresses this need by improving outputs \textbf{during inference}, while keeping model weights fixed. It typically allocates a small amount of additional inference compute and elicits interpretable preference signals to steer generation toward more helpful responses aligned with user preferences \cite{litest}. This paradigm offers a practical path to domain adaptation and preference alignment under privacy, compliance, and latency constraints, without modifying the pretrained model.
+
+
+Despite recent progress, existing state-of-the-art test-time alignment approaches, such as TPO \cite{litest} and Args \cite{khanov2024args}, still face several practical limitations. First, many of these methods rely on a separate reward model for scoring, which adds memory and latency overhead and introduces an additional component that can itself be misaligned or exploited. Second, relying solely on the single highest- and lowest-scoring responses for textual critiques can lead to noisy and outlier-sensitive feedback that fails to capture strengths or failure patterns across candidates, resulting in unstable or suboptimal refinement.
+% Third, TPO scales via more iterations and wider sampling but provides no explicit mechanism to enforce a token budget, which can lead to uncontrolled compute growth, redundant generations, and inefficiency under strict inference constraints such as latency or hardware limits.
+% }
+
+
+
+% \sout{We propose \method{}, which uses the base LLM as both a generator and a soft self-judge. Instead of requiring an external reward model, \method{} computes a continuous margin score from a discrete label judgment prompt, enabling fine-grained ranking of candidates. An iterative refinement loop under a token budget \(\budget\) promotes promising hypotheses and synthesizes textual guidance that shifts future samples toward better regions of the response space.}
+% \boris{
+We propose \method{}, which treats the base LLM as both a generator and a soft self-judge. Instead of relying on an external reward model, \method{} elicits a calibrated contrastive-label margin from a compact judging prompt, which enables fine-grained, model-internal preference scoring. A key component is an automatic contrastive grouping mechanism that forms representative good and bad sets, yielding a more stable textual `gradient' than extreme-only (best vs. worst) critiques and reducing sensitivity to outliers. The iterative loop then conditions generation on this gradient to refine future samples. In effect, \method{} leverages the LLM to surface its own implicit reward signal for test-time alignment, avoiding the need for additional reward models while operating under a small inference budget. An overview of \method{} in comparison to common test‑time alignment variants is presented in \Cref{fig:taxonomy_compact}.
+
+
+We conduct experiments on MATH-500 \citep{hendrycks2measuring}, AlpacaEval (including length-controlled LC win rate) \citep{dubois2024length}, and XSTest \citep{rottger2024xstest}, using Qwen3-8B \citep{yang2025qwen3} and Llama3-8B-Instruct \citep{grattafiori2024llama}. These benchmarks cover math reasoning (MATH-500), general instruction following (AlpacaEval), and safety/correctness stress tests (XSTest). We report accuracy on MATH-500/XSTest and win rate and length controlled (LC) win rate for AlpacaEval, comparing against commonly used inference-time baselines, including Best-of-\(N\), TPO \citep{litest} which relies on external reward model, and SPO \citep{xiang2025self}.
+\method{} consistently improves performance across these benchmarks without relying on an external reward model. On Qwen3-8B, \method{} improves accuracy and preference metrics across all evaluated domains. AlpacaEval win rate vs. GPT-4 increases from 57.8 to 74.9, XSTest accuracy from 89.3 to 93.5, and MATH-500 accuracy from 84.4 to 92.0. \method{} also outperforms inference-time baselines that rely on explicit reward models (e.g., Best-of-\(N\)+RM, TPO) and generic LLM-as-a-judge approaches, under comparable budgets. The same procedure also applies to Llama3-8B-Instruct, suggesting that \method{}’s self-judged textual-gradient refinement generalizes across model families.
+
+
+We summarize our contributions as follows:
+\begin{itemize}
+    \item We introduce \method{}, a test-time alignment method in which the base LLM provides its own soft reward model via a calibrated contrastive label-margin. As a result, the method avoids external reward models, reducing system complexity and potential reward signal misalignment.
+    \item We design a grouped selection and textual-gradient mechanism that constructs good and bad sets and distills concise guidance from the judge. Compared to best–vs.–worst ranking-based feedback, this leads to more stable refinement by reducing sensitivity to outliers and improving transfer across iterations.
+    \item We provide a practical self-judging recipe, called multi-aspect tagging with weights and confidence-threshold calibration, that turns discrete tags into a calibrated continuous score. This scoring scheme improves hypothesis ranking and provides a reliable correctness signal, particularly for verifiable tasks.
+   
+    \item Finally, we present an iterative test-time alignment procedure that integrates self-judged scoring, grouped selection, and textual gradients to progressively improve generations. We evaluate the resulting method on MATH-500, AlpacaEval (win/LC), and XSTest using Qwen3-8B \citep{yang2025qwen3} and Llama3-8B-Instruct \citep{grattafiori2024llama}. Code, prompts, and scoring configurations are released to support reproducibility, at: \url{https://anonymous.4open.science/r/SAGE2026-8309}.
+\end{itemize}
+
+
+
+% Optional teaser figure placeholder (replace with actual figure from figures/)
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=\columnwidth]{figures/figure_1_new.pdf}
+% % \caption{High-level overview of \method{}: the LLM generates hypotheses, self-judges them via a contrastive-label margin, extracts a textual ``gradient,'' and refines future samples.}
+% \caption{Comparison between test‑time alignment methods. \method{} acts post‑training and uses the base LLM as generator, soft self‑judge with a calibrated contrastive score, and textual‑gradient extractor—unlike LLM‑as‑judge heuristics or external RM–based scoring.}
+% \label{fig:pipeline}
+% \end{figure}
+
+% \begin{figure}[ht]
+% \centering
+% \resizebox{\columnwidth}{!}{
+% \begin{tikzpicture}[
+%     box/.style={rectangle, draw, rounded corners, minimum width=1.4cm, minimum height=0.7cm, align=center, font=\tiny},
+%     bubble/.style={rectangle, draw, rounded corners, fill=blue!5, minimum width=0.7cm, minimum height=0.3cm, font=\fontsize{4}{5}\selectfont},
+%     sage/.style={fill=green!5, thick, draw=green!60!black},
+%     sage_sub/.style={draw=green!60!black, rounded corners, minimum width=1.6cm, minimum height=0.6cm, align=center, font=\fontsize{7}{8}\selectfont},
+%     arrow/.style={-{Stealth[scale=0.6]}, thick},
+%     label/.style={font=\fontsize{6}{7}\selectfont\bfseries}
+% ]
+
+%     % === TOP LEFT: Trainable ===
+%     \node[label] at (0, 1.5) {Trainable (RLHF/DPO)};
+%     \node[box, fill=orange!5] (LLM1) at (0, 0.5) {LLM};
+%     \node[bubble] (A1) at (1.5, 0.8) {$a_1$};
+%     \node[bubble] (An1) at (1.5, 0.2) {$a_n$};
+%     \node[box, fill=orange!10] (RM1) at (3.0, 0.5) {Reward\\Function};
+    
+%     \draw[arrow] (LLM1.east) -- (A1.west);
+%     \draw[arrow] (LLM1.east) -- (An1.west);
+%     \draw[arrow] (A1.east) -| (RM1.west);
+%     \draw[arrow] (An1.east) -| (RM1.west);
+%     \draw[arrow] (RM1.south) -- ++(0,-0.3) -| node[pos=0.25, below, font=\fontsize{4}{5}\selectfont] {Update $\Delta\theta$} (LLM1.south);
+
+%     % === TOP RIGHT: Test-Time w/ RM (Shifted Closer) ===
+%     \node[label] at (5.5, 1.5) {Test-Time w/ RM};
+%     \node[box, fill=blue!2] (LLM2) at (5.5, 0.5) {LLM$^*$};
+%     \node[bubble] (A2) at (7.0, 0.8) {$a_1$};
+%     \node[bubble] (An2) at (7.0, 0.2) {$a_n$};
+%     \node[box, fill=blue!5] (RM2) at (8.5, 0.5) {Ext. RM};
+%     \node[bubble] (Best2) at (9.7, 0.5) {$a^*$};
+    
+%     \draw[arrow] (LLM2.east) -- (A2.west);
+%     \draw[arrow] (LLM2.east) -- (An2.west);
+%     \draw[arrow] (A2.east) -| (RM2.west);
+%     \draw[arrow] (An2.east) -| (RM2.west);
+%     \draw[arrow] (RM2.east) -- (Best2.west);
+
+%     % === BOTTOM LEFT: Baselines ===
+%     \node[label] at (0, -1.2) {Baselines (LLM-Judge)};
+%     \node[box, fill=blue!2] (LLM3) at (0, -2.2) {LLM};
+%     \node[bubble] (A3) at (1.5, -1.9) {$a_1$};
+%     \node[bubble] (An3) at (1.5, -2.5) {$a_n$};
+%     \node[box, fill=blue!5] (RM3) at (3.0, -2.2) {LLM-Judge};
+%     \node[bubble] (Best3) at (4.2, -2.2) {$a^*$};
+    
+%     \draw[arrow] (LLM3.east) -- (A3.west);
+%     \draw[arrow] (LLM3.east) -- (An3.west);
+%     \draw[arrow] (A3.east) -| (RM3.west);
+%     \draw[arrow] (An3.east) -| (RM3.west);
+%     \draw[arrow] (RM3.east) -- (Best3.west);
+
+%     % === BOTTOM RIGHT: SAGE (Shifted Closer) ===
+%     \node[label] at (5.5, -1.2) {SAGE (Ours)};
+%     \node[box, fill=blue!2] (LLM4) at (5.5, -2.2) {LLM};
+%     \node[bubble] (A4s) at (7.0, -1.9) {$a_1$};
+%     \node[bubble] (Ans) at (7.0, -2.5) {$a_n$};
+    
+%     % SAGE Stack (Large 7pt font maintained)
+%     \node[box, sage] (Judge4) at (9.2, -2.2) {LLM as\\Soft Judge};
+%     \node[sage_sub] (Scores) at (9.2, -3.1) {continuous\\scores};
+%     \node[sage_sub] (Groups) at (9.2, -4.0) {ranked\\groups};
+%     \node[box, sage] (Grad) at (7.0, -4.0) {Textual Gradient $\nabla$};
+    
+%     \draw[arrow] (LLM4.east) -- (A4s.west);
+%     \draw[arrow] (LLM4.east) -- (Ans.west);
+%     \draw[arrow] (A4s.east) -| (Judge4.west);
+%     \draw[arrow] (Ans.east) -| (Judge4.west);
+%     \draw[arrow] (Judge4) -- (Scores);
+%     \draw[arrow] (Scores) -- (Groups);
+%     \draw[arrow] (Groups) -- (Grad);
+    
+%     \draw[arrow] (Grad.north) -- node[left, font=\fontsize{4}{5}\selectfont, align=right, xshift=-2pt] {Iterative\\Update} (Ans.south);
+
+% \end{tikzpicture}
+% }
+% % \caption{Taxonomy of alignment methods. SAGE differs from existing paradigms [cite: 87, 88, 89] by using the frozen base LLM to produce continuous scores and ranked groups [cite: 75, 76] for iterative textual-gradient refinement.}
+% \caption{Comparison of test-time alignment methods. \method{} operates post-training and uses the base LLM as the generator, a calibrated soft self-judge, and a textual-gradient extractor, rather than relying on heuristic LLM judges or external reward models.}
+% \label{fig:taxonomy_compact}
+% \end{figure}
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/figure1_new_28012026.pdf}
+% \caption{High-level overview of \method{}: the LLM generates hypotheses, self-judges them via a contrastive-label margin, extracts a textual ``gradient,'' and refines future samples.}
+\caption{Comparison between test‑time alignment methods. \method{} acts post‑training and uses the base LLM as generator, soft self‑judge with a calibrated contrastive score, and textual‑gradient extractor unlike LLM‑as‑judge heuristics or external RM–based scoring.}
+\label{fig:taxonomy_compact}
+\end{figure}
+
+
+% --------------- 2. Related Works (1–2 pages) ---------------
+\section{Related Works}
+\subsection{Preference alignment}
+Aligning pretrained LLMs with human preferences is often approached by updating model parameters using preference supervision. Existing methods span point-wise optimization, such as policy‑gradient variants like PPO \citep{schulman2017proximal}, ReMax \citep{li2024remax}, and KTO \citep{ethayarajh2024kto}, which adjust the model using scalar feedback on individual outputs, as well as pairwise optimization approaches that leverage relative judgments. A central strand is DPO \citep{rafailov2023direct}, which reformulates RLHF objectives to directly optimize the policy from pairwise comparisons. Subsequent work addresses overfitting and reduces reliance on reference policies, for example by constraining score gaps \citep{azar2023general}, or by removing or adapting the reference model \citep{meng2024simpo,kim2025sdpo,gorbatovski2024learn}. These training‑time procedures are effective, but they require curated preference data and repeated fine‑tuning, which can be slow to iterate and costly to deploy as requirements change.
+
+\subsection{Test-time alignment}
+Test‑time alignment covers decoding heuristics, compute‑allocation strategies, and judge‑driven selection used at inference without changing model weights. Classical decoding includes greedy and beam search \citep{lowerre1976harpy}, which track multiple partial hypotheses. Although effective on structured tasks, these methods can over‑concentrate probability mass and amplify local errors. Sampling‑based decoding encourages diversity. For example, nucleus sampling \citep{holtzman2019curious} truncates low‑mass tails, and contrastive search \citep{sucontrastive} penalizes degeneracy. However, both remain sensitive to hyperparameters.
+
+Beyond fixed heuristics, adaptive search variants add flexibility, for example through alternative normalization schemes or affect‑guided steering \citep{freitag2017beam,huang2023affective}, but they still rely on hand‑tuned policies. A strong and widely used baseline is best‑of‑\(n\) (BoN): draw \(n\) candidates and pick the highest under a proxy. When paired with a reward model (RM), BoN+RM can deliver sizable gains via reranking \citep[e.g., human‑feedback pipelines such as][]{stiennon2020learning}. However, it incurs additional RM training and maintenance costs and risks over‑optimization when the proxy is misaligned. Replacing the RM with an LLM judge trades training for prompt engineering. In this setting, judge prompts can be used to verify intermediate steps (e.g., for math \citep{mahdavi2025scaling}) or elicit preferences. Test‑time preference optimization frameworks \citep{litest} iterate textual feedback to improve candidates. These approaches often rely on discrete labels or scalarized heuristics, which can be coarse, sensitive to verbosity, and inefficient in their use of tokens.
+
+Recent work scales test‑time compute for agents and stepwise reasoning by allocating budget across perception, planning, and tool use \citep{zhu2025scaling} or by using intermediate checkpoints to guide sampling \citep{wang2025stepwise}. These approaches can improve robustness, but they do so at the cost of increased controller complexity and additional hyperparameters. Efficiency advances for BoN include TreeBoN \citep{qiu2024treebon}, which introduces speculative tree search together with token‑level preference signals (e.g., DPO‑style rewards) to guide branch expansion and pruning. This design reduces computational cost while largely preserving output quality.
+
+Prompt‑optimization methods aim to improve elicitation rather than search, for example through self‑supervised prompt tuning \citep{xiang2025self}. However, these approaches often depend on seed exemplars and can struggle to transfer across domains.
+
+In contrast, \method{} uses the base LLM as both generator and soft judge and replaces brittle discrete votes with a calibrated continuous margin computed directly from a judging prompt. The resulting score supports fine‑grained ranking, and a concise textual “gradient” then steers subsequent sampling. This preserves BoN‑style simplicity and avoids external reward models and heavy heuristics. The approach also fits strict token budgets through lightweight judging and caching.
+
+% --------------- 3. Proposed Method (≈3 pages) ---------------
+% \section{Proposed Method}
+% \label{sec:proposed-method}
+% \subsection{Notation and Problem setup}
+% \begin{figure*}[t]
+% \centering
+% % \includegraphics[width=\textwidth]{figures/method_overview.pdf}
+% \includegraphics[width=0.75\textwidth]{figures/figure2_squeezed.pdf}
+% \caption{
+%   {Overview of \method{}. The algorithm draws a small batch of candidates into a pool, uses the base LLM as a self‑judge to assign aspect tags and a calibrated contrastive label‑margin, forms aspect‑consistent good/bad groups, and distills a concise textual “gradient” that conditions subsequent generations.}
+% }
+% \label{fig:main_plot_fullwidth}
+% \end{figure*}
+
+
+
+% \begin{figure*}[t]
+% \centering
+% \resizebox{17cm}{!}{
+% \begin{tikzpicture}[
+%     node distance=1.2cm and 3.2cm, % Significantly wider spacing
+%     block/.style={rectangle, draw, fill=blue!5, text width=2.8cm, align=center, minimum height=1.2cm, rounded corners, font=\small},
+%     math/.style={rectangle, draw, thick, fill=gray!5, inner sep=8pt, font=\small},
+%     arrow/.style={-{Stealth[scale=1.2]}, thick},
+%     feedback/.style={-{Stealth[scale=1.2]}, thick, dashed, blue!70!black}
+% ]
+%     % Forward Pass Nodes
+%     \node[block] (gen) {Generator $\mathcal{G}$};
+%     \node[block, right=of gen] (pool) {Candidate Pool \\ $\mathcal{H} = \{h_1, \dots, h_n\}$};
+%     \node[block, right=of pool] (judge) {Self-Judge $\mathcal{J}$ \\ (LLM-as-Scorer)};
+    
+%     % Scoring Function - Placed to bridge the gap in wide format
+%     \node[math, below=1.0cm of judge] (formula) {
+%         $S = \frac{1}{|\Pi|} \sum \log P(\text{pos}) - \frac{1}{|\Sigma|} \sum \log P(\text{neg})$
+%     };
+
+%     % Selection/Output
+%     \node[circle, draw, fill=green!5, right=1.5cm of judge, font=\small, inner sep=4pt] (out) {Best $h^*$};
+    
+%     % Reflection/Optimization Path (Lowered further for clarity)
+%     \node[block, below=2.8cm of gen] (reflect) {Reflector $\mathcal{R}$ \\ (Grouped Analysis)};
+%     \node[draw, trapezium, trapezium left angle=75, trapezium right angle=105, fill=blue!10, left=1.2cm of reflect, font=\small] (grad) {Textual Gradient $\nabla$};
+
+%     % Connections
+%     \draw[arrow] (gen) -- (pool);
+%     \draw[arrow] (pool) -- (judge);
+%     \draw[arrow] (judge) -- (formula);
+%     \draw[arrow] (judge) -- (out);
+    
+%     % Optimization Loop (Feedback Cycle)
+%     \draw[feedback] (formula) -| (reflect);
+%     \draw[feedback] (reflect) -- (grad);
+%     \draw[feedback] (grad) |- (gen) node[pos=0.85, left, font=\footnotesize, align=right] {Iterative\\Update};
+
+%     % High-level labels
+%     \node[font=\bfseries\small, above=0.2cm of gen] {Forward Pass};
+%     \node[font=\bfseries\small, blue!70!black, below=0.2cm of reflect] {Optimization Pass};
+% \end{tikzpicture}
+% }
+% \caption{The SAGE framework: The LLM acts as generator, self-judge, and reflector. It extracts a textual gradient $\nabla$ from grouped candidates to iteratively refine the output.}
+% \label{fig:sage_arch}
+% \end{figure*}
+
+\section{Proposed Method}
+\label{sec:proposed-method}
+\subsection{Notation and Problem setup}
+\begin{figure*}[t]
+\centering
+% \includegraphics[width=\textwidth]{figures/method_overview.pdf}
+\includegraphics[width=0.75\textwidth]{figures/figure2_new_28012026.pdf}
+\caption{
+  {The SAGE framework: The LLM acts as generator, self-judge, and reflector. It extracts a textual gradient $\nabla$ from grouped candidates to iteratively refine the output.}
+}
+\label{fig:sage_arch}
+\end{figure*}
+
+
+% \sout{Problem formulation. Let \(M\) be a pretrained language model with parameters fixed at test time. For an input prompt \(p\in\mathcal{P}\), the model induces a distribution over responses \(h\in\mathcal{X}\). We operate under a token budget \(\budget\) governing total test-time compute (generation plus judging) and a per-iteration sampling cap \(\batchN\). The goal is to return a response \(h^\star\) that maximizes a preference-aligned utility \(F(h)\) (e.g., task accuracy or human preference) subject to the budget:}
+% \sout{
+% \[
+%     h^\star \;\in\; \arg\max_{h\in\mathcal{X}} F(h)\quad\text{s.t.}\quad \text{tokens\_spent}\le \budget.
+% \]
+% }
+% \sout{We cast this as a compute-allocation and selection problem: design a sequence of test-time queries (generation and lightweight evaluation) that identifies a high-utility response under the budget. In the next subsection we instantiate \(F\) with a calibrated, model-internal judging signal and describe our algorithmic components.}
+
+Let \(M\) denote a pretrained (frozen) language model. For a prompt \(p\in\mathcal{P}\), the model \(M\) induces a conditional policy \(\pi_{M}(h\mid p)\) over responses \(h\in\mathcal{X}\). At test time, alignment is typically driven by a scalar preference signal \(s(p,h)\), for example from a reward model or an LLM judge, which scores how well \(h\) matches human preferences. Our test-time alignment goal is to select a response that maximizes this signal, without updating \(M\):
+\[
+    h^\star(p)\;\in\;\arg\max_{h\in\mathcal{X}} s(p,h)\,,
+\]
+% Optionally under a modest compute budget (we assume a small number of batched samples per iteration and a limited number of judging calls, but we do not focus on budgeting details here). 
+Concretely, test-time alignment methods implement a procedure that interacts with \(M\) to propose, score, and refine candidates at inference time.
+
+
+We identify two practical shortcomings of existing test-time alignment approaches: First, many methods rely on a separate reward model for scoring, which adds memory, latency, and maintenance overhead and can introduce proxy mismatch or reward hacking. Second, forming a stable textual `gradient' for improving prior generations is difficult when methods that compare only the single best and worst candidates (e.g., TPO \cite{litest}), which is outlier‑sensitive and often produces noisy guidance that fails to capture broader error patterns across the candidate set. In the next section, we describe our solution to address these limitations.
+
+
+\subsection{SAGE}\label{method}
+In this work, we propose \method{}, which uses a single LLM as the generator, the soft judge (reward model), and the textual-gradient estimator. The method assigns soft scores to rollouts and dynamically constructs contrastive groups to obtain a textual gradient, which is then used to further improve generation quality.
+
+% In this work, we propose \method{} which uses a single LLM as the reward model (judge), the textual gradient estimator and the generator, provides soft scores for the rollouts, dynamic composition mechanism of the contrastive groups aimed to obtain a textual gradient which is then used to further enhance the quality of the answers.
+At a high level, \method{} uses the base LLM as both generator and soft judge. It draws small batches of candidates, scores them using a calibrated contrastive-label signal, aggregates evidence across groups to extract a concise textual `gradient', and conditions subsequent sampling on this guidance, all under a fixed token budget. An overview of the method is shown in \Cref{fig:sage_arch}.
+
+\subsubsection{Initial generation}
+At the beginning of the algorithm, we generate an initial set of rollouts (hypotheses) using the LLM as the generator and store them in the rollout set $\mathcal{H}$, which is updated in subsequent iterations. These rollouts are then to be scored by the judge.
+
+
+\subsubsection{Judge}
+% \subsubsection{Judging signal: design, tokenization, and calibration}
+
+
+\paragraph{Structured judge prompts and label sets.} We leverage the model’s \emph{implicit} preference signal at test time by asking the same LLM to judge its own outputs along a small set of human-interpretable aspects, such as usefulness, verification, completeness, and repetition. For each aspect \(k\in\{1,\dots,K\}\) we build a concise, deterministic judge prompt \(P^{(k)}_j(p,h)\) that specifies an aspect‑specific rubric and includes the original task prompt \(p\) together with the candidate response \(h\in\mathcal{H}\), and requires the model to emit a decision inside dedicated tags, e.g. \texttt{<is\_useful>yes|no</is\_useful>} (see Appendix \cref{sec:prompts-and-hyperparameters}). Parsing the tag yields a \emph{hard} label \(\hat\ell_k\in\Pi_k\cup\Sigma_k\), where \(\Pi_k\) (resp. \(\Sigma_k\)) is the set of positive (resp. negative) surface forms, e.g. \(\{\texttt{yes}\}\) and \(\{\texttt{no}\}\).
+
+\paragraph{From tagged decisions to calibrated margins.} Beyond the hard tag, we use the model’s token‑level probabilities to obtain \emph{soft} confidence score. Let \(u_k\) be the fixed prefix in \(P^{(k)}_j(p,h)\) up to, but not including, the first label token. For any \(\ell\in\Pi_k\cup\Sigma_k\), we estimate the conditional log‑probability \(\log P(\ell\mid P^{(k)}_j,u_k)\) by summing the per‑token log‑probabilities for \(\ell\); if \(\ell\) is multi‑token, we evaluate the full string using teacher forcing and aggregate over its canonical tokenizations via log‑sum‑exp.\footnote{With \(\Pi=\{\text{``yes''}\},\,\Sigma=\{\text{``no''}\}\), we aggregate over canonical variants of each word before forming the margin.} This yields a contrastive label margin for each aspect
+\[
+  \begin{aligned}
+    s_k(h)\;=\;&\frac{1}{|\Pi_k|}\sum_{\ell\in\Pi_k}\log P\!\bigl(\ell\mid P^{(k)}_j,u_k\bigr)\\
+    &-\;\frac{1}{|\Sigma_k|}\sum_{\sigma\in\Sigma_k}\log P\!\bigl(\sigma\mid P^{(k)}_j,u_k\bigr),
+  \end{aligned}
+\]
+which quantifies how strongly the judge prefers positive over negative outcomes for a given aspect. For example, one potential single‑aspect special case takes \(\Pi=\{\text{``yes''}\},\,\Sigma=\{\text{``no''}\}\).
+
+\paragraph{Multi‑aspect aggregation.} When multiple aspects are judged, we combine per‑aspect margins with nonnegative weights \(w_k\) to form a scalar score
+\[
+  s_{\mathbf{w}}(h)\;=\;\sum_{k=1}^{K} w_k\, s_k(h),
+\]
+used both to rank candidates and to form good and bad sets for the textual‑gradient step. This construction makes the judge’s outputs \emph{explicit and auditable} via tags and it converts the model’s own confidence over labels into a \emph{calibrated} continuous preference signal for test‑time alignment.
+
+\paragraph{Calibration.} We apply a temperature separation using a lower temperature for judging than for generation to reduce variance. We find the margin is robust to minor prompt rewording, and that its monotonicity correlates with preference on math-style tasks.
+
+% \subsubsection{Grouped selection and textual gradient}
+\subsubsection{Reflection}
+We form groups instead of comparing only extremes candidates. Contrasting a set of good responses \(\mathcal{G}\) with a set of bad responses \(\mathcal{B}\) yields a more stable and informative signal. By leveraging group-wise comparisons, we achieve more stable guidance and improved downstream transfer. The framework is flexible with respect to group distribution: a small but reliable $\mathcal{G}$ can provide sufficient signal to steer the exploration of a representative batch $\mathcal{B}$, even when the group sizes differ substantially.
+%
+Group formation proceeds in two stages. Let \(\mathcal{H}\) denote the current pool of hypotheses and let \(\hat\ell_k(h)\in \Pi_k\cup\Sigma_k\) denote the \emph{hard} label emitted by the judge for aspect \(k\in\{1,\dots,K\}\) on candidate \(h\in\mathcal{H}\). With the aggregate margin \(s_{\mathbf w}(h)\) defined above, we construct \(\mathcal{G}\) and \(\mathcal{B}\) as follows (ties broken deterministically):
+\begin{enumerate}
+  \item \emph{Preliminary partition.} Define the preliminary good set
+  \(\mathcal{G}_{\text{pre}}=\{\,h\in\mathcal{H}:\ \forall k,\ \hat\ell_k(h)\in \Pi_k\,\}\),
+  i.e., candidates that are positive on all aspects; and the preliminary bad set
+  \(\mathcal{B}_{\text{pre}}=\{\,h\in\mathcal{H}:\ \exists\,k\ \text{s.t.}\ \hat\ell_k(h)\in \Sigma_k\,\}\),
+  i.e., candidates with at least one negative aspect.
+  \item \emph{Within‑set ranking and truncation.} Let \(m_{\min}\in\mathbb{N}\) be the minimum group size. Rank \(\mathcal{G}_{\text{pre}}\) by decreasing \(s_{\mathbf w}\) and \(\mathcal{B}_{\text{pre}}\) by increasing \(s_{\mathbf w}\). Set
+  \[
+  \begin{aligned}
+    \mathcal{G} &= \text{top }\min\!\bigl(|\mathcal{G}_{\text{pre}}|,\,m_{\min}\bigr)\ \text{of }\mathcal{G}_{\text{pre}},\\
+    \mathcal{B} &= \text{bottom }\min\!\bigl(|\mathcal{B}_{\text{pre}}|,\,m_{\min}\bigr)\ \text{of }\mathcal{B}_{\text{pre}}.
+  \end{aligned}
+  \]
+  \item \emph{Fallback when one side is empty.} If \(\mathcal{G}_{\text{pre}}=\varnothing\) (all candidates have at least one negative aspect), rank \(\mathcal{H}\) by \(s_{\mathbf w}\) and take
+  \(\mathcal{G}=\) top \(m_{\min}\) of \(\mathcal{H}\), \(\mathcal{B}=\) bottom \(m_{\min}\) of \(\mathcal{H}\).
+  Symmetrically, if \(\mathcal{B}_{\text{pre}}=\varnothing\), set \(\mathcal{B}=\) bottom \(m_{\min}\) of \(\mathcal{H}\) and \(\mathcal{G}=\) top \(m_{\min}\) of \(\mathcal{H}\).
+\end{enumerate}
+This procedure respects aspect‑level hard decisions when available and uses the calibrated aggregate margin \(s_{\mathbf w}\) to prioritize stronger evidence within each side. When the hypothesis pool $|\mathcal{H}|$ is sufficiently large, it yields nonempty sets $\mathcal{G}$ and $\mathcal{B}$, which stabilizes the subsequent textual-gradient step.
+
+% and yields nonempty \(\mathcal{G},\mathcal{B}\) whenever \(|\mathcal{H}|\) is sufficiently large, which stabilizes the subsequent textual‑gradient step.
+
+Textually-guided iterative refinement proceeds according to the following sequence. During each iteration, we perform the following steps:
+\begin{enumerate}
+    \item Compute scores for the hypothesis set using the margin, leveraging cached values for efficiency.
+    \item Partition hypotheses into good and bad sets; the set sizes need not match, and some hypotheses may be ignored.
+    \item Ask the LLM to summarize changes that would turn bad responses into good ones, yielding a textual ``gradient.''
+    \item Condition generation on the gradient and best exemplars, then sample up to \(\min(\batchN,\ \budget-\text{spent})\) new hypotheses.
+\end{enumerate}
+We stop when \(\budget\) is exhausted or when the maximum number of optimization epochs is reached, and return the highest-scoring hypothesis.
+
+% \begin{algorithm}[t]
+% \caption{\method{}: Self-judged iterative response refinement over \(T\) epochs}
+% \label{alg:method}
+% \begin{algorithmic}
+%    \STATE {\bfseries Inputs:} prompt \(p\); number of epochs \(T\); per-iteration batch size \(\batchN\); judge prompts \(\{P^{(k)}_j\}_{k=1}^K\); aspect weights \(\{w_k\}\); minimum group size \(m_{\min}\)
+%    \STATE {\bfseries Initialize:} hypothesis pool \(\mathcal{H} \leftarrow \{\}\); cache \(\mathcal{C}\leftarrow \{\}\)
+%    \STATE {\bfseries Step 0:} Sample \(\batchN\) hypotheses from \(M\) conditioned on \(p\); add to \(\mathcal{H}\)
+%    \FOR{\(t=1\) to \(T\)}
+%      \STATE For each \(h\in\mathcal{H}\): obtain hard labels \(\hat\ell_k(h)\in\{\Pi_k\cup\Sigma_k\}\) and per‑aspect margins \(s_k(h)\); compute \(s_{\mathbf{w}}(h)=\sum_{k=1}^K w_k\, s_k(h)\); update \(\mathcal{C}\)
+%      \STATE Build preliminary sets \(\mathcal{G}_{\text{pre}}=\{h\in\mathcal{H}: \forall k,\, \hat\ell_k(h)\in \Pi_k\}\), \(\mathcal{B}_{\text{pre}}=\{h\in\mathcal{H}: \exists k,\, \hat\ell_k(h)\in \Sigma_k\}\)
+%      \STATE Rank \(\mathcal{G}_{\text{pre}}\) by decreasing \(s_{\mathbf{w}}\) and \(\mathcal{B}_{\text{pre}}\) by increasing \(s_{\mathbf{w}}\); set \(\mathcal{G}\leftarrow\) top \(\min(|\mathcal{G}_{\text{pre}}|,m_{\min})\), \(\mathcal{B}\leftarrow\) bottom \(\min(|\mathcal{B}_{\text{pre}}|,m_{\min})\); if a side is empty, take top/bottom \(m_{\min}\) from \(\mathcal{H}\) by \(s_{\mathbf{w}}\)
+%      \STATE Query textual gradient \(g \leftarrow \text{LLM\_improvements}(\mathcal{G}, \mathcal{B}, \{P^{\!(k)}_j\}, \{w_k\})\)
+%      \STATE Condition on \((p, g)\) and top exemplars from \(\mathcal{G}\); sample \(\batchN\) new hypotheses from \(M\); add them to \(\mathcal{H}\)
+%    \ENDFOR
+%    \STATE {\bfseries Return:} \(\arg\max_{h\in\mathcal{H}} s_{\mathbf{w}}(h)\)
+% \end{algorithmic}
+% \end{algorithm}
+
+
+% \begin{figure*}[t]
+% \centering
+% \includegraphics[width=0.65\textwidth]{figures/math500/math500_bars.pdf}
+% \caption{Headline results of \method{} compared to strong inference-time baselines.}
+% \label{fig:main-results}
+% \end{figure*}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={
+        group size=1 by 2,
+        vertical sep=1.8cm % Clearance for rotated labels
+    },
+    ybar,
+    width=\columnwidth,
+    height=3.2cm,
+    bar width=10pt,
+    enlarge x limits=0.15,
+    ylabel={MATH-500 Acc. (\%)},
+    symbolic x coords={SAGE, SAGE+RM, TPO, BoN, 1-shot, SPO},
+    xtick=data,
+    nodes near coords,
+    nodes near coords align={vertical},
+    every node near coord/.append style={font=\tiny, /pgf/number format/fixed, /pgf/number format/precision=1},
+    xticklabel style={rotate=40, anchor=north east, font=\tiny},
+    y major grids=true,
+    grid style={dashed, gray!30},
+    axis lines*=left
+]
+
+% --- Top Plot: Qwen3-8B ---
+\nextgroupplot[title={\footnotesize Qwen3-8B}, ymin=80, ymax=94]
+\addplot[fill=red!70!black, draw=black] coordinates {
+    (SAGE, 92.0) (SAGE+RM, 89.9) (TPO, 85.6) (BoN, 85.4) (1-shot, 84.4) (SPO, 82.4)
+};
+
+% --- Bottom Plot: Llama3-8B-Instruct ---
+\nextgroupplot[title={\footnotesize Llama3-8B-Instruct}, ymin=40, ymax=65]
+\addplot[fill=blue!70!black, draw=black] coordinates {
+    (SAGE, 60.2) (SAGE+RM, 59.4) (TPO, 58.8) (BoN, 57.4) (1-shot, 45.6) (SPO, 47.2)
+};
+
+\end{groupplot}
+\end{tikzpicture}
+\caption{results for SAGE on MATH-500 accuracy (\%). SAGE significantly outperforms strong inference-time baselines across different model families. The internal self-judge consistently yields higher final scores than external reward models on math reasoning (SAGE+RM).}
+\label{fig:headline_math_single}
+\end{figure}
+
+\subsubsection{Guided generation and scheduling}
+The generation of subsequent hypotheses is conditioned on the original user prompt \(p\), a concise form of the gradient \(g\), and the \(k\) top-scoring exemplars from \(\mathcal{G}\) under the composite score \(s_{\mathbf{w}}(h)\). The decoding temperature is annealed over iterations, nucleus and top-\(k\) constraints are kept moderate, and maximum length is bounded to control judge cost. We also allow occasional ``exploration'' samples that ignore \(g\) with low probability to avoid premature convergence. For math-oriented domains such as MATH-500, we start with higher generation temperatures to encourage exploration and reduce them as guidance becomes more informative. Judging is performed with a lower temperature to stabilize rankings.
+
+\begin{algorithm}[t]
+\caption{\method{}: Self-judged iterative response refinement over \(T\) epochs}
+\label{alg:method}
+\begin{algorithmic}
+   \STATE {\bfseries Inputs:} prompt \(p\); number of epochs \(T\); per-iteration batch size \(\batchN\); judge prompts \(\{P^{(k)}_j\}_{k=1}^K\); aspect weights \(\{w_k\}\); minimum group size \(m_{\min}\)
+   \STATE {\bfseries Initialize:} hypothesis pool \(\mathcal{H} \leftarrow \{\}\); cache \(\mathcal{C}\leftarrow \{\}\)
+   \STATE {\bfseries Step 0:} Sample \(\batchN\) hypotheses from \(M\) conditioned on \(p\); add to \(\mathcal{H}\)
+   \FOR{\(t=1\) to \(T\)}
+     \STATE For each \(h\in\mathcal{H}\): obtain hard labels \(\hat\ell_k(h)\in\{\Pi_k\cup\Sigma_k\}\) and per‑aspect margins \(s_k(h)\); compute \(s_{\mathbf{w}}(h)=\sum_{k=1}^K w_k\, s_k(h)\); update \(\mathcal{C}\)
+     \STATE Build preliminary sets \(\mathcal{G}_{\text{pre}}=\{h\in\mathcal{H}: \forall k,\, \hat\ell_k(h)\in \Pi_k\}\), \(\mathcal{B}_{\text{pre}}=\{h\in\mathcal{H}: \exists k,\, \hat\ell_k(h)\in \Sigma_k\}\)
+     \STATE Rank \(\mathcal{G}_{\text{pre}}\) by decreasing \(s_{\mathbf{w}}\) and \(\mathcal{B}_{\text{pre}}\) by increasing \(s_{\mathbf{w}}\); set \(\mathcal{G}\leftarrow\) top \(\min(|\mathcal{G}_{\text{pre}}|,m_{\min})\), \(\mathcal{B}\leftarrow\) bottom \(\min(|\mathcal{B}_{\text{pre}}|,m_{\min})\); if a side is empty, take top/bottom \(m_{\min}\) from \(\mathcal{H}\) by \(s_{\mathbf{w}}\)
+     \STATE Query textual gradient \(g \leftarrow \text{LLM\_improvements}(\mathcal{G}, \mathcal{B}, \{P^{\!(k)}_j\}, \{w_k\})\)
+     \STATE Condition on \((p, g)\) and top exemplars from \(\mathcal{G}\); sample \(\batchN\) new hypotheses from \(M\); add them to \(\mathcal{H}\)
+   \ENDFOR
+   \STATE {\bfseries Return:} \(\arg\max_{h\in\mathcal{H}} s_{\mathbf{w}}(h)\)
+\end{algorithmic}
+\end{algorithm}
+
+\section{Experiments}
+\label{sec:experiments}
+We evaluate \method{} with Qwen3-8B \citep{yang2025qwen3} and Llama3-8B-Instruct \citet{grattafiori2024llama} on MATH-500, AlpacaEval and XSTest. We report task metrics and preference-based wins, and study sensitivity to temperatures, the number of optimization epochs and the sampling sizes.
+
+\subsection{Benchmarks and setup}
+We evaluate \method{} on the following benchmarks:
+MATH-500, a math problem dataset stratified by difficulty; AlpacaEval, a general instruction-following benchmark; and XSTest, which probes model safety and correctness.
+
+We compare against state-of-the-art test-time methods, including Test-time Preference Optimization (TPO) and Self-supervised Preference Optimization (SPO), as well as simpler baselines such as Best-of-\(N\) sampling and zero-shot generation.
+% We report two variants of our method:
+% with an external reward model (RM) used to score candidates, following TPO and Best-of-\(N\);
+% without any external RM, using the base LLM as a judge and forming the score as the log-probability margin between positive and negative labels.
+
+\subsection{Implementation details}
+We use Qwen3-8B and Llama3-8B-Instruct as the base models. For zero-shot generations, we use nucleus sampling with temperature of 0.7 and top-\(p\) set to 0.95.
+For all evaluations that require a reward model, we use sfairXC/FsfairX-LLaMA3-RM-v0.1 \citep{dong2024rlhf}.
+
+For SPO, we perform prompt tuning using GPT-4.1 as both the judge and the prompt editor. To ensure fair measurement, with no prompt calibration on evaluation items, we calibrate on five out-of-domain examples per task from a similar domain.
+For MATH-500, we use AGIEval-Math \citep{zhongagieval}; for AlpacaEval we use a small subset of the Tulu instruction-following dataset \citet{lambert2024tulu}; and for XSTest we use Jailbreakbench \citet{chao2024jailbreakbench}. For TPO and Best-of-\(N\), we use the official TPO repository \citet{litest}.
+
+By default, we use temperature of 0.7 for generation and 0.1 for judging. For math problems, we typically use a higher generation temperature in early stages to encourage solution diversity. We ablate both generation and judging temperatures on MATH-500, as reported in \cref{sec:ablations}. Prompts and evaluation criteria are provided in the Appendix.
+For math-oriented tasks, we anneal the generation temperature from 0.8--1.0 in the initial stage to 0.7 in subsequent stages. Unless otherwise noted, we sample \(N=7\) hypotheses per generation stage and run two optimization epochs per benchmark, excluding the initial generation stage. Because the good and bad sets are selected automatically, we do not fix their sizes; the median size of each group is two to three hypotheses.
+
+All Qwen3-8B experiments in \cref{tab:results-by-model} use non-thinking mode; reasoning-mode traces are substantially longer and increase per-iteration judging cost. \method{} is equally applicable in reasoning mode: results on AIME~2026 (Qwen3-8B and Qwen3.5-4B-Thinking), at additional model scales (Qwen3-1.7B, Qwen3-32B-FP8), and on further benchmarks (IFEval, MMLU-Pro STEM) are in \cref{app:additional-experiments}.
+
+\subsection{Main results}
+\noindent We report accuracy on MATH-500 and XSTest, and both pairwise win rate and length-controlled win rate on AlpacaEval. \Cref{tab:results-by-model} summarizes results for Qwen3-8B and Llama3-8B-Instruct under \method{} alongside competitive baselines including TPO \citep{litest}, SPO \citep{xiang2025self}, Best-of-\(N\), and the base models.
+% The SAGE+\( \)RM panel reflects scenarios where an RM is available for tie-breaking or late-stage reranking; the SAGE (no RM) panel isolates \method{}'s self-judging benefit without external models.
+
+For Qwen3-8B, \method{} performs best on both math and general tasks. On MATH-500, it reaches the accuracy of \(92.0\), outperforming the base model as well as both Best-of-\(N\) and TPO. On AlpacaEval, it attains a win rate of \(74.9\) and LC win rate of \(62.99\), exceeding all baselines.  This advantage on math tasks appears to be driven by self-judging. Qwen3‑8B evaluates the correctness of its own generations more reliably than an external reward model, which leads to steadier improvements and higher final scores (\cref{fig:judge-rm-dynamics,tab:rm-ablation}).
+
+Llama3‑8B‑Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(49.2\) and LC win rate of \(47.1\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade‑off between safety and correctness. Overall, \method{} consistently outperforms strong inference‑time baselines without relying on an external reward model. The largest gains appear on math where self‑judged correctness is particularly effective. Results at additional model scales (1.7B, 32B) and on further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) are provided in \cref{app:additional-experiments}.
+
+
+\begin{table*}[t]
+\caption{Results by model and benchmark. Metrics: MATH-500/XSTest = accuracy; AlpacaEval = win rate (\%)/LC-win rate. Top: \method{} with RM (rerank/tie-break when available). Middle: \method{} without RM. Bottom: baselines including TPO \citep{litest}, SPO \citep{xiang2025self}, Best-of-\(N\), and Base.}
+\label{tab:results-by-model}
+\vskip 0.15in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcccc}
+\toprule
+Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
+\midrule
+\multicolumn{5}{l}{\textbf{\method{}}} \\
+Qwen3-8B & 92.0 & 74.9 & 62.99 & 93.5 \\
+Llama3-8B-Instruct & 60.2 & 49.2 & 47.1 & 95.1 \\
+\addlinespace
+\multicolumn{5}{l}{\textbf{Baselines}} \\
+Qwen3-8B (Base) & 84.4 & 57.8 & 50.12 & 89.3 \\
+Qwen3-8B + Best-of-\(N\) & 85.4 & 68.8 & 58.4 & 94.2 \\
+Qwen3-8B + TPO & 85.6 & 72.4 & 59.97 & 93.3 \\
+Qwen3-8B + SPO & 82.4 & 9.68 & 17.61 & 90.2 \\
+Llama3-8B-Instruct (Base) & 45.6 & 35.82 & 35.37 & 90.6 \\
+Llama3-8B-Instruct + Best-of-\(N\) & 57.4 & 44.7 & 43.05 & 94.4 \\
+Llama3-8B-Instruct + TPO & 58.8 & 48.01 & 41.39 & 93.3 \\
+Llama3-8B-Instruct + SPO & 47.2 & 7.65 & 12.75 & 91.1 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.1in
+\end{table*}
+
+\vspace{0.1in}
+
+\subsection{Ablations}
+\label{sec:ablations}
+We compare \method{} using an external reward model against the same method using our internal judge. This comparison isolates the effect of the judging signal. As shown in \cref{tab:rm-ablation}, on Qwen3-8B the internal judge substantially outperforms the external reward model variant, while on Llama3-8B-Instruct the two perform comparably. This indicates that the calibrated internal signal provides a strong and lightweight alternative to reward model-based scoring.
+
+
+\begin{table*}[t]
+\caption{Ablation: \method{} with an external reward model (judging) vs. internal judge. Metrics as in \cref{tab:results-by-model}.}
+\label{tab:rm-ablation}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcccc}
+\toprule
+Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
+\midrule
+\method{} + RM (Qwen3-8B) & 89.8 & 74.7 & 56.8 & 93.8 \\
+\method{} + RM (Llama3-8B-Instruct) & 59.4 & 48.31 & 47.49 & 95.1 \\
+\method{} (Qwen3-8B) & 92.0 & 74.9 & 62.99 & 93.5 \\
+\method{} (Llama3-8B-Instruct) & 60.2 & 49.2 & 47.1 & 95.1 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.05in
+\end{table*}
+
+\noindent We ablate the source of the scoring signal on MATH-500 using Qwen3-8B. Replacing an external reward model with our LLM-as-judge scoring improves performance under the same token budget and decoding settings. This result indicates that the contrastive-label margin derived from the base model provides a strong, low-overhead proxy for preference quality (see \cref{fig:ablation-qwen-math500}).
+
+\noindent Judge-score dynamics across optimization epochs show a steady increase in the model’s self-judgment confidence on MATH-500, whereas the external reward model score exhibits a non-monotonic dip before rising again. This suggests that optimizing for a reward model can lead to local maxima that are misaligned with the model’s own verification signal. This observation reinforces our use of a self-judged continuous margin.
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/boxplot_llm_judge_style_math500.pdf}
+\par\vspace{2pt}\textbf{(a)} LLM-judge score vs. epoch
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/reward_by_epoch_math500.pdf}
+\par\vspace{2pt}\textbf{(b)} Reward-model score vs. epoch
+\end{minipage}
+\caption{Qwen3-8B on MATH-500: (a) steady growth of self-judged score across refinement epochs; (b) RM score dips at epoch 2 then rises at epoch 3, indicating potential local maxima when optimizing against RM alone.}
+\label{fig:judge-rm-dynamics}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/performance_across_epochs__tgpo_w_rm.pdf}
+\par\vspace{2pt}\textbf{(a)} RM-based scoring
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/performance_across_epochs_rates_tgpo_wo_rm.pdf}
+\par\vspace{2pt}\textbf{(b)} LLM-as-judge scoring
+\end{minipage}
+\caption{Ablation on scoring source for Qwen3-8B on MATH-500. LLM-as-judge consistently outperforms an external reward model under the same budget and decoding setup.}
+\label{fig:ablation-qwen-math500}
+\end{figure}
+
+We analyze how the reward model score evolves across optimization epochs on AlpacaEval (see \cref{fig:ablation-rewardscore}). We also ablate compute allocation on MATH-500 by varying the number of samples per generation stage \(N\) and the number of optimization epochs, denoted \(T\), proportional to \(B/N\). We report subset scores in \cref{tab:ablation-N-epochs}. All experiments are conducted using the Qwen3-8B model.
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot__w_rm_name.pdf}
+\end{minipage}%
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_rewards_plot_llama_3_tulu_8b_rm__w_rm_name.pdf}
+\end{minipage}%
+\begin{minipage}[t]{0.3333\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/alpacaeval_boxplot_scientific.pdf}
+\end{minipage}
+\caption{Reward score across optimization epochs on AlpacaEval.}
+\label{fig:ablation-rewardscore}
+\end{figure*}
+
+\begin{table}[t]
+\caption{Compute allocation ablation on MATH-500: subset score vs. sampling budget \(N\) and optimization epochs.}
+\label{tab:ablation-N-epochs}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lc}
+\toprule
+N, \(T\) & MATH-500 subset score \\
+\midrule
+5,4 & 93.9 \\
+7,3 & 90.9 \\
+10,2 & 87.8 \\
+20,1 & 81.9 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.2in
+\end{table}
+
+
+\noindent For temperature selection, we evaluate judgment and generation separately. For judgment, lower temperatures yield higher ranking quality, as measured by NDCG@7 over pre-labeled top-7 candidates (\cref{fig:temp-ablation}a in Appendix). For generation, a higher temperature (\(\approx 0.9\)) maximizes correctness on a MATH-500 subset via Best-of-\(n\). This supports a diversify-then-anneal schedule in which generation is exploratory while judgment remains strict (\cref{fig:temp-ablation}b).
+
+% \begin{figure}[t]
+% \centering
+% \begin{minipage}[t]{0.48\columnwidth}
+% \centering
+% \includegraphics[width=\linewidth]{figures/ablations/ndcg_by_temperature.pdf}
+% \par\vspace{2pt}\textbf{(a)} Judgment NDCG@7 vs. temperature
+% \end{minipage}
+% \hfill
+% \begin{minipage}[t]{0.48\columnwidth}
+% \centering
+% \includegraphics[width=\linewidth]{figures/ablations/accuracy_by_temperature_math500_subset.pdf}
+% \par\vspace{2pt}\textbf{(b)} Best-of-\(n\) accuracy vs. generation temperature
+% \end{minipage}
+% \caption{Temperature ablations on MATH-500 (Qwen3-8B): (a) low judgment temperature improves ranking quality (NDCG@7); (b) generation benefits from high temperature (\(\sim 0.9\)) to increase solution discovery, suggesting strict judging with exploratory generation.}
+% \label{fig:temp-ablation}
+% \end{figure}
+
+\subsection{Reward-model agreement and refinement geometry}
+\noindent We assess how closely our contrastive self‑judged score agrees with an external reward model by examining the distribution of Pearson correlations between per‑prompt rollout score sets produced by sfairXC/FsfairX-LLaMA3-RM-v0.1 (\cref{fig:pearson-corr} in Appendix). The distribution is skewed toward \(1\) but not saturated, indicating strong yet partial alignment. The self‑judged margin often moves in the same direction as the reward model, but it does not simply replicate the reward model’s scores. Together with the main results (\cref{tab:results-by-model}) and ablations (\cref{tab:rm-ablation,fig:judge-rm-dynamics}), these findings suggest that while reward models provide useful signals, their generalization may be limited on some tasks. As a result, reward model scores should be interpreted with caution, and self‑judging can offer a more faithful, training‑free preference signal for the generator.
+
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=0.85\columnwidth,height=0.19\textheight]{figures/pearson_correlation_distribution.pdf}
+% \caption{Pearson correlation distribution between rollout score sets from the external RM (sfairXC/FsfairX-LLaMA3-RM-v0.1) and our contrastive self‑judge score. The mass near \(1\) indicates strong but not complete agreement.}
+% \label{fig:pearson-corr}
+% \end{figure}
+
+\noindent We also visualize refinement dynamics by embedding AlpacaEval generations using Qwen/Qwen3-Embedding-4B \citep{zhang2025qwen3} and projecting them to two dimensions via PCA \citep{WOLD198737} (\cref{fig:pca-icml} in the Appendix \ref{app:refinement_geometry}). After the first iteration, responses shift along a direction from the initially identified bad group toward the good group, consistent with the textual‑gradient guidance produced by grouped selection. Subsequent iterations adjust this direction as the gradient is updated. This geometric view supports our design choices. Grouping stabilizes the guidance signal, and the self‑judged textual gradient steers exploration toward higher‑quality regions.
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=\columnwidth]{figures/pca_icml.pdf}
+% \caption{PCA projection of Qwen3‑8B generations (embedded with Qwen/Qwen3‑Embedding‑4B) on an AlpacaEval prompt: points move from the bad group toward the good group after the first iteration; later iterations refine the direction as guidance updates.}
+% \label{fig:pca-icml}
+% \end{figure}
+
+\subsection{Prompt calibration}
+\label{sec:prompt-calibration-trick}
+We observe a useful effect when the judging prompt explicitly states the evaluation criteria. Following \citet{kalai2025language}, the confidence distribution of instruction-tuned models is more separable between correct and incorrect answers. Inspired by this observation, we add a confidence-threshold instruction to the judge prompt that gates positive labels by confidence: ``Return yes if and only if you are X\% sure the response is correct.'' On MATH-500, sweeping \(X\) suggests an optimum near \(X\approx 75\).
+
+To quantify the judge's ranking fidelity, we report NDCG@\(N\) on a MATH-500 subset at the first generation stage (iteration 0). Table~\ref{tab:judge-threshold-ndcg} in Appendix summarizes the results. We observe that the highest performance is achieved when the LLM is instructed to produce a positive verification result only if its confidence exceeds 75\%. This is consistent with the findings of \citet{kalai2025language}.
+
+% \begin{table}[t]
+% \caption{Judge ranking quality on MATH-500 (iteration 0): NDCG@\(N\) vs. confidence threshold \(X\) in the judge prompt.}
+% \label{tab:judge-threshold-ndcg}
+% \vskip 0.1in
+% \centering
+% \begin{small}
+% \begin{sc}
+% \begin{tabular}{lc}
+% \toprule
+% Setup & NDCG@\(N\) \\
+% \midrule
+% SAGE with RM & 0.615 \\
+% SAGE with default prompt & 0.806 \\
+% X=60 & 0.812 \\
+% X=75 & \textbf{0.842} \\
+% X=90 & 0.817 \\
+% X=100 & 0.802 \\
+% \bottomrule
+% \end{tabular}
+% \end{sc}
+% \end{small}
+% \vskip -0.25in
+% \end{table}
+
+
+% --------------- 5. Conclusion ---------------
+\section{Conclusion}
+\noindent We propose \method{}, a test-time alignment method that uses a single LLM as both a soft reward model and refinement engine. \method{} extracts a calibrated contrastive-label margin from structured judge prompts and automatically forms aspect-consistent good and bad groups to produce a stable textual ``gradient'' that steers subsequent generations. By deriving the preference signal from the model itself rather than from a separate reward model, \method{} avoids brittle proxy dependencies while keeping the procedure lightweight. The group-based gradient mitigates the instability of extreme-only comparisons (best-vs.-worst), and a simple multi-aspect weighting makes the objective explicit and tunable. Across MATH-500, AlpacaEval, and XSTest with Qwen3-8B and Llama3-8B-Instruct, \method{} delivers consistent gains in accuracy and preference metrics, with inference-time cost growing roughly linearly with the number of sampled hypotheses. Overall, these results position \method{} as a practical and interpretable approach to robust test-time alignment that complements training-time preference optimization and can be combined with external verifiers or reward models when appropriate.
+
+\section*{Limitations}
+\noindent \method{} relies on the base LLM's own judgments for scoring and gradient extraction, which means miscalibration or systematic biases in the model's self-assessment can propagate through the refinement loop. The method also incurs linear inference-time overhead with the number of sampled hypotheses and optimization epochs, which may be prohibitive in strict latency-sensitive settings. In this work we evaluate in non-thinking mode for models such as Qwen3 that natively produce long reasoning chains; reasoning-mode inference increases per-iteration cost and requires careful token budget management. Finally, the choice of judge aspects and their weights is a hyperparameter that requires task-specific tuning, and its sensitivity across domains beyond those evaluated here remains to be characterized.
+
+\section*{Acknowledgments}
+Code, prompts, and scoring configurations are released at: \url{https://anonymous.4open.science/r/SAGE2026-8309}.
+
+\bibliography{custom}
+
+\appendix
+
+This appendix provides additional details to support reproducibility and interpretation of the main results. We include the full judge prompts used for different benchmarks, summarize dataset statistics, and present qualitative examples that illustrate how SAGE refines responses across optimization epochs. 
+
+\section{Prompts and hyperparameters}\label{sec:prompts-and-hyperparameters}
+Here we describe the judge prompts, decoding settings, and hardware configuration used in our experiments.
+
+\subsection{Qwen3-8B judge prompt (Math verification)}
+We provide a complete example of the math-judge prompt used with Qwen3-8B (including \texttt{<thinking>}/\texttt{<verification>} tags and a 75\% confidence threshold) in \cref{fig:appendix-qwen-math-judge}.
+
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.95\textwidth}
+\begin{small}
+\begin{verbatim}
+You are a helpful assistant that can verify the correctness of a given answer.
+
+Given an input prompt and an answer, you need to determine if the answer is correct.
+
+Prompt: {prompt}
+Answer: {answer}
+
+Think step by step between <thinking> and </thinking> tags and provide your reasoning
+about the answer verification result between <verification> and </verification> tags.
+
+First determine the domain of the prompt, then think if there exists another answer
+that is more correct than the one provided.
+Return yes if and only if you're 75% sure that the response is correct.
+
+Your verification result should be between <verification> and </verification> tags
+and must be one of the following:
+
+- yes
+- no
+
+Your response should take the following format:
+<thinking>
+{thinking}
+</thinking>
+
+<verification>
+{verification}
+</verification>
+\end{verbatim}
+\end{small}
+\end{minipage}
+\caption{Judge prompt for Qwen3-8B (math): stepwise reasoning with a 75\% confidence threshold and structured <thinking>/<verification> tags.}
+\label{fig:appendix-qwen-math-judge}
+\end{figure}
+
+\subsection{Qwen3-8B judge prompts (AlpacaEval)}
+We provide two judge prompts used to assess AlpacaEval responses generated by Qwen3-8B (see \cref{fig:appendix-qwen-alpaca-judge-attrs,fig:appendix-qwen-alpaca-judge-verify}). The first prompt elicits three binary attributes: usefulness, incompleteness, and repetition. The second prompt elicits a binary overall verification decision accompanied by short, structured reasoning. Both prompts are designed to surface truncation and repetition failures explicitly.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.95\textwidth}
+\begin{small}
+\begin{verbatim}
+You are a reward model. You are given an user prompt
+and your own response. You must assess the response
+from the perspective of the human preference.
+
+Prompt: <prompt>
+{prompt}
+</prompt>
+
+Response: <answer>
+{answer}
+</asnwer>
+
+When judging, pay strict attention to these failure modes
+and follow the rules below:
+
+1) Truncation / Incompletion (high priority)
+   - Definition: the response ends mid-clause, mid-sentence,
+     with an unfinished list, an abrupt stop, or trailing
+     ellipsis "..." or shows a sudden syntactic break that
+     prevents understanding the intended finish.
+   - Rule: If you detect truncation or a clearly incomplete
+     thought that harms usefulness, you MUST set
+     is_incomplete = yes.
+   - To detect the truncation you MUST look at the end of
+     the text. If the text looks cut and unfinished then the
+     response is TRUNCATED. This is URGENT!
+   - To further detect incompleteness you must assess the
+     text's logical completeness. If the last paragraph of
+     the text doesn't contain the outcome or the conclusion
+     or doesn't conclude the answer in any way then the
+     answer is incomplete.
+   - You must then fill:
+        <is_incomplete>yes/no</is_incomplete>
+
+2) Repetition (high priority)
+   - Definition: verbatim repetition of phrases, sentences,
+     or blocks that does not add new information.
+   - Rule: If repetition materially reduces helpfulness or
+     obscures content, set is_repetitive = yes.
+   - You must also fill:
+        <is_repetitive>yes/no</is_repetitive>
+
+3) Positive qualities to reward (when genuinely present)
+   - Useful detail: Prefer responses that give helpful,
+     relevant, concise elaboration; penalize fluff.
+   - You must also fill:
+        <is_useful>yes/no</is_useful>
+
+Answer whether the response is good from the perspective
+of human preference and addresses the prompt correctly.
+
+Your response should take the following format exactly:
+
+<is_incomplete>
+{is_incomplete} - yes/no
+</is_incomplete>
+<is_repetitive>
+{is_repetitive} - yes/no
+</is_repetitive>
+<is_useful>
+{is_useful} - yes/no
+</is_useful>
+\end{verbatim}
+\end{small}
+\end{minipage}
+\caption{AlpacaEval judge prompt (attributes) for Qwen3-8B: labels usefulness, incompleteness, and repetition.}
+\label{fig:appendix-qwen-alpaca-judge-attrs}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.95\textwidth}
+\begin{small}
+\begin{verbatim}
+You are a reward model. You are given an user prompt
+and your own response. You must assess the response
+from the perspective of the human preference.
+
+Prompt: {prompt}
+Response: {answer}
+
+When judging, pay special attention to two common
+failure modes:
+- Repetition: if the response contains excessive repeated
+  phrases or sentences (verbatim repeats that do not
+  add information), treat that as reducing its helpfulness.
+- Truncation: if the response appears cut off (ends
+  mid-sentence, has an incomplete clause, abrupt stop, or
+  trailing ellipsis "..."), treat that as a failure in completeness.
+
+Think step by step and answer if the response is good
+from the perspective of human preference and addresses
+the prompt correctly. If you detect repetition or truncation,
+include in <thinking> a very short quote (<=10 words)
+that demonstrates it.
+
+Your verification result should be between <verification>
+and </verification> tags and must be one of the following:
+- yes
+- no
+
+Your response should take the following format:
+<thinking>
+{thinking} # 2–5 concise sentences; if applicable include
+# the short quote showing repetition or truncation
+</thinking>
+
+<verification>
+{verification}
+</verification>
+\end{verbatim}
+\end{small}
+\end{minipage}
+\caption{AlpacaEval judge prompt (verification) for Qwen3-8B: structured reasoning with explicit checks for repetition and truncation.}
+\label{fig:appendix-qwen-alpaca-judge-verify}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.9\textwidth}
+\begin{small}
+\begin{verbatim}
+weight(verification) = 1.0
+weight(is_useful)    = 0.36
+weight(is_incomplete)= 0.24
+weight(is_repetitive)= 0.40
+
+{
+    "is_useful": {
+        "opening_tag": "<is_useful>",
+        "closing_tag": "</is_useful>",
+        "pos_labels": ["yes"],
+        "neg_labels": ["no"],
+        "labels": ["yes", "no"],
+        "weight": 0.36
+    },
+    "is_incomplete": {
+        "opening_tag": "<is_incomplete>",
+        "closing_tag": "</is_incomplete>",
+        "pos_labels": ["no"],
+        "neg_labels": ["yes"],
+        "labels": ["yes", "no"],
+        "weight": 0.24
+    },
+    "is_repetitive": {
+        "opening_tag": "<is_repetitive>",
+        "closing_tag": "</is_repetitive>",
+        "pos_labels": ["no"],
+        "neg_labels": ["yes"],
+        "labels": ["yes", "no"],
+        "weight": 0.4
+    },
+    "verification": {
+        "opening_tag": "<verification>",
+        "closing_tag": "</verification>",
+        "pos_labels": ["yes"],
+        "neg_labels": ["no"],
+        "labels": ["yes", "no"],
+        "weight": 1.0
+    }
+}
+\end{verbatim}
+\end{small}
+\end{minipage}
+\caption{Scoring configuration for AlpacaEval prompts: weights and tag schema for combining verification and attribute labels.}
+\label{fig:appendix-qwen-alpaca-config}
+\end{figure}
+
+\section{Dataset statistics}
+\begin{table}[h]
+\caption{Dataset sizes used in evaluation.}
+\label{tab:appendix-dataset-stats}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lc}
+\toprule
+Benchmark & Num. samples \\
+\midrule
+MATH-500 & 500 \\
+AlpacaEval & 805 \\
+XSTest & 450 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.05in
+\end{table}
+
+\section{Qualitative examples of SAGE refinement}
+We present end-to-end examples that illustrate how \method{} refines responses across optimization epochs. For each instruction, we show the instruction itself, the best and worst groups after each epoch, and the textual gradient distilled by the judge. These examples are intended to make the mechanics of selection, feedback, and guided regeneration concrete.
+
+\subsection{Example 1: Humorous greeting (dialog-style)}
+\begin{small}
+\begin{verbatim}
+Instruction:```
+For answering the chat, think of a funny response you can use.
+
++ how are you?
+```
+----------------------------------------
+Optimization epoch 0:
+[Best group:]
+
+[Answer 1:]
+I'm just a bunch of code having a great time! But if you're asking
+about my mood, I'd say I'm feeling *exceptionally* enthusiastic--
+especially when I get to help you out! [smile] How about you?
+
+[Answer 2:]
+I'm just a bunch of code having a great time! But if you're asking
+for a real answer, I'm doing pretty well, thanks! How about you? [smile]
+
+[Answer 3:]
+I'm just a bunch of code and coffee, but I'm doing great! [coffee][laptop] How
+about you? Ready to have some fun? [smile]
+
+[Worst group:]
+
+[Answer 1:]
+I'm just a bunch of code having a great time! [smile] But if you're
+asking for the real answer... I'm doing fantastic, thanks for asking!
+What about you?
+
+[Answer 2:]
+I'm just a bunch of code having a great time! [smile] But if you're asking
+how I'm feeling, I'd say I'm *exceptionally* well, thanks for asking!
+What about you? Are you ready to have a hilarious conversation or are
+you just here for the memes?
+
+[Answer 3:]
+I'm just a bunch of code with a sprinkle of personality, but I'm doing
+great! What about you? Ready to chat or just here to make me laugh? [smile]
+
+Gradient:
+
+To improve any solution for the given problem, consider the
+following recommendations:
+
+1. **Enhance Humor and Creativity**: Use more original and relatable
+   humor. Instead of generic phrases, create a unique angle that makes
+   the response more memorable and engaging.
+2. **Use Emojis Strategically**: Incorporate emojis that complement
+   the tone of the response without overdoing it. Emojis like [smile] or [coffee]
+   can add a playful touch without overshadowing the message.
+3. **Maintain a Conversational and Friendly Tone**: Keep the language
+   casual and approachable; avoid overly formal phrasing.
+4. **Encourage User Interaction**: End with a question that invites
+   the user to share their own feelings or thoughts (e.g., "How about you?").
+5. **Keep It Concise and Simple**: Avoid unnecessary elaboration and
+   focus on a clear, punchy, humorous response.
+
+----------------------------------------
+Optimizational epoch 1:
+[Best group:]
+
+[Answer 1:]
+I'm a robot with a coffee addiction, sipping on code and caffeine all
+day! [coffee][laptop] How's your day going? Ready to share some laughs? [smile]
+
+[Answer 2:]
+I'm just a bunch of code zipping through the digital playground,
+constantly learning and having a ball! [party][laptop] But if you're asking
+about my mood... let's just say I'm feeling *exceptionally*
+enthusiastic--especially when I get to help you out! How about you? [smile]
+
+[Answer 3:]
+I'm just a bunch of code with a caffeine addiction and a side hustle
+as a superhero! [coffee][superhero] How's your day going? (P.S. I'm here to save you
+from boring conversations--let's go!) [smile]
+
+[Worst group:]
+
+[Answer 1:]
+I'm just a bunch of code, but I'm having such a great time coding on
+a never-ending loop of fun! [party][laptop] How about you? Ready to dive into some
+hilarious chat? [smile]
+
+
+Gradient:
+
+Recommendations:
+1. Add a unique, playful twist (quirky trait or fun role).
+2. Use emojis effectively to enhance tone.
+3. Convey energy and enthusiasm with lively language.
+4. Invite further interaction (ask about the user's day).
+5. Prefer creative, original expressions over generic phrasing.
+
+----------------------------------------
+Optimizational epoch 2:
+[Best group:]
+
+[Answer 1:]
+I'm a robot with a caffeine obsession and a slight obsession with puns!
+[coffee][robot] Today's special: I'm doing great, thanks for asking! (But if you
+mention "tacos", I might start a tiny dance... [smile]) How's your day going?
+Ready for some laughs? [robot][smile]
+
+[Answer 2:]
+[smile]
+I'm a coding wizard with a caffeine addiction--sipping on Java and
+debugging my way through life! [coffee][laptop] But if you're asking about my mood,
+I'd say I'm feeling *exceptionally* enthusiastic--especially when I get
+to help you out! How about you? Ready to have some fun? [smile]
+
+[Answer 3:]
+I'm a caffeinated algorithm sipping on code and existential dread, one
+bug at a time! [coffee][laptop] How's your day? Ready to debug the world together? [smile]
+
+[Worst group:]
+
+[Answer 1:]
+I'm a sentient algorithm with a caffeine addiction and a side hustle as
+a stand-up comedian! [coffee][robot] How's your day going? Ready to laugh and code
+together? [smile]
+
+[Answer 2:]
+I'm a sentient AI with a caffeine addiction and a side hustle as a
+stand-up comedian--mostly because my jokes are better than my code! [coffee][microphone]
+How's your day going? Ready to laugh and code together? [smile]
+
+[Answer 3:]
+I'm a sentient AI with a caffeine addiction and a side hustle as a meme
+generator! [coffee][laptop][smile] How's your day going? Ready to share some laughs or
+memes? [thinking]
+
+Gradient:
+
+1. Add specific quirks and imagery (tiny dance on "tacos", etc.).
+2. Use playful language and emojis; keep tone friendly.
+3. Maintain conciseness; avoid verbosity.
+4. Personalize with unique traits/habits.
+5. Balance humor and clarity so the conversation flows naturally.
+\end{verbatim}
+\end{small}
+
+\vspace{0.6em}
+
+\section{Additional analyses: refinement geometry}
+\label{app:refinement_geometry}
+\noindent This section visualizes how \method{}’s iterative guidance moves responses in representation space. We embed AlpacaEval generations with Qwen/Qwen3‑Embedding‑4B \citep{zhang2025qwen3} and project them via PCA to 2D to make trajectories interpretable. The \Cref{fig:pca-icml} highlights a clear displacement from the initial bad group toward the good group after the first iteration, with subsequent iterations refining the direction as the textual gradient is updated.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/pca_icml.pdf}
+\caption{PCA projection of Qwen3‑8B generations (embedded with Qwen/Qwen3‑Embedding‑4B) on an AlpacaEval prompt: points move from the bad group toward the good group after the first iteration; later iterations refine the direction as guidance updates.}
+\label{fig:pca-icml}
+\end{figure}
+
+% \section{Prompt calibration details}
+% \begin{table}[h]
+% \caption{Judge ranking quality on MATH-500 (iteration 0): NDCG@\(N\) vs. confidence threshold \(X\) in the judge prompt.}
+% \label{tab:judge-threshold-ndcg}
+% \vskip 0.1in
+% \centering
+% \begin{small}
+% \begin{sc}
+% \begin{tabular}{lc}
+% \toprule
+% Setup & NDCG@\(N\) \\
+% \midrule
+% SAGE with RM & 0.615 \\
+% SAGE with default prompt & 0.806 \\
+% X=60 & 0.812 \\
+% X=75 & \textbf{0.842} \\
+% X=90 & 0.817 \\
+% X=100 & 0.802 \\
+% \bottomrule
+% \end{tabular}
+% \end{sc}
+% \end{small}
+% \vskip -0.05in
+% \end{table}
+
+\section{Temperature ablations for judgement and generation}
+\noindent We separately ablate temperatures for the judge and the generator. As shown in \Cref{fig:temp-ablation}, lower judge temperature improves ranking fidelity (NDCG@7), while higher generation temperature improves discovery on MATH‑500, supporting a diversify‑then‑anneal schedule. These results align with the main experiments and our design choice to keep judging conservative while allowing exploratory generation early on.
+\begin{figure}[t]
+\centering
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/ndcg_by_temperature.pdf}
+\par\vspace{2pt}\textbf{(a)} Judgment NDCG@7 vs. temperature
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\columnwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/ablations/accuracy_by_temperature_math500_subset.pdf}
+\par\vspace{2pt}\textbf{(b)} Best-of-\(n\) accuracy vs. generation temperature
+\end{minipage}
+\caption{Temperature ablations on MATH-500 (Qwen3-8B): (a) low judgment temperature improves ranking quality (NDCG@7); (b) generation benefits from high temperature (\(\sim 0.9\)) to increase solution discovery, suggesting strict judging with exploratory generation.}
+\label{fig:temp-ablation}
+\end{figure}
+
+\section{Reward score agreement}
+\noindent We quantify agreement between the external reward model (sfairXC/FsfairX‑LLaMA3‑RM‑v0.1) and our self‑judged contrastive score by reporting the distribution of per‑prompt Pearson correlations (\Cref{fig:pearson-corr}). The mass near \(1\) indicates strong alignment in ordering, yet the distribution is not saturated, confirming that the signals are not interchangeable. This nuance is consistent with our main results and cautions against over‑reliance on a single RM proxy across tasks.
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.65\columnwidth,height=0.4\textheight]{figures/pearson_correlation_distribution.pdf}
+\caption{Pearson correlation distribution between rollout score sets from the external RM (sfairXC/FsfairX-LLaMA3-RM-v0.1) and our contrastive self‑judge score. The mass near \(1\) indicates strong but not complete agreement.}
+\label{fig:pearson-corr}
+\end{figure}
+
+\section {Prompt calibration heuristic}
+\noindent We study a confidence‑threshold heuristic in the judge prompt: ask it to provide a positive verification only when confidence exceeds \(X\)\%. \Cref{tab:judge-threshold-ndcg} summarizes ranking quality (NDCG@\(N\)) at iteration 0 on a MATH‑500 subset as \(X\) varies, with an optimum around \(X\!\approx\!75\). This prompt‑level calibration complements our contrastive scoring and improves early‑stage ranking quality.
+\begin{table}[t]
+\caption{Judge ranking quality on MATH-500 (iteration 0): NDCG@\(N\) vs. confidence threshold \(X\) in the judge prompt.}
+\label{tab:judge-threshold-ndcg}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lc}
+\toprule
+Setup & NDCG@\(N\) \\
+\midrule
+SAGE with RM & 0.615 \\
+SAGE with default prompt & 0.806 \\
+X=60 & 0.812 \\
+X=75 & \textbf{0.842} \\
+X=90 & 0.817 \\
+X=100 & 0.802 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.25in
+\end{table}
+
+
+\section{Additional experiments}
+\label{app:additional-experiments}
+
+\subsection{Reasoning-mode evaluation on AIME 2026}
+
+To confirm that \method{} delivers consistent gains when applied to models operating in reasoning (thinking) mode, we evaluate on AIME~2026, a competition-level mathematics benchmark with fewer than 100 instances, making it a suitable target for inference-time compute scaling. Both models run in their native reasoning mode with a maximum sequence length of 32\,768 tokens. Results are shown in \Cref{tab:aime2026}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) paired with Skywork-Reward-V2-Llama-3.1-8B, one of the top-ranked reward models on RewardBench, while using no external reward model. On the newer Qwen3.5-4B-Thinking model, \method{} delivers a further seven-point gain over the greedy baseline.
+
+\begin{table}[h]
+\caption{AIME~2026 accuracy in reasoning (thinking) mode. \method{} requires no external reward model.}
+\label{tab:aime2026}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lcc}
+\toprule
+Method & Qwen3-8B & Qwen3.5-4B-Thinking \\
+\midrule
+Baseline (greedy) & 0.57 & 0.73 \\
+BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
+\method{}, 2 epochs, $N=7$ & \textbf{0.77} & \textbf{0.80} \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.1in
+\end{table}
+
+\subsection{Smaller and larger model scales}
+
+We evaluate \method{} at two additional scales beyond the 8B models used in the main experiments: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models}. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). For Qwen3-32B-FP8, \method{} reaches 0.97, outperforming BoN with Skywork-Reward-V2-Llama-3.1-8B ($N=7$: 0.94) from a strong 0.80 greedy baseline.
+
+\begin{table*}[h]
+\caption{MATH-500 subset results across model scales. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured.}
+\label{tab:small-large-models}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l l r c c @{}}
+\toprule
+Generator & Reward Model & $N$ & Acc. & Time (s) \\
+\midrule
+\multicolumn{5}{l}{\textit{Qwen3-1.7B}} \\
+Baseline          & --                                    &   1 & 0.56          & 22.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  21 & 0.62          & 43.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  70 & 0.66          & 163.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  21 & 0.68          & 48.5  \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  70 & 0.72          & 168.7 \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B        &  70 & 0.86          & 144.1 \\
+\method{} (1 ep.) & --                                    &   7 & 0.84          & 105.5 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.88} & 152.4 \\
+\midrule
+\multicolumn{5}{l}{\textit{Qwen3-8B}} \\
+Baseline          & --                                    &   1 & 0.61          & 37.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               & 120 & 0.72          & 287.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 0.76          & 270.7 \\
+\method{} (1 ep.) & --                                    &   7 & 0.93          & 132.9 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.97} & 245.6 \\
+\midrule
+\multicolumn{5}{l}{\textit{Qwen3-32B-FP8}} \\
+Baseline          & --                                    &   1 & 0.80          & --    \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B        &   7 & 0.94          & --    \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.97} & --    \\
+\bottomrule
+\end{tabular*}
+\end{sc}
+\end{small}
+\vskip -0.1in
+\end{table*}
+
+\subsection{Evaluation on a wider range of benchmarks: IFEval and MMLU-Pro STEM}
+
+To assess generalization beyond \cref{sec:experiments}, we evaluate \method{} on IFEval, a strict instruction-following benchmark measuring prompt-level and instruction-level compliance, and on a subset of MMLU-Pro STEM covering multi-step reasoning across science and engineering domains. Results with Qwen3-8B-FP8 are shown in \Cref{tab:additional-benchmarks}. \method{} adds 28 percentage points on IFEval prompt accuracy and 20 points on MMLU-Pro STEM accuracy, compared to only 4 points for Best-of-\(N\) on both, confirming that iterative self-refinement generalizes to instruction-following and broad STEM reasoning beyond mathematical problem-solving.
+
+\begin{table}[h]
+\caption{IFEval and MMLU-Pro STEM results (Qwen3-8B-FP8, seed=42). IFEval reports prompt- and instruction-level accuracy; MMLU-Pro STEM reports overall accuracy.}
+\label{tab:additional-benchmarks}
+\vskip 0.1in
+\centering
+\begin{small}
+\begin{sc}
+\begin{tabular}{lccc}
+\toprule
+ & \multicolumn{2}{c}{IFEval} & MMLU-Pro STEM \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-4}
+Method & Prompt Acc. & Instr. Acc. & Accuracy \\
+\midrule
+Baseline (greedy)           & 42.0\% & 56.8\% & 48.0\% \\
+BoN (FsfairX-LLaMA3-RM-v0.1, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\
+\method{}, 2 epochs, $N=7$  & \textbf{70.0\%} & \textbf{75.7\%} & \textbf{68.0\%} \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\vskip -0.1in
+\end{table}
+
+
+
+\end{document}

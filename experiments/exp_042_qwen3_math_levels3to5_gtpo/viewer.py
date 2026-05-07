@@ -1,5 +1,5 @@
 """
-viewer.py — exp_041 rollout viewer with per-token confidence visualisation.
+viewer.py — exp_042 rollout viewer with per-token confidence visualisation.
 Usage:  python viewer.py [--port 12000]
 Opens:  http://localhost:12000
 """
@@ -150,7 +150,7 @@ HTML = r"""<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>exp_041 rollout viewer</title>
+<title>exp_042 rollout viewer</title>
 <style>
 * { box-sizing: border-box; }
 body { font-family: monospace; background:#0d1117; color:#c9d1d9; margin:0; padding:16px; }
@@ -186,7 +186,7 @@ h1   { color:#58a6ff; margin:0 0 8px; font-size:18px; }
 </style>
 </head>
 <body>
-<h1>exp_041 — rollout viewer</h1>
+<h1>exp_042 — rollout viewer</h1>
 <div class="bar">
   <label>Step&nbsp;
     <select id="sel-step" onchange="loadStep()">

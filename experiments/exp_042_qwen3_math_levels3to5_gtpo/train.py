@@ -1,10 +1,14 @@
 """
-exp_041: GRPO — Qwen3-4B on MATH benchmark (levels 3-5, integer answers only).
+exp_042: GTPO-EMA-flipped — Qwen3-4B on MATH benchmark (levels 3-5, integer answers).
 
-Dataset: DigitalLearningGmbH/MATH-lighteval, filtered to levels 3/4/5,
-         answers extracted from \\boxed{} in the solution field.
-         Only examples whose boxed answer is an integer are kept.
-         ~3400 problems total across the three levels.
+Same dataset and reward functions as exp_041 (GRPO baseline on same data),
+but replaces sequence-level GRPO advantages with GTPO-EMA-flipped per-token
+advantages so that training focuses on:
+  - O+ rollouts: tokens where the model was uncertain (exploration on correct paths)
+  - O- rollouts: tokens where the model was overconfident (penalise confident mistakes)
+
+compute_loss is overridden directly (not _compute_loss) to ensure unsloth's
+patched GRPOTrainer does not bypass the GTPO logic.
 
 Rollout data saved to: <EXP_DIR>/rollout_logs/step_NNNNN.npz
 """
@@ -14,7 +18,7 @@ import torch
 from datasets import load_dataset
 from unsloth import FastLanguageModel
 from trl import GRPOConfig
-from src import RolloutLoggerTrainer
+from src import GTPORolloutTrainer
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B",
@@ -35,7 +39,7 @@ TRAINING_CONFIG = {
     "per_device_train_batch_size": 4, "gradient_accumulation_steps": 1,
     "num_generations": 8, "max_steps": 1000, "save_steps": 500,
     "max_grad_norm": 1.0, "report_to": "none",
-    "output_dir": "/workspace/outputs_exp041",
+    "output_dir": "/workspace/outputs_exp042",
     "bf16": True, "fp16": False,
 }
 DATASET_CONFIG = {
@@ -45,6 +49,13 @@ DATASET_CONFIG = {
     "max_prompt_tokens": 512,
     "max_completion_tokens": 3584,
     "shuffle_seed": 3407,
+}
+GTPO_CONFIG = {
+    "alpha1": 0.9,
+    "alpha2": 0.1,
+    "lam": 0.9,
+    "gtpo_top_k": 20,
+    "reward_threshold": 0.0,
 }
 
 REASONING_START = "<working_out>"
@@ -66,8 +77,8 @@ match_format = re.compile(
 )
 match_numbers = re.compile(SOLUTION_START + r".*?([-\d\.,]+)", flags=re.MULTILINE | re.DOTALL)
 
+
 def _extract_boxed(text):
-    """Return content of last \\boxed{} in text, or None."""
     idx = text.rfind(r'\boxed{')
     if idx == -1:
         return None
@@ -79,13 +90,8 @@ def _extract_boxed(text):
             depth -= 1
     return None
 
+
 def extract_solution_answer(raw):
-    """
-    Extract a numeric string from the raw content between <SOLUTION> tags.
-    Rule 1: raw.strip() is directly a number → return it.
-    Rule 2: find \\boxed{answer} inside raw → return answer if numeric.
-    Returns None if nothing found.
-    """
     if raw is None:
         return None
     s = raw.strip().replace(',', '').replace('+', '').replace(' ', '')
@@ -104,13 +110,13 @@ def extract_solution_answer(raw):
             pass
     return None
 
+
 _correctness_store = {}
 
 
 # ── dataset helpers ────────────────────────────────────────────────────────────
 
 def extract_boxed(solution):
-    """Extract content from the last \\boxed{} in the solution (handles nested braces)."""
     idx = solution.rfind(r'\boxed{')
     if idx == -1:
         return None
@@ -227,7 +233,8 @@ def main():
     exp_dir = os.path.dirname(os.path.abspath(__file__))
     rollout_log_dir = os.path.join(exp_dir, "rollout_logs")
 
-    print("=== Exp 041: GRPO, Qwen3-4B, MATH levels 3-5 integer answers ===")
+    print("=== Exp 042: GTPO-EMA-flipped, Qwen3-4B, MATH levels 3-5 integer answers ===")
+    print(f"GTPO config: {GTPO_CONFIG}")
     print(f"Rollout logs → {rollout_log_dir}")
     dataset = prepare_dataset()
 
@@ -255,13 +262,14 @@ def main():
         max_completion_length=DATASET_CONFIG["max_completion_tokens"],
         **{k: v for k, v in TRAINING_CONFIG.items()},
     )
-    trainer = RolloutLoggerTrainer(
+    trainer = GTPORolloutTrainer(
         model=model, tokenizer=tokenizer, args=args,
         train_dataset=dataset, reward_funcs=REWARD_FUNCS,
         rollout_log_dir=rollout_log_dir,
         correctness_store=_correctness_store,
         conf_top_k=20,
         save_every_steps=1,
+        **GTPO_CONFIG,
     )
 
     print(f"Starting: {TRAINING_CONFIG['num_generations']} gens × "

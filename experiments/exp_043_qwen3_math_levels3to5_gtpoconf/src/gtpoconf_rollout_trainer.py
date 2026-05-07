@@ -1,13 +1,16 @@
 """
-gtpo_rollout_trainer.py
------------------------
-Combines GTPO-EMA-flipped (per-token advantages) with per-rollout npz logging.
+gtpoconf_rollout_trainer.py
+---------------------------
+GTPO-Conf + per-rollout npz logging trainer.
 
-Overrides compute_loss (not _compute_loss) so that unsloth's patched
-GRPOTrainer doesn't bypass the GTPO logic. One forward pass (with grad)
-computes both per-token logps and top-K confidence; no extra forward pass.
+Uses column-wise group-relative confidence weighting (exp_005 approach) instead
+of EMA-flipped (exp_039/042). Single forward pass computes both per-token logps
+and top-K confidence — no extra forward pass.
 
-npz keys (same schema as exp_040/041):
+compute_loss is overridden (not _compute_loss) to bypass unsloth's patched
+GRPOTrainer (Python MRO ensures subclass method takes precedence).
+
+npz keys:
   step, completion_ids, completion_mask, confidence,
   topk_log_probs, topk_token_ids, advantages, is_correct,
   gt_answer, extracted_answers, prompt_ids, prompt_mask
@@ -20,27 +23,21 @@ import torch.nn.functional as F
 
 from trl import GRPOTrainer
 
-from .ema_flipped_utils import (
-    compute_ema_vectorized,
-    compute_gtpo_ema_flipped_advantages,
-    EPS,
-)
+from .gtpoconf_utils import compute_gtpo_conf_advantages, EPS
 
 
-class GTPORolloutTrainer(GRPOTrainer):
+class GTPoConfRolloutTrainer(GRPOTrainer):
     """
-    GTPO-EMA-flipped + rollout logging trainer.
+    GTPO-Conf (column-wise confidence weighting) + rollout logging.
 
     Extra __init__ kwargs:
         rollout_log_dir   (str):   directory for .npz files.
         correctness_store (dict):  {completion_text: (is_correct, gt, extracted)}
-        conf_top_k        (int):   top-K for confidence/logging. Default 20.
+        conf_top_k        (int):   top-K for confidence computation. Default 20.
         save_every_steps  (int):   save npz every N steps. Default 1.
-        alpha1 (float): base reward weight.           Default 0.9
-        alpha2 (float): EMA-confidence bonus weight.  Default 0.1
-        lam    (float): EMA decay.                    Default 0.9
-        gtpo_top_k (int): top-K for confidence in GTPO advantage. Default 20.
-        reward_threshold (float): O+/O- split.        Default 0.0
+        alpha1 (float): base reward weight.            Default 1.0
+        alpha2 (float): confidence bonus/penalty weight. Default 0.1
+        reward_threshold (float): O+/O- split.         Default 0.0
     """
 
     def __init__(self, *args,
@@ -48,10 +45,8 @@ class GTPORolloutTrainer(GRPOTrainer):
                  correctness_store=None,
                  conf_top_k=20,
                  save_every_steps=1,
-                 alpha1=0.9,
+                 alpha1=1.0,
                  alpha2=0.1,
-                 lam=0.9,
-                 gtpo_top_k=20,
                  reward_threshold=0.0,
                  **kwargs):
         self.rollout_log_dir   = rollout_log_dir
@@ -60,15 +55,13 @@ class GTPORolloutTrainer(GRPOTrainer):
         self.save_every_steps  = max(1, int(save_every_steps))
         self.alpha1            = float(alpha1)
         self.alpha2            = float(alpha2)
-        self.lam               = float(lam)
-        self.gtpo_top_k        = int(gtpo_top_k)
         self.reward_threshold  = float(reward_threshold)
         self._log_step         = 0
         os.makedirs(self.rollout_log_dir, exist_ok=True)
         super().__init__(*args, **kwargs)
-        print(f"[GTPORolloutTrainer] α1={self.alpha1} α2={self.alpha2} λ={self.lam} "
-              f"top_k={self.gtpo_top_k} threshold={self.reward_threshold} "
-              f"conf_top_k={self._conf_top_k} log_dir={self.rollout_log_dir}")
+        print(f"[GTPoConfRolloutTrainer] α1={self.alpha1} α2={self.alpha2} "
+              f"threshold={self.reward_threshold} conf_top_k={self._conf_top_k} "
+              f"log_dir={self.rollout_log_dir}")
 
     # ── override compute_loss ─────────────────────────────────────────────────
 
@@ -83,16 +76,13 @@ class GTPORolloutTrainer(GRPOTrainer):
         attention_mask = torch.cat([prompt_mask, completion_mask], dim=1)
         logits_to_keep = completion_ids.size(1)
 
-        # ── single forward pass (with grad): logps + confidence ──────────────
+        # ── single forward pass (with grad): logps + top-k for confidence ────
         model_inputs = {"input_ids": input_ids, "attention_mask": attention_mask}
         if hasattr(self, "model_kwarg_keys") and "logits_to_keep" in self.model_kwarg_keys:
             model_inputs["logits_to_keep"] = logits_to_keep + 1
 
         raw_out = model(**model_inputs)
 
-        # When logits_to_keep is passed, model returns only (logits_to_keep+1) positions.
-        # Otherwise it returns the full sequence — slice the last (logits_to_keep+1) positions.
-        # In both cases we shift left by 1 so position t predicts token t+1.
         if "logits_to_keep" in model_inputs:
             logits = raw_out.logits[:, :-1, :].float().contiguous()
         else:
@@ -100,23 +90,21 @@ class GTPORolloutTrainer(GRPOTrainer):
 
         log_probs = F.log_softmax(logits, dim=-1)
 
-        # per-token logps for the current tokens (needs grad for loss)
         per_token_logps = torch.gather(
             log_probs, 2, completion_ids.unsqueeze(2)
         ).squeeze(2)
 
-        # top-K log probs + confidence (detached — no grad needed)
         with torch.no_grad():
             k = min(self._conf_top_k, log_probs.shape[-1])
             topk_lp, topk_ids = torch.topk(log_probs.detach(), k, dim=-1)
-            confidence = -topk_lp.mean(dim=-1)   # (B, T), higher = more peaked
+            # C = -mean_topk(log π): high = uncertain, low = confident
+            confidence = -topk_lp.mean(dim=-1)    # (B, T)
 
-        del logits, log_probs  # free memory before GTPO computation
+        del logits, log_probs
 
-        # ── guard: no reward signal → zero loss, skip GTPO (mirrors GRPO behaviour) ──
-        # When all rollouts in the group have identical rewards, seq_advantages std=0
-        # and GRPO would produce zero gradients. Without this guard, GTPO would still
-        # backpropagate confidence-based "ghost gradients" that corrupt the model.
+        # ── ghost gradient guard ──────────────────────────────────────────────
+        # When all rollouts have identical rewards, std=0 → GRPO produces no signal.
+        # Without this guard GTPO-Conf would still compute confidence-based gradients.
         if seq_advantages.std() < EPS:
             if self._log_step % self.save_every_steps == 0:
                 try:
@@ -124,27 +112,22 @@ class GTPORolloutTrainer(GRPOTrainer):
                 except Exception:
                     pass
             self._log_step += 1
-            return per_token_logps.sum() * 0.0  # zero loss with grad_fn attached
+            return per_token_logps.sum() * 0.0
 
-        # ── reference logps (for old ratio) ──────────────────────────────────
+        # ── reference logps ───────────────────────────────────────────────────
         old_per_token_logps = inputs.get("old_per_token_logps")
         if old_per_token_logps is None:
             old_per_token_logps = per_token_logps.detach()
 
-        # ── GTPO-EMA-flipped per-token advantages (zeroed for ablation) ──────────
-        gtpo_adv = compute_gtpo_ema_flipped_advantages(
+        # ── GTPO-Conf per-token advantages ────────────────────────────────────
+        token_advantages = compute_gtpo_conf_advantages(
             rewards          = seq_advantages,
             confidence       = confidence,
             completion_mask  = completion_mask,
             alpha1           = self.alpha1,
             alpha2           = self.alpha2,
-            lam              = self.lam,
             reward_threshold = self.reward_threshold,
         )
-        # Broadcast seq_advantages to per-token (GRPO-style signal).
-        # GTPO component is kept in the computation graph with weight 0 for debugging.
-        seq_adv_expanded = seq_advantages.unsqueeze(1).expand_as(completion_mask.float()).float()
-        token_advantages  = seq_adv_expanded * completion_mask + 0.0 * gtpo_adv
 
         # ── PPO clipping ──────────────────────────────────────────────────────
         log_ratio = per_token_logps - old_per_token_logps
@@ -172,17 +155,16 @@ class GTPORolloutTrainer(GRPOTrainer):
         # ── metrics ───────────────────────────────────────────────────────────
         mode = "train" if model.training else "eval"
         with torch.no_grad():
-            ema      = compute_ema_vectorized(confidence.detach(), completion_mask, lam=self.lam)
-            mean_ema = (ema * completion_mask).sum() / total_tokens
-            mean_adv = (token_advantages * completion_mask).sum() / total_tokens
-            n_pos    = (seq_advantages > self.reward_threshold).float().sum()
-            n_neg    = (seq_advantages <= self.reward_threshold).float().sum()
+            mean_conf = (confidence * completion_mask).sum() / total_tokens
+            mean_adv  = (token_advantages * completion_mask).sum() / total_tokens
+            n_pos     = (seq_advantages > self.reward_threshold).float().sum()
+            n_neg     = (seq_advantages <= self.reward_threshold).float().sum()
 
-        self._metrics[mode].setdefault("gtpo/mean_ema", []).append(
-            self.accelerator.gather(mean_ema).mean().item())
-        self._metrics[mode].setdefault("gtpo/mean_token_adv", []).append(
+        self._metrics[mode].setdefault("gtpoconf/mean_confidence", []).append(
+            self.accelerator.gather(mean_conf).mean().item())
+        self._metrics[mode].setdefault("gtpoconf/mean_token_adv", []).append(
             self.accelerator.gather(mean_adv).mean().item())
-        self._metrics[mode].setdefault("gtpo/frac_pos", []).append(
+        self._metrics[mode].setdefault("gtpoconf/frac_pos", []).append(
             (n_pos / (n_pos + n_neg + EPS)).item())
 
         # ── rollout logging ───────────────────────────────────────────────────
@@ -196,7 +178,7 @@ class GTPORolloutTrainer(GRPOTrainer):
                                         f"error_step_{self._log_step}.txt")
                 with open(err_path, "w") as _f:
                     _f.write(tb)
-                print(f"[GTPORolloutTrainer] WARNING step {self._log_step}: {e}")
+                print(f"[GTPoConfRolloutTrainer] WARNING step {self._log_step}: {e}")
         self._log_step += 1
         return loss
 
@@ -256,7 +238,8 @@ class GTPORolloutTrainer(GRPOTrainer):
             prompt_mask       = prompt_mask[0].cpu().long().numpy().astype(np.int8),
         )
         n_correct = int(is_correct.sum())
-        print(f"[GTPORolloutTrainer] step {self._log_step:05d} → {os.path.basename(out_path)}  "
+        print(f"[GTPoConfRolloutTrainer] step {self._log_step:05d} → "
+              f"{os.path.basename(out_path)}  "
               f"correct={n_correct}/{B}  gt={gt_answer!r}  "
               f"mean_adv={float(seq_advantages.float().mean()):.3f}  "
               f"store_remaining={len(self.correctness_store)}")

@@ -1328,7 +1328,7 @@ To confirm that \method{} delivers consistent gains when applied to models opera
 Method & Qwen3-8B & Qwen3.5-4B-Thinking \\
 \midrule
 Baseline (greedy) & 0.57 & 0.73 \\
-BoN (SW-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
+BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
 \method{}, 2 epochs, $N=7$ & \textbf{0.77} & \textbf{0.80} \\
 \bottomrule
 \end{tabular}
@@ -1336,11 +1336,10 @@ BoN (SW-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
 \end{small}
 \vskip -0.1in
 \end{table}
-\noindent SW-Llama-3.1-8B = Skywork/Skywork-Reward-V2-Llama-3.1-8B.
 
 \subsection{Smaller and larger model scales}
 
-We evaluate \method{} at two additional scales beyond the 8B models used in the main experiments: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models}. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (SW-Llama, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). For Qwen3-32B-FP8, \method{} reaches 0.97, outperforming BoN+SW-Llama ($N=7$: 0.94) from a strong 0.80 greedy baseline.
+We evaluate \method{} at two additional scales beyond the 8B models used in the main experiments: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models}. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). For Qwen3-32B-FP8, \method{} reaches 0.97, outperforming BoN with Skywork-Reward-V2-Llama-3.1-8B ($N=7$: 0.94) from a strong 0.80 greedy baseline.
 
 \begin{table}[h]
 \caption{\textcolor{blue}{MATH-500 subset results across model scales. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured.}}
@@ -1349,38 +1348,37 @@ We evaluate \method{} at two additional scales beyond the 8B models used in the 
 \centering
 \begin{small}
 \begin{sc}
-\begin{tabular}{llcc}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l l r c c @{}}
 \toprule
-Model & Method & Acc. & Time (s) \\
+Generator & Reward Model & $N$ & Acc. & Time (s) \\
 \midrule
-\multicolumn{4}{l}{\textit{Qwen3-1.7B}} \\
-& Baseline (greedy)              & 0.56          & 22.0  \\
-& BoN (FsfairX, $N=21$)          & 0.62          & 43.0  \\
-& BoN (FsfairX, $N=70$)          & 0.66          & 163.7 \\
-& BoN (SW-Qwen3, $N=21$)         & 0.68          & 48.5  \\
-& BoN (SW-Qwen3, $N=70$)         & 0.72          & 168.7 \\
-& BoN (SW-Llama, $N=70$)         & 0.86          & 144.1 \\
-& \method{}, 1 epoch, $N=7$      & 0.84          & 105.5 \\
-& \method{}, 2 epochs, $N=7$     & \textbf{0.88} & 152.4 \\
+\multicolumn{5}{l}{\textit{Qwen3-1.7B}} \\
+Baseline          & --                                    &   1 & 0.56          & 22.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  21 & 0.62          & 43.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  70 & 0.66          & 163.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  21 & 0.68          & 48.5  \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  70 & 0.72          & 168.7 \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B        &  70 & 0.86          & 144.1 \\
+\method{} (1 ep.) & --                                    &   7 & 0.84          & 105.5 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.88} & 152.4 \\
 \midrule
-\multicolumn{4}{l}{\textit{Qwen3-8B}} \\
-& Baseline (greedy)              & 0.61          & 37.0  \\
-& BoN (FsfairX, $N=120$)         & 0.72          & 287.7 \\
-& BoN (SW-Qwen3, $N=120$)        & 0.76          & 270.7 \\
-& \method{}, 1 epoch, $N=7$      & 0.93          & 132.9 \\
-& \method{}, 2 epochs, $N=7$     & \textbf{0.97} & 245.6 \\
+\multicolumn{5}{l}{\textit{Qwen3-8B}} \\
+Baseline          & --                                    &   1 & 0.61          & 37.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               & 120 & 0.72          & 287.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 0.76          & 270.7 \\
+\method{} (1 ep.) & --                                    &   7 & 0.93          & 132.9 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.97} & 245.6 \\
 \midrule
-\multicolumn{4}{l}{\textit{Qwen3-32B-FP8}} \\
-& Baseline (greedy)              & 0.80          & --    \\
-& BoN (SW-Llama, $N=7$)          & 0.94          & --    \\
-& \method{}, 2 epochs, $N=7$     & \textbf{0.97} & --    \\
+\multicolumn{5}{l}{\textit{Qwen3-32B-FP8}} \\
+Baseline          & --                                    &   1 & 0.80          & --    \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B        &   7 & 0.94          & --    \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{0.97} & --    \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{sc}
 \end{small}
 \vskip -0.1in
 \end{table}
-\noindent FsfairX = sfairXC/FsfairX-LLaMA3-RM-v0.1; SW-Qwen3 = Skywork/Skywork-Reward-V2-Qwen3-8B; SW-Llama = Skywork/Skywork-Reward-V2-Llama-3.1-8B.
 
 \subsection{Additional benchmarks: IFEval and MMLU-Pro STEM}
 
@@ -1400,7 +1398,7 @@ To assess generalization beyond \cref{sec:experiments}, we evaluate \method{} on
 Method & Prompt Acc. & Instr. Acc. & Accuracy \\
 \midrule
 Baseline (greedy)           & 42.0\% & 56.8\% & 48.0\% \\
-BoN (FsfairX, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\
+BoN (FsfairX-LLaMA3-RM-v0.1, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\
 \method{}, 2 epochs, $N=7$  & \textbf{70.0\%} & \textbf{75.7\%} & \textbf{68.0\%} \\
 \bottomrule
 \end{tabular}

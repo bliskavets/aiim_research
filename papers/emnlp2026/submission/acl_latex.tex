@@ -415,11 +415,11 @@ We stop when \(\budget\) is exhausted or when the maximum number of optimization
 \begin{groupplot}[
     group style={
         group size=1 by 2,
-        vertical sep=1.8cm
+        vertical sep=0.6cm
     },
     ybar,
     width=\columnwidth,
-    height=3.2cm,
+    height=2.3cm,
     bar width=10pt,
     enlarge x limits=0.15,
     ylabel={MATH-500 Acc. (\%)},
@@ -564,13 +564,13 @@ Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
 \centering
 \begin{minipage}[t]{0.48\columnwidth}
 \centering
-\includegraphics[width=\linewidth]{figures/ablations/boxplot_llm_judge_style_math500.pdf}
+\includegraphics[width=\linewidth,height=3.0cm,keepaspectratio]{figures/ablations/boxplot_llm_judge_style_math500.pdf}
 \par\vspace{2pt}\textbf{(a)} LLM-judge score vs. epoch
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\columnwidth}
 \centering
-\includegraphics[width=\linewidth]{figures/ablations/reward_by_epoch_math500.pdf}
+\includegraphics[width=\linewidth,height=3.0cm,keepaspectratio]{figures/ablations/reward_by_epoch_math500.pdf}
 \par\vspace{2pt}\textbf{(b)} Reward-model score vs. epoch
 \end{minipage}
 \caption{Qwen3-8B on MATH-500: (a) steady growth of self-judged score across refinement epochs; (b) RM score dips at epoch 2 then rises at epoch 3, indicating potential local maxima when optimizing against RM alone.}
@@ -581,13 +581,13 @@ Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
 \centering
 \begin{minipage}[t]{0.48\columnwidth}
 \centering
-\includegraphics[width=\linewidth]{figures/ablations/performance_across_epochs__tgpo_w_rm.pdf}
+\includegraphics[width=\linewidth,height=3.0cm,keepaspectratio]{figures/ablations/performance_across_epochs__tgpo_w_rm.pdf}
 \par\vspace{2pt}\textbf{(a)} RM-based scoring
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.48\columnwidth}
 \centering
-\includegraphics[width=\linewidth]{figures/ablations/performance_across_epochs_rates_tgpo_wo_rm.pdf}
+\includegraphics[width=\linewidth,height=3.0cm,keepaspectratio]{figures/ablations/performance_across_epochs_rates_tgpo_wo_rm.pdf}
 \par\vspace{2pt}\textbf{(b)} LLM-as-judge scoring
 \end{minipage}
 \caption{Ablation on scoring source for Qwen3-8B on MATH-500. LLM-as-judge consistently outperforms an external reward model under the same budget and decoding setup.}
@@ -655,55 +655,11 @@ N, \(T\) & MATH-500 subset score \\
 % \end{figure}
 
 \subsection{Reward-model agreement and refinement geometry}
-\noindent We assess how closely our contrastive self‑judged score agrees with an external reward model by examining the distribution of Pearson correlations between per‑prompt rollout score sets produced by sfairXC/FsfairX-LLaMA3-RM-v0.1 (\cref{fig:pearson-corr} in Appendix). The distribution is skewed toward \(1\) but not saturated, indicating strong yet partial alignment. The self‑judged margin often moves in the same direction as the reward model, but it does not simply replicate the reward model’s scores. Together with the main results (\cref{tab:results-by-model}) and ablations (\cref{tab:rm-ablation,fig:judge-rm-dynamics}), these findings suggest that while reward models provide useful signals, their generalization may be limited on some tasks. As a result, reward model scores should be interpreted with caution, and self‑judging can offer a more faithful, training‑free preference signal for the generator.
-
-
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=0.85\columnwidth,height=0.19\textheight]{figures/pearson_correlation_distribution.pdf}
-% \caption{Pearson correlation distribution between rollout score sets from the external RM (sfairXC/FsfairX-LLaMA3-RM-v0.1) and our contrastive self‑judge score. The mass near \(1\) indicates strong but not complete agreement.}
-% \label{fig:pearson-corr}
-% \end{figure}
-
-\noindent We also visualize refinement dynamics by embedding AlpacaEval generations using Qwen/Qwen3-Embedding-4B \citep{zhang2025qwen3} and projecting them to two dimensions via PCA \citep{WOLD198737} (\cref{fig:pca-icml} in the Appendix \ref{app:refinement_geometry}). After the first iteration, responses shift along a direction from the initially identified bad group toward the good group, consistent with the textual‑gradient guidance produced by grouped selection. Subsequent iterations adjust this direction as the gradient is updated. This geometric view supports our design choices. Grouping stabilizes the guidance signal, and the self‑judged textual gradient steers exploration toward higher‑quality regions.
-
-% \begin{figure}[t]
-% \centering
-% \includegraphics[width=\columnwidth]{figures/pca_icml.pdf}
-% \caption{PCA projection of Qwen3‑8B generations (embedded with Qwen/Qwen3‑Embedding‑4B) on an AlpacaEval prompt: points move from the bad group toward the good group after the first iteration; later iterations refine the direction as guidance updates.}
-% \label{fig:pca-icml}
-% \end{figure}
+\noindent Pearson correlation analysis between self-judge scores and an external RM shows strong but partial alignment (mass near 1); PCA projections of generation trajectories confirm that refinement consistently steers responses from the bad group toward the good group. Full details are in \cref{app:refinement_geometry}.
 
 \subsection{Prompt calibration}
 \label{sec:prompt-calibration-trick}
-We observe a useful effect when the judging prompt explicitly states the evaluation criteria. Following \citet{kalai2025language}, the confidence distribution of instruction-tuned models is more separable between correct and incorrect answers. Inspired by this observation, we add a confidence-threshold instruction to the judge prompt that gates positive labels by confidence: ``Return yes if and only if you are X\% sure the response is correct.'' On MATH-500, sweeping \(X\) suggests an optimum near \(X\approx 75\).
-
-To quantify the judge's ranking fidelity, we report NDCG@\(N\) on a MATH-500 subset at the first generation stage (iteration 0). Table~\ref{tab:judge-threshold-ndcg} in Appendix summarizes the results. We observe that the highest performance is achieved when the LLM is instructed to produce a positive verification result only if its confidence exceeds 75\%. This is consistent with the findings of \citet{kalai2025language}.
-
-% \begin{table}[t]
-% \caption{Judge ranking quality on MATH-500 (iteration 0): NDCG@\(N\) vs. confidence threshold \(X\) in the judge prompt.}
-% \label{tab:judge-threshold-ndcg}
-% \vskip 0.1in
-% \centering
-% \begin{small}
-% \begin{sc}
-% \begin{tabular}{lc}
-% \toprule
-% Setup & NDCG@\(N\) \\
-% \midrule
-% SAGE with RM & 0.615 \\
-% SAGE with default prompt & 0.806 \\
-% X=60 & 0.812 \\
-% X=75 & \textbf{0.842} \\
-% X=90 & 0.817 \\
-% X=100 & 0.802 \\
-% \bottomrule
-% \end{tabular}
-% \end{sc}
-% \end{small}
-% \vskip -0.25in
-% \end{table}
-
+\noindent Gating positive judge labels by a confidence threshold \(X\%\) improves ranking quality; the optimum is near \(X\approx 75\) on MATH-500 \citep{kalai2025language}. Full NDCG@\(N\) results are in \cref{sec:app-prompt-calibration}.
 
 % --------------- 5. Conclusion ---------------
 \section{Conclusion}
@@ -1176,7 +1132,8 @@ Gradient:
 \label{fig:pearson-corr}
 \end{figure}
 
-\section {Prompt calibration heuristic}
+\section{Prompt calibration heuristic}
+\label{sec:app-prompt-calibration}
 \noindent We study a confidence‑threshold heuristic in the judge prompt: ask it to provide a positive verification only when confidence exceeds \(X\)\%. \Cref{tab:judge-threshold-ndcg} summarizes ranking quality (NDCG@\(N\)) at iteration 0 on a MATH‑500 subset as \(X\) varies, with an optimum around \(X\!\approx\!75\). This prompt‑level calibration complements our contrastive scoring and improves early‑stage ranking quality.
 \begin{table}[t]
 \centering

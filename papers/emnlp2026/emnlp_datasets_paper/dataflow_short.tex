@@ -1,0 +1,57 @@
+\begin{tikzpicture}[
+    % Global node style for hand-drawn look
+    handdrawn_node/.style={
+        shape=rectangle,
+        % rounded corners=8pt, % Adjust corner roundness to match original
+        draw, thick, % Draw a thick border
+        decorate, decoration={random steps, segment length=3mm, amplitude=0.2mm}, % Hand-drawn effect for border
+        % decorate,
+        text width=3.5cm, % Control node width and text wrapping
+        align=center,
+        inner sep=8pt, % Padding inside the node
+        font=\sffamily % Optional: sans-serif font
+    },
+    % Specific style for the final dataset node (inherits handdrawn_node)
+    file_node/.style={
+        handdrawn_node,
+        fill=blue!20 % Light blue fill as in the original
+    },
+    final_node/.style={
+        handdrawn_node,
+        fill=green!20 % Light green fill as in the original
+    },
+    % Global arrow style for hand-drawn look
+    handdrawn_arrow/.style={
+        thick,
+        -{Latex}, % Arrow tip style from arrows.meta
+        % decorate, decoration={random steps, segment length=3mm, amplitude=0.2mm} % Hand-drawn effect for path
+    },
+    % Define default distances between nodes (horizontal and vertical)
+    node distance=1.5cm and 1.5cm
+]
+
+% --- Nodes ---
+\node[file_node] (seed_queries) {Seed queries};
+\node[handdrawn_node, right=of seed_queries] (expansion) {Query expansion (Stage 1)};
+\node[handdrawn_node, right=of expansion] (create_example) {Create dataset example from query (Stages 2-5)};
+
+\node[handdrawn_node, below=of expansion] (judge_example) {Judge dataset example (Stage 6)};
+
+\node[handdrawn_node, below left=of judge_example] (apply_feedback) {Apply feedback to example (Stages 7-8)};
+
+\node[handdrawn_node, below right=of judge_example] (filtering) {Filtering (Stage 9)};
+\node[final_node, below=of filtering] (final_dataset) {Final dataset};
+
+% --- Paths (Arrows) ---
+
+\draw[handdrawn_arrow] (seed_queries) -- (expansion);
+\draw[handdrawn_arrow] (expansion) -- (create_example);
+\draw[handdrawn_arrow] (create_example) -- (judge_example);
+
+\draw[handdrawn_arrow] (judge_example.east) ..controls +(east:1cm) and +(north:2cm).. node[pos=0.3, above right] {Accepted} (filtering.north);
+\draw[handdrawn_arrow] (judge_example.west) ..controls +(west:1cm) and +(north:2cm).. node[pos=0.3, above left] {Rejected\newline (first time only)} (apply_feedback.north);
+\draw[handdrawn_arrow] (apply_feedback.east) ..controls +(east:1cm) and +(south:2cm).. (judge_example.south);
+
+\draw[handdrawn_arrow] (filtering) -- (final_dataset);
+
+\end{tikzpicture}

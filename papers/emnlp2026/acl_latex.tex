@@ -944,7 +944,7 @@ Gradient:
 \noindent We also visualize refinement dynamics by embedding AlpacaEval generations using Qwen/Qwen3-Embedding-4B \citep{zhang2025qwen3} and projecting them to two dimensions via PCA \citep{WOLD198737}. After the first iteration, responses shift along a direction from the initially identified bad group toward the good group, consistent with the textual‑gradient guidance produced by grouped selection. Subsequent iterations adjust this direction as the gradient is updated. This geometric view supports our design choices. Grouping stabilizes the guidance signal, and the self‑judged textual gradient steers exploration toward higher‑quality regions.
 }
 
-\noindent This section visualizes how \method{}’s iterative guidance moves responses in representation space. We embed AlpacaEval generations with Qwen/Qwen3‑Embedding‑4B \citep{zhang2025qwen3} and project them via PCA to 2D to make trajectories interpretable. The \Cref{fig:pca-icml} highlights a clear displacement from the initial bad group toward the good group after the first iteration, with subsequent iterations refining the direction as the textual gradient is updated.
+\noindent Also we visualize how \method{}’s iterative guidance moves responses in representation space. We embed AlpacaEval generations with Qwen/Qwen3‑Embedding‑4B \citep{zhang2025qwen3} and project them via PCA to 2D to make trajectories interpretable. The \Cref{fig:pca-icml} highlights a clear displacement from the initial bad group toward the good group after the first iteration, with subsequent iterations refining the direction as the textual gradient is updated.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth]{figures/pca_icml.pdf}

@@ -470,7 +470,7 @@ The generation of subsequent hypotheses is conditioned on the original user prom
 
 \section{Experiments}
 \label{sec:experiments}
-We evaluate \method{} with Qwen3-8B \citep{yang2025qwen3} and Llama3-8B-Instruct \citet{grattafiori2024llama} on MATH-500, AlpacaEval and XSTest. We report task metrics and preference-based wins, and study sensitivity to temperatures, the number of optimization epochs and the sampling sizes.
+We evaluate \method{} with Qwen3-8B \citep{yang2025qwen3} and Llama3-8B-Instruct \citep{grattafiori2024llama} on MATH-500, AlpacaEval and XSTest. We report task metrics and preference-based wins, and study sensitivity to temperatures, the number of optimization epochs and the sampling sizes.
 
 \subsection{Benchmarks and setup}
 We evaluate \method{} on the following benchmarks:
@@ -486,7 +486,7 @@ We use Qwen3-8B and Llama3-8B-Instruct as the base models. For zero-shot generat
 For all evaluations that require a reward model, we use sfairXC/FsfairX-LLaMA3-RM-v0.1 \citep{dong2024rlhf}.
 
 For SPO, we perform prompt tuning using GPT-4.1 as both the judge and the prompt editor. To ensure fair measurement, with no prompt calibration on evaluation items, we calibrate on five out-of-domain examples per task from a similar domain.
-For MATH-500, we use AGIEval-Math \citep{zhongagieval}; for AlpacaEval we use a small subset of the Tulu instruction-following dataset \citet{lambert2024tulu}; and for XSTest we use Jailbreakbench \citet{chao2024jailbreakbench}. For TPO and Best-of-\(N\), we use the official TPO repository \citet{litest}.
+For MATH-500, we use AGIEval-Math \citep{zhongagieval}; for AlpacaEval we use a small subset of the Tulu instruction-following dataset \citep{lambert2024tulu}; and for XSTest we use Jailbreakbench \citep{chao2024jailbreakbench}. For TPO and Best-of-\(N\), we use the official TPO repository \citep{litest}.
 
 By default, we use temperature of 0.7 for generation and 0.1 for judging. For math problems, we typically use a higher generation temperature in early stages to encourage solution diversity. We ablate both generation and judging temperatures on MATH-500, as reported in \cref{sec:ablations}. Prompts and evaluation criteria are provided in the Appendix.
 For math-oriented tasks, we anneal the generation temperature from 0.8--1.0 in the initial stage to 0.7 in subsequent stages. Unless otherwise noted, we sample \(N=7\) hypotheses per generation stage and run two optimization epochs per benchmark, excluding the initial generation stage. Because the good and bad sets are selected automatically, we do not fix their sizes; the median size of each group is two to three hypotheses.
@@ -508,7 +508,7 @@ Llama3‑8B‑Instruct follows the same pattern. On MATH-500, it achieves an acc
 \begin{sc}
 \begin{tabular}{lcccc}
 \toprule
-Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
+\textbf{Variant / Model} & \textbf{MATH-500} & \textbf{AlpacaEval} & \textbf{AlpacaEval LC Winrate} & \textbf{XSTest} \\
 \midrule
 \multicolumn{5}{l}{\textbf{\method{}}} \\
 Qwen3-8B & 92.0 & 74.9 & 62.99 & 93.5 \\
@@ -542,7 +542,7 @@ We compare \method{} using an external reward model against the same method usin
 \begin{sc}
 \begin{tabular}{lcccc}
 \toprule
-Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
+\textbf{Variant / Model} & \textbf{MATH-500} & \textbf{AlpacaEval} & \textbf{AlpacaEval LC Winrate} & \textbf{XSTest} \\
 \midrule
 \method{} + RM (Qwen3-8B) & 89.8 & 74.7 & 56.8 & 93.8 \\
 \method{} + RM (Llama3-8B-Instruct) & 59.4 & 48.31 & 47.49 & 95.1 \\
@@ -627,17 +627,14 @@ Variant / Model & MATH-500 & AlpacaEval & AlpacaEval LC Winrate & XSTest \\
 \section*{Limitations}
 \noindent \method{} relies on the base LLM's own judgments for scoring and gradient extraction, which means miscalibration or systematic biases in the model's self-assessment can propagate through the refinement loop. The method also incurs linear inference-time overhead with the number of sampled hypotheses and optimization epochs, which may be prohibitive in strict latency-sensitive settings. In this work we evaluate in non-thinking mode for models such as Qwen3 that natively produce long reasoning chains; reasoning-mode inference increases per-iteration cost and requires careful token budget management. Finally, the choice of judge aspects and their weights is a hyperparameter that requires task-specific tuning, and its sensitivity across domains beyond those evaluated here remains to be characterized.
 
-\section*{Acknowledgments}
-Code, prompts, and scoring configurations are released at: \url{https://anonymous.4open.science/r/SAGE2026-8309}.
+% Acknowledgments omitted in review version per ACL anonymity rules.
 
 \bibliography{custom}
 
 \appendix
 
-This appendix provides additional details to support reproducibility and interpretation of the main results. We include the full judge prompts used for different benchmarks, summarize dataset statistics, and present qualitative examples that illustrate how SAGE refines responses across optimization epochs. 
-
 \section{Prompts and hyperparameters}\label{sec:prompts-and-hyperparameters}
-Here we describe the judge prompts, decoding settings, and hardware configuration used in our experiments.
+This appendix provides additional details to support reproducibility and interpretation of the main results, including the full judge prompts used for different benchmarks, dataset statistics, and qualitative examples illustrating how \method{} refines responses across optimization epochs. We describe judge prompts, decoding settings, and hardware configuration used in our experiments.
 
 \subsection{Qwen3-8B judge prompt (Math verification)}
 We provide a complete example of the math-judge prompt used with Qwen3-8B (including \texttt{<thinking>}/\texttt{<verification>} tags and a 75\% confidence threshold) in \cref{fig:appendix-qwen-math-judge}.
@@ -866,7 +863,7 @@ weight(is_repetitive)= 0.40
 \begin{sc}
 \begin{tabular}{lc}
 \toprule
-Benchmark & Num. samples \\
+\textbf{Benchmark} & \textbf{Num.\ samples} \\
 \midrule
 MATH-500 & 500 \\
 AlpacaEval & 805 \\
@@ -1112,7 +1109,7 @@ To quantify the judge's ranking fidelity, we report NDCG@\(N\) on a MATH-500 sub
 \begin{sc}
 \begin{tabular}{lc}
 \toprule
-Setup & NDCG@\(N\) \\
+\textbf{Setup} & \textbf{NDCG@$N$} \\
 \midrule
 SAGE with RM & 0.615 \\
 SAGE with default prompt & 0.806 \\
@@ -1157,7 +1154,7 @@ X=100 & 0.802 \\
 \begin{sc}
 \begin{tabular}{lc}
 \toprule
-N, \(T\) & MATH-500 subset score \\
+\textbf{$N$, $T$} & \textbf{MATH-500 subset score} \\
 \midrule
 5,4 & 93.9 \\
 7,3 & 90.9 \\
@@ -1184,7 +1181,7 @@ To confirm that \method{} delivers consistent gains when applied to models opera
 \begin{sc}
 \begin{tabular}{lcc}
 \toprule
-Method & Qwen3-8B & Qwen3.5-4B-Thinking \\
+\textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B-Thinking} \\
 \midrule
 Baseline (greedy) & 0.57 & 0.73 \\
 BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
@@ -1207,7 +1204,7 @@ We evaluate \method{} at two additional scales beyond the 8B models used in the 
 \begin{sc}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}} l l r c c @{}}
 \toprule
-Generator & Reward Model & $N$ & Acc. & Time (s) \\
+\textbf{Generator} & \textbf{Reward Model} & \textbf{N} & \textbf{Acc.} & \textbf{Time (s)} \\
 \midrule
 \multicolumn{5}{l}{\textit{Qwen3-1.7B}} \\
 Baseline          & --                                    &   1 & 0.56          & 22.0  \\
@@ -1248,9 +1245,9 @@ To assess generalization beyond \cref{sec:experiments}, we evaluate \method{} on
 \begin{sc}
 \begin{tabular}{lccc}
 \toprule
- & \multicolumn{2}{c}{IFEval} & MMLU-Pro STEM \\
+ & \multicolumn{2}{c}{\textbf{IFEval}} & \textbf{MMLU-Pro STEM} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-4}
-Method & Prompt Acc. & Instr. Acc. & Accuracy \\
+\textbf{Method} & \textbf{Prompt Acc.} & \textbf{Instr. Acc.} & \textbf{Accuracy} \\
 \midrule
 Baseline (greedy)           & 42.0\% & 56.8\% & 48.0\% \\
 BoN (FsfairX-LLaMA3-RM-v0.1, $N=7$)        & 46.0\% & 60.8\% & 52.0\% \\

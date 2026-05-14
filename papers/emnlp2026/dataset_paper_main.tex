@@ -1,0 +1,805 @@
+% EMNLP 2026 submission — review version
+% Scientific-formatted version of emnlp_datasets_paper/acl_latex.tex
+% Asset paths are relative to this file's directory.
+\documentclass[11pt]{article}
+
+\usepackage[review]{acl}  % review: line numbers, page numbers, hides authors
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{xspace}
+
+\usetikzlibrary{
+    arrows.meta,
+    positioning,
+    decorations.pathmorphing
+}
+
+% Tighter, uniform spacing for itemize/enumerate lists; description uses defaults
+\setlist[itemize]{itemsep=2pt,topsep=4pt,leftmargin=*,label=\textbullet}
+\setlist[enumerate]{itemsep=2pt,topsep=4pt,leftmargin=*}
+\setlist[description]{itemsep=2pt,topsep=4pt}
+
+% Make booktabs rules a touch heavier for readability in print
+\setlength{\heavyrulewidth}{0.10em}
+\setlength{\lightrulewidth}{0.06em}
+\setlength{\aboverulesep}{0.4ex}
+\setlength{\belowrulesep}{0.4ex}
+
+% Asset discovery for figures
+\graphicspath{{emnlp_datasets_paper/}{./}}
+
+% Custom commands
+\newcommand{\datasetname}{FinAgent-Bench\xspace}
+\newcommand{\synthsubset}{SynthSQL\xspace}
+\newcommand{\groundedfinqa}{GroundedFinQA\xspace}
+
+\title{\datasetname: A Benchmark for Evaluating Agentic LLMs on Financial Analysis Tasks with Tool Use}
+
+\author{
+  \textbf{Anonymous submission}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
+in agentic financial analysis tasks requiring tool use. The benchmark consists of two complementary datasets: (1) \synthsubset,
+a synthetic dataset of 5,803 SQL-based financial queries with committee-reviewed quality control, and (2) \groundedfinqa,
+a grounded dataset derived from FinQA containing 1,108 multi-hop reasoning tasks with synthetic databases and tool abstractions.
+Both datasets require models to interact with databases through tool calls rather than relying on in-context information,
+testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that state-of-the-art
+models achieve only 50--68\% accuracy on \synthsubset and 53--70\% on \groundedfinqa, demonstrating significant room for improvement
+in agentic financial reasoning. We release the full dataset, evaluation code, and model traces to facilitate future research.
+\end{abstract}
+
+%==============================================================================
+\section{Introduction}
+%==============================================================================
+
+Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks
+\citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents could assist with financial analysis, compliance
+checking, and decision support by querying databases and synthesizing information from multiple sources.
+
+However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA
+\citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided
+contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test
+examples may have been seen during model training.
+
+We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use.
+Our benchmark consists of two complementary datasets:
+
+\begin{description}
+    \item[\synthsubset] A synthetic dataset of SQL-based financial queries where agents must interact with dynamically generated
+    databases through an \texttt{execute\_sql} tool. Each example undergoes rigorous quality control through a committee of three LLM judges.
+
+    \item[\groundedfinqa] A grounded dataset derived from FinQA where each sample includes a complete agentic environment with
+    diverse custom tools, synthetic databases, and distractor tools and data designed to test multi-hop reasoning.
+\end{description}
+
+Both datasets share key design principles: (1) answers cannot be extracted from the prompt alone---agents must use tools to retrieve
+information, (2) examples require multi-step reasoning with intermediate tool calls, and (3) distractor information is present to test
+agents' ability to filter relevant from irrelevant data.
+
+Our main contributions are:
+\begin{enumerate}
+    \item A novel benchmark for evaluating agentic LLMs on financial tasks requiring genuine tool use.
+    \item A rigorous dataset creation pipeline with LLM committee-based quality control.
+    \item Comprehensive evaluation of frontier and open-source models revealing significant gaps in agentic reasoning capabilities.
+    \item Public release of datasets, evaluation code, and model traces to support reproducible research.
+\end{enumerate}
+
+%==============================================================================
+\section{Related Work}
+%==============================================================================
+
+\datasetname is situated at the intersection of three research areas: context-bound financial Question Answering (QA), general
+agentic tool-use evaluation, and domain-specific semantic parsing.
+
+\paragraph{Context-Bound Financial QA.}
+Foundational financial benchmarks like FinQA \citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} measure reading
+comprehension and numerical reasoning over static, explicitly provided contexts. These established datasets are inherently
+non-agentic as they do not require dynamic interaction or external system calls. Our \groundedfinqa component transitions this
+evaluation to a dynamic environment where information must be actively retrieved through multi-hop tool calls, isolating and
+testing the core planning and execution logic.
+
+\paragraph{Agentic Reasoning and Tool Use.}
+General agent benchmarks, such as ToolBench \citep{qin2023tool} and MCP-Verse \citep{lei2025mcpverse}, establish the methodological
+standard for evaluating LLMs'
+planning abilities against a large breadth of tools and domains. While essential for assessing general tool augmentation, these
+benchmarks prioritize scale over domain depth. Financial analysis critically demands precision and specialized interpretation. By
+specializing the tool environment for finance, \datasetname tests the \textit{depth} of financial logic, revealing significant gaps
+where general planning skills fail to confer the necessary domain competence (e.g., 13--59\% accuracy on grounded financial reasoning
+tasks). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai}
+and the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking} prioritize realism by using live web data (SEC
+EDGAR), while \datasetname is engineered for \textbf{diagnostic fidelity} using controlled, synthetic environments to attribute failures
+unequivocally to flawed planning logic, rather than external noise or API variability.
+
+\paragraph{Text-to-SQL Semantic Parsing.}
+The Text-to-SQL task, which involves translating natural language into executable SQL, is central to structured data access.
+Cross-domain datasets like Spider \citep{spider} and BIRD \citep{li2024can} primarily evaluate the fidelity of the generated
+SQL string (semantic parsing accuracy). In contrast, \datasetname's \synthsubset component transforms this into an
+\textit{end-to-end agentic execution challenge}. The agent must not only generate the correct query but also successfully call the
+\texttt{execute\_sql} tool and synthesize the retrieved result into a final, natural language answer. This emphasis on the full
+execution sequence moves the task beyond purely linguistic parsing and tests the agent's ability to integrate data retrieval into
+multi-step reasoning.
+
+Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a committee of three LLM judges, to
+mitigate data contamination risks and ensure high integrity at scale, validating that observed low accuracy reflects genuine
+performance limitations.
+
+\begin{table*}[t]
+    \centering
+    \small
+    \setlength{\tabcolsep}{8pt}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Benchmark} & \textbf{Financial Focus} & \textbf{Evaluation Focus} & \textbf{Agentic Requirement} \\
+        \midrule
+        FinQA / TAT-QA          & High        & Static Reading Comprehension       & Low  \\
+        Spider / BIRD           & Low/Medium  & Semantic Parsing (SQL Fidelity)    & Low  \\
+        FinGAIA / Finance Agent & High        & Real-time Retrieval / Realism      & High \\
+        \addlinespace
+        \textbf{FinAgent-Bench} & \textbf{High} & \textbf{Diagnostic Execution / Tool Sequence} & \textbf{High} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparison of key benchmarks.}
+    \label{tab:benchmark_comparison}
+\end{table*}
+
+\paragraph{Financial QA Benchmarks.}
+Several benchmarks exist for evaluating financial reasoning in LLMs. FinQA \citep{chen2021finqa} and ConvFinQA \citep{chen2022convfinqa} test numerical reasoning over financial reports. TAT-QA \citep{zhu-etal-2021-tat} combines tabular and textual reasoning. FinanceBench \citep{islam2023financebench} provides questions requiring reasoning over SEC filings. However, these benchmarks provide all necessary information in context, testing reading comprehension rather than tool use.
+
+\paragraph{Agentic Benchmarks.}
+Recent work has introduced benchmarks for evaluating LLM agents. AgentBench \citep{liu2023agentbench} tests agents across diverse environments including web browsing and code execution. ToolBench \citep{qin2023toolllm} evaluates tool use across thousands of APIs. SWE-bench \citep{jimenez2024swebench} tests agents on real-world software engineering tasks. However, none of these focus specifically on financial analysis with database tools.
+
+\paragraph{Synthetic Data Generation.}
+Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \citep{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \citep{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
+
+%==============================================================================
+\section{Dataset Description}
+%==============================================================================
+
+\subsection{Overview}
+
+\datasetname comprises two complementary datasets targeting different aspects of agentic financial reasoning. Table~\ref{tab:dataset_overview} summarizes their key characteristics.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Property}   & \textbf{\synthsubset}   & \textbf{\groundedfinqa}   \\
+\midrule
+\# Examples         & 5{,}979                 & 1{,}108                    \\
+Tool Type           & SQL queries             & Custom functions           \\
+Multi-hop           & $\geq 1$ hop            & $\geq 2$ hops              \\
+Distractor data     & Yes                     & Yes                        \\
+Quality control     & Committee               & Execution-based            \\
+\bottomrule
+\end{tabular}
+\caption{Overview of the two datasets in \datasetname.}
+\label{tab:dataset_overview}
+\end{table}
+
+\subsection{\synthsubset: Synthetic SQL Dataset}
+\label{sec:synthsql}
+
+\synthsubset consists of financial analysis queries that require SQL database interaction. Each example contains:
+
+\begin{description}
+    \item[User role] The persona making the query (e.g., CFO, auditor, financial analyst).
+    \item[Query] A natural language question about financial data.
+    \item[Database schema] A plausible company database schema.
+    \item[Database contents] Realistic financial data including distractor rows.
+    \item[Expected answer] The ground-truth answer.
+    \item[Agent trace] A reference solution demonstrating correct tool use.
+\end{description}
+
+The dataset spans diverse financial analysis categories including:
+\begin{itemize}
+    \item Accounts Payable (AP) analysis
+    \item Revenue recognition
+    \item Variance analysis
+    \item Data integrity and reconciliation
+    \item Financial reporting
+\end{itemize}
+
+\paragraph{Example Query.}
+\begin{quote}
+\small
+``Which invoices from our most important suppliers are more than 90 days overdue?''
+\end{quote}
+
+To answer this query, an agent must: (1) identify which suppliers are ``most important'' (e.g., by spend volume), (2) find invoices from those suppliers, and (3) filter by payment status and age.
+
+\subsection{\groundedfinqa: Grounded FinQA Dataset}
+\label{sec:groundedfinqa}
+
+\groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes:
+
+\begin{description}
+    \item[System prompt] Scenario description and available tools (without table data).
+    \item[Synthetic database] SQLite \citep{sqlite} database modeling the scenario.
+    \item[Core tools] Functions required to derive the answer.
+    \item[Distractor tools] Irrelevant tools to test filtering ability.
+    \item[Correct plan] Reference multi-hop solution.
+\end{description}
+
+Critically, the agent receives only the scenario description and tool definitions---not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
+
+\paragraph{Example Item.}
+An example from the \groundedfinqa dataset is shown in Table~\ref{tab:example}, truncated for brevity. The full example contains a longer system prompt, database contents, and fully runnable Python code for the correct solution.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{p{0.9\textwidth}}
+\toprule
+\textbf{Query (part of system prompt)} \\
+\midrule
+What is the percent change in receivables from or (payables to) the Money Pool from 2001 to 2002? \\
+\midrule
+\textbf{Available tools} \\
+\midrule
+\texttt{list\_available\_years()}\newline
+\texttt{get\_quarterly\_money\_pool\_amount(year, quarter)}\newline
+\texttt{get\_total\_money\_pool\_amount\_for\_year(year)}\newline
+\texttt{compute\_percent\_change(old\_value, new\_value)}\newline
+\texttt{get\_cash\_flow\_transactions(start\_date, end\_date, limit)}\newline
+\texttt{sum\_cash\_flow\_for\_year(year)} \\
+\midrule
+\textbf{Correct tool call sequence} \\
+\midrule
+\texttt{%
+def annual\_from\_quarters(year: int) -> float: \newline
+\hspace*{2em} return sum(get\_quarterly\_money\_pool\_amount(year, q) for q in range(1, 5)) \newline
+amt\_2001 = annual\_from\_quarters(2001) \newline
+amt\_2002 = annual\_from\_quarters(2002) \newline
+pct\_change = compute\_percent\_change(amt\_2001, amt\_2002) \newline
+answer = f"{round(pct\_change)}\%"} \\
+\bottomrule
+\end{tabular}
+\caption{An example from the \groundedfinqa dataset (excerpt).}
+\label{tab:example}
+\end{table*}
+
+
+%==============================================================================
+\section{Dataset Creation}
+%==============================================================================
+
+\subsection{\synthsubset Creation Pipeline}
+\label{sec:synthsql_pipeline}
+
+The \synthsubset dataset is created through a 9-stage pipeline. See Figure~\ref{fig:pipeline} for the general composition of the pipeline.
+
+\begin{figure*}[t]
+\centering
+\input{emnlp_datasets_paper/dataflow_short}
+\caption{The \synthsubset creation pipeline.}
+\label{fig:pipeline}
+\end{figure*}
+
+\paragraph{Stage 1: Query Generation.}
+We start with a few seed queries spanning financial analysis categories (in our experiment, we took 12 seed queries). These seeds are then expanded using an LLM, varying user roles and specific details. We utilize a prompt that takes one seed and generates 20 queries to increase diversity and run it multiple times to generate a large number of queries. We also use embedding-based similarity filtering (cosine threshold 0.9) to remove near-duplicates.
+
+\paragraph{Stage 2: Schema Generation.}
+For each query, an LLM generates a plausible database schema that is: (1) sufficient to answer the query, (2) realistic for a company database, and (3) appropriately complex.
+
+\paragraph{Stage 3: Data Generation.}
+The LLM is then tasked with generating realistic data for each query and schema, including: (1) data necessary to answer the query, and (2) distractor rows to increase difficulty. The LLM is also required to provide the correct answer to the query consistent with the generated data.
+
+\paragraph{Stage 4: SQL Validation.}
+All generated SQL (schema and data) is validated by execution. Errors are iteratively fixed using LLM assistance (up to 5 attempts). We found that LLMs struggle with fixing small errors in (relatively) long SQL programs, so we split the program into individual statements and fix them one by one.
+
+\paragraph{Stage 5: Agent Trace Generation.}
+An agent runs on each query. It is supplied with access to the data using the \texttt{execute\_sql} tool, with up to 6 rounds of interaction allowed. The full conversation trace is recorded.
+
+At this point, we have a dataset that contains:
+\begin{itemize}
+    \item A query
+    \item A database schema
+    \item Database contents (data necessary to answer the query and distractor rows)
+    \item Intended answer to the query
+    \item An agent trace demonstrating the solution to the query
+\end{itemize}
+However, there may be hallucinations, unnatural data, wrong tool calls, or wrong answers in the agent trace that need to be identified and fixed.
+
+\paragraph{Stage 6: Committee Judgement.}
+A committee of three LLM judges evaluates each example's data and agent trace on five criteria:
+\begin{description}
+    \item[Data naturalness] Is the generated data realistic?
+    \item[Trace reasonableness] Does the agent examine appropriate data?
+    \item[Trace soundness] Is the reasoning logical?
+    \item[Grounding] Is reasoning based only on tool outputs?
+    \item[Answer correctness] Does the answer address the query?
+\end{description}
+
+An example passes only if it receives majority approval (2/3 judges) on \emph{all} criteria. In that case, it proceeds to the next stage. Otherwise, it goes to the improvement loop (Stages 7 and 8). Note that the loop only runs once for each example; if the improved example fails the judgement again, it is rejected completely.
+
+\paragraph{Stage 7: Feedback Reconciliation.}
+The judges' criticisms are given to an LLM which is asked to aggregate them into actionable feedback. The LLM at this stage has access to most of the example's data, including the query, the database schema, the database contents, and the agent trace.
+
+\paragraph{Stage 8: Feedback Application.}
+The agent runs again with a prompt containing:
+\begin{itemize}
+    \item The query
+    \item The database schema
+    \item The previous agent trace
+    \item The feedback produced in Stage 7
+\end{itemize}
+It still has access to the \texttt{execute\_sql} tool, and the conversation is limited to 6 rounds. The full conversation trace is recorded.
+
+\paragraph{Stage 9: Second Judgement.}
+The improved examples are then re-judged by the committee. If an example passes, it proceeds to the next stage. Otherwise, it is dropped from the dataset.
+
+\paragraph{Final Filtering.}
+The final dataset includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the dataset. The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually access the SQL tool (removing examples answerable from context alone).
+
+\subsection{\groundedfinqa Creation Pipeline}
+
+The \groundedfinqa pipeline transforms FinQA samples through 9 steps:
+
+\paragraph{Step 1: Initial Solution.}
+An LLM creates a direct Python solution using the original table data, establishing the computational logic.
+
+\paragraph{Step 2: Database Generation.}
+A SQLite database is generated to model the scenario, containing tables needed to answer the question.
+
+\paragraph{Step 3: Basic Tools.}
+Tool functions are created as abstractions over the database, designed to enable multi-hop reasoning.
+
+\paragraph{Step 4: Correct Plan (Basic).}
+A reference solution is written using the basic tools.
+
+\paragraph{Step 5: Augmented Database.}
+The database is expanded with additional tables, split data, and distractor rows to increase difficulty.
+
+\paragraph{Step 6: Augmented Tools.}
+Extended tools are created including:
+\begin{itemize}
+    \item Core tools for the correct solution
+    \item Partial information tools requiring chaining
+    \item Distractor tools providing irrelevant data
+\end{itemize}
+
+\paragraph{Step 7: Correct Plan (Augmented).}
+A reference solution using the augmented tools demonstrates the multi-hop solution path.
+
+\paragraph{Step 8: System Prompt.}
+A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
+
+\paragraph{Step 9: Agent Code.}
+A runnable agent using the \texttt{smolagents} \citep{smolagents} library is generated for evaluation.
+
+Each step is required to output a file (Python code in all steps except Step 8 which outputs a system prompt with the task formulation). For each step, the LLM receives in the context:
+\begin{itemize}
+    \item A long description of the whole process with all the steps described,
+    \item An indication of what step is currently running,
+    \item All previous files' content from the previous steps, and
+    \item In Step 9, an example agent code showing coding practices for achieving more stable results.
+\end{itemize}
+After completing, each step undergoes an execution-based validation. If the execution fails, the step is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).
+
+%==============================================================================
+\section{Experiments and Evaluation}
+%==============================================================================
+
+\subsection{\synthsubset Experiments}
+
+We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 (SQL validation), 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; Stage 6 (committee judgement) is run with three different models. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lr}
+\toprule
+\textbf{Stage} & \textbf{Number of Examples} \\
+\midrule
+Seed queries                       & 12      \\
+1. Query expansion                 & 10{,}000 \\
+2. Schema generation               & 10{,}000 \\
+3. Data generation                 & 10{,}000 \\
+4. SQL validation                  & 10{,}000 \\
+5. Agent trace generation          & 9{,}560  \\
+6. Committee judgement             &         \\
+\quad -- passed                    & 5{,}401  \\
+\quad -- to be improved            & 4{,}156  \\
+7. Feedback reconciliation         & 4{,}156  \\
+8. Feedback application            & 3{,}967  \\
+9. Committee judgement             & 2{,}832  \\
+\midrule
+Total passed so far                & 8{,}233  \\
+10. Filtering                      & \textbf{5{,}803} \\
+\bottomrule
+\end{tabular}
+\caption{Number of examples in the \synthsubset dataset after each stage.}
+\label{tab:synthsubset_numbers}
+\end{table}
+
+\subsection{\groundedfinqa Experiments}
+
+We ran the data example creation routine using the protocol described above for 1,247 FinQA examples, resulting in 1,108 examples (the rest failed in at least one of the stages). Each final example contains the following files:
+\begin{description}
+    \item[\texttt{initial\_solution.txt}] The correct answer to the question.
+    \item[\texttt{synthetic\_db\_generator\_augmented.py}] Python code that creates the SQLite database.
+    \item[\texttt{tools\_augmented.py}] The tools required for the multi-step processing, plus distractor tools.
+    \item[\texttt{tool\_proxy.py}] Same tools adapted for use with \texttt{smolagents}.
+    \item[\texttt{correct\_plan\_augmented.py}] The intended sequence of tool calls that solves the task.
+    \item[\texttt{agent\_system\_prompt.txt}] LLM prompt with context, tool descriptions, and the question.
+    \item[\texttt{agent.py}] The agent code that runs a specified LLM with the system prompt and tools.
+    \item[Intermediate files] Files created during the example building process.
+\end{description}
+
+\subsection{Native Tool Calling vs.\ ReAct}
+
+While analyzing the traces of smaller models we found it hard to understand what the models are struggling with when calling tools because there was no trace of the reasoning behind the tool and argument choices. We constructed an additional experiment using the ReAct tool calling protocol \citep{yao2022react}. ReAct specifically requires the model to output its reasoning before calling a tool. This experiment was performed on the \synthsubset part of the dataset.
+
+\subsection{Evaluated Models}
+
+We evaluate a diverse set of models:
+
+\paragraph{Frontier Models.}
+\begin{itemize}
+    \item GPT-4.1, GPT-4.1-mini (OpenAI)
+    \item GPT-5, GPT-5-mini, o4-mini (OpenAI, reasoning models)
+\end{itemize}
+
+\paragraph{Open-Source Models.}
+\begin{itemize}
+    \item Qwen3-8B, Qwen3-30B-A3B (Alibaba)
+    \item Llama-3.1-8B-Instruct (Meta)
+\end{itemize}
+
+\subsection{Metrics}
+
+We use \textbf{accuracy} as the primary metric. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit. To save time and reduce costs, for \synthsubset we only evaluate on a randomly selected test set of 729 examples.
+
+%==============================================================================
+\section{Results}
+%==============================================================================
+
+\subsection{\synthsubset Results}
+
+Table~\ref{tab:synthsql_results} presents evaluation results on the \synthsubset dataset.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{lr}
+\toprule
+\textbf{Model} & \textbf{Accuracy (\%)} \\
+\midrule
+\multicolumn{2}{l}{\textit{Frontier Models}} \\
+GPT-5                  & \textbf{68.9} \\
+GPT-5-mini             & 65.8 \\
+o4-mini                & 67.1 \\
+GPT-4.1                & 62.4 \\
+GPT-4.1-mini           & 61.5 \\
+\addlinespace
+\multicolumn{2}{l}{\textit{Open-Source Models}} \\
+Qwen3-30B-A3B          & \textbf{50.5} \\
+Qwen3-8B               & 47.6 \\
+Llama-3.1-8B-Instruct  & 21.9 \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation results on \synthsubset.}
+\label{tab:synthsql_results}
+\end{table}
+
+\paragraph{Key Findings.}
+\begin{enumerate}
+    \item \textbf{Significant gap from ceiling}: Even the best model (GPT-5) achieves only 68.9\% accuracy, indicating substantial room for improvement.
+    \item \textbf{Model capacity impact}: More modern and capable models, like GPT-5, produce much better results than smaller and older models, like Llama-3.1-8B.
+    \item \textbf{Large open-source gap}: Open-source models significantly underperform frontier models, with even Qwen3-30B-A3B scoring 11 percentage points lower than the worst frontier model (GPT-4.1-mini).
+\end{enumerate}
+
+\subsection{\groundedfinqa Results}
+
+Table~\ref{tab:grounded_results} presents results on \groundedfinqa.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{lr}
+\toprule
+\textbf{Model} & \textbf{Accuracy (\%)} \\
+\midrule
+\multicolumn{2}{l}{\textit{Frontier Models}} \\
+GPT-5                  & \textbf{69.6} \\
+GPT-5-mini             & 67.5 \\
+o4-mini                & 67.3 \\
+GPT-4.1                & 60.6 \\
+GPT-4.1-mini           & 56.9 \\
+\addlinespace
+\multicolumn{2}{l}{\textit{Open-Source Models}} \\
+Qwen3-30B-A3B          & 53.0 \\
+Qwen3-8B               & 44.1 \\
+Llama-3.1-8B-Instruct  & 16.3 \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation results on \groundedfinqa.}
+\label{tab:grounded_results}
+\end{table}
+
+\paragraph{Key Findings.}
+\begin{enumerate}
+    \item \textbf{Similar to \synthsubset} in difficulty: Best performance is 69.6\% (vs.\ 68.9\%), with comparable scores for almost all models.
+    \item \textbf{Consistent model ranking}: GPT-5 and o4-mini lead, followed by GPT-4.1 variants, then open-source models.
+    \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
+\end{enumerate}
+
+\subsection{Native Tool Calling vs.\ ReAct Results}
+
+Table~\ref{tab:react_results} presents results of the additional experiment with tool calling protocol.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Model} & \multicolumn{2}{c}{\textbf{Accuracy (\%)}} \\
+\cmidrule(lr){2-3}
+                       & \textbf{Native}    & \textbf{ReAct}    \\
+\midrule
+\multicolumn{3}{l}{\textit{Non-thinking Models}} \\
+GPT-4.1                & 62.4               & \underline{63.8}  \\
+GPT-4.1-mini           & 61.5               & \underline{63.5}  \\
+Llama-3.1-8B-Instruct  & 21.9               & \underline{28.3}  \\
+\addlinespace
+\multicolumn{3}{l}{\textit{Thinking Models}} \\
+GPT-5                  & \underline{68.9}   & 64.6              \\
+o4-mini                & \underline{67.1}   & 64.3              \\
+Qwen3-30B-A3B          & \underline{50.5}   & 46.2              \\
+Qwen3-8B               & \underline{47.6}   & 44.3              \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation results on tool calling protocol. Underlined values are the best result for each model.}
+\label{tab:react_results}
+\end{table}
+
+\paragraph{Key Findings.}
+\begin{enumerate}
+    \item \textbf{ReAct benefits non-thinking models}: Every non-thinking model in the experiment benefits from using ReAct instead of native tool calling, while every thinking model does not.
+    \item \textbf{Diminishing returns}: From 6.4 percentage points for Llama-3.1-8B-Instruct to just 1.4 for GPT-4.1, we consistently see diminishing returns from using ReAct.
+\end{enumerate}
+
+%==============================================================================
+\section{Discussion}
+%==============================================================================
+
+\paragraph{Benchmarking Agentic Capabilities.}
+Our results demonstrate that \datasetname effectively discriminates between models' agentic capabilities. The significant gap from ceiling performance (around 69\%) suggests current models have substantial room for improvement in financial tool use.
+
+\paragraph{Open-Source Gap.}
+The large gap between frontier and open-source models (up to 50+ percentage points) highlights an important direction for open-source development. Financial agentic tasks may require specialized training on tool-use trajectories.
+
+\paragraph{Native Tool Calling vs.\ ReAct.}
+ReAct allows the model to reason before choosing a tool to call. This has a large impact on performance for models that do not reason in their default setting, highlighting the improvement that test-time scaling can bring. For models that are already thinking, ReAct decreases performance. This may reflect that modern thinking models are well-optimized for structured function calling, while ReAct's verbose format introduces additional opportunities for error.
+
+\paragraph{Quality Control.}
+Our committee-based quality control ensures high-quality examples but introduces potential biases. The judges themselves are LLMs, which may share systematic blind spots with the evaluated models.
+
+%==============================================================================
+\section{Conclusion}
+%==============================================================================
+
+We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial analysis tasks requiring tool use. Our benchmark includes two complementary datasets: \synthsubset with 5,979 SQL-based queries and \groundedfinqa with 1,108 multi-hop reasoning tasks. Evaluation of frontier and open-source models reveals significant room for improvement, with best accuracies of 69\%.
+
+Our work provides a foundation for developing and evaluating financial AI agents. Future work may extend the benchmark to additional financial domains, incorporate real corporate databases (with appropriate anonymization), and develop training approaches to improve agentic financial reasoning.
+
+%==============================================================================
+\section*{Limitations}
+%==============================================================================
+
+\begin{itemize}
+    \item Synthetic data may not capture real-world financial complexity.
+    \item Database schemas are generated, not derived from real companies.
+    \item Evaluation is on English data only.
+    \item The committee judges are LLMs themselves, and may share systematic blind spots with the evaluated models.
+    \item The benchmark covers SQL-based and Python-based tool use; other tool modalities (e.g., web search, document retrieval) are not currently represented.
+\end{itemize}
+
+% Acknowledgments are omitted in the review version per ACL anonymity rules.
+
+%==============================================================================
+% References
+%==============================================================================
+\bibliography{emnlp_datasets_paper/references}
+
+\appendix
+
+\section{Dataset Statistics}
+\label{app:dataset_statistics}
+
+\subsection{\synthsubset Statistics}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-query-length.png}
+    \caption{\synthsubset: Query length distribution.}
+    \label{fig:cr-query-length}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-umap-queries.png}
+    \caption{\synthsubset: UMAP of query embeddings.}
+    \label{fig:cr-umap-queries}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-num-tables.png}
+    \caption{\synthsubset: Number of DB tables per example.}
+    \label{fig:cr-num-tables}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-num-data-rows.png}
+    \caption{\synthsubset: Number of total DB rows per example.}
+    \label{fig:cr-num-data-rows}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-num-assistant-turns-per-item.png}
+    \caption{\synthsubset: Number of assistant turns per example.}
+    \label{fig:cr-num-assistant-turns-per-item}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{cr-num-tool-calls-per-item.png}
+    \caption{\synthsubset: Number of tool calls per example.}
+    \label{fig:cr-num-tool-calls-per-item}
+\end{figure}
+
+\subsection{\groundedfinqa Statistics}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{gr_answer_lengths.png}
+    \caption{\groundedfinqa: Answer length distribution.}
+    \label{fig:gr-answer-lengths}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{gr_system_prompt_lengths.png}
+    \caption{\groundedfinqa: System prompt length distribution.}
+    \label{fig:gr-system-prompt-lengths}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{gr_num_tools.png}
+    \caption{\groundedfinqa: Number of tools per example.}
+    \label{fig:gr-num-tools}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{gr_umap_system_prompts.png}
+    \caption{\groundedfinqa: UMAP of system prompt embeddings.}
+    \label{fig:gr-umap-system-prompts}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{gr_umap_tool_names.png}
+    \caption{\groundedfinqa: UMAP of tool name embeddings.}
+    \label{fig:gr-umap-tool-names}
+\end{figure}
+
+\section{Prompts and Examples}
+\label{app:prompts}
+
+Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
+
+\begin{figure*}[t]
+\small\centering
+\begin{verbatim}
+# Task
+You are a senior QA engineer working on AI agents for finance. You have to judge
+the test case provided and check the following rules:
+
+- The test case's data should be natural: it should be similar to what data could
+  a real company have, and how it would be stored in a database.
+- The agent's trace should be reasonable: the agent should look at the data needed
+  to answer the query.
+- The agent's trace should be sound: the reasoning steps should be logical, should
+  follow from the previous steps and lead to the final answer.
+- The agent's reasoning and final answer should be grounded: the only data the agent
+  has access to is what was returned from its tool calls. The reasoning should not
+  be based on any other data, including the data in the database that was not
+  queried with the tools.
+- The agent's final answer should answer the user's query.
+
+In case one of these requirements are not met, you should provide a concise
+actionable feedback so the author can improve the test case.
+
+# Test case:
+
+## Query
+{{ item.query }}
+
+## SQL schema
+{{ item.schema_sql }}
+
+## Data
+{{ item.data_sql }}
+
+## Agent trace
+{{ item.agent_dialog | tojson(2) }}
+
+# Output format
+Reply with JSON object like this:
+{
+   "data_is_natural": 1 | 0,
+   "trace_is_reasonable": 1 | 0,
+   "trace_is_sound": 1 | 0,
+   "reasoning_is_grounded": 1 | 0,
+   "answer_is_sound": 1 | 0,
+   "feedback": "... concise and actionable ..."
+}
+\end{verbatim}
+\caption{\synthsubset: Prompt template for a committee member judge.}
+\label{fig:judge-prompt}
+\end{figure*}
+
+Figure~\ref{fig:example-item} shows an annotated example from the \synthsubset dataset illustrating the schema and data format.
+
+\begin{figure*}[t]
+\small\centering
+\begin{verbatim}
+Query:
+Could duplicated invoice payments be causing discrepancies in our aged payables report?
+
+Schema:
+CREATE TABLE Suppliers (
+    supplier_id INTEGER PRIMARY KEY,
+    supplier_name TEXT NOT NULL
+);
+CREATE TABLE Invoices (
+    invoice_id INTEGER PRIMARY KEY,
+    supplier_id INTEGER NOT NULL,
+    invoice_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    invoice_amount NUMERIC NOT NULL,
+    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)
+);
+CREATE TABLE Payments (
+    payment_id INTEGER PRIMARY KEY,
+    invoice_id INTEGER NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_amount NUMERIC NOT NULL,
+    FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id)
+);
+
+Data:
+-- Invoice 1002 has duplicated payments covering entire invoice twice
+INSERT INTO Payments VALUES
+(5001, 1002, '2025-07-05', 500.00),
+(5002, 1002, '2025-07-10', 500.00),
+(5003, 1002, '2025-07-12', 500.00);  -- Duplicate over invoice amount
+\end{verbatim}
+\caption{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}
+\label{fig:example-item}
+\end{figure*}
+
+\end{document}

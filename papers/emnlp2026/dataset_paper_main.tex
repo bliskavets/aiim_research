@@ -32,9 +32,6 @@
 \setlength{\aboverulesep}{0.4ex}
 \setlength{\belowrulesep}{0.4ex}
 
-% Asset discovery for figures
-\graphicspath{{emnlp_datasets_paper/}{./}}
-
 % Custom commands
 \newcommand{\datasetname}{FinAgent-Bench\xspace}
 \newcommand{\synthsubset}{SynthSQL\xspace}
@@ -284,7 +281,7 @@ The \synthsubset dataset is created through a 9-stage pipeline. See Figure~\ref{
 
 \begin{figure*}[t]
 \centering
-\input{emnlp_datasets_paper/dataflow_short}
+\input{dataflow_short}
 \caption{The \synthsubset creation pipeline.}
 \label{fig:pipeline}
 \end{figure*}
@@ -618,7 +615,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 %==============================================================================
 % References
 %==============================================================================
-\bibliography{emnlp_datasets_paper/references}
+\bibliography{references}
 
 \appendix
 
@@ -629,42 +626,42 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-query-length.png}
+    \includegraphics[width=1\linewidth]{cr-query-length.png}
     \caption{\synthsubset: Query length distribution.}
     \label{fig:cr-query-length}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-umap-queries.png}
+    \includegraphics[width=1\linewidth]{cr-umap-queries.png}
     \caption{\synthsubset: UMAP of query embeddings.}
     \label{fig:cr-umap-queries}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-num-tables.png}
+    \includegraphics[width=1\linewidth]{cr-num-tables.png}
     \caption{\synthsubset: Number of DB tables per example.}
     \label{fig:cr-num-tables}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-num-data-rows.png}
+    \includegraphics[width=1\linewidth]{cr-num-data-rows.png}
     \caption{\synthsubset: Number of total DB rows per example.}
     \label{fig:cr-num-data-rows}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-num-assistant-turns-per-item.png}
+    \includegraphics[width=1\linewidth]{cr-num-assistant-turns-per-item.png}
     \caption{\synthsubset: Number of assistant turns per example.}
     \label{fig:cr-num-assistant-turns-per-item}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{cr-num-tool-calls-per-item.png}
+    \includegraphics[width=1\linewidth]{cr-num-tool-calls-per-item.png}
     \caption{\synthsubset: Number of tool calls per example.}
     \label{fig:cr-num-tool-calls-per-item}
 \end{figure}
@@ -673,35 +670,35 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{gr_answer_lengths.png}
+    \includegraphics[width=1\linewidth]{gr_answer_lengths.png}
     \caption{\groundedfinqa: Answer length distribution.}
     \label{fig:gr-answer-lengths}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{gr_system_prompt_lengths.png}
+    \includegraphics[width=1\linewidth]{gr_system_prompt_lengths.png}
     \caption{\groundedfinqa: System prompt length distribution.}
     \label{fig:gr-system-prompt-lengths}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{gr_num_tools.png}
+    \includegraphics[width=1\linewidth]{gr_num_tools.png}
     \caption{\groundedfinqa: Number of tools per example.}
     \label{fig:gr-num-tools}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{gr_umap_system_prompts.png}
+    \includegraphics[width=1\linewidth]{gr_umap_system_prompts.png}
     \caption{\groundedfinqa: UMAP of system prompt embeddings.}
     \label{fig:gr-umap-system-prompts}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{gr_umap_tool_names.png}
+    \includegraphics[width=1\linewidth]{gr_umap_tool_names.png}
     \caption{\groundedfinqa: UMAP of tool name embeddings.}
     \label{fig:gr-umap-tool-names}
 \end{figure}

@@ -19,6 +19,10 @@
 }
 
 \usepackage{xspace}
+\usepackage{xcolor}
+% \edit{...} marks Claude's reviewer-response changes in blue for the professor's review pass.
+% Strip via skills/strip_edit_markup.sh before final submission.
+\newcommand{\edit}[1]{\textcolor{blue}{#1}}
 
 % Custom commands
 \newcommand{\datasetname}{FinAgent-Bench\xspace}
@@ -37,7 +41,7 @@
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
 in agentic financial analysis tasks requiring tool use. The benchmark consists of two complementary datasets: (1) \synthsubset,
-a synthetic dataset of 5,803 natural-language financial questions answered through structured database queries with committee-reviewed quality control, and (2) \groundedfinqa,
+a synthetic dataset of \edit{5,803 natural-language financial questions answered through structured database queries} with committee-reviewed quality control, and (2) \groundedfinqa,
 a grounded dataset derived from FinQA containing 1,108 multi-hop reasoning tasks with synthetic databases and tool abstractions.
 Both datasets require models to interact with databases through tool calls rather than relying on in-context information,
 testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that state-of-the-art
@@ -59,28 +63,28 @@ contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many 
 examples may have been seen during model training.
 
 We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use.
-The benchmark deliberately consists of two complementary datasets because no single data source jointly satisfies the two requirements
+\edit{The benchmark deliberately consists of two complementary datasets because no single data source jointly satisfies the two requirements
 we view as essential for diagnosing agentic financial reasoning: (i) \emph{scale and controllability}---a large pool of items with an
 unambiguous, executable ground truth and tunable difficulty, which is needed to attribute failures to specific planning behaviors rather
 than to evaluator noise; and (ii) \emph{realism and curation fidelity}---tasks anchored in human-authored financial questions over
 real financial documents, so that performance comparisons remain meaningful to practitioners and to the existing financial-QA literature.
 \synthsubset addresses (i) through programmatic generation against synthetic schemas, while \groundedfinqa addresses (ii) by grounding
 each task in a FinQA item and its tabular context. Together they decouple diagnostic precision from ecological validity and let the same
-agent be measured along both axes:
+agent be measured along both axes:}
 
 \begin{itemize}
-    \item \textbf{\synthsubset}: A synthetic dataset of natural-language financial questions over relational databases. Agents must
+    \item \edit{\textbf{\synthsubset}: A synthetic dataset of natural-language financial questions over relational databases. Agents must
     retrieve the answer by issuing structured queries against dynamically generated schemas, exposed through a single
     \texttt{execute\_sql} tool. We adopt structured-query retrieval (rather than free-text retrieval) because it offers an unambiguous,
     executable ground truth, scales to thousands of items via templated generation, and isolates the agent's planning and
     schema-grounding behavior from retrieval-system noise. Each example undergoes rigorous quality control through a committee of three
-    LLM judges.
+    LLM judges.}
 
-    \item \textbf{\groundedfinqa}: A grounded dataset derived from FinQA. Each \emph{sample} is a self-contained task instance comprising
+    \item \edit{\textbf{\groundedfinqa}: A grounded dataset derived from FinQA. Each \emph{sample} is a self-contained task instance comprising
     (i) a financial question taken from FinQA, (ii) a complete agentic environment populated with diverse custom tools and synthetic
     databases reconstructed from the original FinQA tables, (iii) distractor tools and distractor rows that test the agent's ability to
     filter relevant from irrelevant data, and (iv) a gold answer. Samples are designed so that the answer cannot be reached without
-    multi-hop reasoning across several tool calls.
+    multi-hop reasoning across several tool calls.}
 \end{itemize}
 
 Both datasets share key design principles: (1) answers cannot be extracted from the prompt alone---agents must use tools to retrieve
@@ -91,11 +95,11 @@ Our main contributions are:
 \begin{enumerate}
     \item A novel benchmark for evaluating agentic LLMs on financial tasks requiring genuine tool use.
     \item A rigorous dataset creation pipeline with LLM committee-based quality control.
-    \item Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
-    revealing significant gaps in agentic financial reasoning capabilities.
-    \item An open-source release of the complete benchmark together with the dataset-construction pipeline code, the evaluation
+    \item \edit{Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
+    revealing significant gaps in agentic financial reasoning capabilities.}
+    \item \edit{An open-source release of the complete benchmark together with the dataset-construction pipeline code, the evaluation
     harness, and all model traces---released as a contribution in its own right to support reproducible research and direct reuse of
-    our infrastructure for new agentic financial tasks.
+    our infrastructure for new agentic financial tasks.}
 \end{enumerate}
 
 %==============================================================================
@@ -190,10 +194,10 @@ Quality control & Committee & Execution-based \\
 \label{tab:dataset_overview}
 \end{table}
 
-\subsection{\synthsubset: Synthetic Database-Query Dataset}
+\subsection{\synthsubset: Synthetic \edit{Database-Query} Dataset}
 \label{sec:synthsql}
 
-\synthsubset consists of financial analysis queries that an agent must answer by interacting with a structured database (implemented as SQLite, exposed through an \texttt{execute\_sql} tool). Each example contains:
+\synthsubset consists of financial analysis queries that \edit{an agent must answer by interacting with a structured database (implemented as SQLite, exposed through an \texttt{execute\_sql} tool)}. Each example contains:
 
 \begin{itemize}
     \item \textbf{User role}: The persona making the query (e.g., CFO, auditor, financial analyst).
@@ -592,7 +596,7 @@ Our committee-based quality control ensures high-quality examples but introduces
 \section{Conclusion}
 %==============================================================================
 
-We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial analysis tasks requiring tool use. Our benchmark includes two complementary datasets: \synthsubset with 5,979 natural-language financial questions answered through structured database queries, and \groundedfinqa with 1,108 multi-hop reasoning tasks grounded in FinQA. Evaluation of frontier and open-source LLMs used as the base models inside the agents reveals significant room for improvement, with best accuracies of 69\%.
+We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial analysis tasks requiring tool use. Our benchmark includes two complementary datasets: \synthsubset with 5,979 \edit{natural-language financial questions answered through structured database queries}, and \groundedfinqa with 1,108 multi-hop reasoning tasks \edit{grounded in FinQA}. Evaluation of frontier and open-source \edit{LLMs used as the base models inside the agents} reveals significant room for improvement, with best accuracies of 69\%.
 
 Our work provides a foundation for developing and evaluating financial AI agents. Future work may extend the benchmark to additional financial domains, incorporate real corporate databases (with appropriate anonymization), and develop training approaches to improve agentic financial reasoning.
 

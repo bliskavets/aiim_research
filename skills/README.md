@@ -8,6 +8,8 @@ Reusable procedures and scripts for experiment management.
 |------|---------|
 | `new_experiment.md` | Checklist for creating a new experiment (read before each new exp) |
 | `check_progress.md` | How to check training progress and report metrics |
+| `paper_edits_blue.md` | **Mandatory** for every LaTeX paper edit: wrap Claude's changes in `\edit{...}` so they render blue for the professor's review pass |
+| `strip_edit_markup.sh` | Companion to `paper_edits_blue.md` — strips `\edit{...}` before final submission |
 | `run_experiment.sh` | Shell script to launch experiment in Docker with uv setup |
 | `compare_experiments.py` | Plot reward/KL curves from multiple experiments on one chart |
 | `plot_progress.py` | Parse a training log and generate quick dashboard figures |

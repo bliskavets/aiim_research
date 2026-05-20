@@ -398,7 +398,7 @@ A runnable agent using the \texttt{smolagents} \cite{smolagents} library is gene
 
 \subsection{\synthsubset Experiments}
 
-We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; Stage 6 (committee judgement) is run with three different models. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models---Claude Sonnet 4, o4-mini, and o3-mini---one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
 
 \begin{table}[t]
 \centering

@@ -48,11 +48,10 @@
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
 in agentic financial analysis tasks requiring tool use. The benchmark consists of two complementary datasets: (1) \synthsubset,
-a synthetic dataset of \edit{5,803 natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment}, with committee-reviewed quality control, and (2) \groundedfinqa,
+a synthetic dataset of \edit{5,979} natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa,
 a grounded dataset derived from FinQA containing 1,108 multi-hop reasoning tasks \edit{embedded in custom tool environments}.
 Both datasets require models to \edit{retrieve information exclusively through tool calls} rather than relying on in-context information,
-testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that state-of-the-art
-models achieve only 50--68\% accuracy on \synthsubset and 53--70\% on \groundedfinqa, demonstrating significant room for improvement
+testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that \edit{even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively}, demonstrating significant room for improvement
 in agentic financial reasoning. We release the full dataset, evaluation code, and model traces to facilitate future research.
 \end{abstract}
 
@@ -115,21 +114,19 @@ Our main contributions are:
 agentic tool-use evaluation, and domain-specific semantic parsing.
 
 \paragraph{Context-Bound Financial QA}
-Foundational financial benchmarks like FinQA \cite{chen2021finqa} and TAT-QA \cite{zhu-etal-2021-tat} measure reading
-comprehension and numerical reasoning over static, explicitly provided contexts. These established datasets are inherently
-non-agentic as they do not require dynamic interaction or external system calls. Our \groundedfinqa component transitions this
+\edit{Foundational financial benchmarks like FinQA \citep{chen2021finqa}, ConvFinQA \citep{chen2022convfinqa}, TAT-QA \citep{zhu-etal-2021-tat}, and FinanceBench \citep{islam2023financebench} measure numerical reasoning, tabular-textual integration, and reasoning over SEC filings within static, explicitly provided contexts.} These established datasets are inherently
+non-agentic as they do not require dynamic interaction or external system calls\edit{; all necessary information is supplied in the prompt, testing reading comprehension rather than tool use or dynamic information retrieval}. Our \groundedfinqa component transitions this
 evaluation to a dynamic environment where information must be actively retrieved through multi-hop tool calls, isolating and
 testing the core planning and execution logic.
 
-\paragraph{Agentic Reasoning and Tool Use}
-General agent benchmarks, such as ToolBench \cite{qin2023tool} and MCP-Verse \cite{lei2025mcpverse}, establish the methodological
+\paragraph{\edit{Agentic and Tool-Use Benchmarks}}
+General agent benchmarks, such as ToolBench \citep{qin2023tool, qin2023toolllm}\edit{, MCP-Verse \citep{lei2025mcpverse}, AgentBench \citep{liu2023agentbench}, and SWE-bench \citep{jimenez2024swebench}}, establish the methodological
 standard for evaluating LLMs'
-planning abilities against a large breadth of tools and domains. While essential for assessing general tool augmentation, these
-benchmarks prioritize scale over domain depth. Financial analysis critically demands precision and specialized interpretation. By
+planning abilities against a large breadth of tools and domains \edit{(web browsing, code execution, APIs at scale)}. While essential for assessing general tool augmentation, these
+benchmarks prioritize scale over domain depth\edit{, and none concentrate on financial analysis with structured-data tools}. Financial analysis critically demands precision and specialized interpretation. By
 specializing the tool environment for finance, \datasetname tests the \textit{depth} of financial logic, revealing significant gaps
-where general planning skills fail to confer the necessary domain competence (e.g., 13--59\% accuracy on grounded financial reasoning
-tasks). Recent real-world financial benchmarks like FinGAIA \cite{zeng2025fingaiachinesebenchmarkai}
-and the Finance Agent Benchmark \cite{bigeard2025financeagentbenchmarkbenchmarking} prioritize realism by using live web data (SEC
+where general planning skills fail to confer the necessary domain competence (\edit{16--70\% accuracy on grounded financial reasoning tasks}). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai}
+and the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking} prioritize realism by using live web data (SEC
 EDGAR), while \datasetname is engineered for \textbf{diagnostic fidelity} using controlled, synthetic environments to attribute failures
 unequivocally to flawed planning logic, rather than external noise or API variability.
 
@@ -165,12 +162,6 @@ performance limitations.
     \caption{Comparison of key benchmarks.}
     \label{tab:benchmark_comparison}
 \end{table*}
-
-\paragraph{Financial QA Benchmarks}
-Several benchmarks exist for evaluating financial reasoning in LLMs. FinQA \cite{chen2021finqa} and ConvFinQA \cite{chen2022convfinqa} test numerical reasoning over financial reports. TAT-QA \cite{zhu-etal-2021-tat} combines tabular and textual reasoning. FinanceBench \cite{islam2023financebench} provides questions requiring reasoning over SEC filings. However, these benchmarks provide all necessary information in context, testing reading comprehension rather than tool use.
-
-\paragraph{Agentic Benchmarks}
-Recent work has introduced benchmarks for evaluating LLM agents. AgentBench \cite{liu2023agentbench} tests agents across diverse environments including web browsing and code execution. ToolBench \cite{qin2023toolllm} evaluates tool use across thousands of APIs. SWE-bench \cite{jimenez2024swebench} tests agents on real-world software engineering tasks. \edit{However, none of these focus specifically on financial analysis with structured-data tools.}
 
 \paragraph{Synthetic Data Generation}
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
@@ -358,24 +349,24 @@ The final dataset includes only examples that passed committee judgement. We run
 
 \subsection{\groundedfinqa Creation Pipeline}
 
-The \groundedfinqa pipeline transforms FinQA samples through 9 steps:
+The \groundedfinqa pipeline transforms FinQA samples through \edit{9 stages}:
 
-\paragraph{Step 1: Initial Solution}
+\paragraph{\edit{Stage} 1: Initial Solution}
 An LLM creates a direct Python solution using the original table data, establishing the computational logic.
 
-\paragraph{Step 2: \edit{Backing Data Store Generation}}
+\paragraph{\edit{Stage} 2: \edit{Backing Data Store Generation}}
 \edit{An SQLite-backed table set is generated to model the scenario, containing the records needed to answer the question.}
 
-\paragraph{Step 3: Basic Tools}
+\paragraph{\edit{Stage} 3: Basic Tools}
 Tool functions are created as abstractions over the \edit{backing store}, designed to enable multi-hop reasoning.
 
-\paragraph{Step 4: Correct Plan (Basic)}
+\paragraph{\edit{Stage} 4: Correct Plan (Basic)}
 A reference solution is written using the basic tools.
 
-\paragraph{Step 5: \edit{Augmented Backing Store}}
+\paragraph{\edit{Stage} 5: \edit{Augmented Backing Store}}
 The \edit{backing store} is expanded with additional tables, split data, and distractor rows to increase difficulty.
 
-\paragraph{Step 6: Augmented Tools}
+\paragraph{\edit{Stage} 6: Augmented Tools}
 Extended tools are created including:
 \begin{itemize}
     \item Core tools for the correct solution
@@ -383,23 +374,23 @@ Extended tools are created including:
     \item Distractor tools providing irrelevant data
 \end{itemize}
 
-\paragraph{Step 7: Correct Plan (Augmented)}
+\paragraph{\edit{Stage} 7: Correct Plan (Augmented)}
 A reference solution using the augmented tools demonstrates the multi-hop solution path.
 
-\paragraph{Step 8: System Prompt}
+\paragraph{\edit{Stage} 8: System Prompt}
 A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
 
-\paragraph{Step 9: Agent Code}
+\paragraph{\edit{Stage} 9: Agent Code}
 A runnable agent using the \texttt{smolagents} \cite{smolagents} library is generated for evaluation.
 
-Each step is required to output a file (Python code in all steps except Step 8 which outputs a system prompt with the task formulation). For each step, the LLM receives in the context:
+\edit{Each stage is required to output a file (Python code in all stages except Stage 8 which outputs a system prompt with the task formulation). For each stage, the LLM receives in the context:}
 \begin{itemize}
-    \item A long description of the whole process with all the steps described,
-    \item An indication of what step is currently running,
-    \item All previous files' content from the previous steps, and
-    \item In Step 9, an example agent code showing coding practices for achieving more stable results.
+    \item A long description of the whole process with all the \edit{stages} described,
+    \item An indication of what \edit{stage} is currently running,
+    \item All previous files' content from the previous \edit{stages}, and
+    \item In \edit{Stage} 9, an example agent code showing coding practices for achieving more stable results.
 \end{itemize}
-After completing, each step undergoes an execution-based validation. If the execution fails, the step is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).
+\edit{After completing, each stage undergoes an execution-based validation. If the execution fails, the stage is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).}
 
 %==============================================================================
 \section{Experiments and Evaluation}
@@ -421,7 +412,7 @@ Seed queries & 12 \\
 2. Schema generation & 10,000 \\
 3. Data generation & 10,000 \\
 4. \edit{Execution-based validation} & 10,000 \\
-5. Agent trace generation & 9,560 \\
+5. Agent trace generation & \edit{9,557} \\
 6. Committee judgement & \\
 \quad -- passed & 5,401 \\
 \quad -- to be improved & 4,156 \\
@@ -430,7 +421,7 @@ Seed queries & 12 \\
 9. Committee judgement & 2,832 \\
 \midrule
 Total passed so far & 8,233 \\
-10. Filtering & \textbf{5,803} \\
+\edit{Filtering (post-pipeline)} & \textbf{\edit{5,979}} \\
 \bottomrule
 \end{tabular}
 \caption{Number of examples in the \synthsubset dataset after each stage.}
@@ -439,7 +430,7 @@ Total passed so far & 8,233 \\
 
 \subsection{\groundedfinqa Experiments}
 
-We ran the data example creation routine using the protocol described above for 1,247 FinQA examples, resulting in 1,108 examples (the rest failed in at least one of the stages). Each final example contains the following files:
+We ran the data example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). Each final example contains the following files:
 \begin{itemize}
     \item \texttt{initial\_solution.txt} --- The correct answer to the question
     \item \texttt{synthetic\_db\_generator\_augmented.py} --- Python code that creates the SQLite database

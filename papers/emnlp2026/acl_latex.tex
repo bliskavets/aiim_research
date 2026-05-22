@@ -428,6 +428,15 @@ Total passed so far & 8,233 \\
 \label{tab:synthsubset_numbers}
 \end{table}
 
+\edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at committee judgement, and 27\% at the final filtering pass.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{fig_pipeline_funnel.png}
+\caption{\synthsubset construction funnel: number of examples surviving each stage of the 9-stage pipeline plus the final filtering pass.}
+\label{fig:pipeline_funnel}
+\end{figure}}
+
 \subsection{\groundedfinqa Experiments}
 
 We ran the data example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). Each final example contains the following files:
@@ -505,6 +514,15 @@ Llama-3.1-8B-Instruct & 21.9 \\
     \item \textbf{Large open-source gap}: Open-source models significantly underperform frontier models, with even Qwen3-30B-A3B scoring 11 percentage points lower than the worst frontier model (GPT-4.1-mini).
 \end{enumerate}
 
+\edit{To verify that the headline accuracies are not driven by a single easy sub-distribution, we break the test set down by the four categories carried by the seed queries (see Section~\ref{sec:synthsql}). Figure~\ref{fig:synth_categories_radar} plots per-(model, category) accuracy. Two patterns stand out: (i) each model's polygon is approximately concentric---no model is dramatically better or worse on a specific category---which suggests \synthsubset measures a coherent agentic-reasoning skill rather than a category-specific artifact; and (ii) the open-source/frontier gap is uniform across categories, so the underperformance of small open-source models is not concentrated on a single financial sub-domain.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{fig_synth_categories_radar.png}
+\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the four categories carried by the seed queries; each query in the 729-example test set is assigned to a category by nearest-seed TF-IDF similarity.}
+\label{fig:synth_categories_radar}
+\end{figure}}
+
 \subsection{\groundedfinqa Results}
 
 Table~\ref{tab:grounded_results} presents results on \groundedfinqa.
@@ -540,6 +558,22 @@ Llama-3.1-8B-Instruct & 16.3 \\
     \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
 \end{enumerate}
 
+\edit{Figure~\ref{fig:accuracy_bars} compares the two benchmarks side by side: the headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit---every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on \groundedfinqa than on \synthsubset. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end where the multi-hop, multi-tool environment of \groundedfinqa exposes more of the weaker models' failure modes.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{fig_accuracy_bars.png}
+\caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
+\label{fig:accuracy_bars}
+\end{figure}}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig_synth_vs_curated_scatter.png}
+\caption{Per-model agreement between \synthsubset and \groundedfinqa accuracies. Models on the $y=x$ line score identically on both benchmarks; models below the line are weaker on \groundedfinqa.}
+\label{fig:synth_vs_curated_scatter}
+\end{figure}}
+
 \subsection{Native Tool Calling vs.\ ReAct Results}
 
 Table~\ref{tab:react_results} presents results of the additional experiment with tool calling protocol.
@@ -573,6 +607,15 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
     \item \textbf{ReAct benefits non-thinking models}: Every non-thinking model in the experiment benefits from using ReAct instead of native tool calling, while every thinking model does not.
     \item \textbf{Diminishing returns}: From 6.4 percentage points for Llama-3.1-8B-Instruct to just 1.4 for GPT-4.1, we consistently see diminishing returns from using ReAct.
 \end{enumerate}
+
+\edit{Figure~\ref{fig:native_vs_react} visualises the split: ReAct produces a strict gain (green delta) for every non-thinking model on the right of the plot, and a strict loss (red delta) for every thinking model on the left.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{fig_native_vs_react.png}
+\caption{Native tool calling vs.\ ReAct on \synthsubset. Numbers above each pair give the ReAct minus Native delta in percentage points.}
+\label{fig:native_vs_react}
+\end{figure}}
 
 %==============================================================================
 \section{Discussion}

@@ -32,9 +32,9 @@
 \setlist[description]{itemsep=3pt, topsep=3pt, parsep=0pt, partopsep=0pt, leftmargin=0pt, labelindent=0pt, labelsep=0.5em}
 
 % Custom commands
-\newcommand{\datasetname}{FinAgent-Bench\xspace}
-\newcommand{\synthsubset}{\edit{FinAgent-Synth}\xspace}
-\newcommand{\groundedfinqa}{\edit{FinAgent-Curated}\xspace}
+\newcommand{\datasetname}{\edit{FinOpsBench}\xspace}
+\newcommand{\synthsubset}{\edit{FinOpsBench-v1}\xspace}
+\newcommand{\groundedfinqa}{\edit{FinOpsBench-v2}\xspace}
 
 \title{\datasetname: A Benchmark for Evaluating Agentic LLMs on Financial Analysis Tasks with Tool Use}
 
@@ -47,7 +47,7 @@
 
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
-in agentic financial analysis tasks requiring tool use. The benchmark consists of two complementary datasets: (1) \synthsubset,
+in agentic financial analysis tasks requiring tool use. \edit{The benchmark is released in two versions:} (1) \synthsubset,
 a synthetic dataset of \edit{5,979} natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa,
 a grounded dataset derived from FinQA containing 1,108 multi-hop reasoning tasks \edit{embedded in custom tool environments}.
 Both datasets require models to \edit{retrieve information exclusively through tool calls} rather than relying on in-context information,
@@ -69,31 +69,17 @@ contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many 
 examples may have been seen during model training.
 
 We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use.
-\edit{The benchmark deliberately consists of two complementary datasets because no single data source jointly satisfies the two requirements
-we view as essential for diagnosing agentic financial reasoning: (i) \emph{scale and controllability}---a large pool of items with an
-unambiguous, executable ground truth and tunable difficulty, which is needed to attribute failures to specific planning behaviors rather
-than to evaluator noise; and (ii) \emph{realism and curation fidelity}---tasks anchored in human-authored financial questions over
-real financial documents, so that performance comparisons remain meaningful to practitioners and to the existing financial-QA literature.
-\synthsubset addresses (i) through programmatic generation against synthetic schemas, while \groundedfinqa addresses (ii) by grounding
-each task in a FinQA item and its tabular context. Together they decouple diagnostic precision from ecological validity and let the same
-agent be measured along both axes:}
+\edit{\datasetname is released in two versions, both produced by the same construction methodology and evaluated under the same agent harness. Practitioners can pick whichever version fits their evaluation budget and source-data preference:}
 
 \begin{itemize}
-    \item \edit{\textbf{\synthsubset}: A synthetic dataset of natural-language financial analysis tasks over structured business data.
-    Agents retrieve the evidence they need through a single structured-data tool whose backing store is regenerated for every example,
-    isolating the agent's planning behavior from retrieval-system noise and providing an unambiguous, executable ground truth at scale.
-    Each example undergoes rigorous quality control through a committee of three LLM judges.}
+    \item \edit{\textbf{\synthsubset}: the larger version (5,979 examples), produced by synthetic generation against fresh per-example backing stores accessed through a single structured-data tool. Each example undergoes rigorous quality control through a committee of three LLM judges.}
 
-    \item \edit{\textbf{\groundedfinqa}: A grounded dataset built upon FinQA. Each \emph{sample} is a self-contained task instance comprising
-    (i) a financial question taken from FinQA, (ii) a complete agentic environment populated with diverse custom tools whose underlying
-    data is reconstructed from the original FinQA tables, (iii) distractor tools and distractor data that test the agent's ability to
-    filter relevant from irrelevant evidence, and (iv) a gold answer. Samples are designed so that the answer cannot be reached without
-    multi-hop reasoning across several tool calls.}
+    \item \edit{\textbf{\groundedfinqa}: the smaller version (1,108 examples), produced by building agentic environments around questions and tables taken from FinQA. Each sample bundles a financial question, a tool environment with diverse custom Python tools, distractor tools and rows, and a gold answer; the agent must perform multi-hop reasoning across several tool calls.}
 \end{itemize}
 
-Both datasets share key design principles: (1) answers cannot be extracted from the prompt alone---agents must use tools to retrieve
+\edit{Both versions share the same design principles: (1) answers cannot be extracted from the prompt alone---agents must use tools to retrieve
 information, (2) examples require multi-step reasoning with intermediate tool calls, and (3) distractor information is present to test
-agents' ability to filter relevant from irrelevant data.
+agents' ability to filter relevant from irrelevant data.}
 
 Our main contributions are:
 \begin{itemize}
@@ -156,7 +142,7 @@ performance limitations.
         Spider / BIRD & Low/Medium & \edit{Semantic Parsing (query string fidelity)} & Low \\
         FinGAIA / Finance Agent & High & Real-time Retrieval / Realism & High \\
         \midrule
-        \textbf{FinAgent-Bench} & \textbf{High} & \textbf{Diagnostic Execution / Tool Sequence} & \textbf{High} \\
+        \textbf{\edit{FinOpsBench}} & \textbf{High} & \textbf{Diagnostic Execution / Tool Sequence} & \textbf{High} \\
         \bottomrule
     \end{tabular}
     \caption{Comparison of key benchmarks.}
@@ -172,7 +158,7 @@ Synthetic data generation has proven valuable for creating evaluation benchmarks
 
 \subsection{Overview}
 
-\datasetname comprises two complementary datasets targeting different aspects of agentic financial reasoning. Table~\ref{tab:dataset_overview} summarizes their key characteristics.
+\edit{\datasetname is released in two versions, summarised in Table~\ref{tab:dataset_overview}.}
 
 \begin{table}[t]
 \centering
@@ -188,11 +174,11 @@ Distractor data & Yes & Yes \\
 Quality control & Committee & Execution-based \\
 \bottomrule
 \end{tabular}
-\caption{Overview of the two datasets in \datasetname.}
+\caption{\edit{Overview of the two \datasetname versions.}}
 \label{tab:dataset_overview}
 \end{table}
 
-\subsection{\synthsubset: \edit{A Synthetic Agentic Dataset over Structured Business Data}}
+\subsection{\synthsubset: \edit{The Synthetic Version}}
 \label{sec:synthsql}
 
 \synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example, but the agent is never required to produce or score a query string---only the final answer is evaluated.} Each example contains:
@@ -223,7 +209,7 @@ The dataset spans diverse financial analysis categories including:
 
 To answer this query, an agent must: (1) identify which suppliers are ``most important'' (e.g., by spend volume), (2) find invoices from those suppliers, and (3) filter by payment status and age.
 
-\subsection{\groundedfinqa: \edit{A Curated Multi-Hop Agentic Dataset Built upon FinQA}}
+\subsection{\groundedfinqa: \edit{The FinQA-Grounded Version}}
 \label{sec:groundedfinqa}
 
 \groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes:
@@ -637,7 +623,7 @@ Our committee-based quality control ensures high-quality examples but introduces
 \section{Conclusion}
 %==============================================================================
 
-We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial analysis tasks requiring tool use. Our benchmark includes two complementary datasets: \synthsubset with 5,979 \edit{financial analysis tasks solved through a single structured-data tool}, and \groundedfinqa with 1,108 multi-hop reasoning tasks \edit{built upon FinQA and embedded in custom tool environments}. Evaluation of frontier and open-source \edit{LLMs used as the base models inside the agents} reveals significant room for improvement, with best accuracies of 69\%.
+We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial analysis tasks requiring tool use. \edit{The benchmark is released in two versions: \synthsubset (5,979 synthetically generated examples) and \groundedfinqa (1,108 FinQA-grounded examples).} Evaluation of frontier and open-source \edit{LLMs used as the base models inside the agents} reveals significant room for improvement, with best accuracies of 69\%.
 
 Our work provides a foundation for developing and evaluating financial AI agents. Future work may extend the benchmark to additional financial domains, incorporate \edit{real corporate data sources} (with appropriate anonymization), and develop training approaches to improve agentic financial reasoning.
 

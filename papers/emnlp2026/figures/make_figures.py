@@ -36,7 +36,7 @@ plt.rcParams.update({
 # Data — verbatim from the paper's results tables.
 # ---------------------------------------------------------------------------
 
-# Tables 3 and 4 — accuracy on FinAgent-Synth and FinAgent-Curated.
+# Tables 3 and 4 — accuracy on FinOpsBench-v1 and FinOpsBench-v2.
 MODELS = [
     "GPT-5",
     "GPT-5-mini",
@@ -51,7 +51,7 @@ ACC_SYNTH = [68.9, 65.8, 67.1, 62.4, 61.5, 50.5, 47.6, 21.9]
 ACC_CURATED = [69.6, 67.5, 67.3, 60.6, 56.9, 53.0, 44.1, 16.3]
 IS_FRONTIER = [True, True, True, True, True, False, False, False]
 
-# Table 5 — Native vs ReAct on FinAgent-Synth.
+# Table 5 — Native vs ReAct on FinOpsBench-v1.
 REACT_MODELS = [
     "GPT-5",
     "o4-mini",
@@ -98,10 +98,10 @@ def fig_accuracy_bars():
     fig, ax = plt.subplots(figsize=(7.5, 3.8))
 
     bars_s = ax.bar(x - width / 2, ACC_SYNTH, width,
-                    label="FinAgent-Synth", color=COL_SYNTH,
+                    label="FinOpsBench-v1", color=COL_SYNTH,
                     edgecolor="black", linewidth=0.4)
     bars_c = ax.bar(x + width / 2, ACC_CURATED, width,
-                    label="FinAgent-Curated", color=COL_CURATED,
+                    label="FinOpsBench-v2", color=COL_CURATED,
                     edgecolor="black", linewidth=0.4)
 
     # Annotate each bar with its value.
@@ -134,7 +134,7 @@ def fig_accuracy_bars():
 
 
 # ---------------------------------------------------------------------------
-# Figure 2 — Native vs ReAct paired bars (FinAgent-Synth only).
+# Figure 2 — Native vs ReAct paired bars (FinOpsBench-v1 only).
 # ---------------------------------------------------------------------------
 
 def fig_native_vs_react():
@@ -174,8 +174,8 @@ def fig_native_vs_react():
     ax.set_xticks(x)
     ax.set_xticklabels(REACT_MODELS, rotation=20, ha="right")
     ax.set_ylim(0, 90)
-    ax.set_ylabel("Accuracy on FinAgent-Synth (%)")
-    ax.set_title("Native tool calling vs. ReAct on FinAgent-Synth")
+    ax.set_ylabel("Accuracy on FinOpsBench-v1 (%)")
+    ax.set_title("Native tool calling vs. ReAct on FinOpsBench-v1")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28),
               ncol=2, frameon=False)
     ax.grid(axis="x", visible=False)
@@ -223,8 +223,8 @@ def fig_synth_vs_curated_scatter():
 
     ax.set_xlim(lo, hi)
     ax.set_ylim(lo, hi)
-    ax.set_xlabel("Accuracy on FinAgent-Synth (%)")
-    ax.set_ylabel("Accuracy on FinAgent-Curated (%)")
+    ax.set_xlabel("Accuracy on FinOpsBench-v1 (%)")
+    ax.set_ylabel("Accuracy on FinOpsBench-v2 (%)")
     ax.set_title("Per-model agreement between the two benchmarks")
 
     legend_handles = [
@@ -269,7 +269,7 @@ def fig_pipeline_funnel():
     ax.set_xticklabels(FUNNEL_STAGES, fontsize=8)
     ax.set_ylabel("Number of examples")
     ax.set_ylim(0, 11500)
-    ax.set_title("FinAgent-Synth construction funnel "
+    ax.set_title("FinOpsBench-v1 construction funnel "
                  "(10,000 → 5,979 examples)")
     ax.grid(axis="x", visible=False)
 

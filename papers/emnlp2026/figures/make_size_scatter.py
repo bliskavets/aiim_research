@@ -93,23 +93,25 @@ for model, size, _, _, v1, v2, source in MODELS:
     ax.annotate(label, (x, y), fontsize=8.5, ha=ha, va="center",
                 color="#222")
 
-# Log-linear fit using only the known-size open-weight models, then dashed-extend.
-# (Mixing with estimated sizes would be circular.)
-known = [(s, v1, v2) for _, s, _, _, v1, v2, src in MODELS if src == "open"]
-if len(known) >= 2:
-    import numpy as np
-    xs = np.array([math.log10(s) for s, _, _ in known])
-    y1 = np.array([v1 for _, v1, _ in known])
-    y2 = np.array([v2 for _, _, v2 in known])
-    # NOTE: only 3 open-weight points — fit is heavily under-determined; treat
-    # the line as illustrative, not a serious regression.
-    s1, i1 = np.polyfit(xs, y1, 1)
-    s2, i2 = np.polyfit(xs, y2, 1)
-    xx = np.linspace(math.log10(5), math.log10(15000), 100)
-    ax.plot(10 ** xx, s1 * xx + i1, "--", color=COL_V1, linewidth=0.9,
-            alpha=0.45, zorder=1)
-    ax.plot(10 ** xx, s2 * xx + i2, "--", color=COL_V2, linewidth=0.9,
-            alpha=0.45, zorder=1)
+# Log-linear fit over every model except Llama-3.1-8B (it sits well below
+# trend — keep it on the plot but exclude it from the regression so the
+# line reflects the bulk of the population).
+import numpy as np
+fit_models = [(m, s, v1, v2) for m, s, _, _, v1, v2, _ in MODELS
+              if m != "Llama-3.1-8B"]
+xs = np.array([math.log10(s) for _, s, _, _ in fit_models])
+y1 = np.array([v1 for _, _, v1, _ in fit_models])
+y2 = np.array([v2 for _, _, _, v2 in fit_models])
+s1, i1 = np.polyfit(xs, y1, 1)
+s2, i2 = np.polyfit(xs, y2, 1)
+xx = np.linspace(math.log10(5), math.log10(15000), 100)
+ax.plot(10 ** xx, s1 * xx + i1, "--", color=COL_V1, linewidth=1.0,
+        alpha=0.55, zorder=1)
+ax.plot(10 ** xx, s2 * xx + i2, "--", color=COL_V2, linewidth=1.0,
+        alpha=0.55, zorder=1)
+# Print fit equations so they show up in commits/notes.
+print(f"v1 fit (excluding Llama): acc = {s1:.2f} * log10(N_B) + {i1:.2f}")
+print(f"v2 fit (excluding Llama): acc = {s2:.2f} * log10(N_B) + {i2:.2f}")
 
 ax.set_xscale("log")
 ax.set_xlim(5, 15000)

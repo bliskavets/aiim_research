@@ -78,9 +78,7 @@ We introduce \datasetname, a benchmark specifically designed to evaluate agentic
     \item \edit{\textbf{\groundedfinqa}: the smaller version (1,108 examples), produced by building agentic environments around questions and tables taken from FinQA. Each sample bundles a financial question, a tool environment with diverse custom Python tools, distractor tools and rows, and a gold answer; the agent must perform multi-hop reasoning across several tool calls.}
 \end{itemize}
 
-\edit{Both versions share the same design principles: (1) answers cannot be extracted from the prompt alone---agents must use tools to retrieve
-information, (2) examples require multi-step reasoning with intermediate tool calls, and (3) distractor information is present to test
-agents' ability to filter relevant from irrelevant data.}
+\edit{Both versions share the same design principles. First, answers cannot be extracted from the prompt alone, so agents must use tools to retrieve information. Second, examples require multi-step reasoning with intermediate tool calls. Third, distractor information is present to test the agent's ability to filter relevant from irrelevant data.}
 
 Our main contributions are:
 \begin{itemize}
@@ -89,11 +87,11 @@ Our main contributions are:
     \item \edit{Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
     revealing significant gaps in agentic financial reasoning capabilities.}
     \item \edit{An open-source release of the complete benchmark together with the dataset-construction pipeline code, the evaluation
-    harness, and all model traces---released as a contribution in its own right to support reproducible research and direct reuse of
+    harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of
     our infrastructure for new agentic financial tasks.}
 \end{itemize}
 
-\edit{As Figure~\ref{fig:accuracy_vs_size} shows, accuracy on \datasetname grows log-linearly with the parameter count of the agent's base model---an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artefact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.}
+\edit{As Figure~\ref{fig:accuracy_vs_size} shows, accuracy on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artefact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -130,11 +128,11 @@ unequivocally to flawed planning logic, rather than external noise or API variab
 A related line of work studies semantic parsing over structured data: cross-domain datasets such as Spider \citep{spider} and BIRD
 \citep{li2024can} score a model on the fidelity of a single generated query string against a fixed schema. \datasetname is
 deliberately \emph{not} a semantic-parsing benchmark: the agent is never scored on a query string. Instead, \synthsubset evaluates
-the full agentic loop---tool selection, multi-turn interaction with the data tool, evidence aggregation across calls, and natural-language
-answer synthesis---over financially specialized environments. Two consequences follow that make the task qualitatively different from
-text-to-query parsing: (i) success requires planning under partial observability (the schema and contents must be probed via tool calls
-rather than read from context), and (ii) financial domain semantics (e.g., accounts-payable aging, variance attribution, revenue
-recognition) become first-class evaluation targets rather than incidental surface features. The structured-data tool is the means, not
+the full agentic loop (tool selection, multi-turn interaction with the data tool, evidence aggregation across calls, and natural-language
+answer synthesis) over financially specialized environments. Two consequences follow that make the task qualitatively different from
+text-to-query parsing. First, success requires planning under partial observability: the schema and contents must be probed via tool calls
+rather than read from context. Second, financial domain semantics such as accounts-payable aging, variance attribution, and revenue
+recognition become first-class evaluation targets rather than incidental surface features. The structured-data tool is the means, not
 the end being measured.}
 
 Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a committee of three LLM judges, to
@@ -195,7 +193,7 @@ Quality control & Committee & Execution-based \\
 \subsection{\synthsubset}
 \label{sec:synthsql}
 
-\synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example, but the agent is never required to produce or score a query string---only the final answer is evaluated.} Each example contains:
+\synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example; the agent is never required to produce or score a query string, and only the final answer is evaluated.} Each example contains:
 
 \begin{itemize}
     \item \textbf{User role}: The persona making the query (e.g., CFO, auditor, financial analyst).
@@ -236,7 +234,7 @@ To answer this query, an agent must: (1) identify which suppliers are ``most imp
     \item \textbf{Correct plan}: Reference multi-hop solution.
 \end{itemize}
 
-Critically, the agent receives only the scenario description and tool definitions---not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
+Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
 
 \paragraph{Example Item:}
 An example from the \groundedfinqa dataset is shown in Table~\ref{tab:example}, truncated for brevity. The full example contains a longer system prompt, \edit{the backing data}, and fully runnable Python code for the correct solution. \edit{See Appendix~\ref{app:example_queries_v2} for a sample of further questions from this version of the benchmark.}
@@ -279,7 +277,7 @@ answer = f"{round(pct\_change)}\%"} \\
 \section{Dataset Creation}
 %==============================================================================
 
-\subsection{\synthsubset Creation Pipeline}
+\edit{\subsection{\synthsubset pipeline}}
 \label{sec:synthsql_pipeline}
 
 The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\ref{fig:pipeline}~(top) gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
@@ -287,7 +285,7 @@ The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\re
 \begin{figure*}[t]
 \centering
 \edit{\includegraphics[width=\linewidth]{figures/main_figure_combined.png}}
-\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} \synthsubset is built in 9 stages---a linear generation phase (Stages 1--5), a committee-judgement gate (Stage 6), and an improvement loop (Stages 7--9). Items that pass either committee judgement enter a post-pipeline filtering step. \textbf{Bottom:} \groundedfinqa is built in 9 stages with no improvement loop---a basic build over the original FinQA tables (Stages 1--4), a distractor-injecting augmentation phase (Stages 5--7), and a packaging phase that emits the runnable agent (Stages 8--9); each stage is validated by execution with up to 10 retries before the example is dropped.}}
+\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} the synthetic version is built in 9 stages, comprising a linear generation phase (Stages 1--5), a committee-judgement gate (Stage 6), and an improvement loop (Stages 7--9). Items that pass either committee judgement enter a post-pipeline filtering step. \textbf{Bottom:} the FinQA-grounded version is built in 9 stages with no improvement loop. It comprises a basic build over the original FinQA tables (Stages 1--4), a distractor-injecting augmentation phase (Stages 5--7), and a packaging phase that emits the runnable agent (Stages 8--9). Each stage is validated by execution, with up to 10 retries before the example is dropped.}}
 \label{fig:pipeline}
 \end{figure*}
 
@@ -347,7 +345,7 @@ The improved examples are then re-judged by the committee. If an example passes,
 \paragraph{Final Filtering}
 The final dataset includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the dataset. The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
 
-\subsection{\groundedfinqa Creation Pipeline}
+\edit{\subsection{\groundedfinqa pipeline}}
 
 The \groundedfinqa pipeline transforms FinQA samples through \edit{9 stages (Figure~\ref{fig:pipeline}, bottom)}:
 
@@ -393,12 +391,12 @@ A runnable agent using the \texttt{smolagents} \cite{smolagents} library is gene
 \edit{After completing, each stage undergoes an execution-based validation. If the execution fails, the stage is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).}
 
 %==============================================================================
-\section{Experiments and Evaluation}
+\edit{\section{Experiments}}
 %==============================================================================
 
-\subsection{\synthsubset Experiments}
+\edit{\subsection{\synthsubset construction stats}}
 
-We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models---Claude Sonnet 4, o4-mini, and o3-mini---one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
 
 \begin{table}[t]
 \centering
@@ -437,25 +435,15 @@ Total passed so far & 8,233 \\
 \label{fig:pipeline_funnel}
 \end{figure}}
 
-\subsection{\groundedfinqa Experiments}
+\edit{\subsection{\groundedfinqa construction stats}}
 
-We ran the data example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). Each final example contains the following files:
-\begin{itemize}
-    \item \texttt{initial\_solution.txt} --- The correct answer to the question
-    \item \texttt{synthetic\_db\_generator\_augmented.py} --- Python code that creates the SQLite database
-    \item \texttt{tools\_augmented.py} --- The tools required for the multi-step processing, plus distractor tools
-    \item \texttt{tool\_proxy.py} --- Same tools adapted for use with \texttt{smolagents}
-    \item \texttt{correct\_plan\_augmented.py} --- The intended sequence of tool calls that solves the task
-    \item \texttt{agent\_system\_prompt.txt} --- LLM prompt with context, tool descriptions, and the question
-    \item \texttt{agent.py} --- The agent code that runs a specified LLM with the system prompt and tools
-    \item Intermediate files created during the example building process
-\end{itemize}
+We ran the data example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
 
-\subsection{Native Tool Calling vs.\ ReAct}
+\edit{\subsection{Native tool calling vs.\ ReAct}}
 
 While analyzing the traces of smaller models we found it hard to understand what the models are struggling with when calling tools because there was no trace of the reasoning behind the tool and argument choices. We constructed an additional experiment using the ReAct tool calling protocol \cite{yao2022react}. ReAct specifically requires the model to output its reasoning before calling a tool. This experiment was performed on the \synthsubset part of the dataset.
 
-\subsection{Evaluated Models}
+\edit{\subsection{Evaluated models}}
 
 We evaluate a diverse set of models:
 
@@ -475,13 +463,11 @@ We evaluate a diverse set of models:
 
 We use \textbf{accuracy} as the primary metric. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit. To save time and reduce costs, for \synthsubset we only evaluate on a randomly selected test set of 729 examples.
 
-%==============================================================================
-\section{Results}
-%==============================================================================
+\edit{\subsection{Results}}
 
-\subsection{\synthsubset Results}
+\edit{\subsubsection{\synthsubset}}
 
-Table~\ref{tab:synthsql_results} presents evaluation results on the \synthsubset dataset.
+Table~\ref{tab:synthsql_results} presents evaluation results on this version of the benchmark.
 
 \begin{table}[h]
 \centering
@@ -514,7 +500,7 @@ Llama-3.1-8B-Instruct & 21.9 \\
     \item \textbf{Large open-source gap}: Open-source models significantly underperform frontier models, with even Qwen3-30B-A3B scoring 11 percentage points lower than the worst frontier model (GPT-4.1-mini).
 \end{enumerate}
 
-\edit{To verify that the headline accuracies are not driven by a single easy sub-distribution, we break the test set down by the four categories carried by the seed queries (see Section~\ref{sec:synthsql}). Figure~\ref{fig:synth_categories_radar} plots per-(model, category) accuracy. Two patterns stand out: (i) each model's polygon is approximately concentric---no model is dramatically better or worse on a specific category---which suggests \synthsubset measures a coherent agentic-reasoning skill rather than a category-specific artifact; and (ii) the open-source/frontier gap is uniform across categories, so the underperformance of small open-source models is not concentrated on a single financial sub-domain.}
+\edit{To verify that the headline accuracies are not driven by a single easy sub-distribution, we break the test set down by the four categories carried by the seed queries (see Section~\ref{sec:synthsql}). Figure~\ref{fig:synth_categories_radar} plots per-(model, category) accuracy. Two patterns stand out. First, each model's polygon is approximately concentric: no model is dramatically better or worse on a specific category, which suggests the synthetic version measures a coherent agentic-reasoning skill rather than a category-specific artifact. Second, the open-source/frontier gap is uniform across categories, so the underperformance of small open-source models is not concentrated on a single financial sub-domain.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -523,7 +509,7 @@ Llama-3.1-8B-Instruct & 21.9 \\
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\subsection{\groundedfinqa Results}
+\edit{\subsubsection{\groundedfinqa}}
 
 Table~\ref{tab:grounded_results} presents results on \groundedfinqa.
 
@@ -558,7 +544,7 @@ Llama-3.1-8B-Instruct & 16.3 \\
     \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
 \end{enumerate}
 
-\edit{Figure~\ref{fig:accuracy_bars} compares the two benchmarks side by side: the headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit---every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on \groundedfinqa than on \synthsubset. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end where the multi-hop, multi-tool environment of \groundedfinqa exposes more of the weaker models' failure modes.}
+\edit{Figure~\ref{fig:accuracy_bars} compares the two benchmarks side by side: the headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit. Every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -574,7 +560,7 @@ Llama-3.1-8B-Instruct & 16.3 \\
 \label{fig:synth_vs_curated_scatter}
 \end{figure}}
 
-\subsection{Native Tool Calling vs.\ ReAct Results}
+\edit{\subsubsection{Native tool calling vs.\ ReAct}}
 
 Table~\ref{tab:react_results} presents results of the additional experiment with tool calling protocol.
 
@@ -668,15 +654,15 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \edit{Beyond the within-benchmark sanity check shown in Figure~\ref{fig:accuracy_vs_size}, where accuracy on \datasetname grows log-linearly with the agent's base-model size, we cross-check the size--accuracy relationship on two other recent financial-agent benchmarks. Parameter counts for closed-source models throughout this appendix come from the IKP calibration of \citet{li2026incompressible}; we use the direct estimates from that paper's main table where available and invert the published log-linear calibration on the extended-table IKP scores otherwise.}
 
 \paragraph{\edit{FinAgentBench \citep{choi2025finagentbench}.}}
-\edit{On the document- and chunk-ranking tasks of FinAgentBench (Figure~\ref{fig:finagentbench_size}), the trend is the opposite of the one we observe on \datasetname: across the three evaluated proprietary models (Claude-Sonnet-4 at $\approx$237B, Claude-Opus-4 at $\approx$1.4T, and GPT-o3 at $\approx$3T), the \emph{smallest} model wins or ties on every metric (nDCG@5, MAP@5, MRR@5) in both ranking tables. A monotonically negative slope on accuracy versus parameter count is a strong negative signal for benchmark validity: it suggests either that the task probes a narrow stylistic regime that the larger models are over-trained out of, or that smaller models in the same family have been exposed to closely related retrieval data during training---in other words, that performance on this benchmark is governed more by model-family biases or potential data leakage than by raw model capability.}
+\edit{On the document- and chunk-ranking tasks of FinAgentBench (Figure~\ref{fig:finagentbench_size}), the trend is the opposite of the one we observe on \datasetname: across the three evaluated proprietary models (Claude-Sonnet-4 at $\approx$237B, Claude-Opus-4 at $\approx$1.4T, and GPT-o3 at $\approx$3T), the \emph{smallest} model wins or ties on every metric (nDCG@5, MAP@5, MRR@5) in both ranking tables. A monotonically negative slope on accuracy versus parameter count is a strong negative signal for benchmark validity. It suggests either that the task probes a narrow stylistic regime that the larger models are over-trained out of, or that smaller models in the same family have been exposed to closely related retrieval data during training. In short, performance on this benchmark appears to be governed more by model-family biases or potential data leakage than by raw model capability.}
 
 \paragraph{\edit{Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}.}}
-\edit{On the 22-model Finance Agent Benchmark leaderboard (Figure~\ref{fig:financeagentbench_size}), accuracy does increase with parameter count, fitting a roughly $+15.5$\,pp-per-decade log-linear trend. However, the residual variance around this trend is large enough that the fit is not, on its own, a reliable validity signal: (i) at comparable sizes, models differ by 20--40\,pp---for example, Claude 3.7 Sonnet ($\approx$676B) reaches 44\% while GPT-4o ($\approx$720B) only reaches 20\%; (ii) several large models sit far below the trend line (o1 at $\approx$3.5T scores only 21.4\%; LLaMA 4 Maverick at $\approx$400B scores only 3.1\%, which the source paper attributes to tool-interface misuse); and (iii) most strikingly, the same model run in two different reasoning modes can differ by 13\,pp at fixed parameter count (Grok 3 Mini at 30.9\% high-reasoning vs.\ 17.6\% low-reasoning). The positive slope therefore conflates parametric capacity with reasoning paradigm and tool-use training; it does not isolate size as the dominant driver, in contrast to the cleaner relationship observed on \datasetname.}
+\edit{On the 22-model Finance Agent Benchmark leaderboard (Figure~\ref{fig:financeagentbench_size}), accuracy does increase with parameter count, fitting a roughly $+15.5$\,pp-per-decade log-linear trend. However, the residual variance around this trend is large enough that the fit is not, on its own, a reliable validity signal. First, at comparable sizes models differ by 20--40\,pp; for example, Claude 3.7 Sonnet ($\approx$676B) reaches 44\% while GPT-4o ($\approx$720B) reaches only 20\%. Second, several large models sit far below the trend line: o1 at $\approx$3.5T scores only 21.4\%, and LLaMA 4 Maverick at $\approx$400B scores only 3.1\%, which the source paper attributes to tool-interface misuse. Third, and most strikingly, the same model run in two different reasoning modes can differ by 13\,pp at fixed parameter count (Grok 3 Mini at 30.9\% high-reasoning vs.\ 17.6\% low-reasoning). The positive slope therefore conflates parametric capacity with reasoning paradigm and tool-use training; it does not isolate size as the dominant driver, in contrast to the cleaner relationship observed on \datasetname.}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{figures/external_papers/fig_finagentbench_size_scatter.png}
-\caption{\edit{Size--accuracy on FinAgentBench \citep{choi2025finagentbench}, Tables 1 and 2. The smallest model wins or ties on every metric---an inverse trend that is inconsistent with what we observe on \datasetname.}}
+\caption{\edit{Size--accuracy on FinAgentBench \citep{choi2025finagentbench}, Tables 1 and 2. The smallest model wins or ties on every metric, an inverse trend that is inconsistent with what we observe on \datasetname.}}
 \label{fig:finagentbench_size}
 \end{figure}
 
@@ -805,40 +791,63 @@ Our work provides a foundation for developing and evaluating financial AI agents
     \item What is the total, in millions, of current assets acquired?
 \end{itemize}}
 
-\edit{Across the full 1{,}108-example set, every question is taken from FinQA and the surrounding tool environment is generated automatically (see Section~\ref{sec:groundedfinqa}). The questions span ratio computations, year-over-year changes, percentage shares of totals, and aggregate sums---the financial-reasoning surface of the original FinQA dataset, reinstantiated as an agentic task.}
+\edit{Across the full 1{,}108-example set, every question is taken from FinQA and the surrounding tool environment is generated automatically (see Section~\ref{sec:groundedfinqa}). The questions span ratio computations, year-over-year changes, percentage shares of totals, and aggregate sums, mirroring the financial-reasoning surface of the original FinQA dataset and reinstantiating it as an agentic task.}
+
+\edit{\section{Per-example file layout for \groundedfinqa}}
+\edit{\label{app:v2_file_layout}}
+
+\edit{Each example in \groundedfinqa is shipped as a small directory of source files. Table~\ref{tab:v2_files} lists the files and their roles.}
+
+\edit{\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\columnwidth}{@{}lX@{}}
+\toprule
+\textbf{File} & \textbf{Description} \\
+\midrule
+\texttt{initial\_solution.txt}                 & Correct answer to the question. \\
+\texttt{synthetic\_db\_generator\_augmented.py} & Python code that creates the SQLite database. \\
+\texttt{tools\_augmented.py}                   & Tools required for the multi-step processing, plus distractor tools. \\
+\texttt{tool\_proxy.py}                        & Same tools, adapted for use with \texttt{smolagents}. \\
+\texttt{correct\_plan\_augmented.py}           & Intended sequence of tool calls that solves the task. \\
+\texttt{agent\_system\_prompt.txt}             & LLM prompt with context, tool descriptions, and the question. \\
+\texttt{agent.py}                              & Agent code that runs a specified LLM with the system prompt and tools. \\
+\midrule
+Intermediate files                              & Auxiliary artifacts kept from the build process for reproducibility. \\
+\bottomrule
+\end{tabularx}
+\caption{Per-example file layout for \groundedfinqa.}
+\label{tab:v2_files}
+\end{table}}
 
 \section{Prompts and Examples}
 \label{app:prompts}
 
 Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
 
-\edit{\begin{figure}[t]
-\centering
-\tiny
+\begin{figure*}[h]
+\small\centering
 \begin{verbatim}
 # Task
-You are a senior QA engineer working on AI agents for finance.
-You have to judge the test case provided and check the
-following rules:
+You are a senior QA engineer working on AI agents for finance. You have to judge
+the test case provided and check the following rules:
 
-- The test case's data should be natural: it should be similar
-  to what data a real company could have, and how it would be
-  stored in a database.
-- The agent's trace should be reasonable: the agent should
-  look at the data needed to answer the query.
-- The agent's trace should be sound: the reasoning steps
-  should be logical, should follow from the previous steps
-  and lead to the final answer.
-- The agent's reasoning and final answer should be grounded:
-  the only data the agent has access to is what was returned
-  from its tool calls. The reasoning should not be based on
-  any other data, including the data in the database that
-  was not queried with the tools.
+- The test case's data should be natural: it should be similar to what data could
+  a real company have, and how it would be stored in a database.
+- The agent's trace should be reasonable: the agent should look at the data needed
+  to answer the query.
+- The agent's trace should be sound: the reasoning steps should be logical, should
+  follow from the previous steps and lead to the final answer.
+- The agent's reasoning and final answer should be grounded: the only data the agent
+  has access to is what was returned from its tool calls. The reasoning should not
+  be based on any other data, including the data in the database that was not
+  queried with the tools.
 - The agent's final answer should answer the user's query.
 
-In case one of these requirements are not met, you should
-provide a concise actionable feedback so the author can
-improve the test case.
+In case one of these requirements are not met, you should provide a concise
+actionable feedback so the author can improve the test case.
 
 # Test case:
 
@@ -867,17 +876,15 @@ Reply with JSON object like this:
 \end{verbatim}
 \caption{\synthsubset: Prompt template for a committee member judge.}
 \label{fig:judge-prompt}
-\end{figure}}
+\end{figure*}
 
 Figure~\ref{fig:example-item} shows an annotated example from the \synthsubset dataset illustrating the schema and data format.
 
-\edit{\begin{figure}[t]
-\centering
-\tiny
+\begin{figure*}[h]
+\small\centering
 \begin{verbatim}
 Query:
-Could duplicated invoice payments be causing
-discrepancies in our aged payables report?
+Could duplicated invoice payments be causing discrepancies in our aged payables report?
 
 Schema:
 CREATE TABLE Suppliers (
@@ -890,28 +897,25 @@ CREATE TABLE Invoices (
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     invoice_amount NUMERIC NOT NULL,
-    FOREIGN KEY (supplier_id)
-        REFERENCES Suppliers(supplier_id)
+    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)
 );
 CREATE TABLE Payments (
     payment_id INTEGER PRIMARY KEY,
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id)
-        REFERENCES Invoices(invoice_id)
+    FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id)
 );
 
 Data:
--- Invoice 1002 has duplicated payments
--- covering the entire invoice twice
+-- Invoice 1002 has duplicated payments covering entire invoice twice
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
 (5002, 1002, '2025-07-10', 500.00),
-(5003, 1002, '2025-07-12', 500.00); -- duplicate
+(5003, 1002, '2025-07-12', 500.00);  -- Duplicate over invoice amount
 \end{verbatim}
 \caption{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}
 \label{fig:example-item}
-\end{figure}}
+\end{figure*}
 
 \end{document}

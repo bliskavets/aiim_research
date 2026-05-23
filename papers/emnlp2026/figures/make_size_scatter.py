@@ -117,11 +117,7 @@ def render(models, out_stem: str, fit_excluding=None, title_suffix="",
     ax.set_ylim(0, 80)
     ax.set_xlabel("Model size (B parameters, log scale)")
     ax.set_ylabel("Accuracy (%)")
-    if title is None:
-        ax.set_title("FinOpsBench accuracy vs. model size" + title_suffix)
-    elif title:  # non-empty override
-        ax.set_title(title)
-    # else: empty string => no title at all
+    # Title intentionally omitted: caption text in LaTeX is the only caption.
 
     ticks = [8, 30, 100, 300, 1000, 3000, 10000]
     ax.set_xticks(ticks)

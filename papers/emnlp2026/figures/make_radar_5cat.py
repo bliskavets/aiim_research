@@ -244,8 +244,6 @@ ax.set_rlabel_position(225)
 ax.grid(color="#cccccc", linewidth=0.6)
 ax.spines["polar"].set_color("#999999")
 
-ax.set_title("Per-category accuracy on FinOpsBench-v1 (% correct)",
-             y=1.10)
 ax.legend(loc="center left", bbox_to_anchor=(1.10, 0.5), frameon=False)
 
 fig.savefig(OUT / "fig_synth_categories_radar_5cat.png")

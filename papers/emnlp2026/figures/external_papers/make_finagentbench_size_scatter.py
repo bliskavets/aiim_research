@@ -113,7 +113,10 @@ def draw_panel(ax, scores: dict, title: str, ylim: tuple[float, float]):
     ax.set_ylim(*ylim)
     ax.set_xlabel("Model size (B parameters, log scale)")
     ax.set_ylabel("Score")
-    ax.set_title(title)
+    # Panel label is rendered as a small annotation in the upper-left so
+    # the LaTeX caption remains the only "title" of the figure.
+    ax.text(0.02, 0.98, title, transform=ax.transAxes,
+            ha="left", va="top", fontsize=9, style="italic", color="#555")
 
     ticks = [100, 300, 1000, 3000, 10000]
     ax.set_xticks(ticks)
@@ -132,9 +135,6 @@ handles = [Line2D([0], [0], marker=METRIC_MARKER[m], color="w",
            for m in ["nDCG@5", "MAP@5", "MRR@5"]]
 fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False,
            bbox_to_anchor=(0.5, -0.04))
-
-fig.suptitle("FinAgentBench (arXiv:2508.14052v3) — score vs model size",
-             y=1.00, fontsize=12)
 
 # (Citation footnote removed per user preference; sizes are documented
 # in figures/external_papers/README.md.)

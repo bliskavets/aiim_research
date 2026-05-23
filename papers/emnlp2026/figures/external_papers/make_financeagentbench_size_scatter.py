@@ -129,8 +129,6 @@ ax.set_xlim(15, 15000)
 ax.set_ylim(0, 55)
 ax.set_xlabel("Model size (B parameters, log scale)")
 ax.set_ylabel("Class-balanced accuracy (%)")
-ax.set_title("Finance Agent Benchmark (arXiv:2508.00828, Table 2) "
-             "— accuracy vs model size")
 
 ticks = [20, 50, 100, 300, 1000, 3000, 10000]
 ax.set_xticks(ticks)

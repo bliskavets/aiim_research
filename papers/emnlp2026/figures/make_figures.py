@@ -123,7 +123,6 @@ def fig_accuracy_bars():
     ax.set_xticklabels(MODELS, rotation=20, ha="right")
     ax.set_ylim(0, 90)
     ax.set_ylabel("Accuracy (%)")
-    ax.set_title("Model accuracy across the two benchmarks")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28),
               ncol=2, frameon=False)
     ax.grid(axis="x", visible=False)
@@ -175,7 +174,6 @@ def fig_native_vs_react():
     ax.set_xticklabels(REACT_MODELS, rotation=20, ha="right")
     ax.set_ylim(0, 90)
     ax.set_ylabel("Accuracy on FinOpsBench-v1 (%)")
-    ax.set_title("Native tool calling vs. ReAct on FinOpsBench-v1")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28),
               ncol=2, frameon=False)
     ax.grid(axis="x", visible=False)
@@ -225,7 +223,6 @@ def fig_synth_vs_curated_scatter():
     ax.set_ylim(lo, hi)
     ax.set_xlabel("Accuracy on FinOpsBench-v1 (%)")
     ax.set_ylabel("Accuracy on FinOpsBench-v2 (%)")
-    ax.set_title("Per-model agreement between the two benchmarks")
 
     legend_handles = [
         mpatches.Patch(facecolor=COL_FRONTIER, edgecolor="black",
@@ -269,8 +266,6 @@ def fig_pipeline_funnel():
     ax.set_xticklabels(FUNNEL_STAGES, fontsize=8)
     ax.set_ylabel("Number of examples")
     ax.set_ylim(0, 11500)
-    ax.set_title("FinOpsBench-v1 construction funnel "
-                 "(10,000 → 5,979 examples)")
     ax.grid(axis="x", visible=False)
 
     fig.savefig("fig_pipeline_funnel.png")

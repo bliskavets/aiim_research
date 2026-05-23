@@ -762,11 +762,11 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 
 Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
 
-\begin{figure*}[h]
+\begin{figure}[t]
 \small\centering
 \begin{verbatim}
 # Task
-You are a senior QA engineer working 
+You are a senior QA engineer working
 on AI agents for finance. You have to judge
 the test case provided and check the 
 following rules:
@@ -826,7 +826,7 @@ Reply with JSON object like this:
 \end{verbatim}
 \caption{\synthsubset: Prompt template for a committee member judge.}
 \label{fig:judge-prompt}
-\end{figure*}
+\end{figure}
 
 Figure~\ref{fig:example-item} shows an annotated example from the \synthsubset dataset illustrating the schema and data format.
 

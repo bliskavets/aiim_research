@@ -128,7 +128,7 @@ benchmarks prioritize scale over domain depth\edit{, and none concentrate on fin
 specializing the tool environment for finance, \datasetname tests the \textit{depth} of financial logic, revealing significant gaps
 where general planning skills fail to confer the necessary domain competence (\edit{16--70\% accuracy on grounded financial reasoning tasks}). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai},
 the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}\edit{, and FinAgentBench \citep{choi2025finagentbench}} prioritize realism by using live web data (SEC
-EDGAR\edit{) or SEC-filing retrieval}, while \datasetname is engineered for \textbf{diagnostic fidelity} using controlled, synthetic environments to attribute failures
+EDGAR\edit{) or SEC-filing retrieval}, while \datasetname is engineered for \edit{\emph{diagnostic fidelity}} using controlled, synthetic environments to attribute failures
 unequivocally to flawed planning logic, rather than external noise or API variability.
 
 \edit{\paragraph{Tool Use over Structured Business Data}
@@ -203,12 +203,12 @@ Quality control & Committee & Execution-based \\
 \synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example; the agent is never required to produce or score a query string, and only the final answer is evaluated.} Each example contains:
 
 \begin{itemize}
-    \item \textbf{User role}: The persona making the query (e.g., CFO, auditor, financial analyst).
-    \item \textbf{Query}: A natural language question about financial data.
-    \item \edit{\textbf{Backing data schema}: A plausible company-data schema generated for this example.}
-    \item \edit{\textbf{Backing data}: Realistic financial records including distractor rows.}
-    \item \textbf{Expected answer}: The ground-truth answer.
-    \item \textbf{Agent trace}: A reference solution demonstrating correct tool use.
+    \item \edit{\emph{User role}}: The persona making the query (e.g., CFO, auditor, financial analyst).
+    \item \edit{\emph{Query}}: A natural language question about financial data.
+    \item \edit{\emph{Backing data schema}: A plausible company-data schema generated for this example.}
+    \item \edit{\emph{Backing data}: Realistic financial records including distractor rows.}
+    \item \edit{\emph{Expected answer}}: The ground-truth answer.
+    \item \edit{\emph{Agent trace}}: A reference solution demonstrating correct tool use.
 \end{itemize}
 
 The dataset spans diverse financial analysis categories including:
@@ -228,11 +228,11 @@ The dataset spans diverse financial analysis categories including:
 \groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes:
 
 \begin{itemize}
-    \item \textbf{System prompt}: Scenario description and available tools (without table data).
-    \item \edit{\textbf{Synthetic backing store}: An SQLite \citep{sqlite} table set reconstructed from the original FinQA tables.}
-    \item \textbf{Core tools}: Functions required to derive the answer.
-    \item \textbf{Distractor tools}: Irrelevant tools to test filtering ability.
-    \item \textbf{Correct plan}: Reference multi-hop solution.
+    \item \edit{\emph{System prompt}}: Scenario description and available tools (without table data).
+    \item \edit{\emph{Synthetic backing store}: An SQLite \citep{sqlite} table set reconstructed from the original FinQA tables.}
+    \item \edit{\emph{Core tools}}: Functions required to derive the answer.
+    \item \edit{\emph{Distractor tools}}: Irrelevant tools to test filtering ability.
+    \item \edit{\emph{Correct plan}}: Reference multi-hop solution.
 \end{itemize}
 
 Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
@@ -284,11 +284,11 @@ However, there may be hallucinations, unnatural data, wrong tool calls, or wrong
 \paragraph{Stage 6: Committee Judgement}
 A committee of three LLM judges evaluates each example's data and agent trace on five criteria:
 \begin{enumerate}
-    \item \textbf{Data naturalness}: Is the generated data realistic?
-    \item \textbf{Trace reasonableness}: Does the agent examine appropriate data?
-    \item \textbf{Trace soundness}: Is the reasoning logical?
-    \item \textbf{Grounding}: Is reasoning based only on tool outputs?
-    \item \textbf{Answer correctness}: Does the answer address the query?
+    \item \edit{\emph{Data naturalness}}: Is the generated data realistic?
+    \item \edit{\emph{Trace reasonableness}}: Does the agent examine appropriate data?
+    \item \edit{\emph{Trace soundness}}: Is the reasoning logical?
+    \item \edit{\emph{Grounding}}: Is reasoning based only on tool outputs?
+    \item \edit{\emph{Answer correctness}}: Does the answer address the query?
 \end{enumerate}
 
 An example passes only if it receives majority approval (2/3 judges) on \emph{all} criteria. In that case, it proceeds to the next stage. Otherwise, it goes to the improvement loop (Stages 7 and 8). Note that the loop only runs once for each example; if the improved example fails the judgement again, it is rejected completely.
@@ -370,7 +370,7 @@ A runnable agent using the \texttt{smolagents} \cite{smolagents} library is gene
 
 \edit{\subsection{Setup}}
 
-\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Our primary metric is \textbf{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
+\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
 
 \edit{\subsection{Construction statistics}}
 
@@ -419,7 +419,7 @@ Total passed so far & 8,233 \\
 
 \edit{\subsection{Results}}
 
-\edit{\paragraph{\synthsubset.}} Table~\ref{tab:results} presents evaluation results on both versions of the benchmark.
+\edit{The final evaluation results for both versions of the benchmark are presented in Table~\ref{tab:results}.}
 
 \edit{\begin{table}[h]
 \centering
@@ -446,14 +446,9 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \label{tab:results}
 \end{table}}
 
-\paragraph{Key findings for FinOpsBench-v1}
-\begin{enumerate}
-    \item \textbf{Significant gap from ceiling}: Even the best model (GPT-5) achieves only 68.9\% accuracy, indicating substantial room for improvement.
-    \item \textbf{Model capacity impact}: More modern and capable models, like GPT-5, produce much better results than smaller and older models, like Llama-3.1-8B.
-    \item \textbf{Large open-source gap}: Open-source models significantly underperform frontier models, with even Qwen3-30B-A3B scoring 11 percentage points lower than the worst frontier model (GPT-4.1-mini).
-\end{enumerate}
+\edit{\paragraph{Findings.} Having run experiments on both versions, we observe a consistent picture: overall model capability tracks benchmark accuracy, but the strongest models still leave substantial headroom. The log-linear dependence of accuracy on the agent's base-model parameter count is already visible in Figure~\ref{fig:accuracy_vs_size}, and Table~\ref{tab:results} provides the per-model numbers. On \synthsubset, even the best model (GPT-5) reaches only \emph{68.9\%}, indicating substantial room for improvement; modern and larger models such as GPT-5 outperform smaller, older ones such as Llama-3.1-8B; and the frontier/open-source gap is wide, with even Qwen3-30B-A3B scoring \emph{11\,pp} below the worst frontier model (GPT-4.1-mini). Figure~\ref{fig:synth_categories_radar} further shows that this ranking is stable across the four query categories carried by the seed set: every model's per-category polygon is approximately concentric, so the gap is not driven by any single financial sub-domain.}
 
-\edit{To verify that the headline accuracies are not driven by a single easy sub-distribution, we break the test set down by the four categories carried by the seed queries (see Section~\ref{sec:synthsql}). Figure~\ref{fig:synth_categories_radar} plots per-(model, category) accuracy. Two patterns stand out. First, each model's polygon is approximately concentric: no model is dramatically better or worse on a specific category, which suggests the synthetic version measures a coherent agentic-reasoning skill rather than a category-specific artifact. Second, the open-source/frontier gap is uniform across categories, so the underperformance of small open-source models is not concentrated on a single financial sub-domain.}
+\edit{On \groundedfinqa we observe essentially the same ranking. GPT-5 and o4-mini lead at \emph{$\sim$67--70\%}, the GPT-4.1 variants follow, and the open-source models trail. Llama-3.1-8B again severely underperforms its size-matched newer sibling Qwen3-8B, suggesting that tool-use capability is sensitive to the training paradigm and not only to parameter count. Per-model accuracies track each other across the two versions (mean absolute difference \emph{2.6\,pp}); the side-by-side bar chart and the $y=x$ scatter in Appendix~\ref{app:cross_version_results} (Figures~\ref{fig:accuracy_bars} and~\ref{fig:synth_vs_curated_scatter}) make this agreement explicit, with the only material outliers being Qwen3-30B-A3B and Qwen3-8B, which both score noticeably lower on the FinQA-grounded version, where the multi-hop, multi-tool environment exposes more of the weaker models' failure modes.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -461,17 +456,6 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the four categories carried by the seed queries; each query in the 729-example test set is assigned to a category by nearest-seed TF-IDF similarity.}
 \label{fig:synth_categories_radar}
 \end{figure}}
-
-\edit{\paragraph{\groundedfinqa.}} Results on this version are shown in the right-hand column of Table~\ref{tab:results}.
-
-\paragraph{Key Findings for FinOpsBench-v2}
-\begin{enumerate}
-    \item \textbf{Similar to \synthsubset} in difficulty: Best performance is 69.6\% (vs.\ 68.9\%), with comparable scores for almost all models.
-    \item \textbf{Consistent model ranking}: GPT-5 and o4-mini lead, followed by GPT-4.1 variants, then open-source models.
-    \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
-\end{enumerate}
-
-\edit{The headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Plotting the per-model accuracies against a $y=x$ reference line makes the agreement explicit: every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes. Appendix~\ref{app:cross_version_results} provides both the per-model side-by-side bar chart (Figure~\ref{fig:accuracy_bars}) and the $y=x$ scatter (Figure~\ref{fig:synth_vs_curated_scatter}).}
 
 \edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \cite{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
 
@@ -499,13 +483,7 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
 \label{tab:react_results}
 \end{table}
 
-\paragraph{Key Findings}
-\begin{enumerate}
-    \item \textbf{ReAct benefits non-thinking models}: Every non-thinking model in the experiment benefits from using ReAct instead of native tool calling, while every thinking model does not.
-    \item \textbf{Diminishing returns}: From 6.4 percentage points for Llama-3.1-8B-Instruct to just 1.4 for GPT-4.1, we consistently see diminishing returns from using ReAct.
-\end{enumerate}
-
-\edit{Figure~\ref{fig:native_vs_react} visualises the split: ReAct produces a strict gain (green delta) for every non-thinking model on the right of the plot, and a strict loss (red delta) for every thinking model on the left.}
+\edit{The split is clean and visible in Figure~\ref{fig:native_vs_react}: every \emph{non-thinking} model gains from switching to ReAct (a strict green delta on the right of the plot), while every \emph{thinking} model loses (a strict red delta on the left). The gains shrink as the non-thinking model gets stronger, from \emph{+6.4\,pp} for Llama-3.1-8B-Instruct down to \emph{+1.4\,pp} for GPT-4.1, suggesting that ReAct's explicit reasoning scaffold matters most when the model lacks an internal chain-of-thought process and matters less, or even hurts, once the model already reasons before acting.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -693,14 +671,14 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \edit{The following queries are drawn at random from the filtered \synthsubset test set. Each query is paired with the persona the LLM was instructed to assume when it generated the question; together they illustrate the breadth of user roles and the diversity of analysis categories covered by the dataset.}
 
 \edit{\begin{itemize}
-    \item \textbf{Internal Auditor}: Can you provide a list of transactions that were processed without obtaining necessary managerial approvals in the last quarter?
-    \item \textbf{Tax Advisor}: Identify any vendor invoices that may impact VAT input tax claims for the current tax period.
-    \item \textbf{Chief Financial Officer}: How do we ensure the reported accounts payable aging genuinely reflects outstanding vendor obligations without distortion?
-    \item \textbf{Financial Controller}: What is the total outstanding balance on all overdue invoices by supplier category?
-    \item \textbf{Procurement Officer}: Which suppliers have outstanding invoices that have not been approved for payment yet?
-    \item \textbf{Finance Director}: What percentage of supplier invoices in the last financial year were paid late, grouped by supplier?
-    \item \textbf{Risk Manager}: List suppliers with overdue invoices over 90 days that have credit limit warnings.
-    \item \textbf{Internal Controls Manager}: Detect any payments made with override flags but missing authorization memos.
+    \item \edit{\emph{Internal Auditor}}: Can you provide a list of transactions that were processed without obtaining necessary managerial approvals in the last quarter?
+    \item \edit{\emph{Tax Advisor}}: Identify any vendor invoices that may impact VAT input tax claims for the current tax period.
+    \item \edit{\emph{Chief Financial Officer}}: How do we ensure the reported accounts payable aging genuinely reflects outstanding vendor obligations without distortion?
+    \item \edit{\emph{Financial Controller}}: What is the total outstanding balance on all overdue invoices by supplier category?
+    \item \edit{\emph{Procurement Officer}}: Which suppliers have outstanding invoices that have not been approved for payment yet?
+    \item \edit{\emph{Finance Director}}: What percentage of supplier invoices in the last financial year were paid late, grouped by supplier?
+    \item \edit{\emph{Risk Manager}}: List suppliers with overdue invoices over 90 days that have credit limit warnings.
+    \item \edit{\emph{Internal Controls Manager}}: Detect any payments made with override flags but missing authorization memos.
 \end{itemize}}
 
 \edit{Across the full 5{,}979-example set we observe more than 60 distinct user roles (e.g.\ CFO, internal/external auditor, controller, procurement officer, treasury manager, tax advisor, compliance officer, risk manager), and queries span the accounts-payable, reconciliation, variance-analysis, revenue-recognition, and financial-reporting categories described in Section~\ref{sec:synthsql}.}

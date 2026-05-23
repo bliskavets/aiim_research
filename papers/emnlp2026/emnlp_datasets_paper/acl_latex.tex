@@ -480,14 +480,7 @@ Llama-3.1-8B-Instruct & 16.3 \\
     \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
 \end{enumerate}
 
-\edit{The headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp); a per-model side-by-side bar chart is provided in Appendix~\ref{app:cross_version_results} (Figure~\ref{fig:accuracy_bars}). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit. Every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes.}
-
-\edit{\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\linewidth]{figures/fig_synth_vs_curated_scatter.png}
-\caption{Per-model agreement between \synthsubset and \groundedfinqa accuracies. Models on the $y=x$ line score identically on both benchmarks; models below the line are weaker on \groundedfinqa.}
-\label{fig:synth_vs_curated_scatter}
-\end{figure}}
+\edit{The headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Plotting the per-model accuracies against a $y=x$ reference line makes the agreement explicit: every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes. Appendix~\ref{app:cross_version_results} provides both the per-model side-by-side bar chart (Figure~\ref{fig:accuracy_bars}) and the $y=x$ scatter (Figure~\ref{fig:synth_vs_curated_scatter}).}
 
 \edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \cite{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
 
@@ -603,13 +596,20 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \edit{\section{Per-model accuracies across the two \datasetname versions}}
 \edit{\label{app:cross_version_results}}
 
-\edit{This appendix provides a per-model side-by-side view of the two main result tables in the body. Figure~\ref{fig:accuracy_bars} plots each model's accuracy on \synthsubset and \groundedfinqa as adjacent bars, so that the within-model gap between the two versions is immediately visible. Frontier models occupy the left half of the chart and open-source models the right.}
+\edit{This appendix provides two per-model views of the two main result tables. Figure~\ref{fig:accuracy_bars} plots each model's accuracy on \synthsubset and \groundedfinqa as adjacent bars, so that the within-model gap between the two versions is immediately visible (frontier models occupy the left half, open-source the right). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data as a scatter against a $y=x$ reference line, separating models that score equally on the two versions from those that score lower on \groundedfinqa.}
 
 \edit{\begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/fig_accuracy_bars.png}
 \caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
 \label{fig:accuracy_bars}
+\end{figure}}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/fig_synth_vs_curated_scatter.png}
+\caption{Per-model agreement between \synthsubset and \groundedfinqa accuracies. Models on the $y=x$ line score identically on both benchmarks; models below the line are weaker on \groundedfinqa.}
+\label{fig:synth_vs_curated_scatter}
 \end{figure}}
 
 \section{Dataset Statistics}

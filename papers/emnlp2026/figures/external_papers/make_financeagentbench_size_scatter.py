@@ -77,12 +77,6 @@ COL_NON    = "#3b6fb0"
 
 fig, ax = plt.subplots(figsize=(9.5, 5.5))
 
-# CI horizontal bars (proprietary only).
-for m, s, lo, hi, acc, reason, src in MODELS:
-    if src == "ikp":
-        ax.plot([lo, hi], [acc, acc], color="#888", linewidth=0.6,
-                alpha=0.35, zorder=1)
-
 # Markers.
 for m, s, lo, hi, acc, reason, src in MODELS:
     marker = "o" if src == "open" else "D"
@@ -159,7 +153,7 @@ ax.legend(handles=legend, loc="upper left", frameon=False,
           ncol=1, handletextpad=0.6, labelspacing=0.35)
 
 ax.text(0.99, 0.02,
-        "Sizes from Li (2026), arXiv:2604.24827 (3× CI shown for closed-source).",
+        "Closed-source sizes estimated from Li (2026), arXiv:2604.24827.",
         transform=ax.transAxes, fontsize=7.5, color="#666",
         ha="right", va="bottom", style="italic")
 

@@ -63,12 +63,6 @@ for model, size, lo, hi, v1, v2, source in MODELS:
     ax.plot([size, size], [v1, v2], color="#888", linewidth=0.7,
             linestyle=":", zorder=1)
 
-    # Horizontal error bars on estimated sizes.
-    if source == "ikp":
-        for y in (v1, v2):
-            ax.plot([lo, hi], [y, y], color="#777", linewidth=0.8,
-                    alpha=0.5, zorder=2)
-
     # Markers: circle for open-weight, diamond for estimated.
     marker = "o" if source == "open" else "D"
     ax.scatter([size], [v1], s=85, marker=marker,
@@ -136,7 +130,7 @@ legend_handles.extend([
            markeredgecolor=EDGE, markersize=8, label="open-weight"),
     Line2D([0], [0], marker="D", color="w", markerfacecolor="#888",
            markeredgecolor=EDGE, markersize=8,
-           label="closed (size estimated\nfrom IKP, 3× CI)"),
+           label="closed (size estimated\nfrom IKP paper)"),
 ])
 ax.legend(handles=legend_handles, loc="lower right", frameon=False,
           ncol=2, columnspacing=1.2, handletextpad=0.6)

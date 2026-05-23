@@ -78,13 +78,6 @@ EDGE = "#1a1a1a"
 
 
 def draw_panel(ax, scores: dict, title: str, ylim: tuple[float, float]):
-    # CI horizontal bars (one per model, shared across metrics)
-    for model, size, lo, hi in MODELS:
-        for metric in scores[model]:
-            y = scores[model][metric]
-            ax.plot([lo, hi], [y, y], color="#777", linewidth=0.7,
-                    alpha=0.35, zorder=1)
-
     for metric in ["nDCG@5", "MAP@5", "MRR@5"]:
         xs, ys = [], []
         for model, size, *_ in MODELS:

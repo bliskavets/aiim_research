@@ -120,9 +120,9 @@ standard for evaluating LLMs'
 planning abilities against a large breadth of tools and domains \edit{(web browsing, code execution, APIs at scale)}. While essential for assessing general tool augmentation, these
 benchmarks prioritize scale over domain depth\edit{, and none concentrate on financial analysis with structured-data tools}. Financial analysis critically demands precision and specialized interpretation. By
 specializing the tool environment for finance, \datasetname tests the \textit{depth} of financial logic, revealing significant gaps
-where general planning skills fail to confer the necessary domain competence (\edit{16--70\% accuracy on grounded financial reasoning tasks}). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai}
-and the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking} prioritize realism by using live web data (SEC
-EDGAR), while \datasetname is engineered for \textbf{diagnostic fidelity} using controlled, synthetic environments to attribute failures
+where general planning skills fail to confer the necessary domain competence (\edit{16--70\% accuracy on grounded financial reasoning tasks}). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai},
+the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}\edit{, and FinAgentBench \citep{choi2025finagentbench}} prioritize realism by using live web data (SEC
+EDGAR\edit{) or SEC-filing retrieval}, while \datasetname is engineered for \textbf{diagnostic fidelity} using controlled, synthetic environments to attribute failures
 unequivocally to flawed planning logic, rather than external noise or API variability.
 
 \edit{\paragraph{Tool Use over Structured Business Data}
@@ -656,6 +656,31 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \bibliography{references}
 
 \appendix
+
+\section{\edit{Cross-Benchmark Comparison of Size--Accuracy Trends}}
+\label{app:cross_benchmark}
+
+\edit{Beyond the within-benchmark sanity check shown in Figure~\ref{fig:accuracy_vs_size}, where accuracy on \datasetname grows log-linearly with the agent's base-model size, we cross-check the size--accuracy relationship on two other recent financial-agent benchmarks. Parameter counts for closed-source models throughout this appendix come from the IKP calibration of \citet{li2026incompressible}; we use the direct estimates from that paper's main table where available and invert the published log-linear calibration on the extended-table IKP scores otherwise.}
+
+\paragraph{\edit{FinAgentBench \citep{choi2025finagentbench}.}}
+\edit{On the document- and chunk-ranking tasks of FinAgentBench (Figure~\ref{fig:finagentbench_size}), the trend is the opposite of the one we observe on \datasetname: across the three evaluated proprietary models (Claude-Sonnet-4 at $\approx$237B, Claude-Opus-4 at $\approx$1.4T, and GPT-o3 at $\approx$3T), the \emph{smallest} model wins or ties on every metric (nDCG@5, MAP@5, MRR@5) in both ranking tables. A monotonically negative slope on accuracy versus parameter count is a strong negative signal for benchmark validity: it suggests either that the task probes a narrow stylistic regime that the larger models are over-trained out of, or that smaller models in the same family have been exposed to closely related retrieval data during training---in other words, that performance on this benchmark is governed more by model-family biases or potential data leakage than by raw model capability.}
+
+\paragraph{\edit{Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}.}}
+\edit{On the 22-model Finance Agent Benchmark leaderboard (Figure~\ref{fig:financeagentbench_size}), accuracy does increase with parameter count, fitting a roughly $+15.5$\,pp-per-decade log-linear trend. However, the residual variance around this trend is large enough that the fit is not, on its own, a reliable validity signal: (i) at comparable sizes, models differ by 20--40\,pp---for example, Claude 3.7 Sonnet ($\approx$676B) reaches 44\% while GPT-4o ($\approx$720B) only reaches 20\%; (ii) several large models sit far below the trend line (o1 at $\approx$3.5T scores only 21.4\%; LLaMA 4 Maverick at $\approx$400B scores only 3.1\%, which the source paper attributes to tool-interface misuse); and (iii) most strikingly, the same model run in two different reasoning modes can differ by 13\,pp at fixed parameter count (Grok 3 Mini at 30.9\% high-reasoning vs.\ 17.6\% low-reasoning). The positive slope therefore conflates parametric capacity with reasoning paradigm and tool-use training; it does not isolate size as the dominant driver, in contrast to the cleaner relationship observed on \datasetname.}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/external_papers/fig_finagentbench_size_scatter.png}
+\caption{\edit{Size--accuracy on FinAgentBench \citep{choi2025finagentbench}, Tables 1 and 2. The smallest model wins or ties on every metric---an inverse trend that is inconsistent with what we observe on \datasetname.}}
+\label{fig:finagentbench_size}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/external_papers/fig_financeagentbench_size_scatter.png}
+\caption{\edit{Size--accuracy on the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}, Table 2. The positive log-linear slope ($\approx 15.5$\,pp/decade) is consistent with the FinOpsBench picture, but the wide intra-size scatter (20--40\,pp) and the same-model reasoning-mode variation indicate that size is not the dominant driver.}}
+\label{fig:financeagentbench_size}
+\end{figure}
 
 \section{Dataset Statistics}
 \label{app:dataset_statistics}

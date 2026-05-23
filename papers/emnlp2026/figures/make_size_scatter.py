@@ -129,15 +129,10 @@ def render(models, out_stem: str, fit_excluding=None, title_suffix=""):
                markeredgecolor=EDGE, markersize=8, label="open-weight"),
         Line2D([0], [0], marker="D", color="w", markerfacecolor="#888",
                markeredgecolor=EDGE, markersize=8,
-               label="closed (size estimated\nfrom IKP paper)"),
+               label="closed (IKP estimates)"),
     ]
     ax.legend(handles=legend_handles, loc="lower right", frameon=False,
               ncol=2, columnspacing=1.2, handletextpad=0.6)
-
-    ax.text(0.02, 0.96,
-            "Estimated sizes from Li (2026), arXiv:2604.24827",
-            transform=ax.transAxes, fontsize=8, color="#666",
-            ha="left", va="top", style="italic")
 
     fig.savefig(f"{out_stem}.png")
     fig.savefig(f"{out_stem}.pdf")

@@ -143,19 +143,14 @@ legend = [
     Line2D([0], [0], marker="o", color="w", markerfacecolor=COL_REASON,
            markeredgecolor=EDGE, markersize=8, label="reasoning, open-weight"),
     Line2D([0], [0], marker="D", color="w", markerfacecolor=COL_NON,
-           markeredgecolor=EDGE, markersize=8, label="non-reasoning, closed (est.)"),
+           markeredgecolor=EDGE, markersize=8, label="non-reasoning, closed (IKP estimates)"),
     Line2D([0], [0], marker="D", color="w", markerfacecolor=COL_REASON,
-           markeredgecolor=EDGE, markersize=8, label="reasoning, closed (est.)"),
+           markeredgecolor=EDGE, markersize=8, label="reasoning, closed (IKP estimates)"),
     Line2D([0], [0], color="#444", linewidth=1.2, linestyle="--",
            label=f"linear fit, all 22 models"),
 ]
 ax.legend(handles=legend, loc="upper left", frameon=False,
           ncol=1, handletextpad=0.6, labelspacing=0.35)
-
-ax.text(0.99, 0.02,
-        "Closed-source sizes estimated from Li (2026), arXiv:2604.24827.",
-        transform=ax.transAxes, fontsize=7.5, color="#666",
-        ha="right", va="bottom", style="italic")
 
 fig.savefig("fig_financeagentbench_size_scatter.png")
 fig.savefig("fig_financeagentbench_size_scatter.pdf")

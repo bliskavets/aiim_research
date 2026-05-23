@@ -136,12 +136,8 @@ fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False,
 fig.suptitle("FinAgentBench (arXiv:2508.14052v3) — score vs model size",
              y=1.00, fontsize=12)
 
-# Footnote citing the size source
-fig.text(0.02, -0.10,
-         "Sizes from Li (2026), arXiv:2604.24827. Open-source: none "
-         "evaluated. Trend: smallest model wins or ties on every "
-         "metric — opposite of the FinOpsBench pattern.",
-         fontsize=8, color="#666", style="italic")
+# (Citation footnote removed per user preference; sizes are documented
+# in figures/external_papers/README.md.)
 
 fig.savefig("fig_finagentbench_size_scatter.png")
 fig.savefig("fig_finagentbench_size_scatter.pdf")

@@ -282,12 +282,12 @@ answer = f"{round(pct\_change)}\%"} \\
 \subsection{\synthsubset Creation Pipeline}
 \label{sec:synthsql_pipeline}
 
-The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\ref{fig:pipeline} gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
+The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\ref{fig:pipeline}~(top) gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
 
 \begin{figure*}[t]
 \centering
-\edit{\includegraphics[width=\linewidth]{figures/main_figure_finopsbench_v1.png}}
-\caption{\edit{Overview of the \synthsubset construction pipeline. Stages 1--5 form the linear generation phase, Stage 6 is the committee-judgement gate, and Stages 7--9 form the improvement loop; items that pass either committee judgement enter the post-pipeline filtering step before becoming part of the final dataset.}}
+\edit{\includegraphics[width=\linewidth]{figures/main_figure_combined.png}}
+\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} \synthsubset is built in 9 stages---a linear generation phase (Stages 1--5), a committee-judgement gate (Stage 6), and an improvement loop (Stages 7--9). Items that pass either committee judgement enter a post-pipeline filtering step. \textbf{Bottom:} \groundedfinqa is built in 9 stages with no improvement loop---a basic build over the original FinQA tables (Stages 1--4), a distractor-injecting augmentation phase (Stages 5--7), and a packaging phase that emits the runnable agent (Stages 8--9); each stage is validated by execution with up to 10 retries before the example is dropped.}}
 \label{fig:pipeline}
 \end{figure*}
 
@@ -349,7 +349,7 @@ The final dataset includes only examples that passed committee judgement. We run
 
 \subsection{\groundedfinqa Creation Pipeline}
 
-The \groundedfinqa pipeline transforms FinQA samples through \edit{9 stages}:
+The \groundedfinqa pipeline transforms FinQA samples through \edit{9 stages (Figure~\ref{fig:pipeline}, bottom)}:
 
 \paragraph{\edit{Stage} 1: Initial Solution}
 An LLM creates a direct Python solution using the original table data, establishing the computational logic.

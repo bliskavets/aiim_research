@@ -60,6 +60,13 @@ in agentic financial reasoning. We release the full dataset, evaluation code, an
 \section{Introduction}
 %==============================================================================
 
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
+\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes from are taken from the IKP estimates \citep{li2026incompressible}.}
+\label{fig:accuracy_vs_size}
+\end{figure}}
+
 Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks
 \cite{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents could assist with financial analysis, compliance
 checking, and decision support by \edit{issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers}.
@@ -93,12 +100,12 @@ Our main contributions are:
 
 \edit{As Figure~\ref{fig:accuracy_vs_size} shows, accuracy on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artefact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.}
 
-\edit{\begin{figure}[t]
-\centering
-\includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
-\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes from are taken from the IKP estimates \citep{li2026incompressible}.}
-\label{fig:accuracy_vs_size}
-\end{figure}}
+% \edit{\begin{figure}[t]
+% \centering
+% \includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
+% \caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes from are taken from the IKP estimates \citep{li2026incompressible}.}
+% \label{fig:accuracy_vs_size}
+% \end{figure}}
 
 %==============================================================================
 \section{Related Work}
@@ -139,25 +146,25 @@ Our approach leverages synthetic data generation and a rigorous quality control 
 mitigate data contamination risks and ensure high integrity at scale, validating that observed low accuracy reflects genuine
 performance limitations.
 
-\begin{table}[t]
-    \centering
-    \footnotesize
-    \setlength{\tabcolsep}{2pt}
-    \renewcommand{\arraystretch}{1.1}
-    \begin{tabularx}{\columnwidth}{@{}l c X c@{}}
-        \toprule
-        \textbf{Benchmark} & \textbf{Fin.} & \textbf{Evaluation focus} & \textbf{Agentic} \\
-        \midrule
-        FinQA / TAT-QA & High & Static reading comprehension & Low \\
-        Spider / BIRD & Low/Med & \edit{Semantic parsing (query-string fidelity)} & Low \\
-        FinGAIA / Fin.\ Agent & High & Real-time retrieval / realism & High \\
-        \midrule
-        \textbf{\edit{FinOpsBench}} & \textbf{High} & \textbf{Diagnostic exec.\ / tool sequence} & \textbf{High} \\
-        \bottomrule
-    \end{tabularx}
-    \caption{Comparison of key benchmarks.}
-    \label{tab:benchmark_comparison}
-\end{table}
+% \begin{table}[t]
+%     \centering
+%     \footnotesize
+%     \setlength{\tabcolsep}{2pt}
+%     \renewcommand{\arraystretch}{1.1}
+%     \begin{tabularx}{\columnwidth}{@{}l c X c@{}}
+%         \toprule
+%         \textbf{Benchmark} & \textbf{Fin.} & \textbf{Evaluation focus} & \textbf{Agentic} \\
+%         \midrule
+%         FinQA / TAT-QA & High & Static reading comprehension & Low \\
+%         Spider / BIRD & Low/Med & \edit{Semantic parsing (query-string fidelity)} & Low \\
+%         FinGAIA / Fin.\ Agent & High & Real-time retrieval / realism & High \\
+%         \midrule
+%         \textbf{\edit{FinOpsBench}} & \textbf{High} & \textbf{Diagnostic exec.\ / tool sequence} & \textbf{High} \\
+%         \bottomrule
+%     \end{tabularx}
+%     \caption{Comparison of key benchmarks.}
+%     \label{tab:benchmark_comparison}
+% \end{table}
 
 \paragraph{Data Generation}
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
@@ -321,6 +328,13 @@ Tool functions are created as abstractions over the \edit{backing store}, design
 \paragraph{\edit{Stage} 4: Correct Plan (Basic)}
 A reference solution is written using the basic tools.
 
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/fig_pipeline_funnel.png}
+\caption{\synthsubset construction funnel: number of examples surviving each stage of the 9-stage pipeline plus the final filtering pass.}
+\label{fig:pipeline_funnel}
+\end{figure}}
+
 \paragraph{\edit{Stage} 5: \edit{Augmented Backing Store}}
 The \edit{backing store} is expanded with additional tables, split data, and distractor rows to increase difficulty.
 
@@ -360,10 +374,6 @@ A runnable agent using the \texttt{smolagents} \cite{smolagents} library is gene
 
 \edit{\subsection{Construction statistics}}
 
-\edit{We first describe how many examples survived each pipeline stage for the two versions.}
-
-\edit{\paragraph{\synthsubset.}} We created the synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
-
 \begin{table}[t]
 \centering
 \small
@@ -392,46 +402,51 @@ Total passed so far & 8,233 \\
 \label{tab:synthsubset_numbers}
 \end{table}
 
+\edit{We first describe how many examples survived each pipeline stage for the two versions.}
+
+\edit{\paragraph{\synthsubset.}} We created the synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+
 \edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at committee judgement, and 27\% at the final filtering pass.}
 
-\edit{\begin{figure}[t]
-\centering
-\includegraphics[width=1\linewidth]{figures/fig_pipeline_funnel.png}
-\caption{\synthsubset construction funnel: number of examples surviving each stage of the 9-stage pipeline plus the final filtering pass.}
-\label{fig:pipeline_funnel}
-\end{figure}}
+% \edit{\begin{figure}[t]
+% \centering
+% \includegraphics[width=1\linewidth]{figures/fig_pipeline_funnel.png}
+% \caption{\synthsubset construction funnel: number of examples surviving each stage of the 9-stage pipeline plus the final filtering pass.}
+% \label{fig:pipeline_funnel}
+% \end{figure}}
 
 \edit{\paragraph{\groundedfinqa.}} We ran the data-example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
 
 \edit{\subsection{Results}}
 
-\edit{\paragraph{\synthsubset.}} Table~\ref{tab:synthsql_results} presents evaluation results on this version of the benchmark.
+\edit{\paragraph{\synthsubset.}} Table~\ref{tab:results} presents evaluation results on both versions of the benchmark.
 
-\begin{table}[h]
+\edit{\begin{table}[h]
 \centering
 \small
-\begin{tabular}{lc}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Model} & \textbf{Accuracy (\%)} \\
+\textbf{Model} & \textbf{Acc.\ v1 (\%)} & \textbf{Acc.\ v2 (\%)} \\
 \midrule
-\multicolumn{2}{l}{\textit{Frontier Models}} \\
-GPT-5 & \textbf{68.9} \\
-GPT-5-mini & 65.8 \\
-o4-mini & 67.1 \\
-GPT-4.1 & 62.4 \\
-GPT-4.1-mini & 61.5 \\
+\multicolumn{3}{l}{\textit{Frontier models}} \\
+GPT-5         & \textbf{68.9} & \textbf{69.6} \\
+GPT-5-mini    & 65.8 & 67.5 \\
+o4-mini       & 67.1 & 67.3 \\
+GPT-4.1       & 62.4 & 60.6 \\
+GPT-4.1-mini  & 61.5 & 56.9 \\
 \midrule
-\multicolumn{2}{l}{\textit{Open-Source Models}} \\
-Qwen3-30B-A3B & \textbf{50.5} \\
-Qwen3-8B & 47.6 \\
-Llama-3.1-8B-Instruct & 21.9 \\
+\multicolumn{3}{l}{\textit{Open-source models}} \\
+Qwen3-30B-A3B          & \textbf{50.5} & \textbf{53.0} \\
+Qwen3-8B               & 47.6 & 44.1 \\
+Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \bottomrule
 \end{tabular}
-\caption{Evaluation results on \synthsubset.}
-\label{tab:synthsql_results}
-\end{table}
+\caption{Per-model accuracy on \synthsubset (v1) and \groundedfinqa (v2). Bold values mark the best score within each tier.}
+\label{tab:results}
+\end{table}}
 
-\paragraph{Key Findings}
+\paragraph{Key findings for FinOpsBench-v1}
 \begin{enumerate}
     \item \textbf{Significant gap from ceiling}: Even the best model (GPT-5) achieves only 68.9\% accuracy, indicating substantial room for improvement.
     \item \textbf{Model capacity impact}: More modern and capable models, like GPT-5, produce much better results than smaller and older models, like Llama-3.1-8B.
@@ -447,33 +462,9 @@ Llama-3.1-8B-Instruct & 21.9 \\
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\edit{\paragraph{\groundedfinqa.}} Table~\ref{tab:grounded_results} presents results on this version of the benchmark.
+\edit{\paragraph{\groundedfinqa.}} Results on this version are shown in the right-hand column of Table~\ref{tab:results}.
 
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{lc}
-\toprule
-\textbf{Model} & \textbf{Accuracy (\%)} \\
-\midrule
-\multicolumn{2}{l}{\textit{Frontier Models}} \\
-GPT-5 & \textbf{69.6} \\
-GPT-5-mini & 67.5 \\
-o4-mini & 67.3 \\
-GPT-4.1 & 60.6 \\
-GPT-4.1-mini & 56.9 \\
-\midrule
-\multicolumn{2}{l}{\textit{Open-Source Models}} \\
-Qwen3-30B-A3B & 53.0 \\
-Qwen3-8B & 44.1 \\
-Llama-3.1-8B-Instruct & 16.3 \\
-\bottomrule
-\end{tabular}
-\caption{Evaluation results on \groundedfinqa.}
-\label{tab:grounded_results}
-\end{table}
-
-\paragraph{Key Findings}
+\paragraph{Key Findings for FinOpsBench-v2}
 \begin{enumerate}
     \item \textbf{Similar to \synthsubset} in difficulty: Best performance is 69.6\% (vs.\ 68.9\%), with comparable scores for almost all models.
     \item \textbf{Consistent model ranking}: GPT-5 and o4-mini lead, followed by GPT-4.1 variants, then open-source models.

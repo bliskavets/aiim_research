@@ -419,31 +419,32 @@ Total passed so far & 8,233 \\
 
 \edit{\subsection{Results}}
 
-\edit{\paragraph{\synthsubset.}} Table~\ref{tab:synthsql_results} presents evaluation results on this version of the benchmark.
+\edit{\paragraph{\synthsubset.}} Table~\ref{tab:results} presents evaluation results on both versions of the benchmark.
 
-\begin{table}[h]
+\edit{\begin{table}[h]
 \centering
 \small
-\begin{tabular}{lc}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Model} & \textbf{Accuracy (\%)} \\
+\textbf{Model} & \textbf{Acc.\ v1 (\%)} & \textbf{Acc.\ v2 (\%)} \\
 \midrule
-\multicolumn{2}{l}{\textit{Frontier Models}} \\
-GPT-5 & \textbf{68.9} \\
-GPT-5-mini & 65.8 \\
-o4-mini & 67.1 \\
-GPT-4.1 & 62.4 \\
-GPT-4.1-mini & 61.5 \\
+\multicolumn{3}{l}{\textit{Frontier models}} \\
+GPT-5         & \textbf{68.9} & \textbf{69.6} \\
+GPT-5-mini    & 65.8 & 67.5 \\
+o4-mini       & 67.1 & 67.3 \\
+GPT-4.1       & 62.4 & 60.6 \\
+GPT-4.1-mini  & 61.5 & 56.9 \\
 \midrule
-\multicolumn{2}{l}{\textit{Open-Source Models}} \\
-Qwen3-30B-A3B & \textbf{50.5} \\
-Qwen3-8B & 47.6 \\
-Llama-3.1-8B-Instruct & 21.9 \\
+\multicolumn{3}{l}{\textit{Open-source models}} \\
+Qwen3-30B-A3B          & \textbf{50.5} & \textbf{53.0} \\
+Qwen3-8B               & 47.6 & 44.1 \\
+Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \bottomrule
 \end{tabular}
-\caption{Evaluation results on \synthsubset.}
-\label{tab:synthsql_results}
-\end{table}
+\caption{Per-model accuracy on \synthsubset (v1) and \groundedfinqa (v2). Bold values mark the best score within each tier.}
+\label{tab:results}
+\end{table}}
 
 \paragraph{Key findings for FinOpsBench-v1}
 \begin{enumerate}
@@ -461,31 +462,7 @@ Llama-3.1-8B-Instruct & 21.9 \\
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\edit{\paragraph{\groundedfinqa.}} Table~\ref{tab:grounded_results} presents results on this version of the benchmark.
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{lc}
-\toprule
-\textbf{Model} & \textbf{Accuracy (\%)} \\
-\midrule
-\multicolumn{2}{l}{\textit{Frontier Models}} \\
-GPT-5 & \textbf{69.6} \\
-GPT-5-mini & 67.5 \\
-o4-mini & 67.3 \\
-GPT-4.1 & 60.6 \\
-GPT-4.1-mini & 56.9 \\
-\midrule
-\multicolumn{2}{l}{\textit{Open-Source Models}} \\
-Qwen3-30B-A3B & 53.0 \\
-Qwen3-8B & 44.1 \\
-Llama-3.1-8B-Instruct & 16.3 \\
-\bottomrule
-\end{tabular}
-\caption{Evaluation results on \groundedfinqa.}
-\label{tab:grounded_results}
-\end{table}
+\edit{\paragraph{\groundedfinqa.}} Results on this version are shown in the right-hand column of Table~\ref{tab:results}.
 
 \paragraph{Key Findings for FinOpsBench-v2}
 \begin{enumerate}

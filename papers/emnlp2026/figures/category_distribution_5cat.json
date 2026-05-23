@@ -1,0 +1,10 @@
+{
+  "per_category_percent": {
+    "Accounts Payable (AP) analysis": 56.45355850422195,
+    "Revenue recognition": 8.219886265724625,
+    "Variance analysis": 14.750990866793039,
+    "Data integrity and reconciliation": 13.510253317249699,
+    "Financial reporting": 7.0653110460106845
+  },
+  "n_examples": 5803
+}

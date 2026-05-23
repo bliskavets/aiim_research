@@ -221,7 +221,7 @@ Quality control & Committee & Execution-based \\
     \item Financial reporting
 \end{itemize}
 
-\edit{Representative queries spanning user roles and task categories are listed in Appendix~\ref{app:example_queries}.}
+\edit{Representative queries spanning user roles and task categories are listed in Appendix~\ref{app:example_queries}, and the empirical category mix of the full \synthsubset stream is reported in Appendix~\ref{app:category_distribution}.}
 
 \subsection{\groundedfinqa}
 \label{sec:groundedfinqa}
@@ -453,8 +453,8 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 
 \edit{\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/fig_synth_categories_radar.png}
-\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the four categories carried by the seed queries.}
+\includegraphics[width=1\linewidth]{figures/fig_synth_categories_radar_5cat.png}
+\caption{\edit{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the five categories described in Section~\ref{sec:synthsql}; each query in the 729-example test set is assigned to a category by nearest-anchor TF-IDF similarity. The category mix of the full \synthsubset stream is reported in Appendix~\ref{app:category_distribution}.}}
 \label{fig:synth_categories_radar}
 \end{figure}}
 
@@ -750,6 +750,31 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 \end{description}}
 
 \edit{In addition, each example directory carries auxiliary intermediate files kept from the build process for reproducibility.}
+
+\edit{\section{Category distribution of \synthsubset}}
+\edit{\label{app:category_distribution}}
+
+\edit{Table~\ref{tab:category_distribution} reports the share of \synthsubset examples assigned to each of the five categories from Section~\ref{sec:synthsql}. Categorisation is done automatically by nearest-anchor TF-IDF similarity over a short description sentence per category, applied to the full \synthsubset stream. The mix is dominated by accounts-payable queries (over half of the corpus), reflecting the seed-query composition; the remaining four categories are balanced between 7 and 15\%.}
+
+\edit{\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lc}
+\toprule
+\textbf{Category} & \textbf{\% of \synthsubset} \\
+\midrule
+Accounts Payable (AP) analysis     & 56.5 \\
+Variance analysis                  & 14.8 \\
+Data integrity \& reconciliation   & 13.5 \\
+Revenue recognition                &  8.2 \\
+Financial reporting                &  7.1 \\
+\bottomrule
+\end{tabular}
+\caption{Category share of the full \synthsubset stream (percentages, computed by nearest-anchor TF-IDF assignment). Rounded to one decimal; totals to 100.1\% due to rounding.}
+\label{tab:category_distribution}
+\end{table}}
 
 \section{Prompts and Examples}
 \label{app:prompts}

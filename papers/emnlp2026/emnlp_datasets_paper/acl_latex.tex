@@ -762,35 +762,27 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 
 Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
 
-\edit{\captionof{figure}{\synthsubset: Prompt template for a committee member judge.}}
-\label{fig:judge-prompt}
-{\scriptsize
+\begin{figure*}[h]
+\small\centering
 \begin{verbatim}
 # Task
-You are a senior QA engineer working on AI agents for
-finance. You have to judge the test case provided and
-check the following rules:
+You are a senior QA engineer working on AI agents for finance. You have to judge
+the test case provided and check the following rules:
 
-- The test case's data should be natural: it should
-  be similar to what data a real company could have,
-  and how it would be stored in a database.
-- The agent's trace should be reasonable: the agent
-  should look at the data needed to answer the query.
-- The agent's trace should be sound: the reasoning
-  steps should be logical, should follow from the
-  previous steps and lead to the final answer.
-- The agent's reasoning and final answer should be
-  grounded: the only data the agent has access to is
-  what was returned from its tool calls. The reasoning
-  should not be based on any other data, including the
-  data in the database that was not queried with the
-  tools.
-- The agent's final answer should answer the user's
-  query.
+- The test case's data should be natural: it should be similar to what data could
+  a real company have, and how it would be stored in a database.
+- The agent's trace should be reasonable: the agent should look at the data needed
+  to answer the query.
+- The agent's trace should be sound: the reasoning steps should be logical, should
+  follow from the previous steps and lead to the final answer.
+- The agent's reasoning and final answer should be grounded: the only data the agent
+  has access to is what was returned from its tool calls. The reasoning should not
+  be based on any other data, including the data in the database that was not
+  queried with the tools.
+- The agent's final answer should answer the user's query.
 
-In case one of these requirements are not met, you
-should provide a concise actionable feedback so the
-author can improve the test case.
+In case one of these requirements are not met, you should provide a concise
+actionable feedback so the author can improve the test case.
 
 # Test case:
 
@@ -817,17 +809,17 @@ Reply with JSON object like this:
    "feedback": "... concise and actionable ..."
 }
 \end{verbatim}
-}
+\caption{\synthsubset: Prompt template for a committee member judge.}
+\label{fig:judge-prompt}
+\end{figure*}
 
 Figure~\ref{fig:example-item} shows an annotated example from the \synthsubset dataset illustrating the schema and data format.
 
-\edit{\captionof{figure}{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}}
-\label{fig:example-item}
-{\scriptsize
+\begin{figure*}[h]
+\small\centering
 \begin{verbatim}
 Query:
-Could duplicated invoice payments be causing
-discrepancies in our aged payables report?
+Could duplicated invoice payments be causing discrepancies in our aged payables report?
 
 Schema:
 CREATE TABLE Suppliers (
@@ -840,26 +832,25 @@ CREATE TABLE Invoices (
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     invoice_amount NUMERIC NOT NULL,
-    FOREIGN KEY (supplier_id)
-        REFERENCES Suppliers(supplier_id)
+    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)
 );
 CREATE TABLE Payments (
     payment_id INTEGER PRIMARY KEY,
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id)
-        REFERENCES Invoices(invoice_id)
+    FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id)
 );
 
 Data:
--- Invoice 1002 has duplicated payments
--- covering the entire invoice twice
+-- Invoice 1002 has duplicated payments covering entire invoice twice
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
 (5002, 1002, '2025-07-10', 500.00),
-(5003, 1002, '2025-07-12', 500.00); -- duplicate
+(5003, 1002, '2025-07-12', 500.00);  -- Duplicate over invoice amount
 \end{verbatim}
-}
+\caption{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}
+\label{fig:example-item}
+\end{figure*}
 
 \end{document}

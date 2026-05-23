@@ -742,31 +742,19 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 \edit{\section{Per-example file layout for \groundedfinqa}}
 \edit{\label{app:v2_file_layout}}
 
-\edit{Each example in \groundedfinqa is shipped as a small directory of source files. Table~\ref{tab:v2_files} lists the files and their roles.}
+\edit{Each example in \groundedfinqa is shipped as a small directory of source files, listed below.}
 
-\edit{\begin{table}[h]
-\centering
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\columnwidth}{@{}lX@{}}
-\toprule
-\textbf{File} & \textbf{Description} \\
-\midrule
-\texttt{initial\_solution.txt}                 & Correct answer to the question. \\
-\texttt{synthetic\_db\_generator\_augmented.py} & Python code that creates the SQLite database. \\
-\texttt{tools\_augmented.py}                   & Tools required for the multi-step processing, plus distractor tools. \\
-\texttt{tool\_proxy.py}                        & Same tools, adapted for use with \texttt{smolagents}. \\
-\texttt{correct\_plan\_augmented.py}           & Intended sequence of tool calls that solves the task. \\
-\texttt{agent\_system\_prompt.txt}             & LLM prompt with context, tool descriptions, and the question. \\
-\texttt{agent.py}                              & Agent code that runs a specified LLM with the system prompt and tools. \\
-\midrule
-Intermediate files                              & Auxiliary artifacts kept from the build process for reproducibility. \\
-\bottomrule
-\end{tabularx}
-\caption{Per-example file layout for \groundedfinqa.}
-\label{tab:v2_files}
-\end{table}}
+\edit{\begin{description}[font=\normalfont\ttfamily, style=nextline, leftmargin=1em, labelindent=0pt, itemsep=2pt, topsep=2pt]
+  \item[initial\_solution.txt] Correct answer to the question.
+  \item[synthetic\_db\_generator\_augmented.py] Python code that creates the SQLite database.
+  \item[tools\_augmented.py] Tools required for the multi-step processing, plus distractor tools.
+  \item[tool\_proxy.py] Same tools, adapted for use with \texttt{smolagents}.
+  \item[correct\_plan\_augmented.py] Intended sequence of tool calls that solves the task.
+  \item[agent\_system\_prompt.txt] LLM prompt with context, tool descriptions, and the question.
+  \item[agent.py] Agent code that runs a specified LLM with the system prompt and tools.
+\end{description}}
+
+\edit{In addition, each example directory carries auxiliary intermediate files kept from the build process for reproducibility.}
 
 \section{Prompts and Examples}
 \label{app:prompts}

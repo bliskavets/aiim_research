@@ -785,13 +785,14 @@ CREATE TABLE Payments (
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES 
-    Invoices(invoice_id)
+    FOREIGN KEY (invoice_id) 
+    REFERENCES Invoices(invoice_id)
 );
 
 Data:
--- Invoice 1002 has duplicated payments 
--- covering entire invoice twice
+-- Invoice 1002 has duplicated 
+-- payments covering entire 
+-- invoice twice
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
 (5002, 1002, '2025-07-10', 500.00),

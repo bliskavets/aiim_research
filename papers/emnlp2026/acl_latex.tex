@@ -161,7 +161,7 @@ performance limitations.
     \label{tab:benchmark_comparison}
 \end{table}
 
-\paragraph{Synthetic Data Generation}
+\paragraph{Data Generation}
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
 
 %==============================================================================
@@ -239,7 +239,7 @@ To answer this query, an agent must: (1) identify which suppliers are ``most imp
 Critically, the agent receives only the scenario description and tool definitions---not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
 
 \paragraph{Example Item:}
-An example from the \groundedfinqa dataset is shown in Table~\ref{tab:example}, truncated for brevity. The full example contains a longer system prompt, \edit{the backing data}, and fully runnable Python code for the correct solution.
+An example from the \groundedfinqa dataset is shown in Table~\ref{tab:example}, truncated for brevity. The full example contains a longer system prompt, \edit{the backing data}, and fully runnable Python code for the correct solution. \edit{See Appendix~\ref{app:example_queries_v2} for a sample of further questions from this version of the benchmark.}
 
 \begin{table*}[t]
 \centering
@@ -788,6 +788,24 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \end{itemize}}
 
 \edit{Across the full 5{,}979-example set we observe more than 60 distinct user roles (e.g.\ CFO, internal/external auditor, controller, procurement officer, treasury manager, tax advisor, compliance officer, risk manager), and queries span the accounts-payable, reconciliation, variance-analysis, revenue-recognition, and financial-reporting categories described in Section~\ref{sec:synthsql}.}
+
+\section{\edit{Example Questions from \groundedfinqa}}
+\label{app:example_queries_v2}
+
+\edit{The following questions are drawn at random from the filtered \groundedfinqa set. Each is a multi-hop numerical-reasoning question taken from a FinQA item; the agent must reach the answer by calling the example's bespoke Python tools rather than by reading the original FinQA table directly.}
+
+\edit{\begin{itemize}
+    \item What is the percent change in receivables from or (payables to) the Money Pool from 2001 to 2002?
+    \item In 2018, what was the ratio of the qualified defined benefit pension plans' estimated payments for the period starting after 2024 compared with the amount for 2019?
+    \item What percentage were North American consumer packaging net sales of consumer packaging sales in 2014?
+    \item As of December 31, 2016, what was the percent of the total future minimum lease commitments for operating leases that was due in 2017?
+    \item What was the change in percentage of the company's consolidated net sales from 2006 to 2008?
+    \item For the year ended December 31, 2007, what was the ratio of the shares granted to the shares vested?
+    \item If you held 1{,}000 shares on May 30, 2014, how much would you receive in dividends?
+    \item What is the total, in millions, of current assets acquired?
+\end{itemize}}
+
+\edit{Across the full 1{,}108-example set, every question is taken from FinQA and the surrounding tool environment is generated automatically (see Section~\ref{sec:groundedfinqa}). The questions span ratio computations, year-over-year changes, percentage shares of totals, and aggregate sums---the financial-reasoning surface of the original FinQA dataset, reinstantiated as an agentic task.}
 
 \section{Prompts and Examples}
 \label{app:prompts}

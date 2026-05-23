@@ -354,9 +354,15 @@ A runnable agent using the \texttt{smolagents} \cite{smolagents} library is gene
 \edit{\section{Experiments}}
 %==============================================================================
 
-\edit{\subsection{\synthsubset construction stats}}
+\edit{\subsection{Setup}}
 
-We created a synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries. We then proceeded with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Our primary metric is \textbf{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
+
+\edit{\subsection{Construction statistics}}
+
+\edit{We first describe how many examples survived each pipeline stage for the two versions.}
+
+\edit{\paragraph{\synthsubset.}} We created the synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
 
 \begin{table}[t]
 \centering
@@ -395,39 +401,11 @@ Total passed so far & 8,233 \\
 \label{fig:pipeline_funnel}
 \end{figure}}
 
-\edit{\subsection{\groundedfinqa construction stats}}
-
-We ran the data example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
-
-\edit{\subsection{Native tool calling vs.\ ReAct}}
-
-While analyzing the traces of smaller models we found it hard to understand what the models are struggling with when calling tools because there was no trace of the reasoning behind the tool and argument choices. We constructed an additional experiment using the ReAct tool calling protocol \cite{yao2022react}. ReAct specifically requires the model to output its reasoning before calling a tool. This experiment was performed on the \synthsubset part of the dataset.
-
-\edit{\subsection{Evaluated models}}
-
-We evaluate a diverse set of models:
-
-\paragraph{Frontier Models}
-\begin{itemize}
-    \item GPT-4.1, GPT-4.1-mini (OpenAI)
-    \item GPT-5, GPT-5-mini, o4-mini (OpenAI, reasoning models)
-\end{itemize}
-
-\paragraph{Open-Source Models}
-\begin{itemize}
-    \item Qwen3-8B, Qwen3-30B-A3B (Alibaba)
-    \item Llama-3.1-8B-Instruct (Meta)
-\end{itemize}
-
-\subsection{Metrics}
-
-We use \textbf{accuracy} as the primary metric. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit. To save time and reduce costs, for \synthsubset we only evaluate on a randomly selected test set of 729 examples.
+\edit{\paragraph{\groundedfinqa.}} We ran the data-example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
 
 \edit{\subsection{Results}}
 
-\edit{\subsubsection{\synthsubset}}
-
-Table~\ref{tab:synthsql_results} presents evaluation results on this version of the benchmark.
+\edit{\paragraph{\synthsubset.}} Table~\ref{tab:synthsql_results} presents evaluation results on this version of the benchmark.
 
 \begin{table}[h]
 \centering
@@ -469,9 +447,7 @@ Llama-3.1-8B-Instruct & 21.9 \\
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\edit{\subsubsection{\groundedfinqa}}
-
-Table~\ref{tab:grounded_results} presents results on \groundedfinqa.
+\edit{\paragraph{\groundedfinqa.}} Table~\ref{tab:grounded_results} presents results on this version of the benchmark.
 
 \begin{table}[h]
 \centering
@@ -520,9 +496,7 @@ Llama-3.1-8B-Instruct & 16.3 \\
 \label{fig:synth_vs_curated_scatter}
 \end{figure}}
 
-\edit{\subsubsection{Native tool calling vs.\ ReAct}}
-
-Table~\ref{tab:react_results} presents results of the additional experiment with tool calling protocol.
+\edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \cite{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
 
 \begin{table}[h]
 \centering

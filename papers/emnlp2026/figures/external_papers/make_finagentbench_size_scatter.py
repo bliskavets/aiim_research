@@ -113,10 +113,9 @@ def draw_panel(ax, scores: dict, title: str, ylim: tuple[float, float]):
     ax.set_ylim(*ylim)
     ax.set_xlabel("Model size (B parameters, log scale)")
     ax.set_ylabel("Score")
-    # Panel label is rendered as a small annotation in the upper-left so
-    # the LaTeX caption remains the only "title" of the figure.
-    ax.text(0.02, 0.98, title, transform=ax.transAxes,
-            ha="left", va="top", fontsize=9, style="italic", color="#555")
+    # Panel labels removed per author preference: the LaTeX caption
+    # already names "Tables 1 and 2"; left panel is Table 1 and right
+    # panel is Table 2 by construction (draw_panel call order below).
 
     ticks = [100, 300, 1000, 3000, 10000]
     ax.set_xticks(ticks)

@@ -163,12 +163,10 @@ def fig_native_vs_react():
                 fontweight="bold")
 
     # Visual split: thinking vs non-thinking models.
+    # The "thinking / non-thinking" annotations were removed per author
+    # preference — the LaTeX caption already explains the grouping.
     split_at = sum(REACT_IS_THINKING) - 0.5
     ax.axvline(split_at, color="gray", linestyle=":", linewidth=0.8)
-    ax.text(split_at / 2, 86, "thinking models",
-            ha="center", va="top", fontsize=9, style="italic", color="gray")
-    ax.text((split_at + n) / 2, 86, "non-thinking models",
-            ha="center", va="top", fontsize=9, style="italic", color="gray")
 
     ax.set_xticks(x)
     ax.set_xticklabels(REACT_MODELS, rotation=20, ha="right")

@@ -20,6 +20,7 @@
 
 \usepackage{xspace}
 \usepackage{xcolor}
+\usepackage{tabularx}
 % \edit{...} marks Claude's reviewer-response changes in blue for the professor's review pass.
 % Strip via skills/strip_edit_markup.sh before final submission.
 \newcommand{\edit}[1]{\textcolor{blue}{#1}}
@@ -140,23 +141,25 @@ Our approach leverages synthetic data generation and a rigorous quality control 
 mitigate data contamination risks and ensure high integrity at scale, validating that observed low accuracy reflects genuine
 performance limitations.
 
-\begin{table*}[h]
+\begin{table}[t]
     \centering
-    \small
-    \begin{tabular}{l c c c}
+    \footnotesize
+    \setlength{\tabcolsep}{2pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabularx}{\columnwidth}{@{}l c X c@{}}
         \toprule
-        \textbf{Benchmark} & \textbf{Financial Focus} & \textbf{Evaluation Focus} & \textbf{Agentic Requirement} \\
+        \textbf{Benchmark} & \textbf{Fin.} & \textbf{Evaluation focus} & \textbf{Agentic} \\
         \midrule
-        FinQA / TAT-QA & High & Static Reading Comprehension & Low \\
-        Spider / BIRD & Low/Medium & \edit{Semantic Parsing (query string fidelity)} & Low \\
-        FinGAIA / Finance Agent & High & Real-time Retrieval / Realism & High \\
+        FinQA / TAT-QA & High & Static reading comprehension & Low \\
+        Spider / BIRD & Low/Med & \edit{Semantic parsing (query-string fidelity)} & Low \\
+        FinGAIA / Fin.\ Agent & High & Real-time retrieval / realism & High \\
         \midrule
-        \textbf{\edit{FinOpsBench}} & \textbf{High} & \textbf{Diagnostic Execution / Tool Sequence} & \textbf{High} \\
+        \textbf{\edit{FinOpsBench}} & \textbf{High} & \textbf{Diagnostic exec.\ / tool sequence} & \textbf{High} \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
     \caption{Comparison of key benchmarks.}
     \label{tab:benchmark_comparison}
-\end{table*}
+\end{table}
 
 \paragraph{Synthetic Data Generation}
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
@@ -171,18 +174,20 @@ Synthetic data generation has proven valuable for creating evaluation benchmarks
 
 \begin{table}[t]
 \centering
-\small
-\begin{tabular}{lcc}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\columnwidth}{@{}l X X@{}}
 \toprule
 \textbf{Property} & \textbf{\synthsubset} & \textbf{\groundedfinqa} \\
 \midrule
 \# Examples & 5,979 & 1,108 \\
-Tool Type & \edit{Single structured-data tool} & \edit{Many custom Python tools} \\
+Tool type & \edit{Single structured-data tool} & \edit{Many custom Python tools} \\
 Multi-hop & $\geq 1$ hop & $\geq 2$ hops \\
 Distractor data & Yes & Yes \\
 Quality control & Committee & Execution-based \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{\edit{Overview of the two \datasetname versions.}}
 \label{tab:dataset_overview}
 \end{table}

@@ -196,9 +196,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 6.0))
+    fig, ax = plt.subplots(figsize=(16.0, 5.6))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(1.00, 7.5)
+    ax.set_ylim(1.25, 7.5)
     ax.axis("off")
 
     # Lane backdrops + left-gutter phase labels (matches v1 styling).
@@ -208,7 +208,9 @@ def main():
 
     lane_band(LANE_TOP - 0.85, LANE_TOP + 0.85, "#3b82f6")
     lane_band(LANE_MID - 0.85, LANE_MID + 0.85, "#f97316")
-    lane_band(LANE_BOT - 0.85, LANE_BOT + 0.85, "#6d28d9")
+    # Bottom-lane band is trimmed slightly so the coloured strip ends right
+    # at the panel edge, leaving no empty coloured strip below the panels.
+    lane_band(LANE_BOT - 0.78, LANE_BOT + 0.85, "#6d28d9")
 
     ax.text(0.05, LANE_TOP, "Basic build (1–4)",
             ha="left", va="center", fontsize=8.2,
@@ -256,7 +258,7 @@ def main():
         ax.text(x + 0.40, y, label, ha="left", va="center",
                 fontsize=8.5, color="#1f2937")
 
-    ly = 1.30
+    ly = 1.45
     legend_chip(0.1,  ly, "data store",       "#1d4ed8")
     legend_chip(2.2,  ly, "tools",            "#c2410c")
     legend_chip(4.0,  ly, "code (plan/sol.)", "#6d28d9")

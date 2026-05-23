@@ -213,13 +213,7 @@ The dataset spans diverse financial analysis categories including:
     \item Financial reporting
 \end{itemize}
 
-\paragraph{Example Query}
-\begin{quote}
-\small
-``Which invoices from our most important suppliers are more than 90 days overdue?''
-\end{quote}
-
-To answer this query, an agent must: (1) identify which suppliers are ``most important'' (e.g., by spend volume), (2) find invoices from those suppliers, and (3) filter by payment status and age. \edit{See Appendix~\ref{app:example_queries} for a sample of further queries spanning user roles and task categories.}
+\edit{Representative queries spanning user roles and task categories are listed in Appendix~\ref{app:example_queries}.}
 
 \subsection{\groundedfinqa}
 \label{sec:groundedfinqa}
@@ -236,41 +230,7 @@ To answer this query, an agent must: (1) identify which suppliers are ``most imp
 
 Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
 
-\paragraph{Example Item:}
-An example from the \groundedfinqa dataset is shown in Table~\ref{tab:example}, truncated for brevity. The full example contains a longer system prompt, \edit{the backing data}, and fully runnable Python code for the correct solution. \edit{See Appendix~\ref{app:example_queries_v2} for a sample of further questions from this version of the benchmark.}
-
-\begin{table*}[t]
-\centering
-\small
-\begin{tabular}{p{0.9\textwidth}}
-\toprule
-\textbf{Query (part of system prompt)} \\
-\midrule
-What is the percent change in receivables from or (payables to) the Money Pool from 2001 to 2002? \\
-\midrule
-\textbf{Available tools} \\
-\midrule
-\texttt{list\_available\_years()}\newline
-\texttt{get\_quarterly\_money\_pool\_amount(year, quarter)}\newline
-\texttt{get\_total\_money\_pool\_amount\_for\_year(year)}\newline
-\texttt{compute\_percent\_change(old\_value, new\_value)}\newline
-\texttt{get\_cash\_flow\_transactions(start\_date, end\_date, limit)}\newline
-\texttt{sum\_cash\_flow\_for\_year(year)} \\
-\midrule
-\textbf{Correct tool call sequence} \\
-\midrule
-\texttt{%
-def annual\_from\_quarters(year: int) -> float: \newline
-\hspace*{2em} return sum(get\_quarterly\_money\_pool\_amount(year, q) for q in range(1, 5)) \newline
-amt\_2001 = annual\_from\_quarters(2001) \newline
-amt\_2002 = annual\_from\_quarters(2002) \newline
-pct\_change = compute\_percent\_change(amt\_2001, amt\_2002) \newline
-answer = f"{round(pct\_change)}\%"} \\
-\bottomrule
-\end{tabular}
-\caption{An example from the \groundedfinqa dataset (excerpt).}
-\label{tab:example}
-\end{table*}
+\edit{Representative questions, together with a worked example showing the query, available tools, and a reference tool-call sequence, are given in Appendix~\ref{app:example_queries_v2} and Table~\ref{tab:example}.}
 
 
 %==============================================================================
@@ -285,7 +245,7 @@ The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\re
 \begin{figure*}[t]
 \centering
 \edit{\includegraphics[width=\linewidth]{figures/main_figure_combined.png}}
-\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} the synthetic version is built in 9 stages, comprising a linear generation phase (Stages 1--5), a committee-judgement gate (Stage 6), and an improvement loop (Stages 7--9). Items that pass either committee judgement enter a post-pipeline filtering step. \textbf{Bottom:} the FinQA-grounded version is built in 9 stages with no improvement loop. It comprises a basic build over the original FinQA tables (Stages 1--4), a distractor-injecting augmentation phase (Stages 5--7), and a packaging phase that emits the runnable agent (Stages 8--9). Each stage is validated by execution, with up to 10 retries before the example is dropped.}}
+\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} \synthsubset (9 stages with a committee-judgement gate and an improvement loop). \textbf{Bottom:} \groundedfinqa (9 strictly linear stages, each validated by execution).}}
 \label{fig:pipeline}
 \end{figure*}
 
@@ -792,6 +752,44 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \end{itemize}}
 
 \edit{Across the full 1{,}108-example set, every question is taken from FinQA and the surrounding tool environment is generated automatically (see Section~\ref{sec:groundedfinqa}). The questions span ratio computations, year-over-year changes, percentage shares of totals, and aggregate sums, mirroring the financial-reasoning surface of the original FinQA dataset and reinstantiating it as an agentic task.}
+
+\edit{Table~\ref{tab:example} shows a fully worked example: the question text, the bespoke Python tools the agent has access to, and the reference tool-call sequence that solves the task.}
+
+\edit{\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\columnwidth}{@{}X@{}}
+\toprule
+\textbf{Query (part of system prompt)} \\
+\midrule
+What is the percent change in receivables from or (payables to) the Money Pool from 2001 to 2002? \\
+\midrule
+\textbf{Available tools} \\
+\midrule
+\texttt{list\_available\_years()} \newline
+\texttt{get\_quarterly\_money\_pool\_amount(year, q)} \newline
+\texttt{get\_total\_money\_pool\_amount\_for\_year(year)} \newline
+\texttt{compute\_percent\_change(old, new)} \newline
+\texttt{get\_cash\_flow\_transactions(start, end, limit)} \newline
+\texttt{sum\_cash\_flow\_for\_year(year)} \\
+\midrule
+\textbf{Correct tool-call sequence} \\
+\midrule
+\texttt{def annual(y):} \newline
+\texttt{\ \ return sum(} \newline
+\texttt{\ \ \ \ get\_quarterly\_money\_pool\_amount(y, q)} \newline
+\texttt{\ \ \ \ for q in range(1, 5))} \newline
+\texttt{a01 = annual(2001)} \newline
+\texttt{a02 = annual(2002)} \newline
+\texttt{pct = compute\_percent\_change(a01, a02)} \newline
+\texttt{answer = f"\{round(pct)\}\%"} \\
+\bottomrule
+\end{tabularx}
+\caption{A worked \groundedfinqa example (excerpt): question, available tools, and reference tool-call sequence.}
+\label{tab:example}
+\end{table}}
 
 \edit{\section{Per-example file layout for \groundedfinqa}}
 \edit{\label{app:v2_file_layout}}

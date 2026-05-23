@@ -167,7 +167,7 @@ Synthetic data generation has proven valuable for creating evaluation benchmarks
 
 \subsection{Overview}
 
-\edit{We see two requirements for an agentic financial benchmark: (i) controlled, scalable tasks where each failure is unambiguously attributable to a planning mistake, and (ii) realistic tasks grounded in real financial documents and human-authored questions. These pull in opposite directions---more control means more synthetic data. \datasetname therefore comes in two complementary versions (Table~\ref{tab:dataset_overview}): \synthsubset addresses (i), \groundedfinqa addresses (ii).}
+\edit{A useful agentic financial benchmark, in our view, must satisfy two requirements at once. First, it should expose the agent to a large, controlled pool of tasks where the ground truth is executable and unambiguous, so that a wrong answer can be traced back to a specific planning or tool-use mistake rather than to evaluator or dataset noise. Second, it should include realistic tasks grounded in human-authored questions over real financial documents, so that the resulting accuracies remain directly comparable to the financial-QA literature that practitioners already use. These two requirements pull in opposite directions: more control means more synthetic data, while more realism caps how many items one can curate. \datasetname therefore comes in two complementary versions (Table~\ref{tab:dataset_overview}): \synthsubset addresses the first requirement, and \groundedfinqa addresses the second.}
 
 \begin{table}[t]
 \centering

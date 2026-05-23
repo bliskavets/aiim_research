@@ -24,7 +24,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Circle, Rectangl
 plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["DejaVu Sans"],
-    "savefig.dpi": 220,
+    "savefig.dpi": 450,        # high-res so user can rescale freely
     "savefig.bbox": "tight",
 })
 
@@ -52,7 +52,7 @@ STAGES = {
     7: ("Feedback\nreconciliation",
         "Judges' critiques are\naggregated into a single\nactionable revision plan",
         "merge_big",    "#fef3c7", "#a16207"),
-    8: ("Feedback application",
+    8: ("Feedback\napplication",
         "Agent re-runs the example\nwith feedback in context",
         "loop_big",     "#fef3c7", "#a16207"),
     9: ("Second\njudgement",
@@ -61,10 +61,11 @@ STAGES = {
 }
 
 
-# Lanes (y-coordinates).
-LANE_GEN  = 7.4
-LANE_GATE = 4.7
-LANE_LOOP = 2.0
+# Lanes (y-coordinates) — pulled closer so there's less whitespace
+# between rows but panels still don't touch (gap ≈ 0.7 below).
+LANE_GEN  = 7.0
+LANE_GATE = 4.8
+LANE_LOOP = 2.6
 
 # Grid columns shared with the top row.
 COL_A = 1.6   # seed
@@ -267,22 +268,12 @@ def draw_panel(ax, x, y, w, h, title, body, icon_kind, fill, header_color,
             fontsize=8.5 if small else 9.2, color="white",
             weight="bold", zorder=4)
 
-    # Body text — anchored top-left of the body area.
-    ax.text(x - w / 2 + 0.14, y + h / 2 - title_h - 0.07,
-            body, ha="left", va="top",
-            fontsize=7.5, color="#1f2937", zorder=4)
-
-    # Icon in the bottom-right corner (sized to clear the body text above it).
-    if not small:
-        draw_icon(ax, icon_kind,
-                  x + w / 2 - ICON_INSET_X,
-                  y - h / 2 + ICON_INSET_Y,
-                  header_color)
-    else:
-        draw_icon(ax, icon_kind,
-                  x + w / 2 - 0.28,
-                  y - h / 2 + 0.26,
-                  header_color)
+    # Body text — anchored top-left of the body area. Icons removed by
+    # request; user will overlay their own. Body text is centred a bit
+    # lower so the body area doesn't look top-heavy when empty of glyphs.
+    ax.text(x, y - title_h / 2 + 0.04,
+            body, ha="center", va="center",
+            fontsize=7.8, color="#1f2937", zorder=4)
 
 
 def draw_stage_panel(ax, num):
@@ -344,162 +335,168 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 
 
 # ---------------------------------------------------------------------------
-# Build the figure.
+# Build the figure.  Wrapped in main() so importing this module from
+# logos/make_logos.py doesn't trigger a render side-effect.
 # ---------------------------------------------------------------------------
 
-fig, ax = plt.subplots(figsize=(16.0, 9.5))
-ax.set_xlim(-0.1, 16.7)
-ax.set_ylim(-1.0, 9.6)
-ax.axis("off")
+def main():
+    fig, ax = plt.subplots(figsize=(16.0, 9.0))
+    ax.set_xlim(-0.1, 16.7)
+    ax.set_ylim(-1.0, 9.0)
+    ax.axis("off")
 
-# Lane backdrops.
-def lane_band(y0, y1, color):
-    ax.add_patch(Rectangle((0.0, y0), 16.6, y1 - y0,
-                           ec="none", fc=color, alpha=0.06, zorder=0))
+    # Lane backdrops.
+    def lane_band(y0, y1, color):
+        ax.add_patch(Rectangle((0.0, y0), 16.6, y1 - y0,
+                               ec="none", fc=color, alpha=0.06, zorder=0))
 
-lane_band(LANE_GEN - 0.85,  LANE_GEN + 0.85,  "#3b82f6")
-lane_band(LANE_GATE - 0.85, LANE_GATE + 0.85, "#f97316")
-lane_band(LANE_LOOP - 0.85, LANE_LOOP + 0.85, "#eab308")
+    lane_band(LANE_GEN - 0.85,  LANE_GEN + 0.95,  "#3b82f6")
+    lane_band(LANE_GATE - 0.85, LANE_GATE + 0.85, "#f97316")
+    lane_band(LANE_LOOP - 0.85, LANE_LOOP + 0.85, "#eab308")
 
-# Phase labels in the left gutter, rotated.
-ax.text(0.05, LANE_GEN,  "Generation (1–5)",
-        ha="left", va="center", fontsize=9.5,
-        color="#1e3a8a", style="italic", weight="bold",
-        rotation=90, zorder=1)
-ax.text(0.05, LANE_GATE, "Committee gate (6)",
-        ha="left", va="center", fontsize=9.5,
-        color="#9a3412", style="italic", weight="bold",
-        rotation=90, zorder=1)
-ax.text(0.05, LANE_LOOP, "Improvement loop (7–9)",
-        ha="left", va="center", fontsize=9.5,
-        color="#854d0e", style="italic", weight="bold",
-        rotation=90, zorder=1)
+    # Phase labels in the left gutter, rotated.
+    ax.text(0.05, LANE_GEN,  "Generation (1–5)",
+            ha="left", va="center", fontsize=9.5,
+            color="#1e3a8a", style="italic", weight="bold",
+            rotation=90, zorder=1)
+    ax.text(0.05, LANE_GATE, "Committee gate (6)",
+            ha="left", va="center", fontsize=9.5,
+            color="#9a3412", style="italic", weight="bold",
+            rotation=90, zorder=1)
+    ax.text(0.05, LANE_LOOP, "Improvement loop (7–9)",
+            ha="left", va="center", fontsize=9.5,
+            color="#854d0e", style="italic", weight="bold",
+            rotation=90, zorder=1)
 
-# Title.
-ax.text(8.0, 9.15, "FinOpsBench-v1 construction pipeline",
-        ha="center", va="center", fontsize=15.5, weight="bold",
-        color="#111827")
-ax.text(8.0, 8.70,
-        "9 stages · 12 seed queries → 5,979 examples in the final dataset",
-        ha="center", va="center", fontsize=10, color="#6b7280")
+    # Title.
+    ax.text(8.0, 8.65, "FinOpsBench-v1 construction pipeline",
+            ha="center", va="center", fontsize=15.5, weight="bold",
+            color="#111827")
+    ax.text(8.0, 8.25,
+            "9 stages · 12 seed queries → 5,979 examples in the final dataset",
+            ha="center", va="center", fontsize=10, color="#6b7280")
 
-# Nodes.
-draw_circle_node(ax, "seed", "Seed\nqueries\n(12)")
-for n in range(1, 10):
-    draw_stage_panel(ax, n)
+    # Nodes.
+    draw_circle_node(ax, "seed", "Seed\nqueries\n(12)")
+    for n in range(1, 10):
+        draw_stage_panel(ax, n)
 
-# Final filtering panel.
-draw_panel(ax,
-           *NODES["filter"][:2],
-           PANEL_SMALL_W, PANEL_H * 0.72,
-           "Final filtering",
-           "Answer-match and\ntool-use checks",
-           "gear_check", "#d1fae5", "#047857", small=True)
+    # Final filtering panel.
+    draw_panel(ax,
+               *NODES["filter"][:2],
+               PANEL_SMALL_W, PANEL_H * 0.72,
+               "Final filtering",
+               "Answer-match and\ntool-use checks",
+               "gear_check", "#d1fae5", "#047857", small=True)
 
-draw_pill_node(ax, "end", "Final dataset (5,979 examples)")
+    draw_pill_node(ax, "end", "Final dataset (5,979 examples)")
 
-# ----- Arrows -----
+    # ----- Arrows -----
 
-# Forward generation pipeline.
-arrow(ax, "seed", 1)
-arrow(ax, 1, 2)
-arrow(ax, 2, 3)
-arrow(ax, 3, 4)
+    # Forward generation pipeline.
+    arrow(ax, "seed", 1)
+    arrow(ax, 1, 2)
+    arrow(ax, 2, 3)
+    arrow(ax, 3, 4)
 
-# Stage 4 (top, col E) -> Stage 5 (middle, col D).
-arrow(ax, 4, 5, rad=-0.20)
+    # Stage 4 (top, col E) -> Stage 5 (middle, col D).
+    arrow(ax, 4, 5, rad=-0.20)
 
-# Stage 5 (col D) -> Stage 6 (col C). Same lane, leftward.
-arrow(ax, 5, 6)
+    # Stage 5 (col D) -> Stage 6 (col C). Same lane, leftward.
+    arrow(ax, 5, 6)
 
-# Stage 6 -> Stage 7 (rejected branch, red dashed).
-arrow(ax, 6, 7, color="#b91c1c", ls=(0, (5, 3)),
-      label="rejected", label_pos=0.45, label_dx=-0.18, label_dy=0.08)
+    # Stage 6 -> Stage 7 (rejected branch, red dashed).
+    arrow(ax, 6, 7, color="#b91c1c", ls=(0, (5, 3)),
+          label="rejected", label_pos=0.45, label_dx=-0.18, label_dy=0.08)
 
-# Improvement loop.
-arrow(ax, 7, 8)
-arrow(ax, 8, 9)
+    # Improvement loop.
+    arrow(ax, 7, 8)
+    arrow(ax, 8, 9)
 
-# Stage 9 -> Final filtering (accepted, green). Stage 9 at x=11.4 lane3,
-# Filter at x=14.0 lane3, so a short rightward arrow. No "accepted" label
-# here; the corresponding label sits on the long L-shape from Stage 6 below.
-arrow(ax, 9, "filter", color="#047857")
+    # Stage 9 -> Final filtering (accepted, green). Stage 9 at x=11.4 lane3,
+    # Filter at x=14.0 lane3, so a short rightward arrow. No "accepted" label
+    # here; the corresponding label sits on the long L-shape from Stage 6 below.
+    arrow(ax, 9, "filter", color="#047857")
 
-# Stage 6 -> Final filtering (accepted, green). Route via a hand-built
-# L-shape that goes down out of Stage 6 then right under lane 3 to Filter.
-# (Matplotlib's arc3 alone can't avoid the Stage-5/Stage-8/9 panels cleanly.)
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
-elbow_y = 0.95  # horizontal segment sits between lane 3 and the Final-dataset pill
-x6_, y6_, _ = NODES[6]
-xf_, yf_, _ = NODES["filter"]
-# Curved corners via small Bezier between the straight runs.
-vertices = [
-    (x6_, y6_ - PANEL_H / 2),       # exit bottom of Stage 6
-    (x6_, elbow_y + 0.25),          # straight down
-    (x6_, elbow_y),                 # rounded corner
-    (x6_ + 0.25, elbow_y),
-    (xf_ - 0.25, elbow_y),          # straight right
-    (xf_, elbow_y),                 # rounded corner
-    (xf_, elbow_y + 0.25),
-    (xf_, yf_ - PANEL_H * 0.36 / 2 - 0.05),  # arrive at bottom of Filter panel
-]
-codes = [Path.MOVETO, Path.LINETO,
-         Path.CURVE3, Path.CURVE3,
-         Path.LINETO,
-         Path.CURVE3, Path.CURVE3,
-         Path.LINETO]
-path = Path(vertices, codes)
-ax.add_patch(PathPatch(path, ec="#047857", fc="none", lw=2.4,
-                       capstyle="round", joinstyle="round", zorder=1.5))
-# Arrowhead on the final upward segment.
-ax.annotate("",
-            xy=(xf_, yf_ - PANEL_H * 0.36 / 2 - 0.02),
-            xytext=(xf_, elbow_y + 0.25),
-            arrowprops=dict(arrowstyle="-|>", color="#047857",
-                            lw=2.4, mutation_scale=22,
-                            shrinkA=0, shrinkB=0),
-            zorder=1.5)
-# "accepted" label on the horizontal segment.
-ax.text((x6_ + xf_) / 2, elbow_y + 0.20, "accepted",
-        ha="center", va="bottom", fontsize=8, color="#047857",
-        weight="bold",
-        bbox=dict(boxstyle="round,pad=0.20", fc="white", ec="none",
-                  alpha=0.95), zorder=3)
+    # Stage 6 -> Final filtering (accepted, green). Route via a hand-built
+    # L-shape that goes down out of Stage 6 then right under lane 3 to Filter.
+    # (Matplotlib's arc3 alone can't avoid the Stage-5/Stage-8/9 panels cleanly.)
+    from matplotlib.path import Path
+    from matplotlib.patches import PathPatch
+    elbow_y = 1.30  # horizontal segment between lane 3 (y=2.6) and Final-dataset pill (y=0.2)
+    x6_, y6_, _ = NODES[6]
+    xf_, yf_, _ = NODES["filter"]
+    # Curved corners via small Bezier between the straight runs.
+    vertices = [
+        (x6_, y6_ - PANEL_H / 2),       # exit bottom of Stage 6
+        (x6_, elbow_y + 0.25),          # straight down
+        (x6_, elbow_y),                 # rounded corner
+        (x6_ + 0.25, elbow_y),
+        (xf_ - 0.25, elbow_y),          # straight right
+        (xf_, elbow_y),                 # rounded corner
+        (xf_, elbow_y + 0.25),
+        (xf_, yf_ - PANEL_H * 0.36 / 2 - 0.05),  # arrive at bottom of Filter panel
+    ]
+    codes = [Path.MOVETO, Path.LINETO,
+             Path.CURVE3, Path.CURVE3,
+             Path.LINETO,
+             Path.CURVE3, Path.CURVE3,
+             Path.LINETO]
+    path = Path(vertices, codes)
+    ax.add_patch(PathPatch(path, ec="#047857", fc="none", lw=2.4,
+                           capstyle="round", joinstyle="round", zorder=1.5))
+    # Arrowhead on the final upward segment.
+    ax.annotate("",
+                xy=(xf_, yf_ - PANEL_H * 0.36 / 2 - 0.02),
+                xytext=(xf_, elbow_y + 0.25),
+                arrowprops=dict(arrowstyle="-|>", color="#047857",
+                                lw=2.4, mutation_scale=22,
+                                shrinkA=0, shrinkB=0),
+                zorder=1.5)
+    # "accepted" label on the horizontal segment.
+    ax.text((x6_ + xf_) / 2, elbow_y + 0.20, "accepted",
+            ha="center", va="bottom", fontsize=8, color="#047857",
+            weight="bold",
+            bbox=dict(boxstyle="round,pad=0.20", fc="white", ec="none",
+                      alpha=0.95), zorder=3)
 
-# Filter (lane3) -> Final dataset pill (bottom).
-arrow(ax, "filter", "end", color="#047857")
+    # Filter (lane3) -> Final dataset pill (bottom).
+    arrow(ax, "filter", "end", color="#047857")
 
-# Drop note for second-time rejections. Place it above Stage 9 (between
-# lanes 2 and 3) so it never collides with the L-shaped accepted arrow
-# that runs below lane 3.
-x9, y9, _ = NODES[9]
-ax.text(x9, y9 + PANEL_H / 2 + 0.18,
-        "(second-time rejections dropped)",
-        fontsize=8, color="#b91c1c", style="italic",
-        ha="center", va="bottom")
+    # Drop note for second-time rejections. Place it above Stage 9 (between
+    # lanes 2 and 3) so it never collides with the L-shaped accepted arrow
+    # that runs below lane 3.
+    x9, y9, _ = NODES[9]
+    ax.text(x9, y9 + PANEL_H / 2 + 0.18,
+            "(second-time rejections dropped)",
+            fontsize=8, color="#b91c1c", style="italic",
+            ha="center", va="bottom")
 
-# Legend strip at the bottom.
-def legend_chip(x, y, label, color):
-    ax.add_patch(Rectangle((x, y - 0.10), 0.30, 0.18,
-                           ec="none", fc=color))
-    ax.text(x + 0.40, y, label, ha="left", va="center",
+    # Legend strip at the bottom.
+    def legend_chip(x, y, label, color):
+        ax.add_patch(Rectangle((x, y - 0.10), 0.30, 0.18,
+                               ec="none", fc=color))
+        ax.text(x + 0.40, y, label, ha="left", va="center",
+                fontsize=8.5, color="#1f2937")
+
+    ly = -0.75
+    legend_chip(0.1,  ly, "generation",   "#1d4ed8")
+    legend_chip(2.0,  ly, "validation",   "#047857")
+    legend_chip(3.9,  ly, "agent run",    "#6d28d9")
+    legend_chip(5.8,  ly, "judgement",    "#c2410c")
+    legend_chip(7.7,  ly, "improvement",  "#a16207")
+    ax.plot([9.7, 10.3], [ly, ly], color="#b91c1c", lw=2.2,
+            linestyle=(0, (5, 3)))
+    ax.text(10.4, ly, "rejected branch", ha="left", va="center",
+            fontsize=8.5, color="#1f2937")
+    ax.plot([12.2, 12.8], [ly, ly], color="#047857", lw=2.2)
+    ax.text(12.9, ly, "accepted branch", ha="left", va="center",
             fontsize=8.5, color="#1f2937")
 
-ly = -0.75
-legend_chip(0.1,  ly, "generation",   "#1d4ed8")
-legend_chip(2.0,  ly, "validation",   "#047857")
-legend_chip(3.9,  ly, "agent run",    "#6d28d9")
-legend_chip(5.8,  ly, "judgement",    "#c2410c")
-legend_chip(7.7,  ly, "improvement",  "#a16207")
-ax.plot([9.7, 10.3], [ly, ly], color="#b91c1c", lw=2.2,
-        linestyle=(0, (5, 3)))
-ax.text(10.4, ly, "rejected branch", ha="left", va="center",
-        fontsize=8.5, color="#1f2937")
-ax.plot([12.2, 12.8], [ly, ly], color="#047857", lw=2.2)
-ax.text(12.9, ly, "accepted branch", ha="left", va="center",
-        fontsize=8.5, color="#1f2937")
+    fig.savefig("fig_v1_pipeline_overview.png")
+    fig.savefig("fig_v1_pipeline_overview.pdf")
+    print("Saved fig_v1_pipeline_overview.{png,pdf}")
 
-fig.savefig("fig_v1_pipeline_overview.png")
-fig.savefig("fig_v1_pipeline_overview.pdf")
-print("Saved fig_v1_pipeline_overview.{png,pdf}")
+
+if __name__ == "__main__":
+    main()

@@ -340,9 +340,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 7.6))
+    fig, ax = plt.subplots(figsize=(16.0, 7.0))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(-1.0, 7.5)
+    ax.set_ylim(-0.55, 7.5)
     ax.axis("off")
 
     # Lane backdrops.
@@ -474,7 +474,7 @@ def main():
         ax.text(x + 0.40, y, label, ha="left", va="center",
                 fontsize=8.5, color="#1f2937")
 
-    ly = -0.75
+    ly = -0.40
     legend_chip(0.1,  ly, "generation",   "#1d4ed8")
     legend_chip(2.0,  ly, "validation",   "#047857")
     legend_chip(3.9,  ly, "agent run",    "#6d28d9")

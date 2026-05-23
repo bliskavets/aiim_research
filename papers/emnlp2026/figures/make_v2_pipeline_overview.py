@@ -196,9 +196,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 7.6))
+    fig, ax = plt.subplots(figsize=(16.0, 7.0))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(-1.0, 7.5)
+    ax.set_ylim(-0.55, 7.5)
     ax.axis("off")
 
     # Lane backdrops + left-gutter phase labels (matches v1 styling).
@@ -249,13 +249,6 @@ def main():
     arrow(ax, 8, 9)
     arrow(ax, 9, "end", color="#047857")
 
-    # Note on per-stage validation.
-    ax.text(8.0, -0.20,
-            "Each stage is validated by execution; failures are retried "
-            "up to 10 times before the example is dropped.",
-            ha="center", va="center",
-            fontsize=8.5, color="#4b5563", style="italic")
-
     # Legend strip at the bottom.  Coloured circles (per request).
     def legend_chip(x, y, label, color):
         ax.add_patch(Circle((x + 0.15, y), 0.12,
@@ -263,7 +256,7 @@ def main():
         ax.text(x + 0.40, y, label, ha="left", va="center",
                 fontsize=8.5, color="#1f2937")
 
-    ly = -0.85
+    ly = -0.40
     legend_chip(0.1,  ly, "data store",       "#1d4ed8")
     legend_chip(2.2,  ly, "tools",            "#c2410c")
     legend_chip(4.0,  ly, "code (plan/sol.)", "#6d28d9")

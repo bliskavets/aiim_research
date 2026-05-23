@@ -62,7 +62,7 @@ def combine_png():
 
     # Stack the two pipeline panels with a small gap; no banner titles.
     width = a.size[0]
-    gap_h = 40
+    gap_h = 10                # tight separator between the two halves
     total_h = a.size[1] + gap_h + b.size[1]
     canvas = Image.new("RGBA", (width, total_h), (255, 255, 255, 255))
     canvas.paste(a, (0, 0), a)

@@ -216,7 +216,7 @@ The dataset spans diverse financial analysis categories including:
 ``Which invoices from our most important suppliers are more than 90 days overdue?''
 \end{quote}
 
-To answer this query, an agent must: (1) identify which suppliers are ``most important'' (e.g., by spend volume), (2) find invoices from those suppliers, and (3) filter by payment status and age.
+To answer this query, an agent must: (1) identify which suppliers are ``most important'' (e.g., by spend volume), (2) find invoices from those suppliers, and (3) filter by payment status and age. \edit{See Appendix~\ref{app:example_queries} for a sample of further queries spanning user roles and task categories.}
 
 \subsection{\groundedfinqa: \edit{The FinQA-Grounded Version}}
 \label{sec:groundedfinqa}
@@ -765,6 +765,24 @@ Our work provides a foundation for developing and evaluating financial AI agents
     \caption{\groundedfinqa: UMAP of tool name embeddings.}
     \label{fig:gr-umap-tool-names}
 \end{figure}
+
+\section{\edit{Example Queries from \synthsubset}}
+\label{app:example_queries}
+
+\edit{The following queries are drawn at random from the filtered \synthsubset test set. Each query is paired with the persona the LLM was instructed to assume when it generated the question; together they illustrate the breadth of user roles and the diversity of analysis categories covered by the dataset.}
+
+\edit{\begin{itemize}
+    \item \textbf{Internal Auditor}: Can you provide a list of transactions that were processed without obtaining necessary managerial approvals in the last quarter?
+    \item \textbf{Tax Advisor}: Identify any vendor invoices that may impact VAT input tax claims for the current tax period.
+    \item \textbf{Chief Financial Officer}: How do we ensure the reported accounts payable aging genuinely reflects outstanding vendor obligations without distortion?
+    \item \textbf{Financial Controller}: What is the total outstanding balance on all overdue invoices by supplier category?
+    \item \textbf{Procurement Officer}: Which suppliers have outstanding invoices that have not been approved for payment yet?
+    \item \textbf{Finance Director}: What percentage of supplier invoices in the last financial year were paid late, grouped by supplier?
+    \item \textbf{Risk Manager}: List suppliers with overdue invoices over 90 days that have credit limit warnings.
+    \item \textbf{Internal Controls Manager}: Detect any payments made with override flags but missing authorization memos.
+\end{itemize}}
+
+\edit{Across the full 5{,}979-example set we observe more than 60 distinct user roles (e.g.\ CFO, internal/external auditor, controller, procurement officer, treasury manager, tax advisor, compliance officer, risk manager), and queries span the accounts-payable, reconciliation, variance-analysis, revenue-recognition, and financial-reporting categories described in Section~\ref{sec:synthsql}.}
 
 \section{Prompts and Examples}
 \label{app:prompts}

@@ -402,7 +402,7 @@ def main():
 
     # Stage 6 -> Stage 7 (rejected branch, red dashed).
     arrow(ax, 6, 7, color="#b91c1c", ls=(0, (5, 3)),
-          label="rejected", label_pos=0.62, label_dx=-0.18, label_dy=0.05)
+          label="rejected", label_pos=0.535, label_dx=-0.18, label_dy=0.06)
 
     # Improvement loop.
     arrow(ax, 7, 8)

@@ -50,11 +50,11 @@
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
 in agentic financial analysis tasks requiring tool use. \edit{The benchmark is released in two versions:} (1) \synthsubset,
-a synthetic dataset of \edit{5,979} natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa,
-a grounded dataset derived from FinQA containing 1,108 multi-hop reasoning tasks \edit{embedded in custom tool environments}.
-Both datasets require models to \edit{retrieve information exclusively through tool calls} rather than relying on in-context information,
+\edit{a synthetic subset of 5,979} natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa,
+\edit{a grounded subset derived from FinQA} containing 1,108 multi-hop reasoning tasks \edit{embedded in custom tool environments}.
+\edit{Both subsets require} models to \edit{retrieve information exclusively through tool calls} rather than relying on in-context information,
 testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that \edit{even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively}, demonstrating significant room for improvement
-in agentic financial reasoning. We release the full dataset, evaluation code, and model traces to facilitate future research.
+in agentic financial reasoning. \edit{We release the full benchmark}, evaluation code, and model traces to facilitate future research.
 \end{abstract}
 
 %==============================================================================
@@ -64,7 +64,7 @@ in agentic financial reasoning. We release the full dataset, evaluation code, an
 \edit{\begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
-\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes from are taken from the IKP estimates \citep{li2026incompressible}.}
+\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. \edit{Closed-source sizes are taken from the IKP estimates \citep{li2026incompressible}}.}
 \label{fig:accuracy_vs_size}
 \end{figure}}
 
@@ -91,10 +91,10 @@ We introduce \datasetname, a benchmark specifically designed to evaluate agentic
 Our main contributions are:
 \begin{itemize}
     \item A novel benchmark for evaluating agentic LLMs on financial tasks requiring genuine tool use.
-    \item A rigorous dataset creation pipeline with LLM committee-based quality control.
+    \item \edit{A rigorous benchmark construction pipeline with LLM committee-based quality control.}
     \item \edit{Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
     revealing significant gaps in agentic financial reasoning capabilities.}
-    \item \edit{An open-source release of the complete benchmark together with the dataset-construction pipeline code, the evaluation
+    \item \edit{An open-source release of the complete benchmark together with the benchmark-construction pipeline code, the evaluation
     harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of
     our infrastructure for new agentic financial tasks.}
 \end{itemize}
@@ -171,7 +171,7 @@ performance limitations.
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
 
 %==============================================================================
-\section{Dataset Description}
+\edit{\section{Benchmark Description}}
 %==============================================================================
 
 \subsection{Overview}
@@ -212,7 +212,7 @@ Quality control & Committee & Execution-based \\
     \item \edit{\emph{Agent trace}}: A reference solution demonstrating correct tool use.
 \end{itemize}
 
-The dataset spans diverse financial analysis categories including:
+\edit{\synthsubset spans diverse financial analysis categories including:}
 \begin{itemize}
     \item Accounts Payable (AP) analysis
     \item Revenue recognition
@@ -242,13 +242,13 @@ Critically, the agent receives only the scenario description and tool definition
 
 
 %==============================================================================
-\section{Dataset Creation}
+\edit{\section{Benchmark Construction}}
 %==============================================================================
 
 \edit{\subsection{\synthsubset pipeline}}
 \label{sec:synthsql_pipeline}
 
-The \synthsubset dataset is created through a 9-stage pipeline. \edit{Figure~\ref{fig:pipeline}~(top) gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
+\edit{\synthsubset is created through a 9-stage pipeline. Figure~\ref{fig:pipeline}~(top) gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
 
 \begin{figure*}[t]
 \centering
@@ -272,7 +272,7 @@ All generated \edit{schema and data definitions are validated by execution again
 \paragraph{Stage 5: Agent Trace Generation}
 An agent runs on each query. It is supplied with access to the \edit{example's backing data through the structured-data tool}, with up to 6 rounds of interaction allowed. The full conversation trace is recorded.
 
-At this point, we have a dataset that contains:
+\edit{At this point, we have a benchmark subset that contains:}
 \begin{itemize}
     \item A query
     \item \edit{A data schema}
@@ -308,10 +308,10 @@ The agent runs again with a prompt containing:
 It still has access to the \edit{structured-data tool}, and the conversation is limited to 6 rounds. The full conversation trace is recorded.
 
 \paragraph{Stage 9: Second Judgement}
-The improved examples are then re-judged by the committee. If an example passes, it proceeds to the next stage. Otherwise, it is dropped from the dataset.
+The improved examples are then re-judged by the committee. If an example passes, it proceeds to the next stage. Otherwise, it is \edit{dropped from the benchmark}.
 
 \paragraph{Final Filtering}
-The final dataset includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the dataset. The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
+\edit{The final benchmark includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the benchmark.} The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
 
 \edit{\subsection{\groundedfinqa pipeline}}
 
@@ -399,13 +399,13 @@ Total passed so far & 8,233 \\
 \edit{Filtering (post-pipeline)} & \textbf{\edit{5,979}} \\
 \bottomrule
 \end{tabular}
-\caption{Number of examples in the \synthsubset dataset after each stage.}
+\caption{\edit{Number of examples in \synthsubset after each stage.}}
 \label{tab:synthsubset_numbers}
 \end{table}
 
 \edit{We first describe how many examples survived each pipeline stage for the two versions.}
 
-\edit{\paragraph{\synthsubset.}} We created the synthetic dataset of 5,979 examples by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples in the dataset after each stage.
+\edit{\paragraph{\synthsubset.}} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
 
 \edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at committee judgement, and 27\% at the final filtering pass.}
 
@@ -576,7 +576,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \label{fig:synth_vs_curated_scatter}
 \end{figure}}
 
-\section{Dataset Statistics}
+\edit{\section{Benchmark Statistics}}
 \label{app:dataset_statistics}
 
 \subsection{\synthsubset Statistics}
@@ -663,7 +663,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \section{\edit{Example Queries from \synthsubset}}
 \label{app:example_queries}
 
-\edit{The following queries are drawn at random from the filtered \synthsubset test set. Each query is paired with the persona the LLM was instructed to assume when it generated the question; together they illustrate the breadth of user roles and the diversity of analysis categories covered by the dataset.}
+\edit{The following queries are drawn at random from the filtered \synthsubset test set. Each query is paired with the persona the LLM was instructed to assume when it generated the question; together they illustrate the breadth of user roles and the diversity of analysis categories covered by \synthsubset.}
 
 \edit{\begin{itemize}
     \item \edit{\emph{Internal Auditor}}: Can you provide a list of transactions that were processed without obtaining necessary managerial approvals in the last quarter?
@@ -756,37 +756,84 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 
 Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
 
+Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illustrating the schema and data format.
+
+\begin{figure}[h]
+\small\centering
+\begin{verbatim}
+Query:
+Could duplicated invoice payments be 
+causing discrepancies in our aged 
+payables report?
+
+Schema:
+CREATE TABLE Suppliers (
+    supplier_id INTEGER PRIMARY KEY,
+    supplier_name TEXT NOT NULL
+);
+CREATE TABLE Invoices (
+    invoice_id INTEGER PRIMARY KEY,
+    supplier_id INTEGER NOT NULL,
+    invoice_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    invoice_amount NUMERIC NOT NULL,
+    FOREIGN KEY (supplier_id) 
+    REFERENCES Suppliers(supplier_id)
+);
+CREATE TABLE Payments (
+    payment_id INTEGER PRIMARY KEY,
+    invoice_id INTEGER NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_amount NUMERIC NOT NULL,
+    FOREIGN KEY (invoice_id) 
+    REFERENCES Invoices(invoice_id)
+);
+
+Data:
+-- Invoice 1002 has duplicated 
+-- payments covering entire 
+-- invoice twice
+INSERT INTO Payments VALUES
+(5001, 1002, '2025-07-05', 500.00),
+(5002, 1002, '2025-07-10', 500.00),
+(5003, 1002, '2025-07-12', 500.00);
+-- Duplicate over invoice amount
+\end{verbatim}
+\caption{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}
+\label{fig:example-item}
+\end{figure}
+
+
 \begin{figure}[t]
 \small\centering
 \begin{verbatim}
 # Task
 You are a senior QA engineer working
-on AI agents for finance. You have to judge
-the test case provided and check the 
-following rules:
+on AI agents for finance. You have to 
+judge the test case provided and check 
+the following rules:
 
-- The test case's data should be natural: 
-it should be similar to what data could
-  a real company have, and how it would 
-  be stored in a database.
-- The agent's trace should be reasonable: 
-the agent should look at the data needed
-  to answer the query.
-- The agent's trace should be sound: the 
-reasoning steps should be logical, should
-  follow from the previous steps and lead 
-  to the final answer.
+- The test case's data should be 
+  natural: it should be similar to what 
+  data could a real company have, and 
+  how it would be stored in a database.
+- The agent's trace should be 
+  reasonable: the agent should look at 
+  the data needed to answer the query.
+- The agent's trace should be sound: 
+  the reasoning steps should be logical, 
+  should follow from the previous steps 
+  and lead to the final answer.
 - The agent's reasoning and final answer 
-should be grounded: the only data the 
-agent
-  has access to is what was returned 
-  from its tool calls. The reasoning 
-  should not
-  be based on any other data, including 
-  the data in the database that was not
-  queried with the tools.
-- The agent's final answer should answer 
-the user's query.
+  should be grounded: the only data the 
+  agent has access to is what was 
+  returned from its tool calls. The 
+  reasoning should not be based on any 
+  other data, including the data in the 
+  database that was not queried with 
+  the tools.
+- The agent's final answer should 
+  answer the user's query.
 
 In case one of these requirements are 
 not met, you should provide a concise
@@ -815,51 +862,12 @@ Reply with JSON object like this:
    "trace_is_sound": 1 | 0,
    "reasoning_is_grounded": 1 | 0,
    "answer_is_sound": 1 | 0,
-   "feedback": "... concise and actionable ..."
+   "feedback": "..."
 }
 \end{verbatim}
 \caption{\synthsubset: Prompt template for a committee member judge.}
 \label{fig:judge-prompt}
 \end{figure}
 
-Figure~\ref{fig:example-item} shows an annotated example from the \synthsubset dataset illustrating the schema and data format.
-
-\begin{figure*}[h]
-\small\centering
-\begin{verbatim}
-Query:
-Could duplicated invoice payments be causing discrepancies in our aged payables report?
-
-Schema:
-CREATE TABLE Suppliers (
-    supplier_id INTEGER PRIMARY KEY,
-    supplier_name TEXT NOT NULL
-);
-CREATE TABLE Invoices (
-    invoice_id INTEGER PRIMARY KEY,
-    supplier_id INTEGER NOT NULL,
-    invoice_date DATE NOT NULL,
-    due_date DATE NOT NULL,
-    invoice_amount NUMERIC NOT NULL,
-    FOREIGN KEY (supplier_id) REFERENCES Suppliers(supplier_id)
-);
-CREATE TABLE Payments (
-    payment_id INTEGER PRIMARY KEY,
-    invoice_id INTEGER NOT NULL,
-    payment_date DATE NOT NULL,
-    payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES Invoices(invoice_id)
-);
-
-Data:
--- Invoice 1002 has duplicated payments covering entire invoice twice
-INSERT INTO Payments VALUES
-(5001, 1002, '2025-07-05', 500.00),
-(5002, 1002, '2025-07-10', 500.00),
-(5003, 1002, '2025-07-12', 500.00);  -- Duplicate over invoice amount
-\end{verbatim}
-\caption{\synthsubset: Annotated example item showing query, schema, and data (excerpt).}
-\label{fig:example-item}
-\end{figure*}
 
 \end{document}

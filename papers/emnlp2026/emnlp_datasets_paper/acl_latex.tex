@@ -69,11 +69,11 @@ in agentic financial reasoning. \edit{We release the full benchmark}, evaluation
 \end{figure}}
 
 Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks
-\cite{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents could assist with financial analysis, compliance
+\citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents could assist with financial analysis, compliance
 checking, and decision support by \edit{issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers}.
 
 However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA
-\cite{chen2021finqa} and TAT-QA \cite{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided
+\citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided
 contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test
 examples may have been seen during model training.
 
@@ -130,7 +130,7 @@ specializing the tool environment for finance, \datasetname tests the \textit{de
 where general planning skills fail to confer the necessary domain competence (\edit{16--70\% accuracy on grounded financial reasoning tasks}). Recent real-world financial benchmarks like FinGAIA \citep{zeng2025fingaiachinesebenchmarkai},
 the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}\edit{, and FinAgentBench \citep{choi2025finagentbench}} prioritize realism by using live web data (SEC
 EDGAR\edit{) or SEC-filing retrieval}, while \datasetname is engineered for \edit{\emph{diagnostic fidelity}} using controlled, synthetic environments to attribute failures
-unequivocally to flawed planning logic, rather than external noise or API variability.
+unequivocally to flawed planning logic, rather than external noise or API variability. \edit{We further compare \datasetname against FinAgentBench and the Finance Agent Benchmark numerically along the size--accuracy axis in Appendix~\ref{app:cross_benchmark}.}
 
 \edit{\paragraph{Tool Use over Structured Business Data}
 A related line of work studies semantic parsing over structured data: cross-domain datasets such as Spider \citep{spider} and BIRD
@@ -168,7 +168,7 @@ performance limitations.
 % \end{table}
 
 \paragraph{Data Generation}
-Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \cite{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \cite{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
+Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \citep{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \citep{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
 
 %==============================================================================
 \edit{\section{Benchmark Description}}
@@ -354,7 +354,7 @@ A reference solution using the augmented tools demonstrates the multi-hop soluti
 A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
 
 \paragraph{\edit{Stage} 9: Agent Code}
-A runnable agent using the \texttt{smolagents} \cite{smolagents} library is generated for evaluation.
+A runnable agent using the \texttt{smolagents} \citep{smolagents} library is generated for evaluation.
 
 \edit{Each stage is required to output a file (Python code in all stages except Stage 8 which outputs a system prompt with the task formulation). For each stage, the LLM receives in the context:}
 \begin{itemize}
@@ -454,11 +454,11 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \edit{\begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{figures/fig_synth_categories_radar.png}
-\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the four categories carried by the seed queries; each query in the 729-example test set is assigned to a category by nearest-seed TF-IDF similarity.}
+\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the four categories carried by the seed queries.}
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \cite{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
+\edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \citep{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
 
 \begin{table}[h]
 \centering

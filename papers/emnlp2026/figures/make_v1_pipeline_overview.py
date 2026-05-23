@@ -62,10 +62,10 @@ STAGES = {
 
 
 # Lanes (y-coordinates) — pulled closer so there's less whitespace
-# between rows but panels still don't touch (gap ≈ 0.7 below).
-LANE_GEN  = 7.0
-LANE_GATE = 4.8
-LANE_LOOP = 2.6
+# between rows but panels still don't touch (gap ≈ 0.5 below).
+LANE_GEN  = 6.4
+LANE_GATE = 4.4
+LANE_LOOP = 2.4
 
 # Grid columns shared with the top row.
 COL_A = 1.6   # seed
@@ -340,9 +340,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 8.4))
+    fig, ax = plt.subplots(figsize=(16.0, 7.6))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(-1.0, 8.1)
+    ax.set_ylim(-1.0, 7.5)
     ax.axis("off")
 
     # Lane backdrops.
@@ -356,15 +356,15 @@ def main():
 
     # Phase labels in the left gutter, rotated.
     ax.text(0.05, LANE_GEN,  "Generation (1–5)",
-            ha="left", va="center", fontsize=9.5,
+            ha="left", va="center", fontsize=8.2,
             color="#1e3a8a", style="italic", weight="bold",
             rotation=90, zorder=1)
-    ax.text(0.05, LANE_GATE, "Committee gate (6)",
-            ha="left", va="center", fontsize=9.5,
+    ax.text(0.05, LANE_GATE, "Committee (6)",
+            ha="left", va="center", fontsize=8.2,
             color="#9a3412", style="italic", weight="bold",
             rotation=90, zorder=1)
-    ax.text(0.05, LANE_LOOP, "Improvement loop (7–9)",
-            ha="left", va="center", fontsize=9.5,
+    ax.text(0.05, LANE_LOOP, "Improvement (7–9)",
+            ha="left", va="center", fontsize=8.2,
             color="#854d0e", style="italic", weight="bold",
             rotation=90, zorder=1)
 
@@ -418,7 +418,7 @@ def main():
     # (Matplotlib's arc3 alone can't avoid the Stage-5/Stage-8/9 panels cleanly.)
     from matplotlib.path import Path
     from matplotlib.patches import PathPatch
-    elbow_y = 1.30  # horizontal segment between lane 3 (y=2.6) and Final-dataset pill (y=0.2)
+    elbow_y = 1.10  # horizontal segment between lane 3 (y=2.4) and Final-dataset pill (y=0.2)
     x6_, y6_, _ = NODES[6]
     xf_, yf_, _ = NODES["filter"]
     # Curved corners via small Bezier between the straight runs.

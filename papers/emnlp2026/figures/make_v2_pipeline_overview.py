@@ -72,10 +72,10 @@ STAGES = {
 }
 
 
-# Lanes (y-coordinates) — same spacing as the v1 figure.
-LANE_TOP = 7.0   # Basic build
-LANE_MID = 4.8   # Augmentation
-LANE_BOT = 2.6   # Packaging
+# Lanes (y-coordinates) — same spacing as the v1 figure (gap ≈ 0.5).
+LANE_TOP = 6.4   # Basic build
+LANE_MID = 4.4   # Augmentation
+LANE_BOT = 2.4   # Packaging
 
 # Shared 5-column grid.
 COL_A = 1.6
@@ -196,9 +196,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 8.4))
+    fig, ax = plt.subplots(figsize=(16.0, 7.6))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(-1.0, 8.1)
+    ax.set_ylim(-1.0, 7.5)
     ax.axis("off")
 
     # Lane backdrops + left-gutter phase labels (matches v1 styling).
@@ -211,15 +211,15 @@ def main():
     lane_band(LANE_BOT - 0.85, LANE_BOT + 0.85, "#6d28d9")
 
     ax.text(0.05, LANE_TOP, "Basic build (1–4)",
-            ha="left", va="center", fontsize=9.5,
+            ha="left", va="center", fontsize=8.2,
             color="#1e3a8a", style="italic", weight="bold",
             rotation=90, zorder=1)
     ax.text(0.05, LANE_MID, "Augmentation (5–7)",
-            ha="left", va="center", fontsize=9.5,
+            ha="left", va="center", fontsize=8.2,
             color="#9a3412", style="italic", weight="bold",
             rotation=90, zorder=1)
     ax.text(0.05, LANE_BOT, "Packaging (8–9)",
-            ha="left", va="center", fontsize=9.5,
+            ha="left", va="center", fontsize=8.2,
             color="#5b21b6", style="italic", weight="bold",
             rotation=90, zorder=1)
 

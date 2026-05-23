@@ -60,44 +60,13 @@ def combine_png():
                               Image.LANCZOS)
         a, b = rescale(a), rescale(b)
 
+    # Stack the two pipeline panels with a small gap; no banner titles.
     width = a.size[0]
-    band_h = 130          # subtitle band above each pipeline
-    gap_h  = 22           # blank gap separating the two pipelines
-    total_h = band_h + a.size[1] + gap_h + band_h + b.size[1]
-
+    gap_h = 40
+    total_h = a.size[1] + gap_h + b.size[1]
     canvas = Image.new("RGBA", (width, total_h), (255, 255, 255, 255))
-
-    title_font = _load_font(58)
-    sub_font   = _load_font(28)
-
-    draw = ImageDraw.Draw(canvas)
-
-    def banner(y_top: int, title: str, subtitle: str, color: tuple):
-        # Title.
-        bbox = draw.textbbox((0, 0), title, font=title_font)
-        tw = bbox[2] - bbox[0]
-        draw.text(((width - tw) / 2, y_top + 18), title,
-                  font=title_font, fill=color)
-        # Subtitle.
-        bbox = draw.textbbox((0, 0), subtitle, font=sub_font)
-        sw = bbox[2] - bbox[0]
-        draw.text(((width - sw) / 2, y_top + 85), subtitle,
-                  font=sub_font, fill=(100, 116, 139, 255))
-
-    # v1 banner + image.
-    banner(0,
-           "FinOpsBench-v1 construction pipeline",
-           "9 stages · 12 seed queries → 5,979 examples in the final dataset",
-           (17, 24, 39, 255))
-    canvas.paste(a, (0, band_h), a)
-
-    # v2 banner + image.
-    y_off = band_h + a.size[1] + gap_h
-    banner(y_off,
-           "FinOpsBench-v2 construction pipeline",
-           "9 stages · 1,247 FinQA items → 1,108 examples in the final dataset",
-           (17, 24, 39, 255))
-    canvas.paste(b, (0, y_off + band_h), b)
+    canvas.paste(a, (0, 0), a)
+    canvas.paste(b, (0, a.size[1] + gap_h), b)
 
     canvas.save(OUT_PNG, optimize=True)
     print(f"Saved {OUT_PNG.name}  ({width}x{total_h} px)")

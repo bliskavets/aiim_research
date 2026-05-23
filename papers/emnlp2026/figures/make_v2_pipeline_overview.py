@@ -224,10 +224,10 @@ def main():
             rotation=90, zorder=1)
 
     # Nodes.
-    draw_circle_node(ax, "start", "FinQA\nitem")
+    draw_circle_node(ax, "start", "FinQA\nitems")
     for n in range(1, 10):
         draw_stage_panel(ax, n)
-    draw_pill_node(ax, "end", "Final dataset (1,108 examples)")
+    draw_pill_node(ax, "end", "Final dataset (~1.2K examples)")
 
     # ----- Arrows (snake topology) -----
     arrow(ax, "start", 1)
@@ -256,10 +256,10 @@ def main():
             ha="center", va="center",
             fontsize=8.5, color="#4b5563", style="italic")
 
-    # Legend strip at the bottom.
+    # Legend strip at the bottom.  Coloured circles (per request).
     def legend_chip(x, y, label, color):
-        ax.add_patch(Rectangle((x, y - 0.10), 0.30, 0.18,
-                               ec="none", fc=color))
+        ax.add_patch(Circle((x + 0.15, y), 0.12,
+                            ec="none", fc=color))
         ax.text(x + 0.40, y, label, ha="left", va="center",
                 fontsize=8.5, color="#1f2937")
 

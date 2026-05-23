@@ -384,7 +384,7 @@ def main():
                "Answer-match and\ntool-use checks",
                "gear_check", "#d1fae5", "#047857", small=True)
 
-    draw_pill_node(ax, "end", "Final dataset (5,979 examples)")
+    draw_pill_node(ax, "end", "Final dataset (~6K examples)")
 
     # ----- Arrows -----
 
@@ -467,10 +467,10 @@ def main():
             fontsize=8, color="#b91c1c", style="italic",
             ha="center", va="bottom")
 
-    # Legend strip at the bottom.
+    # Legend strip at the bottom.  Coloured circles (per request).
     def legend_chip(x, y, label, color):
-        ax.add_patch(Rectangle((x, y - 0.10), 0.30, 0.18,
-                               ec="none", fc=color))
+        ax.add_patch(Circle((x + 0.15, y), 0.12,
+                            ec="none", fc=color))
         ax.text(x + 0.40, y, label, ha="left", va="center",
                 fontsize=8.5, color="#1f2937")
 

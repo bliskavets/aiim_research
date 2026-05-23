@@ -521,13 +521,11 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \section*{Limitations}
 %==============================================================================
 
-\begin{itemize}
-    \item Synthetic data may not capture real-world financial complexity.
-    \item \edit{Data schemas are generated, not derived from real companies.}
-    \item Evaluation is on English data only.
-    \item The committee judges are LLMs themselves, and may share systematic blind spots with the evaluated models.
-    \item \edit{The benchmark covers a single structured-data tool and Python-function tool environments; other tool modalities (e.g., web search, document retrieval) are not currently represented.}
-\end{itemize}
+\edit{\datasetname has several limitations that constrain how its results should be interpreted. The first concerns the realism of the data. \synthsubset's tasks are built on top of synthetically generated schemas and rows that approximate, but do not reproduce, the structural and semantic complexity of production financial systems. Real corporate databases evolve over years, accrete domain-specific exceptions, and carry historical idiosyncrasies that no synthetic generator can fully capture; absolute accuracy on \synthsubset should therefore be read as a controlled upper bound on what an agent can do, not as a direct prediction of its behavior on a real corporate database. \groundedfinqa is anchored in human-authored FinQA questions and tables, but the surrounding tool environment is still automatically generated and may favor the planning style our generator chose.}
+
+\edit{A second class of limitations concerns the evaluation harness. Our committee judges are themselves LLMs and may share systematic blind spots with the models they evaluate, particularly for failure modes where a model and a judge have been exposed to similar training material. The cross-vendor committee composition (Claude Sonnet 4, o4-mini, and o3-mini) and the 2-of-3 majority rule are intended to mitigate this, but the residual risk of correlated errors cannot be fully ruled out from the headline accuracy numbers alone. The downstream answer-correctness check is itself performed by an LLM judge, which carries the same caveat.}
+
+\edit{Finally, the benchmark's coverage is narrower than the agentic-finance landscape it aims to represent. All evaluation is in English. The tool surface is limited to a single structured-data query tool in \synthsubset and Python-function tool environments grounded on tabular data in \groundedfinqa; other modalities such as live web search, large-document retrieval, multimodal financial reports, and human-in-the-loop workflows are not currently represented and would require additional benchmark releases. We see these omissions as scope choices for the first release rather than fundamental obstacles, and we expect future versions of \datasetname to extend along all three axes (data realism, judge robustness, and tool-modality coverage).}
 
 % Acknowledgments are omitted in the review version per ACL anonymity rules.
 

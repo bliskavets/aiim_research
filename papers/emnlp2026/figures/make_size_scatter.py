@@ -150,5 +150,4 @@ render(MODELS,
 # remaining 7 models.
 render([t for t in MODELS if t[0] != "Llama-3.1-8B"],
        out_stem="fig_accuracy_vs_size_no_llama",
-       fit_excluding=None,
-       title_suffix=" (Llama-3.1-8B excluded)")
+       fit_excluding=None)

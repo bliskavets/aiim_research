@@ -480,14 +480,7 @@ Llama-3.1-8B-Instruct & 16.3 \\
     \item \textbf{Modern models use tools better}: Llama-3.1-8B severely underperforms the newer Qwen3-8B despite having the same parameter count.
 \end{enumerate}
 
-\edit{Figure~\ref{fig:accuracy_bars} compares the two benchmarks side by side: the headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit. Every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes.}
-
-\edit{\begin{figure}[t]
-\centering
-\includegraphics[width=1\linewidth]{figures/fig_accuracy_bars.png}
-\caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
-\label{fig:accuracy_bars}
-\end{figure}}
+\edit{The headline numbers track each other closely across the eight models (mean absolute difference 2.6\,pp); a per-model side-by-side bar chart is provided in Appendix~\ref{app:cross_version_results} (Figure~\ref{fig:accuracy_bars}). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data per model against a $y=x$ reference line and makes the agreement explicit. Every model lands within $\pm 7$\,pp of $y=x$ except Qwen3-30B-A3B and Qwen3-8B, both of which score noticeably lower on the FinQA-grounded version than on the synthetic one. This is consistent with our diagnostic-fidelity claim: the two datasets are correlated overall but separate at the open-source end, where the multi-hop, multi-tool environment of the curated version exposes more of the weaker models' failure modes.}
 
 \edit{\begin{figure}[t]
 \centering
@@ -606,6 +599,18 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \caption{\edit{Size--accuracy on the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}, Table 2. The positive log-linear slope ($\approx 15.5$\,pp/decade) is consistent with the FinOpsBench picture, but the wide intra-size scatter (20--40\,pp) and the same-model reasoning-mode variation indicate that size is not the dominant driver.}}
 \label{fig:financeagentbench_size}
 \end{figure}
+
+\edit{\section{Per-model accuracies across the two \datasetname versions}}
+\edit{\label{app:cross_version_results}}
+
+\edit{This appendix provides a per-model side-by-side view of the two main result tables in the body. Figure~\ref{fig:accuracy_bars} plots each model's accuracy on \synthsubset and \groundedfinqa as adjacent bars, so that the within-model gap between the two versions is immediately visible. Frontier models occupy the left half of the chart and open-source models the right.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_accuracy_bars.png}
+\caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
+\label{fig:accuracy_bars}
+\end{figure}}
 
 \section{Dataset Statistics}
 \label{app:dataset_statistics}

@@ -68,7 +68,8 @@ LABEL_POS = {
 }
 
 
-def render(models, out_stem: str, fit_excluding=None, title_suffix=""):
+def render(models, out_stem: str, fit_excluding=None, title_suffix="",
+           title=None):
     """Render the scatter for the given model subset.
 
     `fit_excluding` is the name of a model to drop from the regression
@@ -116,7 +117,11 @@ def render(models, out_stem: str, fit_excluding=None, title_suffix=""):
     ax.set_ylim(0, 80)
     ax.set_xlabel("Model size (B parameters, log scale)")
     ax.set_ylabel("Accuracy (%)")
-    ax.set_title("FinOpsBench accuracy vs. model size" + title_suffix)
+    if title is None:
+        ax.set_title("FinOpsBench accuracy vs. model size" + title_suffix)
+    elif title:  # non-empty override
+        ax.set_title(title)
+    # else: empty string => no title at all
 
     ticks = [8, 30, 100, 300, 1000, 3000, 10000]
     ax.set_xticks(ticks)
@@ -150,4 +155,5 @@ render(MODELS,
 # remaining 7 models.
 render([t for t in MODELS if t[0] != "Llama-3.1-8B"],
        out_stem="fig_accuracy_vs_size_no_llama",
-       fit_excluding=None)
+       fit_excluding=None,
+       title="")  # empty string => no title rendered on this variant

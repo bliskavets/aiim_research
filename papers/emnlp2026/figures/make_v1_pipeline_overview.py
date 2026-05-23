@@ -340,9 +340,9 @@ def arrow(ax, a, b, color="#1f2937", style="-|>", lw=2.4, rad=0.0,
 # ---------------------------------------------------------------------------
 
 def main():
-    fig, ax = plt.subplots(figsize=(16.0, 9.0))
+    fig, ax = plt.subplots(figsize=(16.0, 8.4))
     ax.set_xlim(-0.1, 16.7)
-    ax.set_ylim(-1.0, 9.0)
+    ax.set_ylim(-1.0, 8.1)
     ax.axis("off")
 
     # Lane backdrops.
@@ -368,13 +368,8 @@ def main():
             color="#854d0e", style="italic", weight="bold",
             rotation=90, zorder=1)
 
-    # Title.
-    ax.text(8.0, 8.65, "FinOpsBench-v1 construction pipeline",
-            ha="center", va="center", fontsize=15.5, weight="bold",
-            color="#111827")
-    ax.text(8.0, 8.25,
-            "9 stages · 12 seed queries → 5,979 examples in the final dataset",
-            ha="center", va="center", fontsize=10, color="#6b7280")
+    # (Figure title removed per request — the caption in the paper will
+    # carry that context.)
 
     # Nodes.
     draw_circle_node(ax, "seed", "Seed\nqueries\n(12)")
@@ -407,7 +402,7 @@ def main():
 
     # Stage 6 -> Stage 7 (rejected branch, red dashed).
     arrow(ax, 6, 7, color="#b91c1c", ls=(0, (5, 3)),
-          label="rejected", label_pos=0.45, label_dx=-0.18, label_dy=0.08)
+          label="rejected", label_pos=0.62, label_dx=-0.18, label_dy=0.05)
 
     # Improvement loop.
     arrow(ax, 7, 8)

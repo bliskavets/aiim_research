@@ -92,6 +92,15 @@ Our main contributions are:
     our infrastructure for new agentic financial tasks.}
 \end{itemize}
 
+\edit{As Figure~\ref{fig:accuracy_vs_size} shows, accuracy on \datasetname grows log-linearly with the parameter count of the agent's base model---an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artefact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.}
+
+\edit{\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
+\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes from \citet{li2026incompressible}; the smallest open-source model (Llama-3.1-8B) is omitted as a clear outlier (see Appendix and figure source).}
+\label{fig:accuracy_vs_size}
+\end{figure}}
+
 %==============================================================================
 \section{Related Work}
 %==============================================================================

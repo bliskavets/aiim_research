@@ -562,7 +562,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \editN{\datasetname contains no personal or otherwise identifying data. FinQA is built on aggregated public corporate-finance disclosures from S\&P~500 companies and contains no individual-person information; \synthsubset is generated end-to-end, and therefore contains no records traceable to real people or companies. No additional anonymisation step was required, and the benchmark and its accompanying artifacts are provided in English language.}
 
-\editN{A description of how AI assistants were used in preparing this paper is given in Appendix~\ref{app:ai_usage}.}
+\editN{During the preparation of our work, AI assistants were used for auxiliary tasks. A detailed description of this process is given in Appendix~\ref{app:ai_usage}.}
 
 
 %==============================================================================
@@ -842,29 +842,35 @@ Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illus
 \begin{figure}[h]
 \small\centering
 \begin{verbatim}
-Query: Could duplicated invoice payments 
-be causing discrepancies in our aged 
+Query:
+Could duplicated invoice payments be
+causing discrepancies in our aged
 payables report?
 
 Schema:
 CREATE TABLE Suppliers (
     supplier_id INTEGER PRIMARY KEY,
-    supplier_name TEXT NOT NULL);
+    supplier_name TEXT NOT NULL
+);
 CREATE TABLE Invoices (
     invoice_id INTEGER PRIMARY KEY,
     supplier_id INTEGER NOT NULL,
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     invoice_amount NUMERIC NOT NULL,
-    FOREIGN KEY (supplier_id) 
-    REFERENCES Suppliers(supplier_id));
+    FOREIGN KEY (supplier_id)
+    REFERENCES Suppliers(supplier_id)
+);
 CREATE TABLE Payments (
     payment_id INTEGER PRIMARY KEY,
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id) 
-    REFERENCES Invoices(invoice_id));
+    FOREIGN KEY (invoice_id)
+    REFERENCES Invoices(invoice_id)
+);
+
+
 Data:
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
@@ -879,11 +885,10 @@ INSERT INTO Payments VALUES
 \begin{figure}[t]
 \small\centering
 \begin{verbatim}
-# Task
-You are a senior QA engineer working
-on AI agents for finance. You have to 
-judge the test case provided and check 
-the following rules:
+# Task You are a senior QA engineer
+working on AI agents for finance. You
+have to judge the test case provided
+and check the following rules:
 
 - The test case's data should be 
   natural: it should be similar to what 
@@ -907,26 +912,15 @@ the following rules:
 - The agent's final answer should 
   answer the user's query.
 
-In case one of these requirements are 
+In case one of these requirements are
 not met, you should provide a concise
-actionable feedback so the author can 
+actionable feedback so the author can
 improve the test case.
-
 # Test case:
-
-## Query
-{{ item.query }}
-
-## SQL schema
-{{ item.schema_sql }}
-
-## Data
-{{ item.data_sql }}
-
-## Agent trace
-{{ item.agent_dialog | tojson(2) }}
-
-# Output format
+## Query: {{ item.query }}
+## Schema: {{ item.schema_sql }}
+## Data: {{ item.data_sql }}
+## Trace: {{item.agent_dialog|tojson(2)}}
 Reply with JSON object like this:
 {
    "data_is_natural": 1 | 0,

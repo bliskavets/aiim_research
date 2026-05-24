@@ -53,7 +53,7 @@
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
 in agentic financial analysis tasks that require tool use. The benchmark is released in two versions: (1) \synthsubset,
-a synthetic set of 5,979 natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with \editN{quality control by a panel of LLM judges}, and (2) \groundedfinqa, \editN{a set of 1,108 multi-hop reasoning tasks grounded in real financial documents and embedded in custom tool environments}. Both subsets require models to retrieve information exclusively through tool calls rather than relying on in-context information, \editN{testing genuine agentic tool use and reasoning capabilities}. We evaluate a range of frontier and open-source models, finding that even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively, demonstrating significant room for improvement in agentic financial reasoning. We release the full benchmark, evaluation code, and model traces to facilitate future research.
+a synthetic set of 5,979 natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with \editN{quality control by a committee of LLM judges}, and (2) \groundedfinqa, \editN{a set of 1,108 multi-hop reasoning tasks grounded in real financial documents and embedded in custom tool environments}. Both subsets require models to retrieve information exclusively through tool calls rather than relying on in-context information, \editN{testing genuine agentic tool use and reasoning capabilities}. We evaluate a range of frontier and open-source models, finding that even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively, demonstrating significant room for improvement in agentic financial reasoning. We release the full benchmark, evaluation code, and model traces to facilitate future research.
 \end{abstract}
 
 %==============================================================================
@@ -72,7 +72,7 @@ Large language models (LLMs) are increasingly deployed as autonomous agents capa
 We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use. \editN{Diagnostic control over a large, executable task pool and realism on human-authored financial questions are competing requirements, so \datasetname is released as two complementary parts (evaluated under the same agent harness), each targeting one of them:}
 
 \begin{itemize}
-    \item \textbf{\synthsubset}: \editN{5,979 examples; each pairs a natural-language financial question with a small, freshly generated database that the agent must query through a single structured-data tool to reach the answer. Examples are quality-controlled by a panel of three LLM judges.}
+    \item \textbf{\synthsubset}: \editN{5,979 examples; each pairs a natural-language financial question with a small, freshly generated database that the agent must query through a single structured-data tool to reach the answer. Examples are quality-controlled by a committee of three LLM judges.}
     
     \item \textbf{\groundedfinqa}: This benchmark is produced by building agentic environments around questions and tables taken from FinQA, and consists of 1,108 samples. Each sample bundles a financial question, a tool environment with diverse custom Python tools, distractor tools and rows, and a gold answer. The agent must perform multi-hop reasoning across several tool calls.
 \end{itemize}
@@ -84,7 +84,7 @@ Both benchmarks share the same design principles. First, answers cannot be extra
 Our main contributions are:
 \begin{itemize}
     \item A novel benchmark for evaluating agentic LLMs on financial tasks requiring genuine tool use.
-    \item A rigorous benchmark construction pipeline with \editN{quality control by a panel of LLM judges}.
+    \item A rigorous benchmark construction pipeline with LLM committee-based quality control.
     \item Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
     revealing significant gaps in agentic financial reasoning capabilities.
     \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the benchmark-construction pipeline code, the evaluation harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
@@ -134,7 +134,7 @@ rather than read from context. Second, financial domain semantics such as accoun
 recognition become first-class evaluation targets rather than incidental surface features. The structured-data tool is the means, not
 the end being measured.}
 
-Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a panel of three LLM judges, to
+Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a committee of three LLM judges, to
 mitigate data contamination risks and ensure high integrity at scale, validating that observed low accuracy reflects genuine
 performance limitations.
 
@@ -182,7 +182,7 @@ Synthetic data generation has proven valuable for creating evaluation benchmarks
 Tool type & \edit{Single structured-data tool} & \edit{Many custom Python tools} \\
 Multi-hop & $\geq 1$ hop & $\geq 2$ hops \\
 Distractor data & Yes & Yes \\
-Quality control & Panel & Execution-based \\
+Quality control & Committee & Execution-based \\
 \bottomrule
 \end{tabularx}
 \caption{\edit{Overview of the two \datasetname versions.}}
@@ -240,7 +240,7 @@ Critically, the agent receives only the scenario description and tool definition
 \begin{figure*}[t]
 \centering
 \edit{\includegraphics[width=\linewidth]{figures/main_figure_combined.png}}
-\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} \synthsubset (9 stages with a panel-judgement gate and an improvement loop). \textbf{Bottom:} \groundedfinqa (9 strictly linear stages, each validated by execution).}}
+\caption{\edit{Construction pipelines for the two \datasetname versions. \textbf{Top:} \synthsubset (9 stages with a committee-judgement gate and an improvement loop). \textbf{Bottom:} \groundedfinqa (9 strictly linear stages, each validated by execution).}}
 \label{fig:pipeline}
 \end{figure*}
 
@@ -269,8 +269,8 @@ An agent runs on each query. It is supplied with access to the \edit{example's b
 % \end{itemize}
 However, there may be hallucinations, unnatural data, wrong tool calls, or wrong answers in the agent trace that need to be identified and fixed.
 
-\noindent \textbf{Stage 6: Panel Judgement.}
-A panel of three LLM judges evaluates each example's data and agent trace on five criteria: 
+\noindent \textbf{Stage 6: Committee Judgement.}
+A committee of three LLM judges evaluates each example's data and agent trace on five criteria: 
 \textbf{(1)} \edit{\emph{Data naturalness}}: Is the generated data realistic?
 \textbf{(2)} \edit{\emph{Trace reasonableness}}: Does the agent examine appropriate data?
 \textbf{(3)} \edit{\emph{Trace soundness}}: Is the reasoning logical?
@@ -303,10 +303,10 @@ The agent runs again with a prompt containing the query, \edit{the data schema},
 It still has access to the \edit{structured-data tool}, and the conversation is limited to 6 rounds. The full conversation trace is recorded.
 
 \noindent \textbf{Stage 9: Second Judgement.}
-The improved examples are then re-judged by the panel. If an example passes, it proceeds to the next stage. Otherwise, it is \edit{dropped from the benchmark}.
+The improved examples are then re-judged by the committee. If an example passes, it proceeds to the next stage. Otherwise, it is \edit{dropped from the benchmark}.
 
 \noindent \textbf{Final Filtering.}
-\edit{The final benchmark includes only examples that passed panel judgement. We run two filtering passes to ensure quality and complexity of the benchmark.} The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
+\edit{The final benchmark includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the benchmark.} The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
 
 \subsection{\groundedfinqa pipeline}
 
@@ -387,12 +387,12 @@ Seed queries & 12 \\
 3. Data generation & 10,000 \\
 4. \edit{Execution-based validation} & 10,000 \\
 5. Agent trace generation & \edit{9,557} \\
-6. Panel judgement & \\
+6. Committee judgement & \\
 \quad -- passed & 5,401 \\
 \quad -- to be improved & 4,156 \\
 7. Feedback reconciliation & 4,156 \\
 8. Feedback application & 3,967 \\
-9. Panel judgement & 2,832 \\
+9. Committee judgement & 2,832 \\
 \midrule
 Total passed so far & 8,233 \\
 \edit{Filtering (post-pipeline)} & \textbf{\edit{5,979}} \\
@@ -404,9 +404,9 @@ Total passed so far & 8,233 \\
 
 \edit{We first describe how many examples survived each pipeline stage for the two versions.}
 
-\noindent \textbf{\synthsubset.} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (panel judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
+\noindent \textbf{\synthsubset.} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
 
-\edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at panel judgement, and 27\% at the final filtering pass.}
+\edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at committee judgement, and 27\% at the final filtering pass.}
 
 % \edit{\begin{figure}[t]
 % \centering
@@ -506,7 +506,7 @@ The large gap between frontier and open-source models (up to 50+ percentage poin
 ReAct allows the model to reason before choosing a tool to call. This has a large impact on performance for models that do not reason in their default setting, highlighting the improvement that test-time scaling can bring. For models that are already thinking, ReAct decreases performance. This may reflect that modern thinking models are well-optimized for structured function calling, while ReAct's verbose format introduces additional opportunities for error.
 
 \noindent \textbf{Quality Control.}
-Our panel-based quality control ensures high-quality examples but introduces potential biases. The judges themselves are LLMs, which may share systematic blind spots with the evaluated models.
+Our committee-based quality control ensures high-quality examples but introduces potential biases. The judges themselves are LLMs, which may share systematic blind spots with the evaluated models.
 
 %==============================================================================
 \section{Conclusion}
@@ -780,7 +780,7 @@ Financial reporting                &  7.1 \\
 \section{Prompts and Examples}
 \label{app:prompts}
 
-Figure~\ref{fig:judge-prompt} shows the prompt template used for the panel LLM judge in \synthsubset.
+Figure~\ref{fig:judge-prompt} shows the prompt template used for the committee LLM judge in \synthsubset.
 
 Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illustrating the schema and data format.
 
@@ -891,7 +891,7 @@ Reply with JSON object like this:
    "feedback": "..."
 }
 \end{verbatim}
-\caption{\synthsubset: Prompt template for a panel member judge.}
+\caption{\synthsubset: Prompt template for a committee member judge.}
 \label{fig:judge-prompt}
 \end{figure}
 

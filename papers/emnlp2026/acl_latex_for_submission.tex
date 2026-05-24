@@ -616,9 +616,11 @@ This appendix complements the side-by-side bar chart in Figure~\ref{fig:accuracy
 \section{Benchmark Statistics}
 \label{app:dataset_statistics}
 
-This appendix collects descriptive statistics for both benchmark versions. For \synthsubset, Figures~\ref{fig:cr-query-length} and~\ref{fig:cr-umap-queries} summarise the text side of the corpus (query length and the semantic spread of the queries in UMAP space), while Figures~\ref{fig:cr-num-tables} and~\ref{fig:cr-num-data-rows} describe the size of the per-example backing stores in terms of table count and total row count. Figures~\ref{fig:cr-num-assistant-turns-per-item} and~\ref{fig:cr-num-tool-calls-per-item} report the interaction depth of the reference agent traces (assistant turns and tool invocations per example), indicating how much agent activity each task induces. For \groundedfinqa, Figures~\ref{fig:gr-answer-lengths}--\ref{fig:gr-num-tools} cover the answer-length distribution, the system-prompt-length distribution, and the per-example tool count, and Figures~\ref{fig:gr-umap-system-prompts} and~\ref{fig:gr-umap-tool-names} project the system prompts and the tool-name vocabularies into UMAP space to visualise topical and lexical coverage. Together the plots give a per-axis (text, schema, agent activity, tool surface) snapshot of how the two versions compare at the example level.
+This appendix collects descriptive statistics for both benchmark versions, organised by version below. Together the plots give a per-axis (text, schema, agent activity, tool surface) snapshot of how the two versions compare at the example level.
 
 \subsection{\synthsubset Statistics}
+
+The figures below summarise \synthsubset along three axes. Figures~\ref{fig:cr-query-length} and~\ref{fig:cr-umap-queries} cover the text side of the corpus (query length and the semantic spread of the queries in UMAP space). Figures~\ref{fig:cr-num-tables} and~\ref{fig:cr-num-data-rows} describe the size of the per-example backing stores in terms of table count and total row count. Figures~\ref{fig:cr-num-assistant-turns-per-item} and~\ref{fig:cr-num-tool-calls-per-item} report the interaction depth of the reference agent traces (assistant turns and tool invocations per example), indicating how much agent activity each task induces.
 
 \begin{figure}[h]
     \centering
@@ -663,6 +665,8 @@ This appendix collects descriptive statistics for both benchmark versions. For \
 \end{figure}
 
 \subsection{\groundedfinqa Statistics}
+
+The figures below summarise \groundedfinqa. Figures~\ref{fig:gr-answer-lengths}--\ref{fig:gr-num-tools} cover the answer-length distribution, the system-prompt-length distribution, and the per-example tool count. Figures~\ref{fig:gr-umap-system-prompts} and~\ref{fig:gr-umap-tool-names} project the system prompts and the tool-name vocabularies into UMAP space to visualise topical and lexical coverage.
 
 \begin{figure}[h]
     \centering

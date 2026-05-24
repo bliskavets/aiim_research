@@ -34,9 +34,9 @@
 \setlist[description]{itemsep=3pt, topsep=3pt, parsep=0pt, partopsep=0pt, leftmargin=0pt, labelindent=0pt, labelsep=0.5em}
 
 % Custom commands
-\newcommand{\datasetname}{\edit{FinOpsBench}\xspace}
-\newcommand{\synthsubset}{\edit{FinOpsBench-v1}\xspace}
-\newcommand{\groundedfinqa}{\edit{FinOpsBench-v2}\xspace}
+\newcommand{\datasetname}{FinOpsBench}\xspace
+\newcommand{\synthsubset}{FinOpsBench-v1}\xspace
+\newcommand{\groundedfinqa}{FinOpsBench-v2}\xspace
 
 \title{\datasetname: A Benchmark for Evaluating Agentic LLMs on Financial Analysis Tasks with Tool Use}
 
@@ -49,12 +49,8 @@
 
 \begin{abstract}
 We introduce \datasetname, a comprehensive benchmark for evaluating the capabilities of large language models (LLMs)
-in agentic financial analysis tasks requiring tool use. \edit{The benchmark is released in two versions:} (1) \synthsubset,
-\edit{a synthetic subset of 5,979} natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa,
-\edit{a grounded subset derived from FinQA} containing 1,108 multi-hop reasoning tasks \edit{embedded in custom tool environments}.
-\edit{Both subsets require} models to \edit{retrieve information exclusively through tool calls} rather than relying on in-context information,
-testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that \edit{even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively}, demonstrating significant room for improvement
-in agentic financial reasoning. \edit{We release the full benchmark}, evaluation code, and model traces to facilitate future research.
+in agentic financial analysis tasks that require tool use. The benchmark is released in two versions: (1) \synthsubset,
+a synthetic set of 5,979 natural-language financial analysis tasks that an agent must solve by issuing structured queries to a tool-callable data environment, with committee-reviewed quality control, and (2) \groundedfinqa, a grounded set derived from FinQA containing 1,108 multi-hop reasoning tasks embedded in custom tool environments. Both subsets require models to retrieve information exclusively through tool calls rather than relying on in-context information, testing genuine agentic reasoning capabilities. We evaluate a range of frontier and open-source models, finding that even the strongest model achieves only 68.9\% on \synthsubset and 69.6\% on \groundedfinqa, while open-source baselines fall as low as 21.9\% and 16.3\% respectively, demonstrating significant room for improvement in agentic financial reasoning. We release the full benchmark, evaluation code, and model traces to facilitate future research.
 \end{abstract}
 
 %==============================================================================
@@ -64,42 +60,32 @@ in agentic financial reasoning. \edit{We release the full benchmark}, evaluation
 \edit{\begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{figures/fig_accuracy_vs_size_no_llama.png}
-\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. \edit{Closed-source sizes are taken from the IKP estimates \citep{li2026incompressible}}.}
+\caption{Accuracy on \datasetname grows log-linearly with the (estimated) parameter count of the agent's base model. Closed-source sizes are taken from the IKP estimates \citep{li2026incompressible}}.
 \label{fig:accuracy_vs_size}
 \end{figure}}
 
-Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks
-\citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents could assist with financial analysis, compliance
-checking, and decision support by \edit{issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers}.
+Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks \citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents can assist with financial analysis, compliance checking, and decision support by issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers.However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA \citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test examples may have been seen during model training.
 
-However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA
-\citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided
-contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test
-examples may have been seen during model training.
-
-We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use.
-\edit{\datasetname is released in two versions, both produced by the same construction methodology and evaluated under the same agent harness. Practitioners can pick whichever version fits their evaluation budget and source-data preference:}
+We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use. \datasetname is released in two versions, both produced by the same construction methodology and evaluated under the same agent harness. Practitioners can pick whichever version fits their evaluation budget and source-data preference:
 
 \begin{itemize}
-    \item \edit{\textbf{\synthsubset}: the larger version (5,979 examples), produced by synthetic generation against fresh per-example backing stores accessed through a single structured-data tool. Each example undergoes rigorous quality control through a committee of three LLM judges.}
-
-    \item \edit{\textbf{\groundedfinqa}: the smaller version (1,108 examples), produced by building agentic environments around questions and tables taken from FinQA. Each sample bundles a financial question, a tool environment with diverse custom Python tools, distractor tools and rows, and a gold answer; the agent must perform multi-hop reasoning across several tool calls.}
+    \item \textbf{\synthsubset}: This benchmark is produced by synthetic generation against fresh per-example backing stores accessed through a single structured-data tool, and consists of 5,979 samples. Each sample undergoes rigorous quality control through a committee of three LLM judges. 
+    
+    \item \textbf{\groundedfinqa}: This benchmark is produced by building agentic environments around questions and tables taken from FinQA, and consists of 1,108 samples. Each sample bundles a financial question, a tool environment with diverse custom Python tools, distractor tools and rows, and a gold answer. The agent must perform multi-hop reasoning across several tool calls.
 \end{itemize}
 
-\edit{Both versions share the same design principles. First, answers cannot be extracted from the prompt alone, so agents must use tools to retrieve information. Second, examples require multi-step reasoning with intermediate tool calls. Third, distractor information is present to test the agent's ability to filter relevant from irrelevant data.}
+Both benchmarks share the same design principles. First, answers cannot be extracted from the prompt alone, so agents must use tools to retrieve information. Second, examples require multi-step reasoning with intermediate tool calls. Third, distractor information is present to test the agent's ability to filter relevant from irrelevant data.
 
 Our main contributions are:
 \begin{itemize}
     \item A novel benchmark for evaluating agentic LLMs on financial tasks requiring genuine tool use.
-    \item \edit{A rigorous benchmark construction pipeline with LLM committee-based quality control.}
-    \item \edit{Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
-    revealing significant gaps in agentic financial reasoning capabilities.}
-    \item \edit{An open-source release\footnote{\edit{Code: \url{https://anonymous.4open.science/r/FinOpsBench}}} of the complete benchmark together with the benchmark-construction pipeline code, the evaluation
-    harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of
-    our infrastructure for new agentic financial tasks.}
+    \item A rigorous benchmark construction pipeline with LLM committee-based quality control.
+    \item Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
+    revealing significant gaps in agentic financial reasoning capabilities.
+    \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the benchmark-construction pipeline code, the evaluation harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
 \end{itemize}
 
-\edit{As Figure~\ref{fig:accuracy_vs_size} shows, accuracy on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artefact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.}
+As Figure~\ref{fig:accuracy_vs_size} shows that the performance of different models on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artifact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.
 
 % \edit{\begin{figure}[t]
 % \centering
@@ -115,13 +101,13 @@ Our main contributions are:
 \datasetname is situated at the intersection of three research areas: context-bound financial Question Answering (QA), general
 agentic tool-use evaluation, and domain-specific semantic parsing.
 
-\paragraph{Context-Bound Financial QA}
+\noindent \textbf{Context-Bound Financial QA.}
 \edit{Foundational financial benchmarks like FinQA \citep{chen2021finqa}, ConvFinQA \citep{chen2022convfinqa}, TAT-QA \citep{zhu-etal-2021-tat}, and FinanceBench \citep{islam2023financebench} measure numerical reasoning, tabular-textual integration, and reasoning over SEC filings within static, explicitly provided contexts.} These established datasets are inherently
 non-agentic as they do not require dynamic interaction or external system calls\edit{; all necessary information is supplied in the prompt, testing reading comprehension rather than tool use or dynamic information retrieval}. Our \groundedfinqa component transitions this
 evaluation to a dynamic environment where information must be actively retrieved through multi-hop tool calls, isolating and
 testing the core planning and execution logic.
 
-\paragraph{\edit{Agentic and Tool-Use Benchmarks}}
+\noindent \textbf{\edit{Agentic and Tool-Use Benchmarks.}}
 General agent benchmarks, such as ToolBench \citep{qin2023tool, qin2023toolllm}\edit{, MCP-Verse \citep{lei2025mcpverse}, AgentBench \citep{liu2023agentbench}, and SWE-bench \citep{jimenez2024swebench}}, establish the methodological
 standard for evaluating LLMs'
 planning abilities against a large breadth of tools and domains \edit{(web browsing, code execution, APIs at scale)}. While essential for assessing general tool augmentation, these
@@ -132,8 +118,8 @@ the Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}
 EDGAR\edit{) or SEC-filing retrieval}, while \datasetname is engineered for \edit{\emph{diagnostic fidelity}} using controlled, synthetic environments to attribute failures
 unequivocally to flawed planning logic, rather than external noise or API variability. \edit{We further compare \datasetname against FinAgentBench and the Finance Agent Benchmark numerically along the size--accuracy axis in Appendix~\ref{app:cross_benchmark}.}
 
-\edit{\paragraph{Tool Use over Structured Business Data}
-A related line of work studies semantic parsing over structured data: cross-domain datasets such as Spider \citep{spider} and BIRD
+\noindent \textbf{Tool Use over Structured Business Data}
+\edit{A related line of work studies semantic parsing over structured data: cross-domain datasets such as Spider \citep{spider} and BIRD
 \citep{li2024can} score a model on the fidelity of a single generated query string against a fixed schema. \datasetname is
 deliberately \emph{not} a semantic-parsing benchmark: the agent is never scored on a query string. Instead, \synthsubset evaluates
 the full agentic loop (tool selection, multi-turn interaction with the data tool, evidence aggregation across calls, and natural-language
@@ -167,11 +153,11 @@ performance limitations.
 %     \label{tab:benchmark_comparison}
 % \end{table}
 
-\paragraph{Data Generation}
+\noindent \textbf{Data Generation.}
 Synthetic data generation has proven valuable for creating evaluation benchmarks at scale \citep{wang2022selfinstruct}. Recent work has explored using LLMs to generate and verify synthetic datasets with quality control mechanisms \citep{prabhakar2025apigenmt}. Our approach utilizes these methods and adapts them to creating financial agentic datasets.
 
 %==============================================================================
-\edit{\section{Benchmark Description}}
+\section{Benchmark Description}
 %==============================================================================
 
 \subsection{Overview}
@@ -201,51 +187,47 @@ Quality control & Committee & Execution-based \\
 \subsection{\synthsubset}
 \label{sec:synthsql}
 
-\synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example; the agent is never required to produce or score a query string, and only the final answer is evaluated.} Each example contains:
+\synthsubset consists of financial analysis tasks that \edit{an agent must solve by issuing structured-data queries through a single tool. Each example is backed by an isolated SQLite store generated specifically for that example; the agent is never required to produce or score a query string, and only the final answer is evaluated.} Each example contains \edit{\emph{User role}} (the persona making the query, e.g., CFO, auditor, financial analyst), \edit{\emph{Query}} (a natural language question about financial data), \edit{\emph{Backing data schema}} (a plausible company-data schema generated for this example), \edit{\emph{Backing data}} (realistic financial records including distractor rows), \edit{\emph{Expected answer}} (the ground-truth answer), and \edit{\emph{Agent trace}} (a reference solution demonstrating correct tool use).
 
-\begin{itemize}
-    \item \edit{\emph{User role}}: The persona making the query (e.g., CFO, auditor, financial analyst).
-    \item \edit{\emph{Query}}: A natural language question about financial data.
-    \item \edit{\emph{Backing data schema}: A plausible company-data schema generated for this example.}
-    \item \edit{\emph{Backing data}: Realistic financial records including distractor rows.}
-    \item \edit{\emph{Expected answer}}: The ground-truth answer.
-    \item \edit{\emph{Agent trace}}: A reference solution demonstrating correct tool use.
-\end{itemize}
+% \begin{itemize}
+%     \item \edit{\emph{User role}}: The persona making the query (e.g., CFO, auditor, financial analyst).
+%     \item \edit{\emph{Query}}: A natural language question about financial data.
+%     \item \edit{\emph{Backing data schema}: A plausible company-data schema generated for this example.}
+%     \item \edit{\emph{Backing data}: Realistic financial records including distractor rows.}
+%     \item \edit{\emph{Expected answer}}: The ground-truth answer.
+%     \item \edit{\emph{Agent trace}}: A reference solution demonstrating correct tool use.
+% \end{itemize}
 
-\edit{\synthsubset spans diverse financial analysis categories including:}
-\begin{itemize}
-    \item Accounts Payable (AP) analysis
-    \item Revenue recognition
-    \item Variance analysis
-    \item Data integrity and reconciliation
-    \item Financial reporting
-\end{itemize}
-
+\edit{\synthsubset spans diverse financial analysis categories including} Accounts Payable (AP) analysis, Revenue recognition, Variance analysis, Data integrity and reconciliation, and Financial reporting.
+% \begin{itemize}
+%     \item Accounts Payable (AP) analysis
+%     \item Revenue recognition
+%     \item Variance analysis
+%     \item Data integrity and reconciliation
+%     \item Financial reporting
+% \end{itemize}
 \edit{Representative queries spanning user roles and task categories are listed in Appendix~\ref{app:example_queries}, and the empirical category mix of the full \synthsubset stream is reported in Appendix~\ref{app:category_distribution}.}
 
 \subsection{\groundedfinqa}
 \label{sec:groundedfinqa}
 
-\groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes:
-
-\begin{itemize}
-    \item \edit{\emph{System prompt}}: Scenario description and available tools (without table data).
-    \item \edit{\emph{Synthetic backing store}: An SQLite \citep{sqlite} table set reconstructed from the original FinQA tables.}
-    \item \edit{\emph{Core tools}}: Functions required to derive the answer.
-    \item \edit{\emph{Distractor tools}}: Irrelevant tools to test filtering ability.
-    \item \edit{\emph{Correct plan}}: Reference multi-hop solution.
-\end{itemize}
-
+\groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes \edit{\emph{System prompt}} (scenario description and available tools without table data), \edit{\emph{Synthetic backing store} (an SQLite \citep{sqlite} table set reconstructed from the original FinQA tables)}, \edit{\emph{Core tools}} (functions required to derive the answer),  \edit{\emph{Distractor tools}} (irrelevant tools to test filtering ability), and \edit{\emph{Correct plan}} (reference multi-hop solution).
+% \begin{itemize}
+%     \item \edit{\emph{System prompt}}: Scenario description and available tools (without table data).
+%     \item \edit{\emph{Synthetic backing store}: An SQLite \citep{sqlite} table set reconstructed from the original FinQA tables.}
+%     \item \edit{\emph{Core tools}}: Functions required to derive the answer.
+%     \item \edit{\emph{Distractor tools}}: Irrelevant tools to test filtering ability.
+%     \item \edit{\emph{Correct plan}}: Reference multi-hop solution.
+% \end{itemize}
 Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
-
 \edit{Representative questions, together with a worked example showing the query, available tools, and a reference tool-call sequence, are given in Appendix~\ref{app:example_queries_v2} and Table~\ref{tab:example}.}
 
 
 %==============================================================================
-\edit{\section{Benchmark Construction}}
+\section{Benchmark Construction}
 %==============================================================================
 
-\edit{\subsection{\synthsubset pipeline}}
+\subsection{\synthsubset pipeline}
 \label{sec:synthsql_pipeline}
 
 \edit{\synthsubset is created through a 9-stage pipeline. Figure~\ref{fig:pipeline}~(top) gives an end-to-end overview of the \synthsubset construction process; the individual stages are described in detail below.}
@@ -257,77 +239,118 @@ Critically, the agent receives only the scenario description and tool definition
 \label{fig:pipeline}
 \end{figure*}
 
-\paragraph{Stage 1: Query Generation}
+\noindent \textbf{Stage 1: Query Generation.}
 We start with a few seed queries spanning financial analysis categories (in our experiment, we took 12 seed queries). These seeds are then expanded using an LLM, varying user roles and specific details. We utilize a prompt that takes one seed and generates 20 queries to increase diversity and run it multiple times to generate a large number of queries. We also use embedding-based similarity filtering (cosine threshold 0.9) to remove near-duplicates.
 
-\paragraph{Stage 2: Schema Generation}
+\noindent \textbf{Stage 2: Schema Generation.}
 For each query, an LLM generates a plausible \edit{data schema} that is: (1) sufficient to answer the query, (2) realistic for a company's records, and (3) appropriately complex.
 
-\paragraph{Stage 3: Data Generation}
+\noindent \textbf{Stage 3: Data Generation.}
 The LLM is then tasked with generating realistic data for each query and schema, including: (1) data necessary to answer the query, and (2) distractor rows to increase difficulty. The LLM is also required to provide the correct answer to the query consistent with the generated data.
 
-\paragraph{Stage 4: \edit{Execution-Based Validation}}
+\noindent \textbf{Stage 4: \edit{Execution-Based Validation.}}
 All generated \edit{schema and data definitions are validated by execution against SQLite}. Errors are iteratively fixed using LLM assistance (up to 5 attempts). We found that LLMs struggle with fixing small errors in (relatively) long \edit{generated programs}, so we split the program into individual statements and fix them one by one.
 
-\paragraph{Stage 5: Agent Trace Generation}
+\noindent \textbf{Stage 5: Agent Trace Generation.}
 An agent runs on each query. It is supplied with access to the \edit{example's backing data through the structured-data tool}, with up to 6 rounds of interaction allowed. The full conversation trace is recorded.
 
-\edit{At this point, we have a benchmark subset that contains:}
-\begin{itemize}
-    \item A query
-    \item \edit{A data schema}
-    \item \edit{Backing data (records necessary to answer the query and distractor rows)}
-    \item Intended answer to the query
-    \item An agent trace demonstrating the solution to the query
-\end{itemize}
+\edit{At this point, we have a benchmark subset that contains} a query, \edit{a data schema}, \edit{backing data (records necessary to answer the query and distractor rows)}, intended answer to the query, and  an agent trace demonstrating the solution to the query.
+% \begin{itemize}
+%     \item A query
+%     \item \edit{A data schema}
+%     \item \edit{Backing data (records necessary to answer the query and distractor rows)}
+%     \item Intended answer to the query
+%     \item An agent trace demonstrating the solution to the query
+% \end{itemize}
 However, there may be hallucinations, unnatural data, wrong tool calls, or wrong answers in the agent trace that need to be identified and fixed.
 
-\paragraph{Stage 6: Committee Judgement}
-A committee of three LLM judges evaluates each example's data and agent trace on five criteria:
-\begin{enumerate}
-    \item \edit{\emph{Data naturalness}}: Is the generated data realistic?
-    \item \edit{\emph{Trace reasonableness}}: Does the agent examine appropriate data?
-    \item \edit{\emph{Trace soundness}}: Is the reasoning logical?
-    \item \edit{\emph{Grounding}}: Is reasoning based only on tool outputs?
-    \item \edit{\emph{Answer correctness}}: Does the answer address the query?
-\end{enumerate}
+\noindent \textbf{Stage 6: Committee Judgement.}
+A committee of three LLM judges evaluates each example's data and agent trace on five criteria: 
+\textbf{(1)} \edit{\emph{Data naturalness}}: Is the generated data realistic?
+\textbf{(2)} \edit{\emph{Trace reasonableness}}: Does the agent examine appropriate data?
+\textbf{(3)} \edit{\emph{Trace soundness}}: Is the reasoning logical?
+\textbf{(4)} \edit{\emph{Grounding}}: Is reasoning based only on tool outputs?
+\textbf{(5)} \edit{\emph{Answer correctness}}: Does the answer address the query?
+
+
+
+% \begin{enumerate}
+%     \item \edit{\emph{Data naturalness}}: Is the generated data realistic?
+%     \item \edit{\emph{Trace reasonableness}}: Does the agent examine appropriate data?
+%     \item \edit{\emph{Trace soundness}}: Is the reasoning logical?
+%     \item \edit{\emph{Grounding}}: Is reasoning based only on tool outputs?
+%     \item \edit{\emph{Answer correctness}}: Does the answer address the query?
+% \end{enumerate}
 
 An example passes only if it receives majority approval (2/3 judges) on \emph{all} criteria. In that case, it proceeds to the next stage. Otherwise, it goes to the improvement loop (Stages 7 and 8). Note that the loop only runs once for each example; if the improved example fails the judgement again, it is rejected completely.
 
-\paragraph{Stage 7: Feedback Reconciliation}
+\noindent \textbf{Stage 7: Feedback Reconciliation.}
 The judges' criticisms are given to an LLM which is asked to aggregate them into actionable feedback. The LLM at this stage has access to most of the example's data, including the query, \edit{the data schema, the backing data}, and the agent trace.
 
-\paragraph{Stage 8: Feedback Application}
-The agent runs again with a prompt containing:
-\begin{itemize}
-    \item The query
-    \item \edit{The data schema}
-    \item The previous agent trace
-    \item The feedback produced in Stage 7
-\end{itemize}
+\noindent \textbf{Stage 8: Feedback Application.}
+The agent runs again with a prompt containing the query, \edit{the data schema}, the previous agent trace, and the feedback produced in Stage 7.
+% \begin{itemize}
+%     \item The query
+%     \item \edit{The data schema}
+%     \item The previous agent trace
+%     \item The feedback produced in Stage 7
+% \end{itemize}
 It still has access to the \edit{structured-data tool}, and the conversation is limited to 6 rounds. The full conversation trace is recorded.
 
-\paragraph{Stage 9: Second Judgement}
+\noindent \textbf{Stage 9: Second Judgement.}
 The improved examples are then re-judged by the committee. If an example passes, it proceeds to the next stage. Otherwise, it is \edit{dropped from the benchmark}.
 
-\paragraph{Final Filtering}
+\noindent \textbf{Final Filtering.}
 \edit{The final benchmark includes only examples that passed committee judgement. We run two filtering passes to ensure quality and complexity of the benchmark.} The first pass uses an LLM to compare the final answer produced in the agent trace with the intended answer created in Stage 3. Additionally, we filter out examples where the agent did not actually \edit{invoke the structured-data tool} (removing examples answerable from context alone).
 
-\edit{\subsection{\groundedfinqa pipeline}}
+\subsection{\groundedfinqa pipeline}
 
 The \groundedfinqa pipeline transforms FinQA samples through \edit{9 stages (Figure~\ref{fig:pipeline}, bottom)}:
 
-\paragraph{\edit{Stage} 1: Initial Solution}
+\noindent \textbf{\edit{Stage} 1: Initial Solution.}
 An LLM creates a direct Python solution using the original table data, establishing the computational logic.
 
-\paragraph{\edit{Stage} 2: \edit{Backing Data Store Generation}}
+\noindent \textbf{\edit{Stage} 2: \edit{Backing Data Store Generation.}}
 \edit{An SQLite-backed table set is generated to model the scenario, containing the records needed to answer the question.}
 
-\paragraph{\edit{Stage} 3: Basic Tools}
+\noindent \textbf{Stage 3: Basic Tools.}
 Tool functions are created as abstractions over the \edit{backing store}, designed to enable multi-hop reasoning.
 
-\paragraph{\edit{Stage} 4: Correct Plan (Basic)}
+\noindent \textbf{Stage 4: Correct Plan (Basic).}
 A reference solution is written using the basic tools.
+
+\noindent \textbf{Stage 5: Augmented Backing Store}.
+The \edit{backing store} is expanded with additional tables, split data, and distractor rows to increase difficulty.
+
+\noindent \textbf{Stage 6: Augmented Tools.}
+Extended tools are created including core tools for the correct solution, partial information tools requiring chaining, and distractor tools providing irrelevant data.
+
+% \begin{itemize}
+%     \item Core tools for the correct solution
+%     \item Partial information tools requiring chaining
+%     \item Distractor tools providing irrelevant data
+% \end{itemize}
+
+\noindent \textbf{\edit{Stage} 7: Correct Plan (Augmented).}
+A reference solution using the augmented tools demonstrates the multi-hop solution path.
+
+\noindent \textbf{\edit{Stage} 8: System Prompt.}
+A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
+
+\noindent \textbf{\edit{Stage} 9: Agent Code.}
+A runnable agent using the \texttt{smolagents} \citep{smolagents} library is generated for evaluation.
+
+\edit{Each stage is required to output a file (Python code in all stages except Stage 8 which outputs a system prompt with the task formulation). For each stage, the LLM receives in the context:}
+(1) A long description of the whole process with all the \edit{stages} described; (2) An indication of what \edit{stage} is currently running; (3) All previous files' content from the previous \edit{stages}, and (4) In \edit{Stage} 9, an example agent code showing coding practices for achieving more stable results.
+% \begin{itemize}
+%     \item A long description of the whole process with all the \edit{stages} described,
+%     \item An indication of what \edit{stage} is currently running,
+%     \item All previous files' content from the previous \edit{stages}, and
+%     \item In \edit{Stage} 9, an example agent code showing coding practices for achieving more stable results.
+% \end{itemize}
+\edit{After completing, each stage undergoes an execution-based validation. If the execution fails, the stage is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).}
+
+
 
 \edit{\begin{figure}[t]
 \centering
@@ -336,44 +359,15 @@ A reference solution is written using the basic tools.
 \label{fig:pipeline_funnel}
 \end{figure}}
 
-\paragraph{\edit{Stage} 5: \edit{Augmented Backing Store}}
-The \edit{backing store} is expanded with additional tables, split data, and distractor rows to increase difficulty.
-
-\paragraph{\edit{Stage} 6: Augmented Tools}
-Extended tools are created including:
-\begin{itemize}
-    \item Core tools for the correct solution
-    \item Partial information tools requiring chaining
-    \item Distractor tools providing irrelevant data
-\end{itemize}
-
-\paragraph{\edit{Stage} 7: Correct Plan (Augmented)}
-A reference solution using the augmented tools demonstrates the multi-hop solution path.
-
-\paragraph{\edit{Stage} 8: System Prompt}
-A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
-
-\paragraph{\edit{Stage} 9: Agent Code}
-A runnable agent using the \texttt{smolagents} \citep{smolagents} library is generated for evaluation.
-
-\edit{Each stage is required to output a file (Python code in all stages except Stage 8 which outputs a system prompt with the task formulation). For each stage, the LLM receives in the context:}
-\begin{itemize}
-    \item A long description of the whole process with all the \edit{stages} described,
-    \item An indication of what \edit{stage} is currently running,
-    \item All previous files' content from the previous \edit{stages}, and
-    \item In \edit{Stage} 9, an example agent code showing coding practices for achieving more stable results.
-\end{itemize}
-\edit{After completing, each stage undergoes an execution-based validation. If the execution fails, the stage is rerun with a prompt that includes the error message and asks to fix the errors (up to 10 attempts).}
-
 %==============================================================================
-\edit{\section{Experiments}}
+\section{Experiments}
 %==============================================================================
 
-\edit{\subsection{Setup}}
+\subsection{Setup}
 
 \edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
 
-\edit{\subsection{Construction statistics}}
+\subsection{Construction statistics}
 
 \begin{table}[t]
 \centering
@@ -405,7 +399,7 @@ Total passed so far & 8,233 \\
 
 \edit{We first describe how many examples survived each pipeline stage for the two versions.}
 
-\edit{\paragraph{\synthsubset.}} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
+\noindent \textbf{\synthsubset.} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 (committee judgement) is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
 
 \edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at committee judgement, and 27\% at the final filtering pass.}
 
@@ -416,9 +410,9 @@ Total passed so far & 8,233 \\
 % \label{fig:pipeline_funnel}
 % \end{figure}}
 
-\edit{\paragraph{\groundedfinqa.}} We ran the data-example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
+\noindent \textbf{\groundedfinqa.} We ran the data-example creation routine using the protocol described above for \edit{1,247 examples drawn uniformly at random from the FinQA training split}, resulting in 1,108 examples (the rest failed in at least one of the \edit{stages}). \edit{Appendix~\ref{app:v2_file_layout} lists the per-example file layout.}
 
-\edit{\subsection{Results}}
+\subsection{Results}
 
 \edit{The final evaluation results for both versions of the benchmark are presented in Table~\ref{tab:results}.}
 
@@ -447,7 +441,7 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \label{tab:results}
 \end{table}}
 
-\edit{\paragraph{Findings.} Having run experiments on both versions, we observe a consistent picture: overall model capability tracks benchmark accuracy, but the strongest models still leave substantial headroom. The log-linear dependence of accuracy on the agent's base-model parameter count is already visible in Figure~\ref{fig:accuracy_vs_size}, and Table~\ref{tab:results} provides the per-model numbers. On \synthsubset, even the best model (GPT-5) reaches only \emph{68.9\%}, indicating substantial room for improvement; modern and larger models such as GPT-5 outperform smaller, older ones such as Llama-3.1-8B; and the frontier/open-source gap is wide, with even Qwen3-30B-A3B scoring \emph{11\,pp} below the worst frontier model (GPT-4.1-mini). Figure~\ref{fig:synth_categories_radar} further shows that this ranking is stable across the four query categories carried by the seed set: every model's per-category polygon is approximately concentric, so the gap is not driven by any single financial sub-domain.}
+\noindent \textbf{Findings.} \edit{Having run experiments on both versions, we observe a consistent picture: overall model capability tracks benchmark accuracy, but the strongest models still leave substantial headroom. The log-linear dependence of accuracy on the agent's base-model parameter count is already visible in Figure~\ref{fig:accuracy_vs_size}, and Table~\ref{tab:results} provides the per-model numbers. On \synthsubset, even the best model (GPT-5) reaches only \emph{68.9\%}, indicating substantial room for improvement; modern and larger models such as GPT-5 outperform smaller, older ones such as Llama-3.1-8B; and the frontier/open-source gap is wide, with even Qwen3-30B-A3B scoring \emph{11\,pp} below the worst frontier model (GPT-4.1-mini). Figure~\ref{fig:synth_categories_radar} further shows that this ranking is stable across the four query categories carried by the seed set: every model's per-category polygon is approximately concentric, so the gap is not driven by any single financial sub-domain.}
 
 \edit{On \groundedfinqa we observe essentially the same ranking. GPT-5 and o4-mini lead at \emph{$\sim$67--70\%}, the GPT-4.1 variants follow, and the open-source models trail. Llama-3.1-8B again severely underperforms its size-matched newer sibling Qwen3-8B, suggesting that tool-use capability is sensitive to the training paradigm and not only to parameter count. Per-model accuracies track each other across the two versions (mean absolute difference \emph{2.6\,pp}); the side-by-side bar chart and the $y=x$ scatter in Appendix~\ref{app:cross_version_results} (Figures~\ref{fig:accuracy_bars} and~\ref{fig:synth_vs_curated_scatter}) make this agreement explicit, with the only material outliers being Qwen3-30B-A3B and Qwen3-8B, which both score noticeably lower on the FinQA-grounded version, where the multi-hop, multi-tool environment exposes more of the weaker models' failure modes.}
 
@@ -458,7 +452,7 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 \label{fig:synth_categories_radar}
 \end{figure}}
 
-\edit{\paragraph{Native tool calling vs.\ ReAct.}} While analyzing the traces of smaller models we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \citep{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
+\noindent \textbf{Native tool calling vs.\ ReAct.} While analyzing the traces of smaller models, we found it hard to understand what they were struggling with when calling tools, because there was no record of the reasoning behind the tool and argument choices. We therefore added a second experiment using the ReAct tool-calling protocol \citep{yao2022react}, which requires the model to output its reasoning before calling a tool. This experiment was performed on \synthsubset; Table~\ref{tab:react_results} presents the results.
 
 \begin{table}[h]
 \centering
@@ -488,8 +482,8 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
 
 \edit{\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/fig_native_vs_react.png}
-\caption{Native tool calling vs.\ ReAct on \synthsubset. \edit{Thinking models occupy the left half of the plot and non-thinking models the right, separated by the dotted vertical line.} Numbers above each pair give the ReAct minus Native delta in percentage points.}
+\includegraphics[width=1\linewidth]{figures/fig_native_vs_react.pdf}
+\caption{Native tool calling vs.\ ReAct on \synthsubset. Numbers above each pair give the ReAct minus Native delta in percentage points.}
 \label{fig:native_vs_react}
 \end{figure}}
 
@@ -497,16 +491,16 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
 \section{Discussion}
 %==============================================================================
 
-\paragraph{Benchmarking Agentic Capabilities}
+\noindent \textbf{Benchmarking Agentic Capabilities.}
 Our results demonstrate that \datasetname effectively discriminates between models' agentic capabilities. The significant gap from ceiling performance (around 69\%) suggests current models have substantial room for improvement in financial tool use.
 
-\paragraph{Open-Source Gap}
+\noindent \textbf{Open-Source Gap.}
 The large gap between frontier and open-source models (up to 50+ percentage points) highlights an important direction for open-source development. Financial agentic tasks may require specialized training on tool-use trajectories.
 
-\paragraph{Native Tool Calling vs.\ ReAct}
+\noindent \textbf{Native Tool Calling vs.\ ReAct.}
 ReAct allows the model to reason before choosing a tool to call. This has a large impact on performance for models that do not reason in their default setting, highlighting the improvement that test-time scaling can bring. For models that are already thinking, ReAct decreases performance. This may reflect that modern thinking models are well-optimized for structured function calling, while ReAct's verbose format introduces additional opportunities for error.
 
-\paragraph{Quality Control}
+\noindent \textbf{Quality Control.}
 Our committee-based quality control ensures high-quality examples but introduces potential biases. The judges themselves are LLMs, which may share systematic blind spots with the evaluated models.
 
 %==============================================================================
@@ -532,15 +526,15 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \appendix
 
-\section{\edit{Cross-Benchmark Comparison of Size--Accuracy Trends}}
+\section{Cross-Benchmark Comparison of Size--Accuracy Trends}
 \label{app:cross_benchmark}
 
 \edit{Beyond the within-benchmark sanity check shown in Figure~\ref{fig:accuracy_vs_size}, where accuracy on \datasetname grows log-linearly with the agent's base-model size, we cross-check the size--accuracy relationship on two other recent financial-agent benchmarks. Parameter counts for closed-source models throughout this appendix come from the IKP calibration of \citet{li2026incompressible}; we use the direct estimates from that paper's main table where available and invert the published log-linear calibration on the extended-table IKP scores otherwise.}
 
-\paragraph{\edit{FinAgentBench \citep{choi2025finagentbench}.}}
+\noindent \textbf{\edit{FinAgentBench \citep{choi2025finagentbench}.}}
 \edit{On the document- and chunk-ranking tasks of FinAgentBench (Figure~\ref{fig:finagentbench_size}), the trend is the opposite of the one we observe on \datasetname: across the three evaluated proprietary models (Claude-Sonnet-4 at $\approx$237B, Claude-Opus-4 at $\approx$1.4T, and GPT-o3 at $\approx$3T), the \emph{smallest} model wins or ties on every metric (nDCG@5, MAP@5, MRR@5) in both ranking tables. A monotonically negative slope on accuracy versus parameter count is a strong negative signal for benchmark validity. It suggests either that the task probes a narrow stylistic regime that the larger models are over-trained out of, or that smaller models in the same family have been exposed to closely related retrieval data during training. In short, performance on this benchmark appears to be governed more by model-family biases or potential data leakage than by raw model capability.}
 
-\paragraph{\edit{Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}.}}
+\noindent \textbf{\edit{Finance Agent Benchmark \citep{bigeard2025financeagentbenchmarkbenchmarking}.}}
 \edit{On the 22-model Finance Agent Benchmark leaderboard (Figure~\ref{fig:financeagentbench_size}), accuracy does increase with parameter count, fitting a roughly $+15.5$\,pp-per-decade log-linear trend. However, the residual variance around this trend is large enough that the fit is not, on its own, a reliable validity signal. First, at comparable sizes models differ by 20--40\,pp; for example, Claude 3.7 Sonnet ($\approx$676B) reaches 44\% while GPT-4o ($\approx$720B) reaches only 20\%. Second, several large models sit far below the trend line: o1 at $\approx$3.5T scores only 21.4\%, and LLaMA 4 Maverick at $\approx$400B scores only 3.1\%, which the source paper attributes to tool-interface misuse. Third, and most strikingly, the same model run in two different reasoning modes can differ by 13\,pp at fixed parameter count (Grok 3 Mini at 30.9\% high-reasoning vs.\ 17.6\% low-reasoning). The positive slope therefore conflates parametric capacity with reasoning paradigm and tool-use training; it does not isolate size as the dominant driver, in contrast to the cleaner relationship observed on \datasetname.}
 
 \begin{figure}[t]
@@ -557,8 +551,8 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \label{fig:financeagentbench_size}
 \end{figure}
 
-\edit{\section{Per-model accuracies across the two \datasetname versions}}
-\edit{\label{app:cross_version_results}}
+\section{Per-model accuracies across the two \datasetname versions}
+\label{app:cross_version_results}
 
 \edit{This appendix provides two per-model views of the two main result tables. Figure~\ref{fig:accuracy_bars} plots each model's accuracy on \synthsubset and \groundedfinqa as adjacent bars, so that the within-model gap between the two versions is immediately visible (frontier models occupy the left half, open-source the right). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data as a scatter against a $y=x$ reference line, separating models that score equally on the two versions from those that score lower on \groundedfinqa.}
 
@@ -576,7 +570,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \label{fig:synth_vs_curated_scatter}
 \end{figure}}
 
-\edit{\section{Benchmark Statistics}}
+\section{Benchmark Statistics}
 \label{app:dataset_statistics}
 
 \edit{This appendix collects descriptive statistics for both benchmark versions. For \synthsubset, Figures~\ref{fig:cr-query-length} and~\ref{fig:cr-umap-queries} summarise the text side of the corpus (query length and the semantic spread of the queries in UMAP space), while Figures~\ref{fig:cr-num-tables} and~\ref{fig:cr-num-data-rows} describe the size of the per-example backing stores in terms of table count and total row count. Figures~\ref{fig:cr-num-assistant-turns-per-item} and~\ref{fig:cr-num-tool-calls-per-item} report the interaction depth of the reference agent traces (assistant turns and tool invocations per example), indicating how much agent activity each task induces. For \groundedfinqa, Figures~\ref{fig:gr-answer-lengths}--\ref{fig:gr-num-tools} cover the answer-length distribution, the system-prompt-length distribution, and the per-example tool count, and Figures~\ref{fig:gr-umap-system-prompts} and~\ref{fig:gr-umap-tool-names} project the system prompts and the tool-name vocabularies into UMAP space to visualise topical and lexical coverage. Together the plots give a per-axis (text, schema, agent activity, tool surface) snapshot of how the two versions compare at the example level.}
@@ -662,7 +656,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
     \label{fig:gr-umap-tool-names}
 \end{figure}
 
-\section{\edit{Example Queries from \synthsubset}}
+\section{Example Queries from \synthsubset}
 \label{app:example_queries}
 
 \edit{The following queries are drawn at random from the filtered \synthsubset test set. Each query is paired with the persona the LLM was instructed to assume when it generated the question; together they illustrate the breadth of user roles and the diversity of analysis categories covered by \synthsubset.}
@@ -680,7 +674,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \edit{Across the full 5{,}979-example set we observe more than 60 distinct user roles (e.g.\ CFO, internal/external auditor, controller, procurement officer, treasury manager, tax advisor, compliance officer, risk manager), and queries span the accounts-payable, reconciliation, variance-analysis, revenue-recognition, and financial-reporting categories described in Section~\ref{sec:synthsql}.}
 
-\section{\edit{Example Questions from \groundedfinqa}}
+\section{Example Questions from \groundedfinqa}
 \label{app:example_queries_v2}
 
 \edit{The following questions are drawn at random from the filtered \groundedfinqa set. Each is a multi-hop numerical-reasoning question taken from a FinQA item; the agent must reach the answer by calling the example's bespoke Python tools rather than by reading the original FinQA table directly.}
@@ -736,8 +730,8 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 \label{tab:example}
 \end{table}}
 
-\edit{\section{Per-example file layout for \groundedfinqa}}
-\edit{\label{app:v2_file_layout}}
+\section{Per-example file layout for \groundedfinqa}
+\label{app:v2_file_layout}
 
 \edit{Each example in \groundedfinqa is shipped as a small directory of source files, listed below.}
 
@@ -753,8 +747,8 @@ What is the percent change in receivables from or (payables to) the Money Pool f
 
 \edit{In addition, each example directory carries auxiliary intermediate files kept from the build process for reproducibility.}
 
-\edit{\section{Category distribution of \synthsubset}}
-\edit{\label{app:category_distribution}}
+\section{Category distribution of \synthsubset}
+\label{app:category_distribution}
 
 \edit{Table~\ref{tab:category_distribution} reports the share of \synthsubset examples assigned to each of the five categories from Section~\ref{sec:synthsql}. Categorisation is done automatically by nearest-anchor TF-IDF similarity over a short description sentence per category, applied to the full \synthsubset stream. The mix is dominated by accounts-payable queries (over half of the corpus), reflecting the seed-query composition; the remaining four categories are balanced between 7 and 15\%.}
 

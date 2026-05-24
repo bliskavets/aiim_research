@@ -562,6 +562,8 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \editN{\datasetname contains no personal or otherwise identifying data. FinQA is built on aggregated public corporate-finance disclosures from S\&P~500 companies and contains no individual-person information; \synthsubset is generated end-to-end, and therefore contains no records traceable to real people or companies. No additional anonymisation step was required, and the benchmark and its accompanying artifacts are provided in English language.}
 
+\editN{A description of how AI assistants were used in preparing this paper is given in Appendix~\ref{app:ai_usage}.}
+
 
 %==============================================================================
 \section*{Limitations}
@@ -935,12 +937,16 @@ Reply with JSON object like this:
    "feedback": "..."
 }
 \end{verbatim}
-\caption{\synthsubset: Prompt template for a 
-% committee 
+\caption{\synthsubset: Prompt template for a
+% committee
 \editN{panel}
 member judge.}
 \label{fig:judge-prompt}
 \end{figure}
 
+\editN{\section{Use of AI Assistants}}
+\editN{\label{app:ai_usage}}
+
+\editN{In the spirit of transparent reporting of AI-assisted authoring, we summarise how AI tools were used in the preparation of this paper. All core benchmark code, prompts, and configuration were written manually by the authors and reviewed end-to-end; the main body of the paper was likewise written manually. We used Claude \citep{anthropic2024claude3} during the final preparation pass for two narrowly scoped tasks: (i) editorial revisions of phrasing and tightening of existing prose, and (ii) auxiliary code for collecting statistics about the benchmark and rendering some of the analysis figures. Every artifact produced by Claude was iteratively reviewed and accepted by the authors; no Claude output was incorporated without manual inspection.}
 
 \end{document}

@@ -378,7 +378,7 @@ After completing, each stage undergoes an execution-based validation. If the exe
 
 \subsection{Setup}
 
-We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.
+We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). Frontier models are accessed through OpenAI's API; the three open-source models are served locally on a single NVIDIA H100 GPU. Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.
 
 \subsection{Construction statistics}
 
@@ -477,7 +477,7 @@ the side-by-side bar chart in Figure~\ref{fig:accuracy_bars} and the $y=x$ scatt
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{figures/fig_synth_categories_radar_5cat.pdf}
-\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the five categories described in Section~\ref{sec:synthsql}; each query in the 729-example test set is assigned to a category by nearest-anchor TF-IDF similarity. The category mix of the full \synthsubset stream is reported in Appendix~\ref{app:category_distribution}.}
+\caption{Per-category accuracy on \synthsubset for the eight evaluated models. Axes are the five categories described in Section~\ref{sec:synthsql}; each query in the 729-example test set is assigned to one of these five categories. The category mix of the full \synthsubset stream is reported in Appendix~\ref{app:category_distribution}.}
 \label{fig:synth_categories_radar}
 \end{figure}
 

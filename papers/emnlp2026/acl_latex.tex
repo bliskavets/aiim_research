@@ -536,7 +536,7 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
 Our results demonstrate that \datasetname effectively discriminates between models' agentic capabilities. The significant gap from ceiling performance (around 69\%) suggests current models have substantial room for improvement in financial tool use.
 
 \noindent \textbf{Open-Source Gap.}
-The large gap between frontier and open-source models (up to 50+ percentage points) highlights an important direction for open-source development. Financial agentic tasks may require specialized training on tool-use trajectories.
+The large gap between frontier and open-source models (up to 50+ percentage points) highlights an important direction for open-source development. Financial agentic tasks may require specialized training on tool-use trajectories. \editN{Concretely, closing this gap likely requires trajectory-level fine-tuning or reinforcement learning over realistic tool-use sequences (including tool selection, argument formation, and intermediate-result handling) rather than additional next-token pre-training on financial text alone.}
 
 \noindent \textbf{Native Tool Calling vs.\ ReAct.}
 ReAct allows the model to reason before choosing a tool to call. This has a large impact on performance for models that do not reason in their default setting, highlighting the improvement that test-time scaling can bring. For models that are already thinking, ReAct decreases performance. This may reflect that modern thinking models are well-optimized for structured function calling, while ReAct's verbose format introduces additional opportunities for error.

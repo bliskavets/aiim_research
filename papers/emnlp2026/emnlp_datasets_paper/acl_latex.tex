@@ -474,7 +474,14 @@ Llama-3.1-8B-Instruct  & 21.9 & 16.3 \\
 
 \noindent \textbf{Findings.} \edit{Having run experiments on both versions, we observe a consistent picture: overall model capability tracks benchmark accuracy, but the strongest models still leave substantial headroom. The log-linear dependence of accuracy on the agent's base-model parameter count is already visible in Figure~\ref{fig:accuracy_vs_size}, and Table~\ref{tab:results} provides the per-model numbers. On \synthsubset, even the best model (GPT-5) reaches only \emph{68.9\%}, indicating substantial room for improvement; modern and larger models such as GPT-5 outperform smaller, older ones such as Llama-3.1-8B; and the frontier/open-source gap is wide, with even Qwen3-30B-A3B scoring \emph{11\,pp} below the worst frontier model (GPT-4.1-mini). Figure~\ref{fig:synth_categories_radar} further shows that this ranking is stable across the four query categories carried by the seed set: every model's per-category polygon is approximately concentric, so the gap is not driven by any single financial sub-domain.}
 
-\edit{On \groundedfinqa we observe essentially the same ranking. GPT-5 and o4-mini lead at \emph{$\sim$67--70\%}, the GPT-4.1 variants follow, and the open-source models trail. Llama-3.1-8B again severely underperforms its size-matched newer sibling Qwen3-8B, suggesting that tool-use capability is sensitive to the training paradigm and not only to parameter count. Per-model accuracies track each other across the two versions (mean absolute difference \emph{2.6\,pp}); the side-by-side bar chart and the $y=x$ scatter in Appendix~\ref{app:cross_version_results} (Figures~\ref{fig:accuracy_bars} and~\ref{fig:synth_vs_curated_scatter}) make this agreement explicit, with the only material outliers being Qwen3-30B-A3B and Qwen3-8B, which both score noticeably lower on the FinQA-grounded version, where the multi-hop, multi-tool environment exposes more of the weaker models' failure modes.}
+\edit{On \groundedfinqa we observe essentially the same ranking. GPT-5 and o4-mini lead at \emph{$\sim$67--70\%}, the GPT-4.1 variants follow, and the open-source models trail. Llama-3.1-8B again severely underperforms its size-matched newer sibling Qwen3-8B, suggesting that tool-use capability is sensitive to the training paradigm and not only to parameter count. Per-model accuracies track each other across the two versions (mean absolute difference \emph{2.6\,pp}); \editN{the side-by-side bar chart in Figure~\ref{fig:accuracy_bars} and the $y=x$ scatter in Appendix~\ref{app:cross_version_results} (Figure~\ref{fig:synth_vs_curated_scatter}) make this agreement explicit}, with the only material outliers being Qwen3-30B-A3B and Qwen3-8B, which both score noticeably lower on the FinQA-grounded version, where the multi-hop, multi-tool environment exposes more of the weaker models' failure modes.}
+
+\editN{\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_accuracy_bars.png}
+\caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
+\label{fig:accuracy_bars}
+\end{figure}}
 
 \edit{\begin{figure}[t]
 \centering
@@ -545,13 +552,13 @@ We introduced \datasetname, a benchmark for evaluating agentic LLMs on financial
 
 Our work provides a foundation for developing and evaluating financial AI agents. Future work may extend the benchmark to additional financial domains, incorporate \edit{real corporate data sources} (with appropriate anonymization), and develop training approaches to improve agentic financial reasoning.
 
-%==============================================================================
+
 \editN{\section*{Ethics Statement}}
-%==============================================================================
 
 \editN{We plan to release \datasetname under the MIT License for research and educational use, in line with our goal of supporting external contributors and downstream reproducibility. \groundedfinqa is built on top of FinQA \citep{chen2021finqa}, which is itself distributed under the MIT License; our use of FinQA (building derivative tool environments around its public questions and tables) is consistent with its intended use as a public research benchmark, and we redistribute only derivative artifacts (synthetic backing stores, tool environments, reference plans, and agent traces) rather than the original FinQA tables verbatim.}
 
-\editN{\datasetname contains no personal or otherwise identifying data. FinQA is built on aggregated public corporate-finance disclosures from S\&P~500 companies and contains no individual-person information; \synthsubset is generated end-to-end by an LLM against fully synthetic schemas and rows, and therefore contains no records traceable to real people or companies. No additional anonymisation step was required, and the benchmark and its accompanying artifacts are provided in English.}
+\editN{\datasetname contains no personal or otherwise identifying data. FinQA is built on aggregated public corporate-finance disclosures from S\&P~500 companies and contains no individual-person information; \synthsubset is generated end-to-end, and therefore contains no records traceable to real people or companies. No additional anonymisation step was required, and the benchmark and its accompanying artifacts are provided in English language.}
+
 
 %==============================================================================
 \section*{Limitations}
@@ -596,14 +603,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \section{Per-model accuracies across the two \datasetname versions}
 \label{app:cross_version_results}
 
-\edit{This appendix provides two per-model views of the two main result tables. Figure~\ref{fig:accuracy_bars} plots each model's accuracy on \synthsubset and \groundedfinqa as adjacent bars, so that the within-model gap between the two versions is immediately visible (frontier models occupy the left half, open-source the right). Figure~\ref{fig:synth_vs_curated_scatter} plots the same data as a scatter against a $y=x$ reference line, separating models that score equally on the two versions from those that score lower on \groundedfinqa.}
-
-\edit{\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/fig_accuracy_bars.png}
-\caption{Per-model accuracy on \synthsubset and \groundedfinqa. Frontier models occupy the left half, open-source the right.}
-\label{fig:accuracy_bars}
-\end{figure}}
+\editN{This appendix complements the side-by-side bar chart in Figure~\ref{fig:accuracy_bars} with a per-model agreement view: Figure~\ref{fig:synth_vs_curated_scatter} plots the same data as a scatter against a $y=x$ reference line, separating models that score equally on the two versions from those that score lower on \groundedfinqa.}
 
 \edit{\begin{figure}[t]
 \centering

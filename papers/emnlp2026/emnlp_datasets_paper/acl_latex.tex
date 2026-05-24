@@ -69,7 +69,7 @@ a synthetic set of 5,979 natural-language financial analysis tasks that an agent
 
 Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks \citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents can assist with financial analysis, compliance checking, and decision support by issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers.However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA \citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided contexts, rather than genuine tool-use and multi-step reasoning.
 
-We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use. \editN{Diagnostic control over a large, executable task pool and realism on human-authored financial questions are competing requirements, so \datasetname is released as two complementary parts (evaluated under the same agent harness), each targeting one of them:}
+We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use. \editN{Diagnostic control over a large, executable task pool and realism on human-authored financial questions are competing requirements, so \datasetname is released as two complementary parts (evaluated under the same agent framework), each targeting one of them:}
 
 \begin{itemize}
     \item \textbf{\synthsubset}: \editN{5,979 examples; each pairs a natural-language financial question with a small, freshly generated database that the agent must query through a single structured-data tool to reach the answer. Examples are quality-controlled by a panel of three LLM judges.}
@@ -87,7 +87,7 @@ Our main contributions are:
     \item A rigorous benchmark construction pipeline with \editN{quality control by a panel of LLM judges}.
     \item Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
     revealing significant gaps in agentic financial reasoning capabilities.
-    \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the evaluation harness and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
+    \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the evaluation framework and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
 \end{itemize}
 
 As Figure~\ref{fig:accuracy_vs_size} shows that the performance of different models on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artifact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.

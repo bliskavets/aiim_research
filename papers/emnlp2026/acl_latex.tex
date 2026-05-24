@@ -23,8 +23,11 @@
 \usepackage{tabularx}
 \usepackage{caption}
 % \edit{...} marks Claude's reviewer-response changes in blue for the professor's review pass.
-% Strip via skills/strip_edit_markup.sh before final submission.
+% \editN{...} marks fresh changes (advisor's second pass) in green, on top of the blue ones.
+% Strip both via skills/strip_edit_markup.sh before final submission.
 \newcommand{\edit}[1]{\textcolor{blue}{#1}}
+\definecolor{editgreen}{HTML}{0a7a3b}
+\newcommand{\editN}[1]{\textcolor{editgreen}{#1}}
 
 % Compact list spacing — itemize/enumerate/description take less vertical space.
 % Body text inside lists is unchanged; only inter-item, pre/post-list, and inter-paragraph gaps shrink.
@@ -64,7 +67,7 @@ a synthetic set of 5,979 natural-language financial analysis tasks that an agent
 \label{fig:accuracy_vs_size}
 \end{figure}}
 
-Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks \citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents can assist with financial analysis, compliance checking, and decision support by issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers.However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA \citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test examples may have been seen during model training.
+Large language models (LLMs) are increasingly deployed as autonomous agents capable of using tools to accomplish complex tasks \citep{Schick2023ToolformerLM, qin2023toolllm}. In the financial domain, such agents can assist with financial analysis, compliance checking, and decision support by issuing tool calls against structured business data and synthesizing the retrieved evidence into actionable answers.However, evaluating the agentic capabilities of LLMs presents significant challenges. Existing financial QA benchmarks like FinQA \citep{chen2021finqa} and TAT-QA \citep{zhu-etal-2021-tat} primarily test reading comprehension and numerical reasoning over provided contexts, rather than genuine tool-use and multi-step reasoning. Moreover, many benchmarks suffer from data contamination, where test examples may have been seen during model training. \editN{This concern partly carries over to \groundedfinqa, whose questions and tables originate from FinQA: any FinQA leakage into a model's pre-training would, in principle, propagate to our benchmark as well. We argue this effect is substantially mitigated by the way each FinQA item is re-instantiated, namely inside a bespoke tool environment with a redacted system prompt (no table data) and a multi-step tool-call plan required to reach the answer. As a result, even a model that has memorised the original FinQA answer cannot simply emit it: it must execute a fresh sequence of tool calls over an interface it has not seen during training, so prior exposure to FinQA confers a much smaller advantage than it would in a static, context-based benchmark.}
 
 We introduce \datasetname, a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring tool use. \datasetname is released in two versions, both produced by the same construction methodology and evaluated under the same agent harness. Practitioners can pick whichever version fits their evaluation budget and source-data preference:
 
@@ -219,7 +222,7 @@ Quality control & Committee & Execution-based \\
 %     \item \edit{\emph{Distractor tools}}: Irrelevant tools to test filtering ability.
 %     \item \edit{\emph{Correct plan}}: Reference multi-hop solution.
 % \end{itemize}
-Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context.
+Critically, the agent receives only the scenario description and tool definitions, not the underlying data table. This ensures agents must use tools to retrieve information rather than extracting answers from context\editN{, and it also blunts a potential contamination channel: even if a model has been exposed to the original FinQA item during pre-training, it cannot bypass the tool-call sequence and still has to interact with an unfamiliar bespoke tool environment to produce the answer}.
 \edit{Representative questions, together with a worked example showing the query, available tools, and a reference tool-call sequence, are given in Appendix~\ref{app:example_queries_v2} and Table~\ref{tab:example}.}
 
 

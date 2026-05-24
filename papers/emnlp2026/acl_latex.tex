@@ -567,6 +567,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 \section*{Limitations}
 %==============================================================================
 
+% \edit{Like any synthetically constructed benchmark, \datasetname carries some minor risks: generated schemas and tool environments may favor the planning style of our generator, and absolute accuracy numbers should be read against that backdrop rather than as direct predictions of behavior on production financial systems. The \groundedfinqa half of the benchmark is derived from the FinQA dataset \citep{chen2021finqa}, which is distributed under the MIT License; users of \groundedfinqa should respect FinQA's license terms in addition to ours.}
 \editN{\datasetname is scoped accordingly. Both versions currently instrument structured-data and Python-tool environments; other modalities such as live web search, document retrieval, and multimodal financial reports lie outside this scope. These are deliberate scope choices for an initial release rather than fundamental limitations, and the construction methodology can in principle accommodate such extensions.}
 
 % Acknowledgments are omitted in the review version per ACL anonymity rules.
@@ -842,11 +843,11 @@ Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illus
 Query: Could duplicated invoice payments 
 be causing discrepancies in our aged 
 payables report?
+
 Schema:
 CREATE TABLE Suppliers (
     supplier_id INTEGER PRIMARY KEY,
-    supplier_name TEXT NOT NULL
-);
+    supplier_name TEXT NOT NULL);
 CREATE TABLE Invoices (
     invoice_id INTEGER PRIMARY KEY,
     supplier_id INTEGER NOT NULL,
@@ -854,16 +855,14 @@ CREATE TABLE Invoices (
     due_date DATE NOT NULL,
     invoice_amount NUMERIC NOT NULL,
     FOREIGN KEY (supplier_id) 
-    REFERENCES Suppliers(supplier_id)
-);
+    REFERENCES Suppliers(supplier_id));
 CREATE TABLE Payments (
     payment_id INTEGER PRIMARY KEY,
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
     FOREIGN KEY (invoice_id) 
-    REFERENCES Invoices(invoice_id)
-);
+    REFERENCES Invoices(invoice_id));
 Data:
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),

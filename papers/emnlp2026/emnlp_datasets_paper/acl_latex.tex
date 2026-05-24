@@ -87,7 +87,7 @@ Our main contributions are:
     \item A rigorous benchmark construction pipeline with \editN{quality control by a panel of LLM judges}.
     \item Comprehensive evaluation of a range of frontier and open-source LLMs used as the \emph{base models} inside the agents,
     revealing significant gaps in agentic financial reasoning capabilities.
-    \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the benchmark-construction pipeline code, the evaluation harness, and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
+    \item An open-source release\footnote{Code: \url{https://anonymous.4open.science/r/FinOpsBench}} of the complete benchmark together with the evaluation harness and all model traces. We treat this release as a contribution in its own right, supporting reproducible research and direct reuse of our infrastructure for new agentic financial tasks.
 \end{itemize}
 
 As Figure~\ref{fig:accuracy_vs_size} shows that the performance of different models on \datasetname grows log-linearly with the parameter count of the agent's base model. This is an expected sanity check that the benchmark's difficulty tracks model capability rather than a task-design artifact, and that performance gaps therefore reflect real differences in agentic competence. Parameter counts for closed-source models are taken from the IKP calibration of \citet{li2026incompressible}.

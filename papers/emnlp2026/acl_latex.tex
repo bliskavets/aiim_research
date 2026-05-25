@@ -139,9 +139,9 @@ rather than read from context. Second, financial domain semantics such as accoun
 recognition become first-class evaluation targets rather than incidental surface features. The structured-data tool is the means, not
 the end being measured.}
 
-Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a 
+Our approach leverages synthetic data generation and a rigorous quality control process, utilizing a
 % committee of three LLM judges, to
-\editN{panel of three LLM judges, to}
+\editN{panel of three LLM judges~\citep{zheng2023judging,verga2024replacing}, to}
 mitigate data contamination risks and ensure high integrity at scale, validating that observed low accuracy reflects genuine
 performance limitations.
 
@@ -519,7 +519,7 @@ Qwen3-8B & \underline{47.6} & 44.3 \\
 \label{tab:react_results}
 \end{table}
 
-\edit{The split is clean and visible in Figure~\ref{fig:native_vs_react}: every \emph{non-thinking} model gains from switching to ReAct (a strict green delta on the right of the plot), while every \emph{thinking} model loses (a strict red delta on the left). The gains shrink as the non-thinking model gets stronger, from \emph{+6.4\,pp} for Llama-3.1-8B-Instruct down to \emph{+1.4\,pp} for GPT-4.1, suggesting that ReAct's explicit reasoning scaffold matters most when the model lacks an internal chain-of-thought process and matters less, or even hurts, once the model already reasons before acting.}
+\edit{The split is clean and visible in Figure~\ref{fig:native_vs_react}: every \emph{non-thinking} model gains from switching to ReAct (a strict green delta on the right of the plot), while every \emph{thinking} model loses (a strict red delta on the left). The gains shrink as the non-thinking model gets stronger, from \emph{+6.4\,pp} for Llama-3.1-8B-Instruct down to \emph{+1.4\,pp} for GPT-4.1, suggesting that ReAct's explicit reasoning scaffold matters most when the model lacks an internal chain-of-thought process~\editN{\citep{wei2022chain}} and matters less, or even hurts, once the model already reasons before acting.}
 
 \edit{\begin{figure}[t]
 \centering

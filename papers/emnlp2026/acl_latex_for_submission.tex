@@ -664,8 +664,6 @@ The figures below summarise \synthsubset along three axes. Figures~\ref{fig:cr-q
     \label{fig:cr-num-tool-calls-per-item}
 \end{figure}
 
-\subsection{\groundedfinqa Statistics}
-
 The figures below summarise \groundedfinqa. Figures~\ref{fig:gr-answer-lengths}--\ref{fig:gr-num-tools} cover the answer-length distribution, the system-prompt-length distribution, and the per-example tool count. Figures~\ref{fig:gr-umap-system-prompts} and~\ref{fig:gr-umap-tool-names} project the system prompts and the tool-name vocabularies into UMAP space to visualise topical and lexical coverage.
 
 \begin{figure}[h]
@@ -832,9 +830,8 @@ Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illus
 \begin{figure}[h]
 \small\centering
 \begin{verbatim}
-Query:
-Could duplicated invoice payments be 
-causing discrepancies in our aged 
+Query: Could duplicated invoice payments 
+be causing discrepancies in our aged 
 payables report?
 
 Schema:
@@ -860,8 +857,8 @@ CREATE TABLE Payments (
     REFERENCES Invoices(invoice_id)
 );
 
- 
 Data:
+
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
 (5002, 1002, '2025-07-10', 500.00),
@@ -874,10 +871,11 @@ INSERT INTO Payments VALUES
 \begin{figure}[t]
 \small\centering
 \begin{verbatim}
-# Task You are a senior QA engineer 
-working on AI agents for finance. You 
-have to judge the test case provided 
-and check the following rules:
+# Task
+You are a senior QA engineer working
+on AI agents for finance. You have to 
+judge the test case provided and check 
+the following rules:
 
 - The test case's data should be 
   natural: it should be similar to what 
@@ -905,11 +903,22 @@ In case one of these requirements are
 not met, you should provide a concise
 actionable feedback so the author can 
 improve the test case.
+
 # Test case:
-## Query: {{ item.query }}
-## Schema: {{ item.schema_sql }}
-## Data: {{ item.data_sql }}
-## Trace: {{item.agent_dialog|tojson(2)}}
+
+## Query
+{{ item.query }}
+
+## SQL schema
+{{ item.schema_sql }}
+
+## Data
+{{ item.data_sql }}
+
+## Agent trace
+{{ item.agent_dialog | tojson(2) }}
+
+# Output format
 Reply with JSON object like this:
 {
    "data_is_natural": 1 | 0,
@@ -920,14 +929,16 @@ Reply with JSON object like this:
    "feedback": "..."
 }
 \end{verbatim}
-\caption{\synthsubset: Prompt template for a panel member judge.}
+\caption{\synthsubset: Prompt template for a 
+% committee 
+panel
+member judge.}
 \label{fig:judge-prompt}
 \end{figure}
-
 
 \section{Use of AI Assistants}
 \label{app:ai_usage}
 
-In the spirit of transparent reporting of AI-assisted authoring, we summarise how AI tools were used in the preparation of this paper. All core benchmark code, prompts, and configuration were written manually by the authors and reviewed end-to-end; the main body of the paper was likewise written manually. We used Claude \citep{anthropic2024claude3} during the final preparation pass for two narrowly scoped tasks: (1) editorial revisions of phrasing and tightening of existing prose, and (2) auxiliary code for collecting statistics about the benchmark and rendering some of the analysis figures. Every artifact produced by Claude was iteratively reviewed and accepted by the authors; no Claude output was incorporated without manual inspection.
+In the spirit of transparent reporting of AI-assisted authoring, we summarise how AI tools were used in the preparation of this paper. All core benchmark code, prompts, and configuration were written manually by the authors and reviewed end-to-end; the main body of the paper was likewise written manually. We used Claude \citep{anthropic2024claude3} during the final preparation pass for two narrowly scoped tasks: (i) editorial revisions of phrasing and tightening of existing prose, and (ii) auxiliary code for collecting statistics about the benchmark and rendering some of the analysis figures. Every artifact produced by Claude was iteratively reviewed and accepted by the authors; no Claude output was incorporated without manual inspection.
 
 \end{document}

@@ -390,7 +390,7 @@ A runnable agent using the \texttt{smolagents} \citep{roucher2025smolagents} lib
 
 \subsection{Setup}
 
-\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). \editN{Frontier models are accessed through OpenAI's API; the three open-source models are served locally on a single NVIDIA H100 GPU.} Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
+\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini \editN{\citep{achiam2023gpt4}} (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B \editN{\citep{yang2025qwen3}} (Alibaba), and Llama-3.1-8B-Instruct \editN{\citep{dubey2024llama3}} (Meta). \editN{Frontier models are accessed through OpenAI's API; the three open-source models are served locally on a single NVIDIA H100 GPU.} Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
 
 \subsection{Construction statistics}
 
@@ -427,7 +427,7 @@ Total passed so far & 8,233 \\
 \noindent \textbf{\synthsubset.} \edit{We constructed \synthsubset (5,979 examples)} by starting with 12 seed queries and generating 10,000 diverse queries, then proceeding with all the remaining stages of the pipeline. The default LLM used in all stages is GPT-4.1-mini with the following exceptions: Stages 4 \edit{(execution-based validation)}, 7 (feedback reconciliation), and 8 (feedback application) are run with o4-mini; \edit{Stage 6 
 % (committee judgement) 
 \editN{(panel judgement) }
-is run with three different models: Claude Sonnet 4, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
+is run with three different models: Claude Sonnet 4 \editN{\citep{anthropic2025claude4}}, o4-mini, and o3-mini, one per judge}. See Table~\ref{tab:synthsubset_numbers} for the number of examples \edit{after each stage}.
 
 \edit{Figure~\ref{fig:pipeline_funnel} visualises the same attrition: the pipeline holds steady through Stages~1--4 (deterministic generation against a fixed schema), then loses 4\% of examples at the agent-trace stage, a further 14\% at 
 % committee 
@@ -633,7 +633,7 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \subsection{\synthsubset Statistics}
 
-\editN{The figures below summarise \synthsubset along three axes. Figures~\ref{fig:cr-query-length} and~\ref{fig:cr-umap-queries} cover the text side of the corpus (query length and the semantic spread of the queries in UMAP space). Figures~\ref{fig:cr-num-tables} and~\ref{fig:cr-num-data-rows} describe the size of the per-example backing stores in terms of table count and total row count. Figures~\ref{fig:cr-num-assistant-turns-per-item} and~\ref{fig:cr-num-tool-calls-per-item} report the interaction depth of the reference agent traces (assistant turns and tool invocations per example), indicating how much agent activity each task induces.}
+\editN{The figures below summarise \synthsubset along three axes. Figures~\ref{fig:cr-query-length} and~\ref{fig:cr-umap-queries} cover the text side of the corpus (query length and the semantic spread of the queries in UMAP~\citep{mcinnes2018umap} space). Figures~\ref{fig:cr-num-tables} and~\ref{fig:cr-num-data-rows} describe the size of the per-example backing stores in terms of table count and total row count. Figures~\ref{fig:cr-num-assistant-turns-per-item} and~\ref{fig:cr-num-tool-calls-per-item} report the interaction depth of the reference agent traces (assistant turns and tool invocations per example), indicating how much agent activity each task induces.}
 
 \begin{figure}[h]
     \centering

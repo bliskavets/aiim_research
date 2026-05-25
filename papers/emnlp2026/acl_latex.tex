@@ -390,7 +390,7 @@ A runnable agent using the \texttt{smolagents} \citep{smolagents} library is gen
 
 \subsection{Setup}
 
-\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta).} \editN{Frontier models are accessed through OpenAI's API; the three open-source models are served locally on a single NVIDIA H100 GPU.} \edit{Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
+\edit{We evaluate a diverse set of LLMs as the agent's base model. The frontier set is GPT-4.1, GPT-4.1-mini, GPT-5, GPT-5-mini, and o4-mini (OpenAI). The open-source set is Qwen3-8B and Qwen3-30B-A3B (Alibaba), and Llama-3.1-8B-Instruct (Meta). \editN{Frontier models are accessed through OpenAI's API; the three open-source models are served locally on a single NVIDIA H100 GPU.} Our primary metric is \emph{accuracy}. For \synthsubset, an LLM judge compares the agent's final answer against the expected output and outputs a yes/no verdict; we evaluate on a randomly selected test set of 729 examples for cost reasons. For \groundedfinqa, the numerical answers are compared against the correct plan output with a tolerance of one least significant digit, and we evaluate on the full set.}
 
 \subsection{Construction statistics}
 
@@ -564,7 +564,6 @@ Our work provides a foundation for developing and evaluating financial AI agents
 
 \editN{During the preparation of our work, AI assistants were used for auxiliary tasks. A detailed description of this process is given in Appendix~\ref{app:ai_usage}.}
 
-
 %==============================================================================
 \section*{Limitations}
 %==============================================================================
@@ -677,8 +676,6 @@ Our work provides a foundation for developing and evaluating financial AI agents
     \caption{\synthsubset: Number of tool calls per example.}
     \label{fig:cr-num-tool-calls-per-item}
 \end{figure}
-
-\subsection{\groundedfinqa Statistics}
 
 \editN{The figures below summarise \groundedfinqa. Figures~\ref{fig:gr-answer-lengths}--\ref{fig:gr-num-tools} cover the answer-length distribution, the system-prompt-length distribution, and the per-example tool count. Figures~\ref{fig:gr-umap-system-prompts} and~\ref{fig:gr-umap-tool-names} project the system prompts and the tool-name vocabularies into UMAP space to visualise topical and lexical coverage.}
 
@@ -846,9 +843,8 @@ Figure~\ref{fig:example-item} shows an annotated example from \synthsubset illus
 \begin{figure}[h]
 \small\centering
 \begin{verbatim}
-Query:
-Could duplicated invoice payments be
-causing discrepancies in our aged
+Query: Could duplicated invoice payments 
+be causing discrepancies in our aged 
 payables report?
 
 Schema:
@@ -862,7 +858,7 @@ CREATE TABLE Invoices (
     invoice_date DATE NOT NULL,
     due_date DATE NOT NULL,
     invoice_amount NUMERIC NOT NULL,
-    FOREIGN KEY (supplier_id)
+    FOREIGN KEY (supplier_id) 
     REFERENCES Suppliers(supplier_id)
 );
 CREATE TABLE Payments (
@@ -870,12 +866,12 @@ CREATE TABLE Payments (
     invoice_id INTEGER NOT NULL,
     payment_date DATE NOT NULL,
     payment_amount NUMERIC NOT NULL,
-    FOREIGN KEY (invoice_id)
+    FOREIGN KEY (invoice_id) 
     REFERENCES Invoices(invoice_id)
 );
 
-
 Data:
+
 INSERT INTO Payments VALUES
 (5001, 1002, '2025-07-05', 500.00),
 (5002, 1002, '2025-07-10', 500.00),
@@ -889,10 +885,11 @@ INSERT INTO Payments VALUES
 \begin{figure}[t]
 \small\centering
 \begin{verbatim}
-# Task You are a senior QA engineer
-working on AI agents for finance. You
-have to judge the test case provided
-and check the following rules:
+# Task
+You are a senior QA engineer working
+on AI agents for finance. You have to 
+judge the test case provided and check 
+the following rules:
 
 - The test case's data should be 
   natural: it should be similar to what 
@@ -916,15 +913,26 @@ and check the following rules:
 - The agent's final answer should 
   answer the user's query.
 
-In case one of these requirements are
+In case one of these requirements are 
 not met, you should provide a concise
-actionable feedback so the author can
+actionable feedback so the author can 
 improve the test case.
+
 # Test case:
-## Query: {{ item.query }}
-## Schema: {{ item.schema_sql }}
-## Data: {{ item.data_sql }}
-## Trace: {{item.agent_dialog|tojson(2)}}
+
+## Query
+{{ item.query }}
+
+## SQL schema
+{{ item.schema_sql }}
+
+## Data
+{{ item.data_sql }}
+
+## Agent trace
+{{ item.agent_dialog | tojson(2) }}
+
+# Output format
 Reply with JSON object like this:
 {
    "data_is_natural": 1 | 0,
@@ -935,8 +943,8 @@ Reply with JSON object like this:
    "feedback": "..."
 }
 \end{verbatim}
-\caption{\synthsubset: Prompt template for a
-% committee
+\caption{\synthsubset: Prompt template for a 
+% committee 
 \editN{panel}
 member judge.}
 \label{fig:judge-prompt}
@@ -946,5 +954,6 @@ member judge.}
 \editN{\label{app:ai_usage}}
 
 \editN{In the spirit of transparent reporting of AI-assisted authoring, we summarise how AI tools were used in the preparation of this paper. All core benchmark code, prompts, and configuration were written manually by the authors and reviewed end-to-end; the main body of the paper was likewise written manually. We used Claude \citep{anthropic2024claude3} during the final preparation pass for two narrowly scoped tasks: (i) editorial revisions of phrasing and tightening of existing prose, and (ii) auxiliary code for collecting statistics about the benchmark and rendering some of the analysis figures. Every artifact produced by Claude was iteratively reviewed and accepted by the authors; no Claude output was incorporated without manual inspection.}
+
 
 \end{document}

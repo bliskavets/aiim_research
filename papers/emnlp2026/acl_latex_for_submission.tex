@@ -217,10 +217,10 @@ Representative queries spanning user roles and task categories are listed in App
 \subsection{\groundedfinqa}
 \label{sec:groundedfinqa}
 
-\groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes \emph{System prompt} (scenario description and available tools without table data), \emph{Synthetic backing store} (an SQLite \citep{sqlite} table set reconstructed from the original FinQA tables), \emph{Core tools} (functions required to derive the answer),  \emph{Distractor tools} (irrelevant tools to test filtering ability), and \emph{Correct plan} (reference multi-hop solution).
+\groundedfinqa transforms FinQA samples into complete agentic environments. Each example includes \emph{System prompt} (scenario description and available tools without table data), \emph{Synthetic backing store} (an SQLite \citep{owens2010sqlite} table set reconstructed from the original FinQA tables), \emph{Core tools} (functions required to derive the answer),  \emph{Distractor tools} (irrelevant tools to test filtering ability), and \emph{Correct plan} (reference multi-hop solution).
 % \begin{itemize}
 %     \item \emph{System prompt}: Scenario description and available tools (without table data).
-%     \item \emph{Synthetic backing store}: An SQLite \citep{sqlite} table set reconstructed from the original FinQA tables.
+%     \item \emph{Synthetic backing store}: An SQLite \citep{owens2010sqlite} table set reconstructed from the original FinQA tables.
 %     \item \emph{Core tools}: Functions required to derive the answer.
 %     \item \emph{Distractor tools}: Irrelevant tools to test filtering ability.
 %     \item \emph{Correct plan}: Reference multi-hop solution.
@@ -353,7 +353,7 @@ A reference solution using the augmented tools demonstrates the multi-hop soluti
 A system prompt is generated containing the scenario description and tool definitions, explicitly excluding table data and answer hints.
 
 \noindent \textbf{Stage 9: Agent Code.}
-A runnable agent using the \texttt{smolagents} \citep{smolagents} library is generated for evaluation.
+A runnable agent using the \texttt{smolagents} \citep{roucher2025smolagents} library is generated for evaluation.
 
 Each stage is required to output a file (Python code in all stages except Stage 8 which outputs a system prompt with the task formulation). For each stage, the LLM receives in the context:
 (1) A long description of the whole process with all the stages described; (2) An indication of what stage is currently running; (3) All previous files' content from the previous stages, and (4) In Stage 9, an example agent code showing coding practices for achieving more stable results.

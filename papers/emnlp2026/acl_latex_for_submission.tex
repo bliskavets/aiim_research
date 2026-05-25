@@ -105,7 +105,7 @@ As Figure~\ref{fig:accuracy_vs_size} shows that the performance of different mod
 agentic tool-use evaluation, and domain-specific semantic parsing.
 
 \noindent \textbf{Context-Bound Financial QA.}
-Foundational financial benchmarks like FinQA \citep{chen2021finqa}, ConvFinQA \citep{chen2022convfinqa}, TAT-QA \citep{zhu-etal-2021-tat}, and FinanceBench \citep{islam2023financebench} measure numerical reasoning, tabular-textual integration, and reasoning over SEC filings within static, explicitly provided contexts. These established datasets are inherently
+Foundational financial benchmarks like FinQA \citep{chen2021finqa}, ConvFinQA \citep{chen2022convfinqa}, TAT-QA \citep{zhu-etal-2021-tat}, MultiHiertt~\citep{zhao2022multihiertt}, and FinanceBench \citep{islam2023financebench}, together with the broader PIXIU benchmark suite~\citep{xie2023pixiu}, measure numerical reasoning, tabular-textual integration, and reasoning over SEC filings within static, explicitly provided contexts. These established datasets are inherently
 non-agentic as they do not require dynamic interaction or external system calls; all necessary information is supplied in the prompt, testing reading comprehension rather than tool use or dynamic information retrieval. Our \groundedfinqa component transitions this
 evaluation to a dynamic environment where information must be actively retrieved through multi-hop tool calls, isolating and
 testing the core planning and execution logic.

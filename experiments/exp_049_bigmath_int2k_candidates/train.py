@@ -229,17 +229,18 @@ def reward_answer_numeric(prompts, completions, answer, **kwargs):
     return scores
 
 
-REWARD_FUNCS = [reward_format_exact, reward_format_approximate,
-                reward_answer_exact, reward_answer_numeric]
+REWARD_FUNCS_FULL = [reward_format_exact, reward_format_approximate,
+                     reward_answer_exact, reward_answer_numeric]
+REWARD_FUNCS_NUMONLY = [reward_answer_numeric]
 
 
 # =============================================================================
 # TRAINER FACTORY
 # =============================================================================
 
-def build_trainer(method, model, tokenizer, args, dataset):
+def build_trainer(method, model, tokenizer, args, dataset, reward_funcs):
     common = dict(model=model, tokenizer=tokenizer, args=args,
-                  train_dataset=dataset, reward_funcs=REWARD_FUNCS)
+                  train_dataset=dataset, reward_funcs=reward_funcs)
     if method == "grpo":
         return GRPOTrainer(**common)
     if method == "grpo_s_entropy":
@@ -262,13 +263,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", required=True,
                     choices=["grpo", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped"])
+    ap.add_argument("--rewards", default="full", choices=["full", "numonly"],
+                    help="full = format_exact + format_approx + answer_exact + answer_numeric; "
+                         "numonly = answer_numeric only (no tag pressure)")
     args_cli = ap.parse_args()
     method = args_cli.method
+    rewards = args_cli.rewards
+    reward_funcs = REWARD_FUNCS_NUMONLY if rewards == "numonly" else REWARD_FUNCS_FULL
 
-    output_dir = f"/workspace/exp_049_bigmath_int2k_candidates/outputs_{method}"
+    suffix = "" if rewards == "full" else f"_{rewards}"
+    output_dir = f"/workspace/exp_049_bigmath_int2k_candidates/outputs_{method}{suffix}"
     os.makedirs(output_dir, exist_ok=True)
 
-    print(f"=== exp_049 [{method}] — Big-Math int-2000, Llama-3.2-3B ===")
+    print(f"=== exp_049 [{method}|rewards={rewards}] — Big-Math int-2000, Llama-3.2-3B ===")
     print(f"  seed={SEED}  max_seq={MODEL_CONFIG['max_seq_length']}  "
           f"steps={TRAINING_CONFIG['max_steps']}  "
           f"bs={TRAINING_CONFIG['per_device_train_batch_size']}x"
@@ -313,7 +320,7 @@ def main():
         **TRAINING_CONFIG,
     )
 
-    trainer = build_trainer(method, model, tokenizer, grpo_args, dataset)
+    trainer = build_trainer(method, model, tokenizer, grpo_args, dataset, reward_funcs)
 
     print(f"Starting [{method}] training...")
     print(f"  sequences/step = "

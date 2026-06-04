@@ -1,9 +1,9 @@
 """
 plot_reward_dynamics.py — reward dynamics for exp_053 (Qwen3-4B):
-GRPO baseline + 3 tag-masked candidates, single panel, rolling-20 smoothed.
+GRPO baseline (no mask) + GTPO-EMA-flipped (6-tag mask) on
+Big-Math integer ∩ llama8b_solve_rate <= 0.125.
 
-Mirror of exp_050 plot_reward_dynamics.py but with all 4 candidates so we
-can see how each shaped method tracks the strong Qwen3 baseline.
+Only the two methods that were actually launched in run_053.sh.
 """
 import os
 import re
@@ -15,10 +15,8 @@ import matplotlib.pyplot as plt
 HERE = os.path.dirname(__file__)
 
 CURVES = [
-    ("grpo",             "GRPO baseline",                                "#64748b"),
-    ("grpo_s_entropy",   "GRPO-S seq-level entropy (mask: n/a, seq-level)",  "#d97706"),
-    ("gtpo_conf",        "GTPO per-token confidence (tag-masked)",       "#059669"),
-    ("gtpo_ema_flipped", "GTPO-EMA flipped (tag-masked)",                "#4f46e5"),
+    ("grpo",             "GRPO baseline (no mask)",                            "#64748b"),
+    ("gtpo_ema_flipped", "GTPO-EMA flipped (tag-masked, 6 special tokens)",    "#4f46e5"),
 ]
 
 
@@ -60,7 +58,7 @@ def main():
     ax.grid(alpha=0.3)
     ax.legend(fontsize=9, loc="lower right")
 
-    out = os.path.join(HERE, "figures", "exp052_reward_dynamics_4way.png")
+    out = os.path.join(HERE, "figures", "exp053_reward_dynamics.png")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     fig.tight_layout()
     fig.savefig(out, dpi=140)

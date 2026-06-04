@@ -332,13 +332,27 @@ def main():
         **TRAINING_CONFIG,
     )
 
-    # Build format-tag token-id patterns once. These are the 4 structural
-    # tags from the system prompt. We feed both bare and " <tag>" variants
-    # so BPE merging with a leading space is covered.
+    # Build format-tag token-id patterns once.
+    #
+    # We mask 6 tag substrings:
+    #   - 4 from OUR system prompt: <start_working_out>, <end_working_out>,
+    #     <SOLUTION>, </SOLUTION>
+    #   - 2 from Qwen3's NATIVE thinking-mode protocol: <think>, </think>
+    #     (Qwen3 emits these by default before the answer; without masking,
+    #     the per-token shaping signal lands on `</think>` close-token where
+    #     the model is highly confident, which can amplify thinking-mode
+    #     length blow-up via the O-/O+ split — observed in the first 88
+    #     steps of exp_053 gtpo_ema_flipped: 76% completions clipped at
+    #     max_completion=3584 vs 16% for grpo baseline at the same setup).
+    #
+    # encode_tag_patterns also emits the leading-space variant of each tag
+    # to cover BPE merging with whitespace.
     from src.format_tag_mask import encode_tag_patterns
     format_tag_patterns = encode_tag_patterns(
         tokenizer,
-        [REASONING_START, REASONING_END, SOLUTION_START, SOLUTION_END],
+        [REASONING_START, REASONING_END,
+         SOLUTION_START, SOLUTION_END,
+         "<think>", "</think>"],
     )
     print(f"[tagmask] {len(format_tag_patterns)} format-tag patterns:")
     for pat in format_tag_patterns:

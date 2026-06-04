@@ -1,0 +1,258 @@
+============================================================
+weekly progress report — GRPO/GTPO tag-masked shaping
+prepared 2026-06-04
+============================================================
+
+format: pairs (description slide → figure slide).
+relative image paths are from repo root.
+
+============================================================
+slide 01  —  title
+============================================================
+title: tag-masked per-token shaping for GRPO/GTPO
+subtitle: weekly progress 2026-05-28 → 2026-06-04
+author / dataset / model placeholders.
+
+============================================================
+slide 02  —  setup: where we started
+============================================================
+title: starting point — exp_049 baseline (Big-Math int-2000, Llama-3.2-3B)
+
+paragraph 1:
+exp_049 ran four candidates head-to-head with identical hyperparameters:
+GRPO baseline, GRPO-S seq-level entropy, GTPO per-token confidence,
+GTPO-EMA-flipped. Big-Math integer-answer subset (2000 examples, seed
+3407), bs=1×ga=4×ng=4, 500 steps. all four trainers used a four-part
+reward: format_exact + format_approximate + answer_exact + answer_numeric.
+
+paragraph 2:
+final reward L50: GRPO +5.36, GTPO-Conf +4.44, GTPO-EMA-flipped +3.39,
+GRPO-S +0.60. none of the three shaped variants beat GRPO baseline.
+inspection of the rewards showed shaped methods hit 0.62 num_maj (≥2 of 4
+generations numerically correct) — better than baseline — but only 0.04-0.06
+exact_top (≥2 in valid tag format). the per-token bonus seemed to land on
+the format tags themselves, distorting the gradient that should teach the
+model to wrap the right number in the correct tags.
+
+============================================================
+slide 03  —  figure: exp_049 baseline comparison
+============================================================
+title: exp_049 — 4 methods, full reward, no mask
+image: experiments/exp_049_bigmath_int2k_candidates/figures/exp049_4way_comparison.png
+
+============================================================
+slide 04  —  ablation: drop the answer-exact and format rewards
+============================================================
+title: ablation — what if we keep only the numeric-correctness reward?
+
+paragraph 1:
+exp_049 numonly axis: re-ran the same four methods on the same data
+but with reward_funcs reduced to just reward_answer_numeric. removes
+all tag/format pressure. tests whether the format reward was carrying
+the methods to high total reward and whether shaping methods produce
+correct numbers regardless of tags.
+
+paragraph 2:
+result: GRPO baseline collapses from +5.36 → +0.24 (22× drop). num_maj
+falls from 0.54 to 0.24. the three shaped methods also collapse, but
+the ranking inverts — GTPO-EMA-flipped becomes the best in this regime
+(+0.273), GTPO-Conf becomes the worst (+0.138). KL signature is
+striking: baseline drifts 17× more than shaped variants under sparse
+reward (0.20 vs 0.012-0.015). the format reward is load-bearing, and
+shaping acts as soft KL regularisation when reward is sparse.
+
+============================================================
+slide 05  —  figure: numonly vs full, all four methods
+============================================================
+title: exp_049 numonly — sparse reward, every method collapses
+image: experiments/exp_049_bigmath_int2k_candidates/figures/exp049_numonly_vs_full.png
+
+============================================================
+slide 06  —  fix: mask the format tags out of the per-token bonus
+============================================================
+title: exp_050 — keep all rewards, mask shaping off format-tag tokens
+
+paragraph 1:
+hypothesis: per-token shaping was distorting gradients on format-control
+tokens. those tokens (<start_working_out>, <end_working_out>, <SOLUTION>,
+</SOLUTION>) are highly peaked — the model is very sure when emitting
+them — so they collected outsized bonuses or penalties that drowned out
+the format-reward signal. mask shaping off on tag positions: on those
+positions the per-token shaped advantage is replaced by the seq-level
+GRPO advantage; content tokens keep their shaped advantage.
+
+paragraph 2:
+the mask only changes the per-token methods (GTPO-Conf, GTPO-EMA-flipped).
+GRPO has no shaping at all; GRPO-S shapes at the sequence level. result on
+Big-Math int-2000 / Llama-3.2-3B: both per-token methods now beat the
+GRPO baseline for the first time. GTPO-Conf +5.10 (was +4.44, Δ +0.40),
+GTPO-EMA-flipped +5.16 (was +3.39, Δ +0.46). exact_top jumped 0.06→0.30
+for GTPO-Conf and 0.04→0.30 for GTPO-EMA-flipped (5–7× improvement).
+answer_exact reward flipped sign for both.
+
+============================================================
+slide 07  —  figure: exp_050 reward dynamics, masked vs unmasked
+============================================================
+title: exp_050 — both per-token methods overtake baseline ~step 280
+image: experiments/exp_050_bigmath_int2k_tagmasked/figures/exp050_vs_exp049_mask_effect.png
+
+============================================================
+slide 08  —  port to Qwen3-4B
+============================================================
+title: exp_051 — does the win transfer to Qwen3-4B?
+
+paragraph 1:
+same code path as exp_050, only the base model changed
+(Llama-3.2-3B-Instruct → Qwen/Qwen3-4B) and max_seq raised 2560→4096
+to fit Qwen3's thinking-mode completions. dataset, methods, training
+args identical. Qwen3 tokenizer probe confirmed the four format tags
+encode to clean token-id subsequences in the new vocabulary.
+
+paragraph 2:
+mixed transfer. GRPO baseline finishes at +5.00 reward L50 with
+exact_top 0.66 (Llama baseline was 0.18) — Qwen3 is much stronger at
+math out-of-the-box and almost at ceiling. GTPO-Conf still wins
+(Δ +0.31 vs baseline), but GTPO-EMA-flipped loses (Δ -0.67). KL is
+5-10× smaller across all methods on Qwen3 — model barely moves during
+RL. less room for shaping to differ from baseline in the near-ceiling
+regime, and the more aggressive EMA bonus hurts where the milder
+confidence bonus still helps.
+
+============================================================
+slide 09  —  figure: Llama vs Qwen3 side-by-side
+============================================================
+title: exp_050 → exp_051 — transfer Llama → Qwen3
+image: experiments/exp_051_qwen3_bigmath_int2k_tagmasked/figures/exp051_vs_exp050_reward_dynamics.png
+
+============================================================
+slide 10  —  pick a harder subset to open room
+============================================================
+title: exp_052 — Big-Math integer ∩ Llama-8B solve_rate < 0.3
+
+paragraph 1:
+exp_051 hit a near-ceiling regime on Qwen3 — baseline exact_top 0.66
+left little headroom for shaping to differentiate. Big-Math-RL-Verified
+ships a `llama8b_solve_rate` field per problem; we used it to filter to
+problems Llama-8B solves <30% of the time. integer-answer ∩ llama8b<0.3
+gives 45,273 problems in the pool, sample 2000 with seed 3407.
+
+paragraph 2:
+baseline drops 5× as expected (+5.00 → +0.93 reward L50, exact_top
+0.66 → 0.32). room opens. but mean completion length jumps to 2927 and
+**52% of completions hit max_completion=3584** — Qwen3 thinking-mode
+explodes on hard problems. method ranking inverts vs exp_051: GTPO-Conf
+loses (Δ -0.23), GTPO-EMA-flipped wins (Δ +0.08). EMA smoothing seems
+more robust to the noisy reward signal that clipping produces; the raw
+per-token confidence bonus amplifies that noise. delta is tiny though.
+
+============================================================
+slide 11  —  figure: three reward dynamics regimes
+============================================================
+title: exp_050 / exp_051 / exp_052 — three regimes, ranking flips
+image: experiments/exp_052_qwen3_bigmath_int_hard_tagmasked/figures/exp052_vs_exp051_vs_exp050_reward_dynamics.png
+
+============================================================
+slide 12  —  cross-experiment summary
+============================================================
+title: cross-experiment Δ vs GRPO baseline
+
+paragraph 1:
+no shaping wins universally. GTPO-Conf with tag-mask wins on both
+"easy" regimes (Llama int-2000 Δ +0.40; Qwen3 int-2000 Δ +0.31) but
+loses on hard Qwen3 (Δ -0.23). GTPO-EMA-flipped wins on Llama
+(Δ +0.46), loses on easy Qwen3 (Δ -0.67), wins narrowly on hard
+Qwen3 (Δ +0.08).
+
+paragraph 2:
+this is consistent with a story where format reward acts as
+training-wheels: when the GRPO baseline is far from ceiling, format
+reward gives a dense gradient signal that lifts the answer reward;
+shaping helps refine. when baseline is at ceiling there's nothing to
+refine. when reward is noisy (high clipping), EMA-smoothed shaping
+beats the raw per-token bonus. the picture argues we should focus on
+the regime where shaping is most useful — strong-but-not-ceiling
+baselines on noisy signal.
+
+============================================================
+slide 13  —  figure: cross-experiment 3-axes summary
+============================================================
+title: exp_049 + exp_050 — full / numonly / tag-mask, 4 methods × 4 metrics
+image: experiments/comparison_exp049_exp050_3axes.png
+
+============================================================
+slide 14  —  extra-hard subset + bigger compute (exp_053, RUNNING)
+============================================================
+title: exp_053 — Llama-8B solve_rate ≤ 1/8, ng=16, 1000 steps
+
+paragraph 1:
+exp_053 is the stress test of exp_052's gtpo_ema_flipped win. dataset
+is filtered tighter: `llama8b_solve_rate < 0.125` (1/8) — 28,207 problems
+in the pool, sample 8000 with seed 3407 (mean Llama-8B solve_rate
+≈ 0.046, very hard). training budget is 4× the rollouts per prompt
+(num_generations=16 vs 4) and 2× the steps (1000 vs 500). estimated
+runtime ~36h per method on Qwen3-4B at max_seq=4096.
+
+paragraph 2:
+GRPO baseline finished cleanly at reward L50 **+5.54** with
+exact_top 0.38 and **only 16% clipping** — counter-intuitively much
+better than exp_052's grpo at +0.93 / 52% clip. ng=16 gives a much
+cleaner advantage estimate per prompt (std=0 batches become rare),
+so the model finds short correct tag-wrapped answers faster instead
+of spiraling into thinking-mode max length. GTPO-EMA-flipped started
+with the same 4-tag mask as before but showed 76% clipping in the
+first 80 steps. observed root cause: Qwen3 emits `<think>...</think>`
+natively, which the original mask did not cover; the EMA O- penalty
+landed on the highly-peaked `</think>` close token and pushed the
+model away from closing thinking. extended the mask to 6 tags
+(4 ours + `<think>`, `</think>`), added 3 unit tests covering the
+extended mask plus a static check that train.py actually wires all
+6 tags, restarted gtpo_ema_flipped. now running; result pending.
+
+============================================================
+slide 15  —  figure: exp_053 reward dynamics (partial)
+============================================================
+title: exp_053 — GRPO done at +5.54, GTPO-EMA-flipped restarted with 6-tag mask
+image: experiments/exp_053_qwen3_bigmath_xhard_grpo_vs_ema/figures/exp053_reward_dynamics.png
+
+============================================================
+slide 16  —  next: port methodology to Search-R1
+============================================================
+title: next dataset — Search-R1 (after Big-Math wraps)
+
+paragraph 1:
+once exp_053 lands and the Big-Math story is closed, the next
+target is Search-R1 — an RL-for-tool-use benchmark where the model
+issues `<search>...</search>` queries to a retrieval backend, reads
+the snippet, and emits `<answer>...</answer>`. it has its own set
+of structural tags (different from our `<SOLUTION>` / `<think>`)
+and a sparser reward signal because the model only sees retrieved
+context, not gold answers.
+
+paragraph 2:
+the tag-mask machinery in `src/format_tag_mask.py` is dataset-agnostic:
+register the new tag substrings, the trainer pipeline keeps working.
+hypothesis: Search-R1 likely lands in the regime where shaping helps —
+stronger-than-trivial baseline on noisy tool-augmented reward, similar
+to exp_052's clipping regime but cleaner. plan to start with the same
+two-method pair (GRPO baseline + GTPO-EMA-flipped tag-masked) and the
+ng=16 budget that worked on exp_053 grpo.
+
+============================================================
+slide 17  —  next steps
+============================================================
+title: next steps
+
+paragraph 1:
+short-term: wait for exp_053 gtpo_ema_flipped to finish (~24h),
+write up the comparison vs grpo baseline, decide whether the extended
+<think> mask actually fixed the 76% clipping or if max_completion
+needs to be bumped to 6144. seed-variance run on exp_051 / exp_052 to
+confirm the ranking-inversion is real and not single-seed noise.
+
+paragraph 2:
+medium-term: port the tag-mask pipeline to Search-R1 (slide 16),
+collect three-regime data on it (easy / hard / extra-hard cuts of
+the retrieval set). longer-term: try a larger Qwen3-7B for a model-axis
+data point, and explore whether tuning α2 (shaping coefficient) per
+regime — e.g. stronger α2 when baseline KL is tiny — recovers the
+GTPO-EMA-flipped advantage on easy Qwen3.

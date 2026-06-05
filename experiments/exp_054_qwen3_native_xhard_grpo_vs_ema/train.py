@@ -124,21 +124,43 @@ _think_open = "<think>"
 _think_close = "</think>"
 
 
+def _answer_region(text: str):
+    """Return the substring where the final answer is expected, or None.
+
+      no <think> at all      -> the whole text       (model skipped thinking, OK)
+      <think>...</think>    -> the part after </think>
+      <think> opened, never closed  -> None          (rollout clipped mid-think;
+                                                       refuses to score boxed
+                                                       found inside thinking)
+
+    This blocks the exploit observed in first 107 steps of exp_054 grpo:
+    model emitting \\boxed{} inside an unclosed thinking block, farming
+    answer-correctness reward without ever committing to a final answer.
+    """
+    has_open = _think_open in text
+    has_close = _think_close in text
+    if not has_open and not has_close:
+        return text                                  # answer-direct mode
+    if has_open and has_close:
+        return text.rsplit(_think_close, 1)[1]       # post-thinking tail
+    return None                                      # asymmetric — open w/o close
+
+
 def _extract_boxed_answer(text: str):
-    """Return the last \\boxed{...} numeric content in text, or None."""
-    matches = _boxed_re.findall(text)
-    if matches:
-        return matches[-1]
-    return None
+    """Last \\boxed{...} numeric content in the answer region, or None."""
+    region = _answer_region(text)
+    if region is None:
+        return None
+    matches = _boxed_re.findall(region)
+    return matches[-1] if matches else None
 
 
 def _extract_last_number_after_thinking(text: str):
-    """Fallback: number after </think>; if no </think>, last number anywhere."""
-    if _think_close in text:
-        tail = text.rsplit(_think_close, 1)[1]
-    else:
-        tail = text
-    nums = _last_number_re.findall(tail)
+    """Fallback: last number in the answer region, or None."""
+    region = _answer_region(text)
+    if region is None:
+        return None
+    nums = _last_number_re.findall(region)
     return nums[-1] if nums else None
 
 

@@ -45,11 +45,11 @@ SEED = 3407
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B",
-    "max_seq_length": 4096,          # 512 prompt + 3584 completion
+    "max_seq_length": 6656,          # 512 prompt + 6144 completion (v3: bumped from 4096 — 85% clip in v2)
     "lora_rank": 64,
     "load_in_4bit": False,
     "fast_inference": True,
-    "gpu_memory_utilization": 0.50,  # exp_054: ng=16 needs activation room, same as exp_053
+    "gpu_memory_utilization": 0.40,  # v3: dropped 0.50 -> 0.40 to fit longer context + ng=16 activations
 }
 
 LORA_CONFIG = {
@@ -85,8 +85,8 @@ DATASET_CONFIG = {
     "name": "SynthLabsAI/Big-Math-RL-Verified",
     "split": "train",
     "max_prompt_tokens": 512,
-    "max_completion_tokens": 3584,   # Qwen3 thinking-mode completions can be long
-    "subset_size": 8000,             # exp_054: 2000 * 4 (per user spec) for larger prompt pool
+    "max_completion_tokens": 6144,   # exp_054 v3: 3584 caused 85% clipping on Qwen3 thinking-mode
+    "subset_size": 8000,
     "shuffle_seed": SEED,
 }
 
@@ -237,21 +237,25 @@ def prepare_dataset():
 #                             toward boxed format)
 
 def reward_format_thinking(completions, **kwargs):
-    """+1.0 if exactly one matched <think>...</think> pair, else 0.0.
-    Penalises mismatched / multiple thinking blocks lightly."""
+    """Bigger format signal so model gets gradient toward closing <think>
+    even before it solves the math:
+      +2.5  exactly one matched <think>...</think> pair
+      +1.5  no <think>/</think> blocks at all (direct-answer mode, also OK)
+      -2.0  open without close (or any mismatch — strong push to close)
+    v3: boosted from +1.0/+0.5/-0.5 because v2 had model stuck at 85%
+    clipping and KL=0.0008 — too weak a signal to learn the format alone.
+    """
     scores = []
     for c in completions:
         r = c[0]["content"]
         n_open  = r.count(_think_open)
         n_close = r.count(_think_close)
         if n_open == 1 and n_close == 1:
-            scores.append(1.0)
+            scores.append(2.5)
         elif n_open == 0 and n_close == 0:
-            # answer-direct mode — no thinking, fine
-            scores.append(0.5)
+            scores.append(1.5)
         else:
-            # mismatched / multiple — soft penalty
-            scores.append(-0.5)
+            scores.append(-2.0)
     return scores
 
 

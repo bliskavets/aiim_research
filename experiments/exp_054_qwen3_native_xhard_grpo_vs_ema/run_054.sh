@@ -6,6 +6,7 @@
 # container. bs=1, ga=4, ng=16, max_steps=1000 (user-spec).
 
 set -e
+set -o pipefail   # so OOM in python is not swallowed by `tee`
 
 REPO_ROOT="/mnt/data/aiim_research"
 EXP_NAME="exp_054_qwen3_native_xhard_grpo_vs_ema"
@@ -30,6 +31,7 @@ docker run --rm --gpus all \
   -e "HF_TOKEN=${HF_TOKEN}" \
   unsloth/unsloth -c "
     set -e
+    set -o pipefail   # so OOM in python is not swallowed by tee
     cd /workspace/${EXP_NAME}
     echo '[setup] Activating base /opt/venv (uv venv --system-site-packages misses /opt/venv on current unsloth image)...'
     source /opt/venv/bin/activate

@@ -71,7 +71,7 @@ TRAINING_CONFIG = {
     "logging_steps": 1,
     "per_device_train_batch_size": 1,    # exp_054: global_bs = per_device * ga = 4 (user spec)
     "gradient_accumulation_steps": 4,    # exp_054
-    "num_generations": 16,               # exp_054: ng=16 (same as exp_053)
+    "num_generations": 8,                # exp_054 v3: 16 OOM'd vllm KV cache at max_seq=6656. ng=8 halves vllm pool.
     "max_steps": 1000,                   # exp_054: 2x more updates vs exp_052
     "save_steps": 9999,
     "max_grad_norm": 1.0,

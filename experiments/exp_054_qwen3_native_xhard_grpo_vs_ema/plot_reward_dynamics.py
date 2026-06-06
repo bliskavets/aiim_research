@@ -58,7 +58,7 @@ def main():
     ax.grid(alpha=0.3)
     ax.legend(fontsize=9, loc="lower right")
 
-    out = os.path.join(HERE, "figures", "exp053_reward_dynamics.png")
+    out = os.path.join(HERE, "figures", "exp054_reward_dynamics.png")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     fig.tight_layout()
     fig.savefig(out, dpi=140)

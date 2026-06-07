@@ -16,7 +16,7 @@ HERE = os.path.dirname(__file__)
 
 CURVES = [
     ("grpo",             "GRPO baseline (no mask)",                            "#64748b"),
-    ("gtpo_ema_flipped", "GTPO-EMA flipped (tag-masked, 6 special tokens)",    "#4f46e5"),
+    ("gtpo_ema_flipped", "GTPO-EMA flipped (tag-masked, 4 Qwen3 native tags)", "#4f46e5"),
 ]
 
 

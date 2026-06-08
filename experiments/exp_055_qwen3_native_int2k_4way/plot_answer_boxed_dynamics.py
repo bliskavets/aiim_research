@@ -1,9 +1,12 @@
 """
-plot_reward_dynamics.py — reward dynamics for exp_055 (Qwen3-4B):
-GRPO baseline (no mask) + GTPO-EMA-flipped (6-tag mask) on
-Big-Math integer ∩ llama8b_solve_rate <= 0.125.
+plot_answer_boxed_dynamics.py — exp_055 reward_answer_boxed only (rolling-20).
 
-Only the two methods that were actually launched in run_055.sh.
+Isolates the strict-correctness signal: did the model put the right integer
+inside \\boxed{N} after closing </think>. Possible values per batch mean:
+  +3.0  every rollout had correct boxed integer
+   0.0  no \\boxed{} found
+  -1.5  boxed found but integer wrong (no partial credit)
+A mean of, say, +1.5 means roughly half the rollouts got it right.
 """
 import os
 import re
@@ -30,38 +33,40 @@ def rolling(xs, w=20):
     return out
 
 
-def extract_reward(p):
+def extract_boxed(p):
     if not os.path.exists(p):
         return None
     txt = open(p).read()
-    return [float(m.group(1)) for m in re.finditer(r"'reward':\s*([-\d.]+)", txt)]
+    return [float(m.group(1)) for m in re.finditer(
+        r"'rewards/reward_answer_boxed/mean':\s*([-\d.]+)", txt)]
 
 
 def main():
     fig, ax = plt.subplots(figsize=(12, 6.5))
 
     for method, label, color in CURVES:
-        rewards = extract_reward(os.path.join(HERE, f"train_{method}.log"))
-        if not rewards:
+        ys_raw = extract_boxed(os.path.join(HERE, f"train_{method}.log"))
+        if not ys_raw:
             continue
-        ys = rolling(rewards, w=20)
+        ys = rolling(ys_raw, w=20)
         ax.plot(range(len(ys)), ys, color=color, lw=2.0, label=label)
-        last50 = sum(rewards[-50:]) / min(50, len(rewards))
+        last50 = sum(ys_raw[-50:]) / min(50, len(ys_raw))
         ax.text(len(ys) + 5, last50, f"  L50 = {last50:+.2f}",
                 color=color, fontsize=9, va="center", weight="bold")
 
     ax.set_title(
-        "exp_055 — Qwen3-4B reward dynamics, 4 methods (Qwen3 native format)\n"
-        "Big-Math integer-answer subset (first 2000, no llama8b filter), "
-        "1000 steps, 3-component reward (max +7), rolling-20 smoothed",
+        "exp_055 — reward_answer_boxed dynamics (strict integer match in \\boxed{})\n"
+        "Qwen3-4B, Big-Math integer subset (first 2000), max +3.0 (per batch mean), rolling-20 smoothed",
         fontsize=11, weight="bold")
     ax.set_xlabel("training step", fontsize=11)
-    ax.set_ylabel("total reward (rolling-20 mean)", fontsize=11)
+    ax.set_ylabel("reward_answer_boxed (rolling-20 mean)", fontsize=11)
     ax.axhline(0, color="#64748b", lw=0.6, ls="--", alpha=0.6)
+    ax.axhline(3.0, color="#059669", lw=0.5, ls=":", alpha=0.4)
+    ax.text(5, 3.0, "  +3.0 = all-correct ceiling", color="#059669", fontsize=8, va="bottom")
     ax.grid(alpha=0.3)
     ax.legend(fontsize=9, loc="lower right")
 
-    out = os.path.join(HERE, "figures", "exp055_reward_dynamics.png")
+    out = os.path.join(HERE, "figures", "exp055_answer_boxed_dynamics.png")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     fig.tight_layout()
     fig.savefig(out, dpi=140)

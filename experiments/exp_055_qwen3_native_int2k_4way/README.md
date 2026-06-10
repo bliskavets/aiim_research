@@ -1,71 +1,100 @@
-# exp_054 — Qwen3-4B native format, GRPO vs GTPO-EMA-flipped on extra-hard Big-Math
+# exp_055 — Qwen3-4B native format, 4 methods on Big-Math int-2000
 
-Re-run of exp_053 using the **Qwen3 native format** instead of our custom `<start_working_out>` / `<SOLUTION>` tags. The custom-tag setup in exp_051/052/053 was confounded — Qwen3-4B was already trained with `<think>...</think>` as a structural protocol (registered as single special tokens 151667/151668) and `apply_chat_template` defaults to `enable_thinking=True`. Our system prompt asked for a different format; the model fought two competing format expectations, spent most of its rollout budget on `<think>` thinking, and hit 52%–76% completion clipping on hard subsets.
+GRPO baseline vs three reward-shaped candidates on the **easy** Big-Math
+integer-answer subset, using the **Qwen3 native format** (`<think>...</think>`
++ `\boxed{}`). This is the corrected re-run of exp_051, which used a custom
+`<start_working_out>`/`<SOLUTION>` system prompt that fought Qwen3's
+trained-in thinking-mode protocol.
 
-## What changed vs exp_053
+## TL;DR result
 
-| field | exp_053 (custom format) | exp_054 (Qwen3 native) |
-|---|---|---|
-| SYSTEM_PROMPT | "Place reasoning between `<start_working_out>` and `<end_working_out>`, answer between `<SOLUTION>...</SOLUTION>`" | "Solve step by step. Put your final integer answer inside `\boxed{}`, like `\boxed{42}`." |
-| reward_funcs | format_exact + format_approximate + answer_exact + answer_numeric (4 funcs scoring our tags) | reward_format_thinking + reward_answer_boxed + reward_answer_numeric (3 funcs scoring Qwen3 native shape) |
-| max possible reward | ~7.5 (3+1.5+3) | 5.5 (1+3+1.5) |
-| tag-mask | 6 tags (4 ours + `<think>`/`</think>`) | 4 Qwen3-native tags (`<think>`, `</think>`, `<|im_start|>`, `<|im_end|>`) |
+All methods cluster within ±0.13 reward — on this saturated subset
+(Qwen3-4B already at ~82% of the strict-answer ceiling out-of-the-box)
+shaping has no measurable effect. There is no signal to amplify.
 
-Everything else identical to exp_053: Qwen3-4B, max_seq=4096, gpu_memory_utilization=0.50, dataset = integer ∩ `llama8b_solve_rate < 0.125` (8000 examples, seed 3407), bs=1×ga=4×ng=16, 1000 steps, methods = grpo (no mask) + gtpo_ema_flipped (mask active).
+| method | steps | reward L50 | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | KL | clip% |
+|---|---|---|---|---|---|---|---|
+| grpo (baseline)         | 738 | +5.76 | +2.45 | +1.22 | +2.08 | 0.008 | 11% |
+| grpo_s_entropy          | 738 | +5.83 | +2.49 | +1.24 | +2.11 | 0.009 | 10% |
+| gtpo_conf (tag-masked)  | 450 | +5.72 | +2.48 | +1.24 | +2.00 | 0.004 | 12% |
+| gtpo_ema_flipped        | —   | not run (skipped — exp_054 already showed it ties/loses on Qwen3 native) |
 
-## Reward components (exp_054)
+Max practical reward ≈ +6 (format_thinking +2.5, answer_boxed +3.0, answer_numeric +1.5). All three methods were stopped early once their plateau was visible (steps logged above), to save GPU days.
 
+Plots:
+- `figures/exp055_reward_dynamics.png` — total reward, all methods overlaid (curves sit on top of each other)
+- `figures/exp055_answer_boxed_dynamics.png` — strict integer-in-`\boxed{}` reward, shows saturation at ~82% ceiling
+
+## Setup
+
+| field | value |
+|---|---|
+| model | Qwen/Qwen3-4B |
+| max_seq_length | 6656 (512 prompt + 6144 completion) |
+| gpu_memory_utilization | 0.40 |
+| LoRA | r=64, α=64, 7 modules (q,k,v,o,gate,up,down) |
+| dataset | SynthLabsAI/Big-Math-RL-Verified, integer-answer filter, first 2000 shuffled (seed 3407), **no llama8b filter** (this is the "easy" slice) |
+| per_device_train_batch_size | 1 |
+| gradient_accumulation_steps | 4 |
+| num_generations | 8 |
+| max_steps | 1000 (all 3 methods stopped early) |
+| lr / sched | 5e-6 cosine, warmup 0.1, wd 0.1, adamw_8bit |
+| seed | 3407 (LoRA init, dataset shuffle, GRPOConfig) |
+
+### Format (Qwen3 native)
+
+System prompt: *"Solve the problem step by step. Put your final integer answer inside \boxed{}, like \boxed{42}."* `apply_chat_template` default leaves `enable_thinking=True`, so the model emits `<think>...</think>` then the answer.
+
+Three reward components (in `train.py`):
+- `reward_format_thinking`: +2.5 one matched `<think>...</think>` pair / +1.5 no thinking / -2.0 mismatched
+- `reward_answer_boxed`: +3.0 correct integer in `\boxed{}` / -1.5 wrong / 0.0 no boxed (strict; answer region is post-`</think>`, or whole text if no thinking, or NONE if `<think>` opened-but-not-closed — blocks the "boxed-inside-unclosed-think" exploit)
+- `reward_answer_numeric`: +1.5 correct last number after `</think>` / -0.5 wrong / 0.0 none
+
+### Tag mask (for the per-token shaping trainers)
+
+`gtpo_conf` / `gtpo_ema_flipped` mask per-token shaping off on 4 Qwen3-native special tokens: `<think>`, `</think>`, `<|im_start|>`, `<|im_end|>` (8 patterns with leading-space variants). On those positions the per-token shaped advantage is replaced by the seq-level GRPO advantage. No-op for `grpo` (no shaping) and `grpo_s_entropy` (seq-level shaping).
+
+## How to run
+
+All four methods sequentially (full 1000 steps each):
+
+```bash
+cd /mnt/data/aiim_research
+HF_TOKEN=<token> bash experiments/exp_055_qwen3_native_int2k_4way/run_055.sh \
+  > experiments/exp_055_qwen3_native_int2k_4way/run_055.console.log 2>&1
 ```
-reward_format_thinking  (soft):
-  +1.0   exactly one matched <think>...</think> pair
-  +0.5   no <think> blocks (Qwen3 chose to skip thinking — also fine)
-  -0.5   multiple or mismatched blocks
 
-reward_answer_boxed     (strict, integer-only):
-  +3.0   \boxed{N} matches GT exactly
-  -1.5   \boxed{N} found but N != GT
-   0.0   no \boxed{} block
+Single method:
 
-reward_answer_numeric   (fallback):
-  +1.5   last number after </think> matches GT
-  -0.5   last number is something else
-   0.0   no number found
+```bash
+# inside the unsloth/unsloth container with /opt/venv active (see run_055.sh)
+python train.py --method {grpo|grpo_s_entropy|gtpo_conf|gtpo_ema_flipped}
 ```
 
-A perfect rollout reaches +5.5. A wrong-but-tried rollout sits around -1.0 to -2.0. Junk gets 0.0.
+Resume scripts (stop-early workflow): `run_055_resume_shaped.sh` (3 shaped methods), `run_055_resume_conf_ema.sh` (gtpo_conf + gtpo_ema_flipped only). They keep already-trained `train_*.log` intact.
 
-## Tag-mask details
-
-`encode_tag_patterns` is called on 4 Qwen3-native tags. With Qwen3-4B tokenizer this yields 8 unique patterns (each tag × bare + leading-space variant). All 4 base tags are SINGLE special-token-ids (`<think>=151667`, `</think>=151668`, `<|im_start|>=151644`, `<|im_end|>=151645`), so the mask is one-token-precise on these. On positions matching any pattern in `completion_ids`, the per-token shaped advantage is replaced with the seq-level GRPO advantage.
-
-Effect: GTPO-EMA-flipped's per-token EMA bonus does not land on the highly-peaked `</think>` close token (which caused the 76% clipping feedback loop in exp_053). Content tokens still receive the full shaping.
-
-## Hypothesis
-
-If exp_051/052/053 underperformed because of the format conflict, then exp_054 with native format should produce cleaner method comparison: lower clipping, smaller KL distortion from format-fighting, more interpretable Δ between GRPO and GTPO-EMA-flipped.
+**For full reproduction context on another machine (infra, stack versions, the whole shaping-research arc, why this experiment exists, what to expect, and a known seed pitfall) see `HANDOFF.md` in this folder.**
 
 ## Files
 
 ```
-README.md
-requirements.txt
-run_054.sh                  docker launcher, 2 methods sequential
-plot_metrics.py             4-metric grid
-plot_reward_dynamics.py     single-panel rolling-20 reward
-train.py                    rewritten for native format + 3 native rewards + 4-tag mask
-src/                        same trainer modules as exp_053 (no shaping-code changes needed)
-tests/test_format_tag_mask.py
-                            14 tests including:
-                              - exp_054 mask covers exactly the 4 Qwen3-native tags
-                              - train.py does NOT carry exp_053's custom-tag constants
-                              - encode_tag_patterns wires the 4 tags (not 6)
+README.md                      this file
+HANDOFF.md                     self-contained context for replicating on another machine
+requirements.txt               numpy<2.3 overlay (rest via /opt/venv)
+run_055.sh                     docker launcher, 4 methods sequential
+run_055_resume_shaped.sh       resume: 3 shaped methods only
+run_055_resume_conf_ema.sh     resume: gtpo_conf + gtpo_ema_flipped
+plot_metrics.py                4-metric grid
+plot_reward_dynamics.py        total-reward overlay (rolling-20)
+plot_answer_boxed_dynamics.py  strict-answer reward overlay
+train.py                       method-switch trainer, Qwen3 native format, 3 rewards, tag-mask wiring
+src/
+  format_tag_mask.py           tag → token-id patterns, build mask, blend advantages
+  entropy_utils.py / grpo_s_trainer.py        GRPO-S (seq-level entropy)
+  confidence_utils.py / gtpo_conf_trainer.py  GTPO per-token confidence
+  ema_flipped_utils.py / gtpo_ema_flipped_trainer.py  GTPO-EMA-flipped
+tests/
+  test_methods.py              6 shaping correctness tests
+train_grpo.log / train_grpo_s_entropy.log / train_gtpo_conf.log   training logs
+figures/                       the two comparison plots
 ```
-
-## Results
-
-(to be filled in)
-
-| method | reward L50 | peak | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | clip% | KL |
-|---|---|---|---|---|---|---|---|
-| grpo               | tbd | tbd | tbd | tbd | tbd | tbd | tbd |
-| gtpo_ema_flipped   | tbd | tbd | tbd | tbd | tbd | tbd | tbd |

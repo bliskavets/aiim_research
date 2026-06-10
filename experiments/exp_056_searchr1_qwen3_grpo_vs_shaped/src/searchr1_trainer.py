@@ -20,7 +20,7 @@ from trl import GRPOTrainer
 
 from .retriever import Retriever
 from .searchr1_rollout import (
-    GenerationResult, RolloutConfig, RolloutTrace, run_rollouts,
+    GenerationResult, RolloutConfig, RolloutTrace, run_rollouts_batched,
 )
 
 
@@ -110,7 +110,7 @@ class SearchR1GRPOTrainer(GRPOTrainer):
         generate_fn = _build_vllm_generate_fn(llm, tokenizer)
         encode_fn = lambda txt: tokenizer.encode(txt, add_special_tokens=False)
 
-        traces: List[RolloutTrace] = run_rollouts(
+        traces: List[RolloutTrace] = run_rollouts_batched(
             prompts=grouped_prompts,
             generate_fn=generate_fn,
             encode_fn=encode_fn,

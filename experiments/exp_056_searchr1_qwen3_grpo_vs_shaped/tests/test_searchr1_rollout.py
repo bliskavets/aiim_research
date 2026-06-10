@@ -123,3 +123,49 @@ if __name__ == "__main__":
         globals()[name]()
         print(f"  ok  {name}")
     print("all rollout tests passed")
+
+
+# ─── batched rollout: same scripted-LLM semantics, batched generate_fn ───────
+def test_batched_matches_per_prompt_answer_path():
+    from src.searchr1_rollout import run_rollouts_batched
+    # generate_fn receives a LIST of prompts; return one GenerationResult each
+    def batched_gen(prompts, sp):
+        return [GenerationResult(
+            text="<think>t</think><answer>Paris</answer>",
+            token_ids=encode_fn("<think>t</think><answer>Paris</answer>"),
+            finish_reason="stop") for _ in prompts]
+    cfg = RolloutConfig(max_turns=4)
+    traces = run_rollouts_batched(["Q1 ", "Q2 ", "Q3 "], batched_gen, encode_fn, StubRetriever(), cfg)
+    assert len(traces) == 3
+    assert all(t.finish_reason == "answer" for t in traces)
+    assert all(t.n_searches == 0 for t in traces)
+    assert all(all(m == 1 for m in t.model_mask) for t in traces)
+
+
+def test_batched_search_then_answer_with_mixed_finish():
+    from src.searchr1_rollout import run_rollouts_batched
+    # turn 1: both search; turn 2: first answers, second searches again;
+    # turn 3: second answers. generate_fn is stateful by turn.
+    turn = {"n": 0}
+    def batched_gen(prompts, sp):
+        turn["n"] += 1
+        if turn["n"] == 1:
+            s = "<think>a</think><search>q</search>"
+            return [GenerationResult(text=s, token_ids=encode_fn(s), finish_reason="stop") for _ in prompts]
+        if turn["n"] == 2:
+            # prompts here = both still active (both searched)
+            outs = []
+            ans = "<think>b</think><answer>A1</answer>"
+            srch = "<think>c</think><search>q2</search>"
+            outs.append(GenerationResult(text=ans, token_ids=encode_fn(ans), finish_reason="stop"))
+            outs.append(GenerationResult(text=srch, token_ids=encode_fn(srch), finish_reason="stop"))
+            return outs
+        ans2 = "<think>d</think><answer>A2</answer>"
+        return [GenerationResult(text=ans2, token_ids=encode_fn(ans2), finish_reason="stop") for _ in prompts]
+    cfg = RolloutConfig(max_turns=4)
+    traces = run_rollouts_batched(["Q1 ", "Q2 "], batched_gen, encode_fn, StubRetriever(), cfg)
+    assert traces[0].finish_reason == "answer" and traces[0].n_searches == 1
+    assert traces[1].finish_reason == "answer" and traces[1].n_searches == 2
+    # both have an injected <information> block (mask 0s)
+    assert any(m == 0 for m in traces[0].model_mask)
+    assert any(m == 0 for m in traces[1].model_mask)

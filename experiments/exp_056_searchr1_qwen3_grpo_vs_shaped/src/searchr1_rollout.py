@@ -105,16 +105,132 @@ def run_rollouts(
     retriever: Retriever,
     cfg: RolloutConfig,
 ) -> List[RolloutTrace]:
-    """Run one Search-R1 multi-turn rollout per prompt.
+    """Sequential reference implementation — one rollout at a time.
 
-    Returns a `RolloutTrace` per prompt, in the same order.
-    `encode_fn(text) -> token_ids` is needed to tokenize injected
-    <information> blocks so model_mask aligns with token_ids.
+    Kept for the scripted-LLM unit tests (which feed GenerationResults in a
+    fixed per-call order). For training use `run_rollouts_batched`, which is
+    orders of magnitude faster because it generates all still-active rollouts
+    of the group in a single vLLM call per turn and batch-retrieves all
+    queries in one server round-trip.
     """
     traces: List[RolloutTrace] = []
     for prompt in prompts:
         traces.append(_run_one(prompt, generate_fn, encode_fn, retriever, cfg))
     return traces
+
+
+def run_rollouts_batched(
+    prompts: Sequence[str],
+    generate_fn: GenerateFn,
+    encode_fn: Callable[[str], List[int]],
+    retriever: Retriever,
+    cfg: RolloutConfig,
+) -> List[RolloutTrace]:
+    """Batched multi-turn rollout.
+
+    Per turn:
+      1. Collect every rollout that is still active (not finished, has budget).
+      2. ONE generate_fn call for all their current (prompt+completion) strings
+         — vLLM parallelises these internally.
+      3. Split the active rollouts into those that emitted </search> (need
+         retrieval) vs </answer>/truncated (done).
+      4. ONE retriever.retrieve_batch() call for all search queries.
+      5. Append the per-rollout <information> blocks, decrement budgets.
+    Repeat up to cfg.max_turns. Returns one RolloutTrace per prompt, in order.
+    """
+    n = len(prompts)
+    state = [
+        {
+            "prompt": p,
+            "completion": "",
+            "token_ids": [],
+            "model_mask": [],
+            "queries": [],
+            "budget": cfg.max_completion_tokens,
+            "done": False,
+            "finish_reason": "max_turns",
+            "n_turns": 0,
+        }
+        for p in prompts
+    ]
+
+    for _turn in range(cfg.max_turns):
+        active_idx = [i for i in range(n) if not state[i]["done"] and state[i]["budget"] > 0]
+        # mark out-of-budget-but-not-done as truncated
+        for i in range(n):
+            if not state[i]["done"] and state[i]["budget"] <= 0:
+                state[i]["done"] = True
+                state[i]["finish_reason"] = "truncated"
+        if not active_idx:
+            break
+
+        # 1 generate call for all active rollouts
+        batch_prompts = [state[i]["prompt"] + state[i]["completion"] for i in active_idx]
+        per_turn_max = min(cfg.per_turn_max_tokens,
+                           max(1, min(state[i]["budget"] for i in active_idx)))
+        sp = {
+            "max_tokens": per_turn_max,
+            "temperature": cfg.temperature,
+            "top_p": cfg.top_p,
+            "stop": [_STOP_SEARCH, _STOP_ANSWER],
+            "include_stop_str_in_output": True,
+            "seed": cfg.seed,
+        }
+        outs = generate_fn(batch_prompts, sp)
+
+        # 2 apply generations, decide who searches
+        search_slots: List[int] = []
+        search_queries: List[str] = []
+        for slot, i in enumerate(active_idx):
+            out = outs[slot]
+            gen_text = out.text
+            gen_ids = list(out.token_ids)
+            st = state[i]
+            st["completion"] += gen_text
+            st["token_ids"].extend(gen_ids)
+            st["model_mask"].extend([1] * len(gen_ids))
+            st["budget"] -= len(gen_ids)
+            st["n_turns"] += 1
+
+            if _STOP_ANSWER in gen_text:
+                st["done"] = True
+                st["finish_reason"] = "answer"
+            elif _STOP_SEARCH in gen_text:
+                q = extract_last_search_query(gen_text) or ""
+                st["queries"].append(q)
+                search_slots.append(i)
+                search_queries.append(q)
+            else:
+                # ran out of per-turn tokens without a stop string
+                st["done"] = True
+                st["finish_reason"] = "truncated"
+
+        # 3 one batched retrieval for everyone who searched
+        if search_queries:
+            docs_batch = retriever.retrieve_batch(search_queries, topk=cfg.topk)
+            for i, docs in zip(search_slots, docs_batch):
+                st = state[i]
+                info_block = format_information_block(docs)
+                info_ids = encode_fn(info_block)
+                if len(info_ids) > st["budget"]:
+                    info_ids = info_ids[:max(0, st["budget"])]
+                st["completion"] += info_block
+                st["token_ids"].extend(info_ids)
+                st["model_mask"].extend([0] * len(info_ids))
+                st["budget"] -= len(info_ids)
+
+    return [
+        RolloutTrace(
+            completion_text=st["completion"],
+            token_ids=st["token_ids"],
+            model_mask=st["model_mask"],
+            n_turns=st["n_turns"],
+            n_searches=len(st["queries"]),
+            finish_reason=st["finish_reason"],
+            queries=st["queries"],
+        )
+        for st in state
+    ]
 
 
 def _run_one(prompt: str,

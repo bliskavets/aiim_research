@@ -32,6 +32,7 @@ docker run --rm --gpus all \
   -v "${EXP_DIR}:/workspace/${EXP_NAME}" \
   -e "HF_TOKEN=${HF_TOKEN}" \
   -e "RETRIEVAL_URL=${RETRIEVAL_URL}" \
+  -e "PYTORCH_ALLOC_CONF=expandable_segments:True" \
   unsloth/unsloth -c "
     set -e
     set -o pipefail

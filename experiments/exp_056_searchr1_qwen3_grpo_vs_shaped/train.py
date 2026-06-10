@@ -41,11 +41,12 @@ SEED = 3407
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B",
-    "max_seq_length": 6656,
+    "max_seq_length": 4608,          # 512 prompt + 4096 completion (lowered from 6656: OOM in backward
+                                     # — Search-R1 keeps all rollouts near-max with injected <information>)
     "lora_rank": 64,
     "load_in_4bit": False,
     "fast_inference": True,
-    "gpu_memory_utilization": 0.40,
+    "gpu_memory_utilization": 0.32,  # leave more room for the training backward over many long seqs
 }
 
 LORA_CONFIG = {
@@ -66,7 +67,7 @@ TRAINING_CONFIG = {
     "logging_steps": 1,
     "per_device_train_batch_size": 1,
     "gradient_accumulation_steps": 4,    # global batch = 4 prompts/grad-update
-    "num_generations": int(os.environ.get("SMOKE_NUM_GEN", 8)),
+    "num_generations": int(os.environ.get("SMOKE_NUM_GEN", 4)),
     "max_steps": int(os.environ.get("SMOKE_MAX_STEPS", 1000)),
     "save_steps": 9999,
     "max_grad_norm": 1.0,
@@ -87,8 +88,8 @@ DATASET_CONFIG = {
 ROLLOUT_CONFIG = RolloutConfig(
     max_turns=4,
     topk=3,
-    max_completion_tokens=6144,
-    per_turn_max_tokens=1536,
+    max_completion_tokens=4096,    # matches MODEL_CONFIG max_seq budget
+    per_turn_max_tokens=1280,
     temperature=0.7,
     top_p=0.95,
     seed=SEED,

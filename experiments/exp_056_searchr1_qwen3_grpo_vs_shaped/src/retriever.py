@@ -61,7 +61,10 @@ class HTTPRetriever(Retriever):
     """
 
     def __init__(self, url: str = "http://127.0.0.1:8000/retrieve",
-                 timeout_s: float = 30.0):
+                 timeout_s: float = 900.0):
+        # generous timeout: the server processes a batch of queries
+        # SEQUENTIALLY (~1s each on CPU FAISS), so a group of 32 search
+        # queries in one turn is ~32s; 30s was too short.
         if requests is None:
             raise RuntimeError("The `requests` package is required for HTTPRetriever")
         self.url = url

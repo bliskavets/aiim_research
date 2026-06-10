@@ -72,7 +72,13 @@ class RolloutConfig:
     per_turn_max_tokens: int = 1024     # cap one generate() call
     temperature: float = 0.7
     top_p: float = 0.95
-    seed: int = 3407
+    seed: Optional[int] = None   # MUST be None for GRPO: a fixed seed makes
+                                 # vLLM produce IDENTICAL completions for the
+                                 # num_generations copies of a prompt, killing
+                                 # within-group variance → zero advantage →
+                                 # zero gradient (observed in the first 100
+                                 # steps: frac_reward_zero_std=1.0 every step,
+                                 # completions min==max==mean length).
 
 
 @dataclass

@@ -92,7 +92,10 @@ ROLLOUT_CONFIG = RolloutConfig(
     per_turn_max_tokens=1280,
     temperature=0.7,
     top_p=0.95,
-    seed=SEED,
+    seed=None,    # MUST be None — a fixed seed makes the num_generations
+                  # rollouts of a prompt identical, zeroing GRPO's within-group
+                  # advantage (see RolloutConfig.seed note). Data-order
+                  # reproducibility still comes from GRPOConfig(seed=SEED).
 )
 
 SHAPING_CONFIG = {

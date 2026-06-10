@@ -40,7 +40,7 @@ docker run --rm --gpus all \
     uv pip install -r requirements.txt --quiet
     uv pip install --no-deps --quiet unsloth==2026.3.7 unsloth_zoo
     uv pip install --quiet requests
-    echo '[smoke] env: SMOKE_MAX_STEPS=$SMOKE_MAX_STEPS SUBSET=$SMOKE_SUBSET NUM_GEN=$SMOKE_NUM_GEN'
+    echo \"[smoke] env: SMOKE_MAX_STEPS=\$SMOKE_MAX_STEPS SUBSET=\$SMOKE_SUBSET NUM_GEN=\$SMOKE_NUM_GEN\"
     python -u train.py --method grpo --retriever stub 2>&1 | tee train_grpo_smoke.log
   " 2>&1 | tee "${EXP_DIR}/run_056_smoke.out"
 

@@ -13,12 +13,12 @@ Key changes vs GRPOTrainer:
 """
 
 import torch
-from trl import GRPOTrainer
+from .searchr1_trainer import SearchR1GRPOTrainer
 
 from .entropy_utils import compute_grpo_s_rewards, EPS
 
 
-class GRPOSTrainer(GRPOTrainer):
+class GRPOSTrainer(SearchR1GRPOTrainer):
     """
     GRPO-S trainer. Accepts all standard GRPOTrainer arguments plus:
 

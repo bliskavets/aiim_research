@@ -8,12 +8,12 @@ Confidence metric: C_i,t = -mean_{top-k}(log π(v | context))
 """
 
 import torch
-from trl import GRPOTrainer
+from .searchr1_trainer import SearchR1GRPOTrainer
 from .confidence_utils import confidence_from_logits, compute_gtpo_conf_rewards, EPS
 from .format_tag_mask import build_tag_mask, apply_tag_mask_to_token_advantages
 
 
-class GTPOConfTrainer(GRPOTrainer):
+class GTPOConfTrainer(SearchR1GRPOTrainer):
     """
     GTPO with confidence-based token-level reward shaping.
 

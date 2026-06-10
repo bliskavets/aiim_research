@@ -6,7 +6,7 @@ with O+/O- signal roles swapped. See ema_flipped_utils.py for rationale.
 """
 
 import torch
-from trl import GRPOTrainer
+from .searchr1_trainer import SearchR1GRPOTrainer
 
 from .ema_flipped_utils import (
     confidence_from_logits,
@@ -17,7 +17,7 @@ from .ema_flipped_utils import (
 from .format_tag_mask import build_tag_mask, apply_tag_mask_to_token_advantages
 
 
-class GTPOEMAFlippedTrainer(GRPOTrainer):
+class GTPOEMAFlippedTrainer(SearchR1GRPOTrainer):
     """
     GTPO-EMA with flipped O+/O- signal roles (variant C).
 

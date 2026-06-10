@@ -66,8 +66,8 @@ TRAINING_CONFIG = {
     "logging_steps": 1,
     "per_device_train_batch_size": 1,
     "gradient_accumulation_steps": 4,    # global batch = 4 prompts/grad-update
-    "num_generations": 8,                # rollouts per prompt
-    "max_steps": 1000,
+    "num_generations": int(os.environ.get("SMOKE_NUM_GEN", 8)),
+    "max_steps": int(os.environ.get("SMOKE_MAX_STEPS", 1000)),
     "save_steps": 9999,
     "max_grad_norm": 1.0,
     "report_to": "none",
@@ -80,7 +80,7 @@ DATASET_CONFIG = {
     "name": "PeterJinGo/nq_hotpotqa_train",
     "split": "train",
     "max_prompt_tokens": 512,
-    "subset_size": 2000,
+    "subset_size": int(os.environ.get("SMOKE_SUBSET", 2000)),
     "shuffle_seed": SEED,
 }
 

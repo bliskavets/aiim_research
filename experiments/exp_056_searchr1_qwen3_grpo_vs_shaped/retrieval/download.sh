@@ -41,18 +41,26 @@ print('downloads done')
   "
 
 echo ""
-echo "=== [$(date -Is)] Decompress + assemble ==="
+echo "=== [$(date -Is)] Decompress + assemble (space-safe) ==="
 cd "${DATA_DIR}"
 ls -lh wiki-18.jsonl.gz part_a* 2>&1
-if [ -f wiki-18.jsonl.gz ] && [ ! -f wiki-18.jsonl ]; then
-  echo "decompressing wiki-18.jsonl.gz -> wiki-18.jsonl ..."
-  gunzip -k wiki-18.jsonl.gz
+# CAUTION: do NOT do `cat part_aa part_ab > e5_Flat.index`. That keeps all
+# three files (40+21+61 = 122GB) on disk simultaneously and OOMs the FS on
+# hosts with <130GB free at this point in the pipeline. Instead:
+#  1. delete the .gz after a non-keep gunzip so we recover 4.8GB
+#  2. rename part_aa to e5_Flat.index (instant, no copy)
+#  3. append part_ab to e5_Flat.index, then rm part_ab
+# Peak extra disk during step 3 is only ~21GB (the size of part_ab).
+if [ -f wiki-18.jsonl.gz ] && [ ! -s wiki-18.jsonl ]; then
+  rm -f wiki-18.jsonl    # might be a partial leftover from a prior attempt
+  echo "decompressing wiki-18.jsonl.gz -> wiki-18.jsonl (deleting .gz)..."
+  gunzip wiki-18.jsonl.gz
 fi
 if [ -f part_aa ] && [ -f part_ab ] && [ ! -f e5_Flat.index ]; then
-  echo "concat part_aa + part_ab -> e5_Flat.index ..."
-  cat part_aa part_ab > e5_Flat.index
-  echo "removing parts"
-  rm part_aa part_ab
+  echo "mv part_aa -> e5_Flat.index ..."
+  mv part_aa e5_Flat.index
+  echo "append part_ab to e5_Flat.index then rm part_ab ..."
+  cat part_ab >> e5_Flat.index && rm part_ab
 fi
 
 echo ""

@@ -129,8 +129,16 @@ DEFAULT_RETRIEVER = StubRetriever()
 # DATASET
 # =============================================================================
 def prepare_dataset():
-    ds = load_dataset(DATASET_CONFIG["name"], split=DATASET_CONFIG["split"],
-                      token=os.environ.get("HF_TOKEN"))
+    # Load only train.parquet directly. The repo's test.parquet has a
+    # different schema (HotpotQA-style with supporting_facts, question_decomposition,
+    # etc.) which crashes HF's default loader when it tries to auto-detect
+    # the splits, even if we only ask for split='train'.
+    ds = load_dataset(
+        "parquet",
+        data_files={"train": f"hf://datasets/{DATASET_CONFIG['name']}/train.parquet"},
+        split="train",
+        token=os.environ.get("HF_TOKEN"),
+    )
     ds = ds.shuffle(seed=DATASET_CONFIG["shuffle_seed"])
     ds = ds.select(range(min(DATASET_CONFIG["subset_size"], len(ds))))
     # PeterJinGo/nq_hotpotqa_train uses fields: question, golden_answers (list[str])

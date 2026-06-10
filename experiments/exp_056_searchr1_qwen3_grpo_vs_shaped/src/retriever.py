@@ -68,23 +68,33 @@ class HTTPRetriever(Retriever):
         self.timeout_s = timeout_s
 
     def retrieve_batch(self, queries: Sequence[str], topk: int = 3) -> List[List[str]]:
+        # NOTE: we must send return_scores=True. The upstream Search-R1
+        # retrieve_endpoint always does `results, scores = batch_search(...)`,
+        # but batch_search only returns the 2-tuple when return_score=True;
+        # with False it returns a single value and the endpoint 500s on the
+        # unpack. With True, each per-query item is {"document": doc, "score": s}.
         resp = requests.post(
             self.url,
-            json={"queries": list(queries), "topk": int(topk), "return_scores": False},
+            json={"queries": list(queries), "topk": int(topk), "return_scores": True},
             timeout=self.timeout_s,
         )
         resp.raise_for_status()
         payload = resp.json()
-        # Expected shape: {"result": [[{"contents": "...", "title": "...", ...}, ...]]}
+        # shape: {"result": [[{"document": {"id","contents"}, "score": float}, ...], ...]}
         out: List[List[str]] = []
         for per_q in payload["result"]:
             docs: List[str] = []
             for i, item in enumerate(per_q):
-                if isinstance(item, dict):
-                    title = item.get("title") or item.get("id") or ""
-                    contents = item.get("contents") or item.get("text") or ""
+                doc = item.get("document", item) if isinstance(item, dict) else item
+                if isinstance(doc, dict):
+                    contents = doc.get("contents") or doc.get("text") or ""
+                    title = doc.get("title")
+                    if not title and contents:
+                        # wiki-18 contents are "Title\nbody..."; use first line as title
+                        title = contents.split("\n", 1)[0].strip('"')
+                    title = title or doc.get("id") or ""
                 else:
-                    title, contents = "", str(item)
+                    title, contents = "", str(doc)
                 docs.append(f"Doc {i+1}(Title: \"{title}\") {contents}")
             out.append(docs)
         return out

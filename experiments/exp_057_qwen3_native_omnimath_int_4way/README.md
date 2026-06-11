@@ -116,15 +116,23 @@ python train.py --method {grpo|grpo_s_entropy|gtpo_conf|gtpo_ema_flipped}
 
 ## Results
 
-_Pending — run in progress. Last-50-step averages will be filled in here, same
-columns as exp_055 (reward, answer_boxed, answer_numeric, format_thinking, KL, clip%)._
+_In progress — last-50-step averages (same columns as exp_055). Methods stopped
+early once a reward plateau is visible (stop-early workflow). Snapshot plot:
+`figures/exp057_progress.png`._
 
 | method | steps | reward L50 | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | KL | clip% |
 |---|---|---|---|---|---|---|---|
-| grpo (baseline)        | — | — | — | — | — | — | — |
+| grpo (baseline)        | 492 (stopped) | +2.56 | +1.27 | +0.63 | +0.65 | 0.010 | 46% |
 | grpo_s_entropy         | — | — | — | — | — | — | — |
 | gtpo_conf (tag-masked) | — | — | — | — | — | — | — |
 | gtpo_ema_flipped       | — | — | — | — | — | — | — |
+
+**grpo baseline (492 steps):** reward climbs +0.64 (first 50) → +2.56 (last 50),
+peak rolling-20 +3.15 @ step 368. Far from the ~+7 ceiling — **non-saturated**,
+the opposite of exp_055. Over training: format_thinking −0.55 → +0.65 (model
+learns to close `<think>`), clip 72% → 46%, mean completion 5380 → 4575 tok,
+`frac_reward_zero_std` 0.80 → 0.60 (more steps carry within-group signal). This
+is the headroom exp_055 lacked — the shaped methods now have something to act on.
 
 ## Files
 

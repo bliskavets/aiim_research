@@ -98,10 +98,17 @@ ROLLOUT_CONFIG = RolloutConfig(
                   # reproducibility still comes from GRPOConfig(seed=SEED).
 )
 
+# conf_micro_bs: chunk size for the per-token-confidence second forward in the
+# GTPO trainers. Caps peak memory of the full-vocab (B,L,V) fp32 logits tensor
+# that otherwise OOMs the backward on long Search-R1 rollouts. Lower = safer.
+_CONF_MICRO_BS = int(os.environ.get("CONF_MICRO_BS", 2))
+
 SHAPING_CONFIG = {
     "grpo_s_entropy":   {"beta1": 1.0, "beta2": 0.1, "reward_threshold": 0.0},
-    "gtpo_conf":        {"alpha1": 1.0, "alpha2": 0.1, "top_k": 20, "reward_threshold": 0.0},
-    "gtpo_ema_flipped": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0},
+    "gtpo_conf":        {"alpha1": 1.0, "alpha2": 0.1, "top_k": 20, "reward_threshold": 0.0,
+                         "conf_micro_bs": _CONF_MICRO_BS},
+    "gtpo_ema_flipped": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
+                         "conf_micro_bs": _CONF_MICRO_BS},
 }
 
 # Tag mask: structural tokens that shouldn't carry per-token shaping signal.

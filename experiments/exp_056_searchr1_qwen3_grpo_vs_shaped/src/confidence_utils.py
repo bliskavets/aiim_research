@@ -61,6 +61,35 @@ def confidence_from_logits(logits: torch.Tensor, top_k: int = 20) -> torch.Tenso
     return confidence  # always ≥ 0 since log_probs ≤ 0
 
 
+@torch.no_grad()
+def confidence_from_model_chunked(model, input_ids, attention_mask, logits_to_keep,
+                                  top_k: int = 20, pass_logits_to_keep: bool = False,
+                                  micro_bs: int = 2) -> torch.Tensor:
+    """Memory-safe per-token confidence over a whole batch.
+
+    Runs ``model`` forward in micro-batches over the batch dim so the full
+    (B, L, V) LM-head logits tensor — fp32 over Qwen3's ~152k vocab, the
+    dominant memory cost — is never materialized at once. Mathematically
+    identical to a single forward + ``confidence_from_logits``; only the peak
+    memory differs (≈ micro_bs/B of the single-shot peak). Without this the
+    full-batch second forward OOMs the backward on long Search-R1 rollouts.
+
+    Returns confidence (B, T).
+    """
+    B = input_ids.size(0)
+    chunks = []
+    for s in range(0, B, micro_bs):
+        e = min(s + micro_bs, B)
+        mi = {"input_ids": input_ids[s:e], "attention_mask": attention_mask[s:e]}
+        if pass_logits_to_keep:
+            mi["logits_to_keep"] = logits_to_keep + 1
+        logits = model(**mi).logits[:, :-1, :]      # (b, L-1, V)
+        logits = logits[:, -logits_to_keep:, :]     # (b, T, V)
+        chunks.append(confidence_from_logits(logits, top_k=top_k))
+        del logits
+    return torch.cat(chunks, dim=0)                 # (B, T)
+
+
 def compress_confidence(c: torch.Tensor) -> torch.Tensor:
     """
     Log-compress confidence values to reduce scale and squash outliers:

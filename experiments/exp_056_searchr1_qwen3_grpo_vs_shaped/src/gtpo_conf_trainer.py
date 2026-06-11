@@ -9,7 +9,12 @@ Confidence metric: C_i,t = -mean_{top-k}(log π(v | context))
 
 import torch
 from .searchr1_trainer import SearchR1GRPOTrainer
-from .confidence_utils import confidence_from_logits, compute_gtpo_conf_rewards, EPS
+from .confidence_utils import (
+    confidence_from_logits,
+    confidence_from_model_chunked,
+    compute_gtpo_conf_rewards,
+    EPS,
+)
 from .format_tag_mask import build_tag_mask, apply_tag_mask_to_token_advantages
 
 
@@ -34,6 +39,7 @@ class GTPOConfTrainer(SearchR1GRPOTrainer):
         self.top_k                = kwargs.pop("top_k", 20)
         self.reward_threshold     = kwargs.pop("reward_threshold", 0.0)
         self.format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
+        self.conf_micro_bs        = kwargs.pop("conf_micro_bs", 2)
         super().__init__(*args, **kwargs)
 
     def _compute_loss(self, model, inputs):
@@ -52,16 +58,17 @@ class GTPOConfTrainer(SearchR1GRPOTrainer):
             model, input_ids, attention_mask, logits_to_keep, compute_entropy=False,
         )
 
-        # Compute confidence from logits via a separate forward pass
-        # (we need full logits, not just selected token logps)
-        with torch.no_grad():
-            model_inputs = {"input_ids": input_ids, "attention_mask": attention_mask}
-            if "logits_to_keep" in self.model_kwarg_keys:
-                model_inputs["logits_to_keep"] = logits_to_keep + 1
-            raw_out = model(**model_inputs)
-            logits = raw_out.logits[:, :-1, :]          # (B, L-1, V)
-            logits = logits[:, -logits_to_keep:, :]     # (B, T, V)
-            confidence = confidence_from_logits(logits, top_k=self.top_k)  # (B, T)
+        # Compute confidence from logits via a separate forward pass.
+        # Chunked over the batch dim (micro_bs) so the full (B, L, V) fp32
+        # logits tensor over Qwen3's ~152k vocab is never materialized at
+        # once — otherwise the second forward OOMs the backward on long
+        # Search-R1 rollouts. Math is identical to a single full forward.
+        confidence = confidence_from_model_chunked(
+            model, input_ids, attention_mask, logits_to_keep,
+            top_k=self.top_k,
+            pass_logits_to_keep=("logits_to_keep" in self.model_kwarg_keys),
+            micro_bs=self.conf_micro_bs,
+        )  # (B, T)
 
         old_per_token_logps = inputs.get("old_per_token_logps")
         old_per_token_logps = per_token_logps.detach() if old_per_token_logps is None else old_per_token_logps

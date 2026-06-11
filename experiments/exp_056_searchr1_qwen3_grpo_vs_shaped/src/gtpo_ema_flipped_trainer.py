@@ -10,6 +10,7 @@ from .searchr1_trainer import SearchR1GRPOTrainer
 
 from .ema_flipped_utils import (
     confidence_from_logits,
+    confidence_from_model_chunked,
     compute_ema_vectorized,
     compute_gtpo_ema_flipped_advantages,
     EPS,
@@ -41,6 +42,7 @@ class GTPOEMAFlippedTrainer(SearchR1GRPOTrainer):
         self.top_k                = kwargs.pop("top_k", 20)
         self.reward_threshold     = kwargs.pop("reward_threshold", 0.0)
         self.format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
+        self.conf_micro_bs        = kwargs.pop("conf_micro_bs", 2)
         super().__init__(*args, **kwargs)
 
     def _compute_loss(self, model, inputs):
@@ -58,14 +60,16 @@ class GTPOEMAFlippedTrainer(SearchR1GRPOTrainer):
             model, input_ids, attention_mask, logits_to_keep, compute_entropy=False,
         )
 
-        with torch.no_grad():
-            model_inputs = {"input_ids": input_ids, "attention_mask": attention_mask}
-            if "logits_to_keep" in self.model_kwarg_keys:
-                model_inputs["logits_to_keep"] = logits_to_keep + 1
-            raw_out = model(**model_inputs)
-            logits = raw_out.logits[:, :-1, :]
-            logits = logits[:, -logits_to_keep:, :]
-            confidence = confidence_from_logits(logits, top_k=self.top_k)
+        # Chunked second forward over the batch dim so the full (B, L, V) fp32
+        # logits tensor (Qwen3 ~152k vocab) is never materialized at once —
+        # otherwise it OOMs the backward on long Search-R1 rollouts. Math is
+        # identical to a single full forward.
+        confidence = confidence_from_model_chunked(
+            model, input_ids, attention_mask, logits_to_keep,
+            top_k=self.top_k,
+            pass_logits_to_keep=("logits_to_keep" in self.model_kwarg_keys),
+            micro_bs=self.conf_micro_bs,
+        )
 
         old_per_token_logps = inputs.get("old_per_token_logps")
         old_per_token_logps = (

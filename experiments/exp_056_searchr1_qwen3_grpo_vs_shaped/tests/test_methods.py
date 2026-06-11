@@ -102,3 +102,64 @@ def test_gtpo_ema_flipped_advantages():
     assert torch.isfinite(adv).all()
     # padding tokens of the short sequence carry no advantage
     assert torch.count_nonzero(adv[0, 4:]) == 0
+
+
+# ── chunked second-forward (memory-safe confidence) ─────────────────────────
+
+class _FakeLMOutput:
+    def __init__(self, logits):
+        self.logits = logits
+
+
+class _FakeModel:
+    """Per-token deterministic logits via a fixed embedding-like projection.
+    Each row's output depends only on its own token ids, so micro-batching
+    over the batch dim must be exactly equivalent to a single forward."""
+    def __init__(self, vocab_in, V, seed=0):
+        g = torch.Generator().manual_seed(seed)
+        self.W = torch.randn(vocab_in, V, generator=g)
+
+    def __call__(self, input_ids, attention_mask=None, logits_to_keep=None):
+        return _FakeLMOutput(self.W[input_ids])  # (b, L, V)
+
+
+def _ref_confidence(model, input_ids, logits_to_keep, conf_fn, top_k=20):
+    full = model(input_ids=input_ids).logits[:, :-1, :]
+    full = full[:, -logits_to_keep:, :]
+    return conf_fn(full, top_k=top_k)
+
+
+def test_confidence_chunked_matches_single_forward():
+    from src.confidence_utils import (
+        confidence_from_logits as cf,
+        confidence_from_model_chunked as chunked,
+    )
+    B, L, Vin, V = 6, 9, 30, 40
+    logits_to_keep = 5
+    g = torch.Generator().manual_seed(3)
+    input_ids = torch.randint(0, Vin, (B, L), generator=g)
+    attn = torch.ones(B, L)
+    model = _FakeModel(Vin, V)
+    ref = _ref_confidence(model, input_ids, logits_to_keep, cf)
+    for mb in (1, 2, 4, B, B + 3):  # also test micro_bs >= B (single chunk)
+        out = chunked(model, input_ids, attn, logits_to_keep, top_k=20, micro_bs=mb)
+        assert out.shape == (B, logits_to_keep)
+        assert torch.allclose(out, ref, atol=1e-6), f"mismatch at micro_bs={mb}"
+
+
+def test_confidence_chunked_matches_single_forward_ema_module():
+    from src.ema_flipped_utils import (
+        confidence_from_logits as cf,
+        confidence_from_model_chunked as chunked,
+    )
+    B, L, Vin, V = 5, 8, 25, 35
+    logits_to_keep = 4
+    g = torch.Generator().manual_seed(7)
+    input_ids = torch.randint(0, Vin, (B, L), generator=g)
+    attn = torch.ones(B, L)
+    model = _FakeModel(Vin, V, seed=1)
+    ref = _ref_confidence(model, input_ids, logits_to_keep, cf)
+    for mb in (1, 2, 3, B):
+        out = chunked(model, input_ids, attn, logits_to_keep, top_k=20, micro_bs=mb)
+        assert out.shape == (B, logits_to_keep)
+        assert torch.allclose(out, ref, atol=1e-6), f"mismatch at micro_bs={mb}"

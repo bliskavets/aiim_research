@@ -50,6 +50,29 @@ def confidence_from_logits(logits: torch.Tensor, top_k: int = 20) -> torch.Tenso
     return -topk_log_probs.mean(dim=-1)
 
 
+@torch.no_grad()
+def confidence_from_model_chunked(model, input_ids, attention_mask, logits_to_keep,
+                                  top_k: int = 20, pass_logits_to_keep: bool = False,
+                                  micro_bs: int = 2) -> torch.Tensor:
+    """Memory-safe confidence: run ``model`` forward in micro-batches over the
+    batch dim so the full (B, L, V) fp32 logits tensor over Qwen3's ~152k vocab
+    is never materialized at once (it OOMs the backward on long Search-R1
+    rollouts). Mathematically identical to one forward + confidence_from_logits;
+    only the peak memory differs. Returns (B, T)."""
+    B = input_ids.size(0)
+    chunks = []
+    for s in range(0, B, micro_bs):
+        e = min(s + micro_bs, B)
+        mi = {"input_ids": input_ids[s:e], "attention_mask": attention_mask[s:e]}
+        if pass_logits_to_keep:
+            mi["logits_to_keep"] = logits_to_keep + 1
+        logits = model(**mi).logits[:, :-1, :]
+        logits = logits[:, -logits_to_keep:, :]
+        chunks.append(confidence_from_logits(logits, top_k=top_k))
+        del logits
+    return torch.cat(chunks, dim=0)
+
+
 def compute_ema_vectorized(
     confidence: torch.Tensor, mask: torch.Tensor, lam: float = 0.9
 ) -> torch.Tensor:

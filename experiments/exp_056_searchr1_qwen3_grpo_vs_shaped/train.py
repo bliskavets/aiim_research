@@ -46,7 +46,11 @@ MODEL_CONFIG = {
     "lora_rank": 64,
     "load_in_4bit": False,
     "fast_inference": True,
-    "gpu_memory_utilization": 0.32,  # leave more room for the training backward over many long seqs
+    # env-overridable: grpo ran fine at 0.32, but the per-token shaped methods
+    # carry a bit more live memory and OOM'd the backward on the long step-785
+    # batch (missed by ~350 MiB). Lower for shaped runs (e.g. 0.25) to free GPU
+    # for the backward — pure memory knob, does not change results.
+    "gpu_memory_utilization": float(os.environ.get("GPU_MEM_UTIL", 0.32)),
 }
 
 LORA_CONFIG = {

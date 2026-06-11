@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 HERE = os.path.dirname(__file__)
 
 CURVES = [
-    ("grpo",           "GRPO baseline",             "#64748b"),
-    ("grpo_s_entropy", "GRPO-S seq-level entropy",  "#d97706"),
+    ("grpo",           "GRPO baseline (1000 steps)",          "#64748b"),
+    ("grpo_s_entropy", "GRPO-S seq-level entropy (OOM @785)", "#d97706"),
 ]
 
 
@@ -80,10 +80,11 @@ def main():
     ax_kl.legend(fontsize=9, loc="upper left")
 
     fig.suptitle(
-        "exp_056 — Search-R1 (NQ+HotpotQA, wiki-18, Qwen3-4B) — INTERMEDIATE\n"
-        "GRPO baseline (1000 steps done) vs GRPO-S seq-level entropy (in progress)\n"
-        "ng=4, max_completion=4096, multi-turn retrieval; dotted line = end of shorter run",
-        fontsize=11, weight="bold")
+        "exp_056 — Search-R1 (NQ+HotpotQA, wiki-18, Qwen3-4B)\n"
+        "GRPO baseline (1000 steps) vs GRPO-S seq-level entropy (OOM-crashed @ step 785)\n"
+        "ng=4, max_completion=4096, multi-turn retrieval; dotted line = where GRPO-S stopped\n"
+        "EM trajectories near-identical (data-order-bound); KL differs (shaping = milder drift) — no measurable EM gain",
+        fontsize=10, weight="bold")
 
     out = os.path.join(HERE, "figures", "exp056_grpo_vs_grpo_s_intermediate.png")
     os.makedirs(os.path.dirname(out), exist_ok=True)

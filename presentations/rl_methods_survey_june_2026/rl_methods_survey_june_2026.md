@@ -53,7 +53,7 @@ Policy-gradient methods for training reasoning models with reinforcement learnin
 - For each prompt $q$, sample a **group** of $G$ responses $o_1, \dots, o_G$.
 - Normalize rewards $r_i$ within the group to get the advantage **without a critic**:
 
-$$ \hat{A}_{i,t} = \frac{r_i - \operatorname{mean}(\mathbf{r})}{\operatorname{std}(\mathbf{r})} $$
+$$ \hat{A}_{i,t} = \frac{r_i - \mathrm{mean}(\mathbf{r})}{\mathrm{std}(\mathbf{r})} $$
 
 - The group itself acts as the **baseline** → lower variance, no separate value network.
 - Policy update follows the PPO scheme with **ratio clipping** plus a KL penalty to a reference model.
@@ -62,20 +62,20 @@ $$ \hat{A}_{i,t} = \frac{r_i - \operatorname{mean}(\mathbf{r})}{\operatorname{st
 
 ## GRPO — objective
 
-$$ \mathcal{J}_{\text{GRPO}}(\theta) = \mathbb{E}\left[ \frac{1}{G}\sum_{i=1}^{G} \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \min\left( r_{i,t}\, \hat{A}_{i,t},\ \operatorname{clip}(r_{i,t},\, 1-\varepsilon,\, 1+\varepsilon)\, \hat{A}_{i,t} \right) \right] - \beta\, D_{\text{KL}}(\pi_\theta \,\|\, \pi_{\text{ref}}) $$
+$$ \mathcal{J}_{\text{GRPO}}(\theta) = \mathbb{E}\left[ \frac{1}{G}\sum_{i=1}^{G} \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \min\left( r_{i,t} \hat{A}_{i,t},\ \mathrm{clip}(r_{i,t}, 1-\varepsilon, 1+\varepsilon) \hat{A}_{i,t} \right) \right] - \beta D_{\text{KL}}(\pi_\theta \Vert \pi_{\text{ref}}) $$
 
 where the importance ratio is
 
 $$ r_{i,t}(\theta) = \frac{\pi_\theta(o_{i,t} \mid q, o_{i,<t})}{\pi_{\theta_{\text{old}}}(o_{i,t} \mid q, o_{i,<t})} $$
 
-- $\min(\cdot, \operatorname{clip}(\cdot))$ is the **trust region**: it bounds the size of the policy update.
-- $\beta\, D_{\text{KL}}$ keeps the model close to the reference.
+- $\min(\cdot, \mathrm{clip}(\cdot))$ is the **trust region**: it bounds the size of the policy update.
+- $\beta D_{\text{KL}}$ keeps the model close to the reference.
 
 ---
 
 ## GRPO — the weak spot
 
-Clipping is applied to the **token's own ratio**. If a token's ratio leaves $[1-\varepsilon,\, 1+\varepsilon]$, its **gradient is zeroed out**.
+Clipping is applied to the **token's own ratio**. If a token's ratio leaves $[1-\varepsilon, 1+\varepsilon]$, its **gradient is zeroed out**.
 
 <br>
 
@@ -108,13 +108,13 @@ A key shift in *where* clipping happens:
 
 ## CISPO — objective
 
-$$ \mathcal{J}_{\text{CISPO}}(\theta) = \mathbb{E}\left[ \frac{1}{\sum_i |o_i|} \sum_{i=1}^{G} \sum_{t=1}^{|o_i|} \operatorname{sg}\!\left( \hat{r}_{i,t}(\theta) \right) \hat{A}_{i,t} \log \pi_\theta(o_{i,t} \mid q, o_{i,<t}) \right] $$
+$$ \mathcal{J}_{\text{CISPO}}(\theta) = \mathbb{E}\left[ \frac{1}{\sum_i |o_i|} \sum_{i=1}^{G} \sum_{t=1}^{|o_i|} \mathrm{sg}\left( \hat{r}_{i,t}(\theta) \right) \hat{A}_{i,t} \log \pi_\theta(o_{i,t} \mid q, o_{i,<t}) \right] $$
 
 with the **clipped IS weight**
 
-$$ \hat{r}_{i,t}(\theta) = \operatorname{clip}\left( r_{i,t}(\theta),\ 1 - \varepsilon^{\text{IS}}_{\text{low}},\ 1 + \varepsilon^{\text{IS}}_{\text{high}} \right) $$
+$$ \hat{r}_{i,t}(\theta) = \mathrm{clip}\left( r_{i,t}(\theta),\ 1 - \varepsilon^{\text{IS}}_{\text{low}},\ 1 + \varepsilon^{\text{IS}}_{\text{high}} \right) $$
 
-- $\operatorname{sg}(\cdot)$ is the **stop-gradient** (`.detach()`): the weight becomes a gradient-free multiplier.
+- $\mathrm{sg}(\cdot)$ is the **stop-gradient** (`.detach()`): the weight becomes a gradient-free multiplier.
 - $\varepsilon^{\text{IS}}_{\text{high}}$ is set **large** → more room to update rare tokens.
 - A token's gradient is never zero → rare "fork" tokens are preserved.
 
@@ -142,7 +142,7 @@ per_token_loss     = -clamped_ratios * advantages.unsqueeze(1) * per_token_logps
 | Advantage | group normalization | group normalization |
 | What gets clipped | the **token** ratio (trust region) | the **IS weight** under stop-gradient |
 | Fate of rare tokens | gradient is **zeroed** | **all preserved** |
-| KL penalty | yes, $\beta\, D_{\text{KL}}$ | optional / removed |
+| KL penalty | yes, $\beta D_{\text{KL}}$ | optional / removed |
 | Risk | losing reasoning tokens | tuning $\varepsilon^{\text{IS}}_{\text{high}}$ |
 
 ---
@@ -180,7 +180,7 @@ $$ s_i(\theta) = \left( \frac{\pi_\theta(o_i \mid q)}{\pi_{\theta_{\text{old}}}(
 
 PPO-style clipping, but over the **whole sequence**:
 
-$$ \mathcal{J}_{\text{GSPO}}(\theta) = \mathbb{E}\left[ \frac{1}{G} \sum_{i=1}^{G} \min\left( s_i(\theta)\, \hat{A}_i,\ \operatorname{clip}(s_i(\theta),\, 1-\varepsilon,\, 1+\varepsilon)\, \hat{A}_i \right) \right] $$
+$$ \mathcal{J}_{\text{GSPO}}(\theta) = \mathbb{E}\left[ \frac{1}{G} \sum_{i=1}^{G} \min\left( s_i(\theta) \hat{A}_i,\ \mathrm{clip}(s_i(\theta), 1-\varepsilon, 1+\varepsilon) \hat{A}_i \right) \right] $$
 
 - The advantage $\hat{A}_i$ is **one per response** (same group normalization as GRPO).
 - Paradox: GSPO clips **more** tokens, yet still **beats GRPO** → GRPO's token-level gradients are just noisier.

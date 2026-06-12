@@ -5,6 +5,43 @@ same Qwen3 native `<think>...</think>` + `\boxed{}` format) on a **different,
 harder dataset**: [KbsdJames/Omni-MATH](https://huggingface.co/datasets/KbsdJames/Omni-MATH),
 restricted to its integer-answer subset.
 
+## ⚠️ CRITICAL FINDING (2026-06-12) — the per-token shaping was NOT being applied
+
+During this experiment the grpo and gtpo_ema_flipped reward curves were
+suspiciously identical. An audit (`diagnose_shaping.py`, `diagnose_real.py`,
+`tests/test_shaping_diagnostics.py`) found the shaping never ran:
+
+1. **unsloth bypasses `_compute_loss`.** The shaping trainers
+   (`GRPOSTrainer` / `GTPOConfTrainer` / `GTPOEMAFlippedTrainer`) inject their
+   per-token shaping by overriding **`_compute_loss`**. But unsloth replaces
+   `trl.GRPOTrainer` with a compiled `_UnslothGRPOTrainer` whose `compute_loss`
+   is **self-contained and never calls `_compute_loss`**. HF Trainer calls
+   `compute_loss`, so the shaping override is dead code. Proof: (a)
+   `GTPOEMAFlippedTrainer.compute_loss.__qualname__ == _UnslothGRPOTrainer.compute_loss`;
+   (b) the real gtpo_ema_flipped run logged **zero** `gtpo_ema_flipped/mean_ema`
+   metrics. **gtpo_ema_flipped @921 and grpo @492 were BOTH plain GRPO** —
+   hence the identical curves.
+2. **`self.top_k` collision.** `GRPOTrainer.__init__` overwrites the shaping
+   trainers' `self.top_k` to `None` (vLLM sampling top-k), which crashes the
+   shaping the moment it runs. Fixed: shaping params set after `super().__init__`.
+3. **`_compute_loss` is stale vs trl 0.23.1.** Once `compute_loss → _compute_loss`
+   is restored, `old_per_token_logps` has left-pad columns (here +22 tokens) that
+   the hand-written loss doesn't align → shape mismatch. Needs a `_compute_loss`
+   rewrite mirroring the compiled trainer's left-pad alignment. **TODO — until
+   then the shaped methods cannot run correctly here.**
+4. **Method-design caveat (independent of the stack).** `_znorm_over_active`
+   centers each polarity at 0 and washes out `alpha1/alpha2` (0.9/0.1 vs 0.1/0.9
+   ⇒ Δ 3e-5), and the shaped advantage correlates with the GRPO seq-advantage at
+   only ~0.05 — i.e. the sequence-reward magnitude is discarded by construction.
+
+The tag mask is **not** the culprit: it covers ~2.5% of a real completion
+(single special-token ids only).
+
+**Consequence:** every "shaped" result here is plain GRPO. This very likely also
+affects **exp_055** (same stack; its "all methods within ±0.13" null is exactly
+what 4× identical GRPO produces) and the wider exp_049→056 shaping arc on this
+unsloth version — flagged for re-audit. Fix-and-rerun pending.
+
 ## Why
 
 exp_055 was an honest **null**: the easy Big-Math integer-2000 slice saturates
@@ -120,19 +157,25 @@ _In progress — last-50-step averages (same columns as exp_055). Methods stoppe
 early once a reward plateau is visible (stop-early workflow). Snapshot plot:
 `figures/exp057_progress.png`._
 
-| method | steps | reward L50 | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | KL | clip% |
-|---|---|---|---|---|---|---|---|
-| grpo (baseline)        | 492 (stopped) | +2.56 | +1.27 | +0.63 | +0.65 | 0.010 | 46% |
-| grpo_s_entropy         | — | — | — | — | — | — | — |
-| gtpo_conf (tag-masked) | — | — | — | — | — | — | — |
-| gtpo_ema_flipped       | — | — | — | — | — | — | — |
+⚠️ **The "shaped" rows below are INVALID — they ran plain GRPO** (see the critical
+finding above). Kept only to document what was observed.
+
+| method | steps | reward L50 | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | KL | clip% | shaping actually applied? |
+|---|---|---|---|---|---|---|---|---|
+| grpo (baseline)        | 492 (stopped) | +2.56 | +1.27 | +0.63 | +0.65 | 0.010 | 46% | n/a |
+| gtpo_ema_flipped       | 921 (stopped) | +2.89 | +1.31 | +0.66 | +0.92 | 0.015 | 40% | **NO — was plain GRPO** |
+| grpo_s_entropy         | — | — | — | — | — | — | — | (not run) |
+| gtpo_conf (tag-masked) | — | — | — | — | — | — | — | (not run) |
 
 **grpo baseline (492 steps):** reward climbs +0.64 (first 50) → +2.56 (last 50),
 peak rolling-20 +3.15 @ step 368. Far from the ~+7 ceiling — **non-saturated**,
 the opposite of exp_055. Over training: format_thinking −0.55 → +0.65 (model
 learns to close `<think>`), clip 72% → 46%, mean completion 5380 → 4575 tok,
-`frac_reward_zero_std` 0.80 → 0.60 (more steps carry within-group signal). This
-is the headroom exp_055 lacked — the shaped methods now have something to act on.
+`frac_reward_zero_std` 0.80 → 0.60. The dataset premise (non-saturated baseline
+with headroom) holds — but the shaped-vs-baseline question is **unanswered**
+until the `_compute_loss` rewrite lands, because the shaped run was plain GRPO.
+Step-matched, gtpo_ema_flipped (=GRPO run 2) and grpo tracked within noise
+(corr-level identical), exactly as expected for two GRPO runs from the same seed.
 
 ## Files
 

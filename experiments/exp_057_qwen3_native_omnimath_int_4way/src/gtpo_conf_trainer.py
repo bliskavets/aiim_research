@@ -29,12 +29,27 @@ class GTPOConfTrainer(GRPOTrainer):
     """
 
     def __init__(self, *args, **kwargs):
-        self.alpha1               = kwargs.pop("alpha1", 1.0)
-        self.alpha2               = kwargs.pop("alpha2", 0.1)
-        self.top_k                = kwargs.pop("top_k", 20)
-        self.reward_threshold     = kwargs.pop("reward_threshold", 0.0)
-        self.format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
+        alpha1               = kwargs.pop("alpha1", 1.0)
+        alpha2               = kwargs.pop("alpha2", 0.1)
+        top_k                = kwargs.pop("top_k", 20)
+        reward_threshold     = kwargs.pop("reward_threshold", 0.0)
+        format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
         super().__init__(*args, **kwargs)
+        # Set AFTER super().__init__: GRPOTrainer.__init__ defines its own
+        # self.top_k (vLLM sampling top-k, default None) which would otherwise
+        # clobber our confidence top_k -> None and crash _compute_loss.
+        self.alpha1, self.alpha2, self.top_k = alpha1, alpha2, top_k
+        self.reward_threshold = reward_threshold
+        self.format_tag_patterns = format_tag_patterns
+
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+        # CRITICAL: unsloth replaces trl.GRPOTrainer with a compiled
+        # _UnslothGRPOTrainer whose compute_loss is self-contained and never
+        # calls _compute_loss — silently bypassing the per-token shaping below.
+        # Overriding compute_loss (top of MRO) restores compute_loss -> _compute_loss.
+        if return_outputs:
+            raise ValueError("GRPOTrainer does not support returning outputs")
+        return self._compute_loss(model, inputs)
 
     def _compute_loss(self, model, inputs):
         prompt_ids      = inputs["prompt_ids"]

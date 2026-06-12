@@ -31,12 +31,17 @@ class GRPOSTrainer(GRPOTrainer):
     """
 
     def __init__(self, *args, **kwargs):
-        self.beta1            = kwargs.pop("beta1", 1.0)
-        self.beta2            = kwargs.pop("beta2", 0.1)
-        self.eps_entropy_low  = kwargs.pop("eps_entropy_low", 0.2)
-        self.eps_entropy_high = kwargs.pop("eps_entropy_high", 0.28)
-        self.reward_threshold = kwargs.pop("reward_threshold", 0.0)
+        beta1            = kwargs.pop("beta1", 1.0)
+        beta2            = kwargs.pop("beta2", 0.1)
+        eps_entropy_low  = kwargs.pop("eps_entropy_low", 0.2)
+        eps_entropy_high = kwargs.pop("eps_entropy_high", 0.28)
+        reward_threshold = kwargs.pop("reward_threshold", 0.0)
         super().__init__(*args, **kwargs)
+        # Set AFTER super().__init__ so GRPOTrainer.__init__ can't clobber any
+        # of our shaping attrs (same precaution as the GTPO trainers' top_k).
+        self.beta1, self.beta2 = beta1, beta2
+        self.eps_entropy_low, self.eps_entropy_high = eps_entropy_low, eps_entropy_high
+        self.reward_threshold = reward_threshold
 
     # ─────────────────────────────────────────────────────────────────────────
     # Override: replace advantages with GRPO-S shaped advantages
@@ -50,6 +55,15 @@ class GRPOSTrainer(GRPOTrainer):
     # ─────────────────────────────────────────────────────────────────────────
     # Override: GRPO-S loss with sequence-level IS weights
     # ─────────────────────────────────────────────────────────────────────────
+
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+        # CRITICAL: unsloth replaces trl.GRPOTrainer with a compiled
+        # _UnslothGRPOTrainer whose compute_loss is self-contained and never
+        # calls _compute_loss — silently bypassing the seq-level shaping below.
+        # Overriding compute_loss (top of MRO) restores compute_loss -> _compute_loss.
+        if return_outputs:
+            raise ValueError("GRPOTrainer does not support returning outputs")
+        return self._compute_loss(model, inputs)
 
     def _compute_loss(self, model, inputs):
         prompt_ids      = inputs["prompt_ids"]

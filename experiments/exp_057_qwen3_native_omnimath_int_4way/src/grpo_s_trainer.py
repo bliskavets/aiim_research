@@ -16,6 +16,7 @@ import torch
 from trl import GRPOTrainer
 
 from .entropy_utils import compute_grpo_s_rewards, EPS
+from .shaped_loss import inject_advantages, forward_completion_logits, token_entropy
 
 
 class GRPOSTrainer(GRPOTrainer):
@@ -57,47 +58,33 @@ class GRPOSTrainer(GRPOTrainer):
     # ─────────────────────────────────────────────────────────────────────────
 
     def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
-        # CRITICAL: unsloth replaces trl.GRPOTrainer with a compiled
-        # _UnslothGRPOTrainer whose compute_loss is self-contained and never
-        # calls _compute_loss — silently bypassing the seq-level shaping below.
-        # Overriding compute_loss (top of MRO) restores compute_loss -> _compute_loss.
+        # unsloth's compiled compute_loss never calls _compute_loss. GRPO-S shaping
+        # lives entirely in the SEQUENCE-LEVEL advantages (entropy-weighted), so we
+        # compute the shaped (B,) advantages here and INJECT them into the compiled
+        # loss. (GRPO-S's seq-level IS weight ≈ token-level IS on-policy with
+        # num_iterations=1, so the compiled loss's token-level IS is equivalent
+        # here; the distinctive entropy shaping of the advantage is preserved.)
         if return_outputs:
             raise ValueError("GRPOTrainer does not support returning outputs")
-        return self._compute_loss(model, inputs)
 
-    def _compute_loss(self, model, inputs):
-        prompt_ids      = inputs["prompt_ids"]
-        prompt_mask     = inputs["prompt_mask"]
         completion_ids  = inputs["completion_ids"]
         completion_mask = inputs["completion_mask"]
         grpo_advantages = inputs["advantages"]          # (B,) standard GRPO advantages
-
-        input_ids      = torch.cat([prompt_ids, completion_ids], dim=1)
-        attention_mask = torch.cat([prompt_mask, completion_mask], dim=1)
+        input_ids      = torch.cat([inputs["prompt_ids"], completion_ids], dim=1)
+        attention_mask = torch.cat([inputs["prompt_mask"], completion_mask], dim=1)
         logits_to_keep = completion_ids.size(1)
 
-        # Forward pass through current policy
-        per_token_logps, _ = self._get_per_token_logps_and_entropies(
-            model, input_ids, attention_mask, logits_to_keep, compute_entropy=False,
-        )
-
-        old_per_token_logps = inputs.get("old_per_token_logps")
-        old_per_token_logps = per_token_logps.detach() if old_per_token_logps is None else old_per_token_logps
-
-        # ── Compute entropies from current forward pass ───────────────────────
-        # We recompute entropy here using current model logits as proxy for old policy.
-        # This is a slight approximation but avoids Unsloth buffer splitting issues.
+        # Real per-token Shannon entropy from logits (the chunked _get helper
+        # returns None for entropies on this stack -> would degenerate to a
+        # constant). No grad needed (advantages are constants). Chunked to bound
+        # memory; computed on the completion grid (aligned with completion_mask).
         with torch.no_grad():
-            _, entropies = self._get_per_token_logps_and_entropies(
-                model, input_ids, attention_mask, logits_to_keep, compute_entropy=True,
-            )
-        if entropies is None:
-            # Fallback: uniform entropy approximation
-            entropies = torch.ones_like(completion_mask, dtype=torch.float32) * 0.24
+            logits = forward_completion_logits(self, model, input_ids, attention_mask, logits_to_keep)
+            entropies = token_entropy(logits)          # (B, Lk)
+        del logits
 
-        # ── Compute GRPO-S shaped advantages ──────────────────────────────────
         shaped_rewards, seq_avg_entropy = compute_grpo_s_rewards(
-            rewards          = grpo_advantages,   # same sign as original rewards
+            rewards          = grpo_advantages,
             entropies        = entropies,
             completion_mask  = completion_mask,
             beta1            = self.beta1,
@@ -106,58 +93,23 @@ class GRPOSTrainer(GRPOTrainer):
             eps_high         = self.eps_entropy_high,
             reward_threshold = self.reward_threshold,
         )
-
-        # Normalize within groups → advantages (B,)
-        B = shaped_rewards.shape[0]
+        # Re-normalize within groups → advantages (B,)
         G = self.num_generations
         shaped_grouped = shaped_rewards.view(-1, G)
         mean_s = shaped_grouped.mean(dim=1, keepdim=True)
         std_s  = shaped_grouped.std(dim=1, keepdim=True).clamp(min=EPS)
-        advantages = ((shaped_grouped - mean_s) / std_s).view(B)
+        advantages = ((shaped_grouped - mean_s) / std_s).reshape(-1)
 
-        # ── Sequence-level IS weight (Eq. 11) ────────────────────────────────
-        # ŵ_i(θ) = (1/|o_i|) Σ_t w_i,t(θ)   where w_i,t = π_θ / π_θ_old
-        log_ratio       = per_token_logps - old_per_token_logps          # (B, T)
-        token_is_ratio  = torch.exp(log_ratio)                           # (B, T)
-        seq_lengths     = completion_mask.sum(dim=1).clamp(min=1)        # (B,)
-        seq_is_weight   = (token_is_ratio * completion_mask).sum(dim=1) / seq_lengths  # (B,)
-
-        # ── GRPO-S objective (Eq. 10) ────────────────────────────────────────
-        # J_GRPO-S = E[ 1/G · Σ_i min(ŵ_i·Â_i, clip(ŵ_i)·Â_i) ]
-        coef_1 = seq_is_weight                                            # (B,)
-        coef_2 = torch.clamp(coef_1, 1 - self.epsilon_low, 1 + self.epsilon_high)
-
-        per_seq_loss1 = coef_1 * advantages                              # (B,)
-        per_seq_loss2 = coef_2 * advantages                              # (B,)
-        per_seq_loss  = -torch.min(per_seq_loss1, per_seq_loss2)         # (B,)
-
-        # KL regularisation
-        if self.beta != 0.0:
-            ref_per_token_logps = inputs["ref_per_token_logps"]
-            per_token_kl = (
-                torch.exp(ref_per_token_logps - per_token_logps)
-                - (ref_per_token_logps - per_token_logps) - 1
-            )
-            # Aggregate KL to sequence level
-            per_seq_kl = (per_token_kl * completion_mask).sum(dim=1) / seq_lengths
-            per_seq_loss = per_seq_loss + self.beta * per_seq_kl
-
-        # Normalize over G sequences (standard GRPO normalization)
-        loss = per_seq_loss.mean()
-        loss = loss / self.current_gradient_accumulation_steps
-
-        # ── Extra logging ─────────────────────────────────────────────────────
+        # ── metrics (presence proves the shaping ran) ──
         mode = "train" if model.training else "eval"
-        self._metrics[mode].setdefault("grpo_s/mean_seq_is_weight", []).append(
-            self.accelerator.gather(seq_is_weight).mean().item()
-        )
         self._metrics[mode].setdefault("grpo_s/mean_seq_entropy", []).append(
-            self.accelerator.gather(seq_avg_entropy).mean().item()
-        )
+            self.accelerator.gather(seq_avg_entropy).mean().item())
+        self._metrics[mode].setdefault("grpo_s/mean_shaped_advantage", []).append(
+            self.accelerator.gather(advantages).mean().item())
         n_pos = (grpo_advantages > 0).float().sum()
         n_neg = (grpo_advantages <= 0).float().sum()
         self._metrics[mode].setdefault("grpo_s/frac_pos", []).append(
-            (n_pos / (n_pos + n_neg + EPS)).item()
-        )
+            (n_pos / (n_pos + n_neg + EPS)).item())
 
-        return loss
+        inputs = inject_advantages(inputs, advantages, logits_to_keep)
+        return super().compute_loss(model, inputs, return_outputs, num_items_in_batch)

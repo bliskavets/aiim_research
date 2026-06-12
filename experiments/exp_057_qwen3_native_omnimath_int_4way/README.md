@@ -24,11 +24,19 @@ suspiciously identical. An audit (`diagnose_shaping.py`, `diagnose_real.py`,
 2. **`self.top_k` collision.** `GRPOTrainer.__init__` overwrites the shaping
    trainers' `self.top_k` to `None` (vLLM sampling top-k), which crashes the
    shaping the moment it runs. Fixed: shaping params set after `super().__init__`.
-3. **`_compute_loss` is stale vs trl 0.23.1.** Once `compute_loss → _compute_loss`
-   is restored, `old_per_token_logps` has left-pad columns (here +22 tokens) that
-   the hand-written loss doesn't align → shape mismatch. Needs a `_compute_loss`
-   rewrite mirroring the compiled trainer's left-pad alignment. **TODO — until
-   then the shaped methods cannot run correctly here.**
+3. **`_compute_loss` was stale vs trl 0.23.1 — now FIXED by injection.** The
+   hand-written loss recomputed logps on a grid incompatible with the stored
+   old/ref (left-pad), and a memory-safe grad-logps can't be recomputed by hand
+   (full logits with grad OOMs ~28 GB; `_get_per_token_logps_and_entropies`
+   returns detached logps). **Fix:** each shaping trainer now computes the
+   per-token shaped advantage in `compute_loss` and **injects** it (as a 2-D
+   `advantages` tensor, left-padded to the loss grid) into unsloth's compiled
+   loss, which owns the memory-efficient chunked gradient (`src/shaped_loss.py`).
+   `grpo_compute_loss` consumes a 2-D advantages tensor per-token natively.
+   GRPO-S injects a seq-level (B,) advantage. **Verified live** (2026-06-12):
+   each method now logs its `<method>/...` shaped metrics, gradients flow
+   (grad_norm ~0.03–0.05), no OOM (peak ~132 GB/143). GRPO-S now uses real
+   per-token entropy (the chunked helper returned None → constant before).
 4. **Method-design caveat (independent of the stack).** `_znorm_over_active`
    centers each polarity at 0 and washes out `alpha1/alpha2` (0.9/0.1 vs 0.1/0.9
    ⇒ Δ 3e-5), and the shaped advantage correlates with the GRPO seq-advantage at
@@ -37,10 +45,13 @@ suspiciously identical. An audit (`diagnose_shaping.py`, `diagnose_real.py`,
 The tag mask is **not** the culprit: it covers ~2.5% of a real completion
 (single special-token ids only).
 
-**Consequence:** every "shaped" result here is plain GRPO. This very likely also
-affects **exp_055** (same stack; its "all methods within ±0.13" null is exactly
-what 4× identical GRPO produces) and the wider exp_049→056 shaping arc on this
-unsloth version — flagged for re-audit. Fix-and-rerun pending.
+**Consequence:** the FIRST exp_057 "shaped" runs (grpo @492, gtpo_ema_flipped
+@921 in the table below) were plain GRPO. This very likely also affects
+**exp_055** (same stack; its "all methods within ±0.13" null is exactly what 4×
+identical GRPO produces) and the wider exp_049→056 shaping arc on this unsloth
+version — flagged for re-audit. **The fix (item 3) is now in and verified**; a
+corrected 4-method sweep with shaping actually applied is being run — those
+results supersede the table below.
 
 ## Why
 

@@ -87,7 +87,10 @@ def confidence_from_model_chunked(model, input_ids, attention_mask, logits_to_ke
         logits = logits[:, -logits_to_keep:, :]     # (b, T, V)
         chunks.append(confidence_from_logits(logits, top_k=top_k))
         del logits
-    return torch.cat(chunks, dim=0)                 # (B, T)
+    out = torch.cat(chunks, dim=0)                  # (B, T)
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()  # defrag the freed second-forward logits before the backward
+    return out
 
 
 def compress_confidence(c: torch.Tensor) -> torch.Tensor:

@@ -25,8 +25,9 @@ HF_TOKEN="${HF_TOKEN:?HF_TOKEN env var not set}"
 RETRIEVER_MODE="${RETRIEVER_MODE:-http}"
 RETRIEVAL_URL="${RETRIEVAL_URL:-http://127.0.0.1:8123/retrieve}"
 CONF_MICRO_BS="${CONF_MICRO_BS:-2}"
-GPU_MEM_UTIL="${GPU_MEM_UTIL:-0.25}"            # lower than grpo's 0.32 to free backward headroom
+GPU_MEM_UTIL="${GPU_MEM_UTIL:-0.25}"            # NOTE: no-op under unsloth standby (it forces ~0.88)
 METHODS="${METHODS:-gtpo_ema_flipped gtpo_conf}"
+SMOKE_MAX_STEPS="${SMOKE_MAX_STEPS:-1000}"      # train.py reads this as max_steps; cap < 785 to dodge the long-batch OOM
 
 echo "=== [$(date -Is)] Resume exp_056 shaped methods=[${METHODS}] (retriever=${RETRIEVER_MODE}, url=${RETRIEVAL_URL}, conf_micro_bs=${CONF_MICRO_BS}, gpu_mem=${GPU_MEM_UTIL}) ==="
 echo "    Preserving train_grpo.log and train_grpo_s_entropy.log."
@@ -41,6 +42,7 @@ docker run --rm --gpus all \
   -e "RETRIEVAL_URL=${RETRIEVAL_URL}" \
   -e "CONF_MICRO_BS=${CONF_MICRO_BS}" \
   -e "GPU_MEM_UTIL=${GPU_MEM_UTIL}" \
+  -e "SMOKE_MAX_STEPS=${SMOKE_MAX_STEPS}" \
   -e "PYTORCH_ALLOC_CONF=expandable_segments:True" \
   unsloth/unsloth -c "
     set -e

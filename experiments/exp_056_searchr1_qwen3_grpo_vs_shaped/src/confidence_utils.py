@@ -33,32 +33,34 @@ EPS = 1e-8
 # Core: compute confidence from logits
 # ─────────────────────────────────────────────────────────────────────────────
 
-def confidence_from_logits(logits: torch.Tensor, top_k: int = 20) -> torch.Tensor:
+def confidence_from_logits(logits: torch.Tensor, top_k: int = 20,
+                           chunk: int = 512) -> torch.Tensor:
     """
     Compute per-token confidence score C_i,t from raw logits.
 
     C_i,t = -mean_{v ∈ top-k}( log π(v | context) )
            = -mean_{v ∈ top-k}( log_softmax(logits)[v] )
 
+    Computed in chunks over the SEQUENCE dim so the full (B, T, V) log_softmax
+    over Qwen3's ~152k vocab is never materialized at once (it OOMs the no-grad
+    confidence forward on A100 when vLLM holds ~0.88 of the GPU). Mathematically
+    identical to the single-shot version.
+
     Args:
         logits: (B, T, V) float tensor
         top_k:  number of top tokens to consider (paper uses k=20)
+        chunk:  sequence-dim chunk size to bound log_softmax memory
 
     Returns:
         confidence: (B, T) float tensor, C ≥ 0
     """
     B, T, V = logits.shape
     k = min(top_k, V)
-
-    log_probs = F.log_softmax(logits, dim=-1)          # (B, T, V)
-
-    # Get top-k log probs at each position
-    topk_log_probs, _ = torch.topk(log_probs, k, dim=-1)  # (B, T, k)
-
-    # C = -mean(top-k log probs)  [log probs are negative, so C > 0]
-    confidence = -topk_log_probs.mean(dim=-1)           # (B, T)
-
-    return confidence  # always ≥ 0 since log_probs ≤ 0
+    out = torch.empty(B, T, device=logits.device, dtype=torch.float32)
+    for i in range(0, T, chunk):
+        lp = F.log_softmax(logits[:, i:i + chunk, :].float(), dim=-1)
+        out[:, i:i + chunk] = -lp.topk(k, dim=-1).values.mean(dim=-1)
+    return out  # always ≥ 0 since log_probs ≤ 0
 
 
 @torch.no_grad()

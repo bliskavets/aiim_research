@@ -41,13 +41,20 @@ import torch.nn.functional as F
 EPS = 1e-8
 
 
-def confidence_from_logits(logits: torch.Tensor, top_k: int = 20) -> torch.Tensor:
-    """C_{i,t} = -mean_{v ∈ top-k}(log π_θ(v | ctx))  — (B, T), ≥ 0."""
+def confidence_from_logits(logits: torch.Tensor, top_k: int = 20,
+                           chunk: int = 512) -> torch.Tensor:
+    """C_{i,t} = -mean_{v ∈ top-k}(log π_θ(v | ctx))  — (B, T), ≥ 0.
+
+    Chunked over the sequence dim so the full (B, T, V) log_softmax over Qwen3's
+    ~152k vocab is never materialized at once (OOMs the no-grad confidence forward
+    on A100 when vLLM holds ~0.88 of the GPU). Identical math to single-shot."""
     B, T, V = logits.shape
     k = min(top_k, V)
-    log_probs = F.log_softmax(logits, dim=-1)
-    topk_log_probs, _ = torch.topk(log_probs, k, dim=-1)
-    return -topk_log_probs.mean(dim=-1)
+    out = torch.empty(B, T, device=logits.device, dtype=torch.float32)
+    for i in range(0, T, chunk):
+        lp = F.log_softmax(logits[:, i:i + chunk, :].float(), dim=-1)
+        out[:, i:i + chunk] = -lp.topk(k, dim=-1).values.mean(dim=-1)
+    return out
 
 
 @torch.no_grad()

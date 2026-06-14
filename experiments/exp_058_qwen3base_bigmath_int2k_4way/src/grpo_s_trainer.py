@@ -75,12 +75,23 @@ class GRPOSTrainer(GRPOTrainer):
             eps_high         = self.eps_entropy_high,
             reward_threshold = self.reward_threshold,
         )
-        # Re-normalize within groups → advantages (B,)
+        # Re-normalize within groups → advantages (B,). unsloth's compiled loss
+        # may call compute_loss with a microbatch SMALLER than a full group
+        # (down to a single sequence), so view(-1, G) is not always valid. Only
+        # re-group when a whole number of groups is present; otherwise fall back
+        # (inputs["advantages"] are already GRPO group-standardized upstream, so
+        # passing the entropy-shaped values through is a valid per-seq advantage).
         G = self.num_generations
-        shaped_grouped = shaped_rewards.view(-1, G)
-        mean_s = shaped_grouped.mean(dim=1, keepdim=True)
-        std_s  = shaped_grouped.std(dim=1, keepdim=True).clamp(min=EPS)
-        advantages = ((shaped_grouped - mean_s) / std_s).reshape(-1)
+        n = shaped_rewards.numel()
+        if n > 1 and n % G == 0:
+            shaped_grouped = shaped_rewards.view(-1, G)
+            mean_s = shaped_grouped.mean(dim=1, keepdim=True)
+            std_s  = shaped_grouped.std(dim=1, keepdim=True).clamp(min=EPS)
+            advantages = ((shaped_grouped - mean_s) / std_s).reshape(-1)
+        elif n > 1:
+            advantages = (shaped_rewards - shaped_rewards.mean()) / (shaped_rewards.std() + EPS)
+        else:
+            advantages = shaped_rewards   # single-sequence microbatch: pass through
 
         # ── metrics (presence proves the shaping ran) ──
         mode = "train" if model.training else "eval"

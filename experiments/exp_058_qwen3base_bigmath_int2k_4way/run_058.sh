@@ -18,12 +18,11 @@ SMOKE_MAX_STEPS="${SMOKE_MAX_STEPS:-1000}"   # train.py reads as max_steps
 SMOKE_SUBSET="${SMOKE_SUBSET:-2000}"
 METHODS="${METHODS:-grpo grpo_s_entropy gtpo_conf gtpo_ema_flipped}"
 
-echo "=== [$(date -Is)] Pre-flight: wiping exp_058's own previous artefacts ==="
+echo "=== [$(date -Is)] Pre-flight: wiping exp_058's own previous artefacts (logs preserved; each method's tee overwrites its own) ==="
 sudo rm -rf \
   "${EXP_DIR}/unsloth_compiled_cache" \
   "${EXP_DIR}/grpo_trainer_lora_model" \
-  "${EXP_DIR}"/outputs_* \
-  "${EXP_DIR}"/train_*.log 2>/dev/null || true
+  "${EXP_DIR}"/outputs_* 2>/dev/null || true
 
 echo "=== [$(date -Is)] Launching exp_058 methods=[${METHODS}] (Qwen3-4B-BASE, max_steps=${SMOKE_MAX_STEPS}, conf_micro_bs=${CONF_MICRO_BS}) ==="
 docker run --rm --gpus all \

@@ -47,11 +47,11 @@ SEED = 3407
 
 MODEL_CONFIG = {
     "model_name": "Qwen/Qwen3-4B-Base",   # exp_058: BASE (pretrained, NOT instruction-tuned)
-    "max_seq_length": 6656,          # 512 prompt + 6144 completion (v3: bumped from 4096 — 85% clip in v2)
+    "max_seq_length": 4096,          # exp_051 config (512 prompt + 3584 completion)
     "lora_rank": 64,
     "load_in_4bit": False,
     "fast_inference": True,
-    "gpu_memory_utilization": 0.40,  # v3: dropped 0.50 -> 0.40 to fit longer context + ng=16 activations
+    "gpu_memory_utilization": 0.55,  # exp_051 config (moot under unsloth standby, kept for record)
 }
 
 LORA_CONFIG = {
@@ -73,7 +73,7 @@ TRAINING_CONFIG = {
     "logging_steps": 1,
     "per_device_train_batch_size": 1,    # exp_055: global_bs = per_device * ga = 4 (user spec)
     "gradient_accumulation_steps": 4,    # exp_055
-    "num_generations": 8,                # exp_055: ng=8 (kept conservative; easy subset has shorter completions so ng=16 may fit too, but stay safe)
+    "num_generations": 4,                # exp_051 config (was ng=8 from exp_057 -> 127 s/it on base; ng=4 halves gen)
     "max_steps": int(os.environ.get("SMOKE_MAX_STEPS", 1000)),  # env-overridable (cap < disk/time budget)
     "save_steps": 9999,
     "max_grad_norm": 1.0,
@@ -87,7 +87,7 @@ DATASET_CONFIG = {
     "name": "SynthLabsAI/Big-Math-RL-Verified",   # exp_051 dataset
     "split": "train",
     "max_prompt_tokens": 512,
-    "max_completion_tokens": 6144,
+    "max_completion_tokens": 3584,   # exp_051 config (base answers directly ~640 tok; caps the rare ramble tail)
     "subset_size": 2000,             # integer-answer filter then first 2000 (shuffled seed 3407)
     "shuffle_seed": SEED,
 }

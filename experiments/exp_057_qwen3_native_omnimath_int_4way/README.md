@@ -162,31 +162,61 @@ cd experiments/exp_057_qwen3_native_omnimath_int_4way
 python train.py --method {grpo|grpo_s_entropy|gtpo_conf|gtpo_ema_flipped}
 ```
 
-## Results
+## Results (corrected — shaping actually applied)
 
-_In progress — last-50-step averages (same columns as exp_055). Methods stopped
-early once a reward plateau is visible (stop-early workflow). Snapshot plot:
-`figures/exp057_progress.png`._
+Last-50-step averages. The shaping bug (see above) is fixed; every shaped run
+below logs its `<method>/*` metrics (shaping confirmed live, grad flowing).
+Methods stopped at a visible reward plateau. `grpo` is the shared baseline (its
+path is unaffected by the fix, reused from its @492 run). Plot:
+`figures/exp057_progress.png`.
 
-⚠️ **The "shaped" rows below are INVALID — they ran plain GRPO** (see the critical
-finding above). Kept only to document what was observed.
-
-| method | steps | reward L50 | answer_boxed L50 | answer_numeric L50 | format_thinking L50 | KL | clip% | shaping actually applied? |
+| method | steps | reward L50 | boxed L50 | numeric L50 | format L50 | KL | clip% | Δreward vs grpo |
 |---|---|---|---|---|---|---|---|---|
-| grpo (baseline)        | 492 (stopped) | +2.56 | +1.27 | +0.63 | +0.65 | 0.010 | 46% | n/a |
-| gtpo_ema_flipped       | 921 (stopped) | +2.89 | +1.31 | +0.66 | +0.92 | 0.015 | 40% | **NO — was plain GRPO** |
-| grpo_s_entropy         | — | — | — | — | — | — | — | (not run) |
-| gtpo_conf (tag-masked) | — | — | — | — | — | — | — | (not run) |
+| **grpo** (baseline)         | 492  | **+2.56** | +1.27 | +0.63 | +0.65 | 0.010 | 46% | — |
+| grpo_s_entropy              | 1000 | +1.63 | +1.09 | +0.53 | +0.02 | 0.002 | 60% | **−0.93** |
+| gtpo_ema_flipped (tagmask)  | 822  | +0.36 | +0.70 | +0.34 | −0.68 | 0.005 | 74% | **−2.20** |
+| gtpo_conf (tagmask)         | 1000 | −0.17 | +0.56 | +0.27 | −1.00 | 0.021 | 80% | **−2.73** |
 
-**grpo baseline (492 steps):** reward climbs +0.64 (first 50) → +2.56 (last 50),
-peak rolling-20 +3.15 @ step 368. Far from the ~+7 ceiling — **non-saturated**,
-the opposite of exp_055. Over training: format_thinking −0.55 → +0.65 (model
-learns to close `<think>`), clip 72% → 46%, mean completion 5380 → 4575 tok,
-`frac_reward_zero_std` 0.80 → 0.60. The dataset premise (non-saturated baseline
-with headroom) holds — but the shaped-vs-baseline question is **unanswered**
-until the `_compute_loss` rewrite lands, because the shaped run was plain GRPO.
-Step-matched, gtpo_ema_flipped (=GRPO run 2) and grpo tracked within noise
-(corr-level identical), exactly as expected for two GRPO runs from the same seed.
+> ⚠️ **CONFOUND found 2026-06-16 (mask was incomplete) — these shaped numbers
+> are not final.** The tag mask only covered the single-token tags `<think>`,
+> `</think>`, `<|im_start|>`, `<|im_end|>`. But `reward_answer_boxed` trains the
+> model on `\boxed{N}`, and `\boxed{` tokenizes to a **3-token substring**
+> `['\\','boxed','{']` (+ `}`) — which was **NOT masked**, so the per-token
+> shaping distorted exactly those answer-format control tokens (the failure mode
+> the mask exists to prevent). Fixed in `train.py` (mask now includes `\boxed{`
+> and `}`; `build_tag_mask` already handles multi-token substrings; the answer
+> digits stay shaped as content). **gtpo_conf / gtpo_ema_flipped need a re-run
+> with the corrected mask** before the negative is final. `grpo` (no shaping)
+> and `grpo_s_entropy` (seq-level, mask is a no-op) are unaffected.
+
+**Headline (PRELIMINARY, mask-confounded): with the per-token / entropy shaping
+applied, every shaped method UNDERPERFORMED the plain-GRPO baseline on
+Qwen3-4B / Omni-MATH** — from a mild lag (grpo_s_entropy) to active degradation
+(gtpo_conf: reward climbs to +0.9 early then collapses to −0.27; loses format,
+clip 0.69→0.84). grpo alone climbs cleanly +0.64→+2.56. Step-matched over
+1..492 the ranking is identical (grpo +1.54 ≫ grpo_s +0.85 > gtpo_ema +0.66 >
+gtpo_conf +0.36).
+
+**Why** — consistent with the design caveat (item 4 above): `_znorm_over_active`
+makes the per-token shaped advantage zero-mean per polarity and ~uncorrelated
+(corr ≈ 0.05) with the GRPO seq-advantage, so the shaping injects a
+reward-misaligned gradient that drags the policy off the reward signal (and on
+no-signal steps, where plain GRPO is silent, the shaping still pushes on
+confidence — visible as `grad_norm ≈ 0.05` vs grpo's ≈ 5e-6).
+
+**This recontextualizes the shaping arc.** The earlier "shaping helps" results
+(exp_050 win, exp_055 null, etc.) were produced on this unsloth stack where the
+shaping was silently bypassed — i.e. plain GRPO. exp_055's "all 4 within ±0.13"
+is exactly 4× identical GRPO. The whole exp_049→056 arc should be re-audited the
+same way (check logs for `<method>/*` metrics). See `SHAPING_BYPASS_BUGFIX.md`.
+
+Caveat: intermittent KL spikes (178 @ grpo_s step763, 396 @ gtpo_conf ~step450;
+none in gtpo_ema) — RL instability from the reward-misaligned signal, not a
+systemic fix bug (degradation is gradual and systemic, not spike-driven).
+
+**grpo baseline (492 steps):** reward +0.64 → +2.56, peak rolling-20 +3.15 @ 368;
+non-saturated (ceiling ~+7) — the headroom exp_055 lacked. So the dataset premise
+held; the answer is just that shaping doesn't exploit the headroom — it hurts.
 
 ## Files
 

@@ -404,18 +404,24 @@ def main():
 
     # Build format-tag token-id patterns once.
     #
-    # exp_055 uses ONLY Qwen3 native structural tokens. No custom format tags.
-    # Mask covers 4 substrings — all of which Qwen3 tokenises as single
-    # special token ids (so the mask is one-token-precise):
-    #   - <think>, </think>    : thinking-mode protocol (151667 / 151668)
-    #   - <|im_start|>, <|im_end|>: ChatML role boundaries
-    # These are the tokens where the model is extremely peaked; without
-    # masking, per-token shaping concentrates bonus/penalty on them and
-    # distorts the gradient that should be teaching content reasoning.
+    # These are the structural/format substrings the model becomes extremely
+    # peaked on AND that the reward functions key on; per-token shaping must NOT
+    # rewrite the gradient there (it gets reverted to the seq-level GRPO adv).
+    #   - <think>, </think>        : thinking protocol — single token ids (151667/151668)
+    #   - <|im_start|>, <|im_end|> : ChatML role boundaries — single token ids
+    #   - \boxed{ , }              : answer-format delimiters that reward_answer_boxed
+    #                                rewards. NOTE these are MULTI-token substrings
+    #                                (\boxed{ -> ['\\','boxed','{'] = [59,79075,90]),
+    #                                so build_tag_mask masks the whole id-subsequence
+    #                                window. exp_055/057-v1 OMITTED these, so the
+    #                                shaping was distorting the \boxed control tokens
+    #                                (the exact failure mode the mask is meant to
+    #                                prevent). The digits inside \boxed{N} stay shaped
+    #                                (they are the model's actual answer = content).
     from src.format_tag_mask import encode_tag_patterns
     format_tag_patterns = encode_tag_patterns(
         tokenizer,
-        ["<think>", "</think>", "<|im_start|>", "<|im_end|>"],
+        ["<think>", "</think>", "<|im_start|>", "<|im_end|>", "\\boxed{", "}"],
     )
     print(f"[tagmask] {len(format_tag_patterns)} format-tag patterns:")
     for pat in format_tag_patterns:

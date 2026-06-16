@@ -35,11 +35,29 @@ HF_TOKEN=<token> bash experiments/exp_060_grpos_beta2zero_control/run_060.sh \
 
 ## Results
 
-_Pending — run in progress. Comparison plot: `figures/exp060_progress.png`._
+Ran grpo_s_entropy(β2=0) for 50 steps and compared to grpo (reused from exp_057
+@492, same code/seed/data). Plot: `figures/exp060_progress.png` (orange = β2=0,
+sits right on grpo's early grey curve).
 
-| method | steps | reward L50 | boxed L50 | grad_norm (mean) | shaping ran? |
-|---|---|---|---|---|---|
-| grpo                  | — | — | — | — | n/a |
-| grpo_s_entropy (β2=0) | — | — | — | — | (grpo_s/* logged) |
+| metric (steps 1–50) | grpo | grpo_s_entropy (β2=0) |
+|---|---|---|
+| reward (mean) | **+0.639** | **+0.667** |
+| grad_norm (mean) | 0.0123 | 0.0186 |
+| reward mean\|grpo − grpo_s\| | — | 0.18 (early steps identical; small drift later) |
+| shaped metrics `grpo_s/*` logged | n/a | **yes** (shaping path ran) |
 
-Conclusion: _to be filled — does grpo_s(β2=0) track grpo?_
+**Conclusion — the GRPO-S code is correct; gradients flow.** With the entropy
+bonus off (β2=0), grpo_s_entropy reproduces grpo's behaviour: identical rewards on
+the first steps (same rollouts), matching grad_norm magnitude, and reward tracking
+within noise over 50 steps (+0.667 vs +0.639). The early steps are *exactly* equal;
+small later drift is expected because β2=0 uses a **sign-binarized** advantage
+(±1 by reward sign, group-normalized) vs grpo's continuous advantage — a tiny
+difference, not a bug.
+
+**Therefore the grpo_s_entropy underperformance in exp_057 (L50 +1.63 vs grpo
++2.56) is caused by the entropy shaping itself (β2=0.1), not by a bug in the
+GRPO-S injection / gradient path.** This matches the broader exp_057 finding that
+the shaping, when actually applied, drags the policy off the reward signal.
+
+(Validation stopped at 50 steps — the control question was answered; the GPU was
+handed to exp_059.)

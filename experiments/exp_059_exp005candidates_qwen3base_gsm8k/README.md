@@ -47,15 +47,50 @@ Single method: `python train.py --method {grpo|gtpo_conf|grpo_s_conf}`.
 
 ## Results
 
-_Pending — run in progress. Comparison plot: `figures/exp059_progress.png`._
+All three methods ran 500 steps with shaping **actually applied** (each shaped
+run logs its `<method>/*` metrics; gradients flow). Plot: `figures/exp059_progress.png`.
 
-| method | steps | reward L50 | format_exact L50 | answer_exact L50 | KL | shaping ran? |
-|---|---|---|---|---|---|---|
-| grpo         | — | — | — | — | — | n/a |
-| gtpo_conf    | — | — | — | — | — | (gtpo_conf/* logged) |
-| grpo_s_conf  | — | — | — | — | — | (grpo_s_conf/* logged) |
+| method | steps | reward L50 | format_exact L50 (max +3) | answer_exact L50 (max +3) | answer_numeric L50 | KL | Δreward vs grpo |
+|---|---|---|---|---|---|---|---|
+| **grpo** (baseline)        | 500 | **+8.66** | +2.96 | +2.53 | +1.26 | 0.036 | — |
+| grpo_s_conf (seq-level)    | 500 | **+8.84** | +2.97 | +2.65 | +1.28 | 0.055 | **+0.18 (≈tie)** |
+| gtpo_conf (per-token)      | 500 | **+0.86** | +0.84 | −0.11 | +0.68 | 0.0022 | **−7.80** |
 
-Conclusion: _to be filled._
+Reward trajectory (100-step blocks):
+
+| steps | grpo | grpo_s_conf | gtpo_conf |
+|---|---|---|---|
+| 1–100   | −0.23 | +0.67 | −0.16 |
+| 201–300 | +7.73 | +7.76 | +0.79 |
+| 401–500 | +8.71 | +8.93 | +1.02 |
+
+### Findings
+
+**On Qwen3-4B-Base / GSM8K the result splits by shaping granularity:**
+
+- **grpo** cleanly learns the format and solves GSM8K: reward −0.23 → +8.71
+  (near the ~9.5 reward ceiling), format_exact +2.96/3, KL 0.036.
+- **grpo_s_conf (sequence-level confidence)** ≈ **ties grpo** — it tracks the
+  baseline step-for-step (+8.84 vs +8.66, within noise; marginally higher
+  answer_exact). The mild seq-level reweighting (β2=0.1) does not distort the
+  per-token gradient, so learning proceeds normally. It does **not beat** grpo.
+- **gtpo_conf (per-token confidence)** **badly underperforms** (+0.86): it never
+  learns the format (format_exact +0.84, answer_exact −0.11) and **KL ≈ 0.002**
+  (the policy barely moves). The per-token confidence advantage is z-normalized
+  and ~uncorrelated with the reward (the exp_057 caveat), so it injects a
+  reward-misaligned gradient that prevents the base model from learning the task.
+
+**Takeaway:** with the shaping actually applied (vs silently bypassed), **neither
+confidence variant beats the GRPO baseline.** The sequence-level variant is benign
+(ties); the **per-token variant is actively harmful** — strongest on the base
+model, which has the format to learn from scratch. This is consistent with
+exp_057 (per-token shaping drags Qwen3 off the reward signal) and **inverts the
+original exp_005 conclusion** ("GTPO-Conf > GRPO-S-Conf"), which was almost
+certainly measured with the shaping bypassed (= plain GRPO, run-to-run noise).
+
+Note: `grpo_s_conf` uses a full-group microbatch (bs=num_generations, ga=1) so its
+within-group re-normalization is valid; `grpo`/`gtpo_conf` use bs=1, ga=4 (robust
+to single-sequence microbatches). Same effective 4 sequences / optimizer step.
 
 ## Files
 ```

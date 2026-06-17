@@ -112,6 +112,7 @@ def compute_gtpo_conf_rewards(
         adv_pos: (B, T) advantage for O+ tokens (0 for O- sequences)
         adv_neg: (B, T) advantage for O- tokens (0 for O+ sequences)
     """
+    confidence = confidence.float()   # bf16 logits -> bf16 conf; cast so index-put dtypes match
     B, T = confidence.shape
     device = confidence.device
 
@@ -207,6 +208,7 @@ def compute_grpo_s_conf_rewards(
         shaped_rewards:  (B,) shaped sequence rewards
         seq_avg_conf:    (B,) mean confidence per sequence (for logging)
     """
+    confidence = confidence.float()   # bf16 logits -> bf16 conf; cast so index-put dtypes match
     device = confidence.device
     B = rewards.shape[0]
 

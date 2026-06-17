@@ -232,11 +232,24 @@ def main():
 
     output_dir = os.path.join(os.path.dirname(__file__), f"outputs_{method}")
     os.makedirs(output_dir, exist_ok=True)
+
+    train_cfg = dict(TRAINING_CONFIG)
+    # GRPO-S-Conf re-normalizes the shaped reward WITHIN each group of
+    # num_generations, so its compute_loss microbatch must contain a whole group.
+    # With bs=1,ga=4,ng=4, unsloth keeps bs=1 (since bs*ga=4 is already a multiple
+    # of ng) -> microbatch B=1 -> view(-1, G) crashes. So for grpo_s_conf we make
+    # the microbatch a full group: bs=num_generations, ga=1 (same effective
+    # 4 sequences / optimizer step = 1 group, just not split). grpo / gtpo_conf
+    # are robust to B=1 (no within-group re-normalization) and keep bs=1,ga=4.
+    if method == "grpo_s_conf":
+        train_cfg["per_device_train_batch_size"] = TRAINING_CONFIG["num_generations"]
+        train_cfg["gradient_accumulation_steps"] = 1
+
     args = GRPOConfig(
         max_prompt_length=max_prompt_length,
         max_completion_length=MODEL_CONFIG["max_seq_length"] - max_prompt_length,
         output_dir=output_dir,
-        **TRAINING_CONFIG,
+        **train_cfg,
     )
 
     # tag mask for gtpo_conf — the custom format tags (multi-token on Qwen3;

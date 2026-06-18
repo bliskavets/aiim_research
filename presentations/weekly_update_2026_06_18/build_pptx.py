@@ -152,6 +152,30 @@ def summary_slide(prs):
     return s
 
 
+def formula_slide(prs, title, blocks):
+    """blocks: list of (label_or_None, [lines]). Minimal words, mono formulas."""
+    s = add_blank(prs)
+    _txt(s, Inches(0.6), Inches(0.45), Inches(12.1), Inches(0.8), title, 28, INK, bold=True)
+    _rule(s, Inches(0.62), Inches(1.35), Inches(2.6))
+    tb = s.shapes.add_textbox(Inches(0.8), Inches(1.75), Inches(11.8), Inches(5.4))
+    tf = tb.text_frame; tf.word_wrap = True
+    first = True
+    for label, lines in blocks:
+        if label is not None:
+            p = tf.paragraphs[0] if first else tf.add_paragraph()
+            p.space_before = Pt(0 if first else 12); p.space_after = Pt(3)
+            r = p.add_run(); r.text = label
+            f = r.font; f.size = Pt(15); f.bold = True; f.color.rgb = ACCENT; f.name = "Calibri"
+            first = False
+        for ln in lines:
+            p = tf.paragraphs[0] if first else tf.add_paragraph()
+            p.space_after = Pt(3)
+            r = p.add_run(); r.text = ln
+            f = r.font; f.size = Pt(16); f.color.rgb = INK; f.name = "Consolas"
+            first = False
+    return s
+
+
 def main():
     prs = Presentation()
     prs.slide_width = SW; prs.slide_height = SH
@@ -159,6 +183,35 @@ def main():
     for kicker, title, img, takeaway in SLIDES:
         exp_slide(prs, kicker, title, img, takeaway)
     summary_slide(prs)
+
+    # --- method-difference slide ---
+    formula_slide(prs, "gtpo_conf  vs  gtpo_ema_flipped", [
+        (None, ["both:   Cₜ = −mean₍top-k₎ log π(v | ·)        # token confidence",
+                "both:   separate z-norm over O⁺ / O⁻ tokens"]),
+        ("gtpo_conf  — raw, monotone", [
+            "O⁺:  r̃ₜ = α₁ + α₂·(C̃ₜ / Σ C̃)·dₜ ,   C̃ = log(1+C)",
+            "O⁻:  r̃ₜ = −[α₁ + α₂·(Ĩₜ / Σ Ĩ)·hₜ] ,  Ĩ = log(1+1/C)"]),
+        ("gtpo_ema_flipped  — EMA-smoothed + roles swapped", [
+            "EMAₜ = λ·EMAₜ₋₁ + (1−λ)·Cₜ",
+            "O⁺ weight = 1/EMAₜ   (reward LOW-confidence tokens)",
+            "O⁻ weight =  EMAₜ     (penalize HIGH-confidence tokens)"]),
+        ("difference", [
+            "conf = instantaneous C, high-C → high bonus",
+            "ema  = smoothed C  +  inverted O⁺/O⁻ weighting"]),
+    ])
+
+    # --- length-penalty hack slide ---
+    formula_slide(prs, "Length-penalty hack (gtpo_ema_flipped)", [
+        ("why it explodes (exp_058)", [
+            "O⁺ bonus ∝ 1/EMA(C) → rewards low-confidence tokens",
+            "→ model farms length:  640 → 3400 tok,  boxed → 0"]),
+        ("fix 1 — soft length penalty on seq reward (before O⁺/O⁻ split)", [
+            "rᵢ ← rᵢ − γ · max(0, |oᵢ| − L₀) / L₀        (γ≈0.5, L₀ = target len)"]),
+        ("fix 2 — length-normalize the bonus (can't grow with length)", [
+            "bonusₜ ← bonusₜ · L₀ / max(L₀, |oᵢ|)"]),
+        ("effect", [
+            "caps exploration-reward per completion → removes the incentive to ramble"]),
+    ])
     out = os.path.join(HERE, "weekly_update_2026_06_18.pptx")
     prs.save(out)
     print(f"saved {out}  ({len(prs.slides._sldIdLst)} slides)")

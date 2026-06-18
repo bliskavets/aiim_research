@@ -105,13 +105,13 @@ SHAPING_CONFIG = {
     # L=1024 (0 < L < max_completion 3584; base answers ~640 tok, leaves headroom).
     # alpha_len=0.0015 (~2000-tok overshoot ≈ -3 advantage, cancels a boxed hit).
     "gtpo_ema_lenpen": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
-                        "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.0015, "length_L": 1024},
+                        "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": 1024},
     # NEW #2: same penalty, GATED by low-temperature success. Per prompt we also
     # sample 2 extra (unused-for-update) completions at t=0 and t2=0.5; if either
     # gives the exact answer, the problem is concisely solvable -> apply the length
     # penalty to that prompt's training completions; else skip it.
     "gtpo_ema_lenpen_gated": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
-                              "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.0015, "length_L": 1024,
+                              "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": 1024,
                               "gate_temps": (0.0, 0.5), "gate_max_tokens": 3584},
 }
 

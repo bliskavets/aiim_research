@@ -96,6 +96,10 @@ DATASET_CONFIG = {
 # shaped trainers. =1 is safest on A100 (base model rambles -> long completions).
 _CONF_MICRO_BS = int(os.environ.get("CONF_MICRO_BS", 1))
 
+# length_L: the length-penalty knee for the two lenpen methods. Env-overridable
+# so an L-sweep (e.g. 3096 / 2048 / 1536) can re-run the same code without edits.
+_LENGTH_L = int(os.environ.get("LENGTH_L", 1024))
+
 # Method-native shaping coefficients (intrinsic to each method, from its source exp)
 SHAPING_CONFIG = {
     "grpo_s_entropy":   {"beta1": 1.0, "beta2": 0.1, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
@@ -105,13 +109,13 @@ SHAPING_CONFIG = {
     # L=1024 (0 < L < max_completion 3584; base answers ~640 tok, leaves headroom).
     # alpha_len=0.0015 (~2000-tok overshoot ≈ -3 advantage, cancels a boxed hit).
     "gtpo_ema_lenpen": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
-                        "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": 1024},
+                        "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": _LENGTH_L},
     # NEW #2: same penalty, GATED by low-temperature success. Per prompt we also
     # sample 2 extra (unused-for-update) completions at t=0 and t2=0.5; if either
     # gives the exact answer, the problem is concisely solvable -> apply the length
     # penalty to that prompt's training completions; else skip it.
     "gtpo_ema_lenpen_gated": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
-                              "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": 1024,
+                              "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": _LENGTH_L,
                               "gate_temps": (0.0, 0.5), "gate_max_tokens": 3584},
 }
 
@@ -384,6 +388,8 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     print(f"=== exp_058 [{method}] — Big-Math int-2000, Qwen3-4B-BASE (tagmasked shaping, FIXED non-bypassed) ===")
+    if method in ("gtpo_ema_lenpen", "gtpo_ema_lenpen_gated"):
+        print(f"  length penalty: alpha_len={SHAPING_CONFIG[method]['alpha_len']}  L={SHAPING_CONFIG[method]['length_L']}")
     print(f"  seed={SEED}  max_seq={MODEL_CONFIG['max_seq_length']}  "
           f"steps={TRAINING_CONFIG['max_steps']}  "
           f"bs={TRAINING_CONFIG['per_device_train_batch_size']}x"

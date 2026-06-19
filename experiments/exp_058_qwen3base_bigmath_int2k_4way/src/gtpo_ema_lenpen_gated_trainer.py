@@ -1,26 +1,26 @@
 """
 gtpo_ema_lenpen_gated_trainer.py
 --------------------------------
-exp_058 NEW method #2: gtpo_ema_flipped + Lagrange-like length penalty that is
-GATED by low-temperature success (multi-temperature heuristic).
+exp_058 method #2 (v2): the GROUP-RELATIVE length penalty of method #1, GATED by
+a multi-temperature heuristic.
 
-Per generation batch, in addition to the `num_generations` training completions
-(sampled at the training temperature t=1.0), we sample 2 EXTRA completions per
-prompt that are NOT used in the gradient update:
-    - one greedy (t = 0)
-    - one at t2 (0 < t2 < t,  default 0.5)
-both with the same max_tokens. If EITHER extra completion gives the exact answer
-(boxed integer == gold), the problem is *concisely solvable*, so we apply the
-length penalty  alpha_len * max(0, |o| - L)  to ALL of that prompt's training
-completions. If neither low-temp sample solves it, the penalty is skipped for
-that prompt (it may genuinely need long exploration).
+Per generation batch (after the normal training generations) we sample 2 EXTRA
+completions per UNIQUE prompt — greedy (t=0) and t2 (default 0.5) — that are NOT
+used in the gradient update. If EITHER gives the exact boxed answer, the problem
+is concisely solvable, so we apply the group-relative length penalty to that
+prompt's training completions; otherwise the penalty is skipped (the problem may
+genuinely need long exploration).
 
-Implementation: override `_generate_and_score_completions` to (a) run the 2 extra
-vLLM generations on the same engine/LoRA (wake → generate → sleep), (b) score
-them, (c) attach a per-completion gate `len_gate` that flows through the buffer to
-`compute_loss`. If the extra generation or the gate propagation fails, we fall
-back to the ungated penalty (= method #1) and flag it via a metric, so the run
-never crashes silently.
+    pen_i      = alpha_len * max(0, |o_i| - L)
+    pen_rel_i  = pen_i - mean_{group}(pen)
+    len_pen_i  = pen_rel_i * gate(prompt_i)        # gate ∈ {0,1} per prompt
+    Ã_{i,t}   <- Ã_{i,t} - len_pen_i               (applied in compute_loss)
+
+Both the gate (extra vLLM gens, wake→generate→sleep, current LoRA) and the
+group-relative penalty are computed in _generate_and_score_completions where the
+full group is available, then propagated to compute_loss via out["len_pen"].
+Robust fallback: on any failure the penalty stays ungated (= method #1 group-rel),
+flagged via a metric.
 """
 import torch
 from trl import GRPOTrainer
@@ -50,7 +50,7 @@ class GTPOEMAFlippedLenPenGatedTrainer(GRPOTrainer):
         reward_threshold     = kwargs.pop("reward_threshold", 0.0)
         format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
         conf_micro_bs        = kwargs.pop("conf_micro_bs", 2)
-        alpha_len            = kwargs.pop("alpha_len", 0.0015)
+        alpha_len            = kwargs.pop("alpha_len", 0.005)
         length_L             = kwargs.pop("length_L", 1024)
         gate_temps           = kwargs.pop("gate_temps", (0.0, 0.5))
         gate_max_tokens      = kwargs.pop("gate_max_tokens", 3584)
@@ -63,67 +63,71 @@ class GTPOEMAFlippedLenPenGatedTrainer(GRPOTrainer):
         self.alpha_len, self.length_L = alpha_len, length_L
         self.gate_temps, self.gate_max_tokens = tuple(gate_temps), gate_max_tokens
         self.answer_extractor = answer_extractor
-        self._gate_ok_logged = False
+        self._gate_warned = False
 
-    # ── low-temp gate: extra vLLM generations per prompt ─────────────────────
+    def _compute_gate_per_completion(self, inputs, n_comp, device):
+        """Return (gate (n_comp,) in {0,1}, ok: bool). gate[i]=1 if a low-temp
+        sample of completion i's prompt gave the exact answer."""
+        keys = [str(x["prompt"]) for x in inputs]
+        uniq = {}
+        for i, k in enumerate(keys):
+            uniq.setdefault(k, i)
+        uniq_keys = list(uniq.keys())
+        prompt_texts = [
+            self.processing_class.apply_chat_template(
+                inputs[uniq[k]]["prompt"], tokenize=False, add_generation_prompt=True)
+            for k in uniq_keys
+        ]
+        answers = [inputs[uniq[k]].get("answer") for k in uniq_keys]
+        from vllm import SamplingParams
+        if hasattr(self.llm, "wake_up"):
+            try: self.llm.wake_up()
+            except Exception: pass
+        lora = self.model.load_lora("grpo_trainer_lora_model", load_tensors=True)
+        solved = [False] * len(uniq_keys)
+        for T in self.gate_temps:
+            sp = SamplingParams(temperature=float(T), max_tokens=self.gate_max_tokens, n=1)
+            gens = self.llm.generate(prompt_texts, sampling_params=sp, lora_request=lora, use_tqdm=False)
+            for j, g in enumerate(gens):
+                guess = self.answer_extractor(g.outputs[0].text) if self.answer_extractor else None
+                if _answers_equal(guess, answers[j]):
+                    solved[j] = True
+        if hasattr(self.llm, "sleep"):
+            try: self.llm.sleep(level=1)
+            except Exception: pass
+        gate_by_key = {k: solved[j] for j, k in enumerate(uniq_keys)}
+        return torch.tensor([1.0 if gate_by_key[keys[i]] else 0.0 for i in range(n_comp)],
+                            device=device, dtype=torch.float32)
+
     def _generate_and_score_completions(self, inputs):
         out = super()._generate_and_score_completions(inputs)
+        cm = out["completion_mask"]
+        n_comp = cm.shape[0]
+        device = cm.device
         ng = self.num_generations
-        n_comp = out["completion_ids"].shape[0]
-        device = out["completion_ids"].device
+        # group-relative length penalty
+        lengths = cm.sum(dim=1).float()
+        pen = self.alpha_len * (lengths - self.length_L).clamp(min=0.0)
+        if pen.numel() % ng == 0:
+            pen_rel = (pen.view(-1, ng) - pen.view(-1, ng).mean(dim=1, keepdim=True)).reshape(-1)
+        else:
+            pen_rel = pen - pen.mean()
+        # low-temperature gate
         try:
-            # `inputs` is already expanded: one entry per completion (the same
-            # prompt repeated num_generations times). Dedupe by prompt text so we
-            # run the gate generations once per UNIQUE prompt, then map back per
-            # completion. Robust to ordering / batch shape (no P*ng assumption).
-            assert len(inputs) == n_comp, f"len(inputs)={len(inputs)} != n_comp={n_comp}"
-            keys = [str(x["prompt"]) for x in inputs]
-            uniq = {}                       # prompt-text -> first index
-            for i, k in enumerate(keys):
-                uniq.setdefault(k, i)
-            uniq_keys = list(uniq.keys())
-            prompt_texts = [
-                self.processing_class.apply_chat_template(
-                    inputs[uniq[k]]["prompt"], tokenize=False, add_generation_prompt=True)
-                for k in uniq_keys
-            ]
-            uniq_answers = [inputs[uniq[k]].get("answer") for k in uniq_keys]
-            from vllm import SamplingParams
-            if hasattr(self.llm, "wake_up"):
-                try: self.llm.wake_up()
-                except Exception: pass
-            lora = self.model.load_lora("grpo_trainer_lora_model", load_tensors=True)
-            solved = [False] * len(uniq_keys)
-            for T in self.gate_temps:
-                sp = SamplingParams(temperature=float(T), max_tokens=self.gate_max_tokens, n=1)
-                gens = self.llm.generate(prompt_texts, sampling_params=sp, lora_request=lora, use_tqdm=False)
-                for j, g in enumerate(gens):
-                    guess = self.answer_extractor(g.outputs[0].text) if self.answer_extractor else None
-                    if _answers_equal(guess, uniq_answers[j]):
-                        solved[j] = True
-            if hasattr(self.llm, "sleep"):
-                try: self.llm.sleep(level=1)
-                except Exception: pass
-            gate_by_key = {k: solved[j] for j, k in enumerate(uniq_keys)}
-            gate = torch.tensor([1.0 if gate_by_key[keys[i]] else 0.0 for i in range(n_comp)],
-                                device=device, dtype=torch.float32)
-            out["len_gate"] = gate
+            assert len(inputs) == n_comp
+            gate = self._compute_gate_per_completion(inputs, n_comp, device)
         except Exception as e:
-            # fall back to ungated (= method #1): gate all ones
-            out["len_gate"] = torch.ones(n_comp, device=device, dtype=torch.float32)
-            if not self._gate_ok_logged:
-                print(f"[gtpo_ema_lenpen_gated] WARN gate disabled (fallback to ungated): {e!r}", flush=True)
-                self._gate_ok_logged = True
+            gate = torch.ones(n_comp, device=device, dtype=torch.float32)
+            if not self._gate_warned:
+                print(f"[gtpo_ema_lenpen_gated] WARN gate disabled (ungated fallback): {e!r}", flush=True)
+                self._gate_warned = True
+        out["len_pen"] = pen_rel * gate
+        out["gate_dbg"] = gate
         return out
-
-    def _length_penalty(self, completion_mask):
-        lengths = completion_mask.sum(dim=1)
-        return (self.alpha_len * (lengths - self.length_L).clamp(min=0.0)).unsqueeze(1)  # (B,1)
 
     def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         if return_outputs:
             raise ValueError("GRPOTrainer does not support returning outputs")
-
         completion_ids  = inputs["completion_ids"]
         completion_mask = inputs["completion_mask"]
         seq_advantages  = inputs["advantages"]
@@ -145,30 +149,25 @@ class GTPOEMAFlippedLenPenGatedTrainer(GRPOTrainer):
             token_advantages = apply_tag_mask_to_token_advantages(
                 token_advantages, seq_advantages, tag_mask)
 
-        # gated Lagrange length penalty
-        pen = self._length_penalty(completion_mask)                       # (B,1)
-        gate = inputs.get("len_gate")
         B = completion_mask.shape[0]
-        if gate is None or gate.shape[0] != B:
-            gate = torch.ones(B, device=completion_mask.device, dtype=token_advantages.dtype)
-            gate_present = 0.0
+        pen_rel = inputs.get("len_pen")
+        gate = inputs.get("gate_dbg")
+        if pen_rel is None or pen_rel.shape[0] != B:
+            pen_rel = torch.zeros(B, device=completion_mask.device, dtype=token_advantages.dtype)
+            pen_present = 0.0
         else:
-            gate = gate.to(token_advantages.dtype); gate_present = 1.0
-        token_advantages = token_advantages - pen * gate.unsqueeze(1) * completion_mask
+            pen_rel = pen_rel.to(token_advantages.dtype); pen_present = 1.0
+        token_advantages = token_advantages - pen_rel.unsqueeze(1) * completion_mask
 
-        # ── metrics ──
         mode = "train" if model.training else "eval"
-        tot = completion_mask.sum().clamp(min=1.0)
-        ema = compute_ema_vectorized(confidence, completion_mask, lam=self.lam)
-        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/mean_ema", []).append(
-            self.accelerator.gather((ema * completion_mask).sum() / tot).mean().item())
         self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/mean_len", []).append(
             self.accelerator.gather(completion_mask.sum(dim=1).float().mean()).mean().item())
-        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/gate_frac", []).append(
-            self.accelerator.gather(gate.mean()).mean().item())
-        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/gate_present", []).append(gate_present)
-        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/mean_len_penalty_applied", []).append(
-            self.accelerator.gather((pen.squeeze(1) * gate).mean()).mean().item())
+        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/pen_rel_absmean", []).append(
+            self.accelerator.gather(pen_rel.abs().mean()).mean().item())
+        self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/pen_present", []).append(pen_present)
+        if gate is not None and gate.shape[0] == B:
+            self._metrics[mode].setdefault("gtpo_ema_lenpen_gated/gate_frac", []).append(
+                self.accelerator.gather(gate.to(token_advantages.dtype).mean()).mean().item())
 
         inputs = inject_advantages(inputs, token_advantages, logits_to_keep)
         return super().compute_loss(model, inputs, return_outputs, num_items_in_batch)

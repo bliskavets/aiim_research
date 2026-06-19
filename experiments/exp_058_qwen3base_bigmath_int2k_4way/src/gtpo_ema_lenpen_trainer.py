@@ -1,25 +1,30 @@
 """
 gtpo_ema_lenpen_trainer.py
 --------------------------
-exp_058 NEW method #1: gtpo_ema_flipped + a Lagrange-like LENGTH PENALTY.
+exp_058 method #1 (v2): gtpo_ema_flipped + a GROUP-RELATIVE length penalty.
 
-gtpo_ema_flipped rewards low-confidence (exploratory) tokens in O+ paths, so on
-the base model it farms length (640 -> 3400 tok) and collapses. We subtract a
-per-sequence penalty from the shaped advantage:
+Why v2: gtpo_ema_flipped's shaping discards the reward MAGNITUDE (it uses the
+seq advantage only for the O+/O- sign, then z-norms a confidence weighting). So
+(a) a reward-level penalty barely matters (it only flips signs), and (b) an
+ABSOLUTE per-sequence penalty on the shaped advantage (v1, alpha=0.0015..0.005)
+failed to stop the length collapse. We instead apply a penalty that is
+GROUP-CENTERED (relative within each group of num_generations completions):
 
-    pen_i = alpha_len * max(0, |o_i| - L)          (0 < L < max_completion_tokens)
-    Ã_{i,t} <- Ã_{i,t} - pen_i        (broadcast over the sequence's valid tokens)
+    pen_i      = alpha_len * max(0, |o_i| - L)
+    pen_rel_i  = pen_i - mean_{group}(pen)        # >0 if longer than group avg
+    Ã_{i,t}   <- Ã_{i,t} - pen_rel_i              # shorter-than-avg -> boosted
 
-so completions longer than L lose advantage in proportion to the overshoot. The
-4 original candidates are untouched; this is an additive new method.
+so within each prompt's group, shorter completions get a higher shaped advantage
+and longer ones lower — directly ranking "short" above "long". Because
+compute_loss runs on B=1 microbatches (no group there), pen_rel is computed in
+_generate_and_score_completions (full group available) and propagated through the
+buffer to compute_loss as out["len_pen"].
 """
 import torch
 from trl import GRPOTrainer
 from .ema_flipped_utils import (
-    confidence_from_model_chunked,
-    compute_ema_vectorized,
-    compute_gtpo_ema_flipped_advantages,
-    EPS,
+    confidence_from_model_chunked, compute_ema_vectorized,
+    compute_gtpo_ema_flipped_advantages, EPS,
 )
 from .format_tag_mask import build_tag_mask, apply_tag_mask_to_token_advantages
 from .shaped_loss import inject_advantages
@@ -34,7 +39,7 @@ class GTPOEMAFlippedLenPenTrainer(GRPOTrainer):
         reward_threshold     = kwargs.pop("reward_threshold", 0.0)
         format_tag_patterns  = kwargs.pop("format_tag_patterns", None)
         conf_micro_bs        = kwargs.pop("conf_micro_bs", 2)
-        alpha_len            = kwargs.pop("alpha_len", 0.0015)
+        alpha_len            = kwargs.pop("alpha_len", 0.005)
         length_L             = kwargs.pop("length_L", 1024)
         super().__init__(*args, **kwargs)
         self.alpha1, self.alpha2, self.lam, self.top_k = alpha1, alpha2, lam, top_k
@@ -43,16 +48,23 @@ class GTPOEMAFlippedLenPenTrainer(GRPOTrainer):
         self.conf_micro_bs = conf_micro_bs
         self.alpha_len, self.length_L = alpha_len, length_L
 
-    def _length_penalty(self, completion_mask):
-        """pen_i = alpha_len * max(0, |o_i| - L)  -> (B,1)."""
-        lengths = completion_mask.sum(dim=1)                          # (B,)
+    # group-relative length penalty, computed where the full group is available
+    def _generate_and_score_completions(self, inputs):
+        out = super()._generate_and_score_completions(inputs)
+        cm = out["completion_mask"]
+        lengths = cm.sum(dim=1).float()                              # (B_gen,)
         pen = self.alpha_len * (lengths - self.length_L).clamp(min=0.0)
-        return pen.unsqueeze(1)                                       # (B,1)
+        ng = self.num_generations
+        if pen.numel() % ng == 0:
+            pen_rel = (pen.view(-1, ng) - pen.view(-1, ng).mean(dim=1, keepdim=True)).reshape(-1)
+        else:                                                        # safety: center over batch
+            pen_rel = pen - pen.mean()
+        out["len_pen"] = pen_rel
+        return out
 
     def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
         if return_outputs:
             raise ValueError("GRPOTrainer does not support returning outputs")
-
         completion_ids  = inputs["completion_ids"]
         completion_mask = inputs["completion_mask"]
         seq_advantages  = inputs["advantages"]
@@ -74,22 +86,27 @@ class GTPOEMAFlippedLenPenTrainer(GRPOTrainer):
             token_advantages = apply_tag_mask_to_token_advantages(
                 token_advantages, seq_advantages, tag_mask)
 
-        # ── Lagrange-like length penalty (the only change vs gtpo_ema_flipped) ──
-        pen = self._length_penalty(completion_mask)                  # (B,1)
-        token_advantages = token_advantages - pen * completion_mask  # subtract on valid tokens
+        # group-relative length penalty (propagated from generation)
+        B = completion_mask.shape[0]
+        pen_rel = inputs.get("len_pen")
+        if pen_rel is None or pen_rel.shape[0] != B:
+            pen_rel = torch.zeros(B, device=completion_mask.device, dtype=token_advantages.dtype)
+            pen_present = 0.0
+        else:
+            pen_rel = pen_rel.to(token_advantages.dtype); pen_present = 1.0
+        token_advantages = token_advantages - pen_rel.unsqueeze(1) * completion_mask
 
         # ── metrics ──
         mode = "train" if model.training else "eval"
-        total_tokens = completion_mask.sum().clamp(min=1.0)
+        tot = completion_mask.sum().clamp(min=1.0)
         ema = compute_ema_vectorized(confidence, completion_mask, lam=self.lam)
         self._metrics[mode].setdefault("gtpo_ema_lenpen/mean_ema", []).append(
-            self.accelerator.gather((ema * completion_mask).sum() / total_tokens).mean().item())
+            self.accelerator.gather((ema * completion_mask).sum() / tot).mean().item())
         self._metrics[mode].setdefault("gtpo_ema_lenpen/mean_len", []).append(
             self.accelerator.gather(completion_mask.sum(dim=1).float().mean()).mean().item())
-        self._metrics[mode].setdefault("gtpo_ema_lenpen/mean_len_penalty", []).append(
-            self.accelerator.gather(pen.mean()).mean().item())
-        self._metrics[mode].setdefault("gtpo_ema_lenpen/frac_penalized", []).append(
-            self.accelerator.gather((pen > 0).float().mean()).mean().item())
+        self._metrics[mode].setdefault("gtpo_ema_lenpen/pen_rel_absmean", []).append(
+            self.accelerator.gather(pen_rel.abs().mean()).mean().item())
+        self._metrics[mode].setdefault("gtpo_ema_lenpen/pen_present", []).append(pen_present)
 
         inputs = inject_advantages(inputs, token_advantages, logits_to_keep)
         return super().compute_loss(model, inputs, return_outputs, num_items_in_batch)

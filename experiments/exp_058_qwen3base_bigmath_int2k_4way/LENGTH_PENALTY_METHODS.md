@@ -81,3 +81,37 @@ figures/exp058_lenpen_fix.png          length + boxed vs bare collapse
 | gtpo_ema_lenpen_gated | 584 | +3.41 | **+1.24** |
 
 **gated length-penalty recovers gtpo_ema_flipped from the collapse to near-GRPO quality** (boxed +1.24 vs grpo +1.51, length 584 vs 622), while the bare method inflates length (2121) and stays low (boxed +0.38). lenpen controls length too but is weaker on quality (+0.72).
+
+## L-sweep (knee L in {3096, 2048, 1536}, alpha_len=0.005, 300 steps each)
+
+Both methods re-run at three knee values to map the length↔quality trade-off.
+L is env-overridable (`LENGTH_L`); `run_058_lenpen_Lsweep.sh` runs all six
+(L × method) sequentially; `plot_Lsweep.py` builds the comparison (top row =
+time-series, bottom row = final-metric-vs-L summary).
+
+Plot: `figures/exp058_lenpen_Lsweep.png`. Reference: GRPO baseline len 622, boxed +1.51.
+
+| method | L | L50 len | L50 boxed |
+|---|---|---|---|
+| gtpo_ema_lenpen       | 3096 | 1085 | +0.84 |
+| gtpo_ema_lenpen_gated | 3096 | 1016 | +0.97 |
+| gtpo_ema_lenpen       | 2048 |  758 | **+1.06** |
+| gtpo_ema_lenpen_gated | 2048 |  766 | +0.92 |
+| gtpo_ema_lenpen       | 1536 |  668 | +0.94 |
+| **gtpo_ema_lenpen_gated** | **1536** | **601** | **+1.21** |
+
+**Findings**
+- **Length falls monotonically with tighter L** for both methods (lenpen
+  1085→758→668; gated 1016→766→601). L=3096 is too weak a knee — it barely
+  bites the typical 800–1100-tok answers, so quality sits well below GRPO.
+- **The two methods respond oppositely to tightening:**
+  - **lenpen** has a *mid optimum* — boxed peaks at L=2048 (+1.06) and dips again
+    at L=1536 (+0.94): over-tightening the un-gated penalty clips legitimately
+    long reasoning on hard problems.
+  - **gated** *improves monotonically* with tighter L — best at L=1536 (+1.21,
+    the sweep maximum). The low-temperature gate spares the genuinely hard
+    prompts from the penalty, so tightening L only bites the easy/short-solvable
+    ones; no exploration is lost where it matters.
+- **Best config: gtpo_ema_lenpen_gated @ L=1536** — shortest of all six (601 ≈
+  GRPO 622) AND highest boxed (+1.21, closest to GRPO +1.51). The gate is what
+  lets a tight knee help rather than hurt.

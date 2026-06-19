@@ -70,3 +70,14 @@ src/gtpo_ema_lenpen_gated_trainer.py   + low-temperature gate
 run_058_lenpen.sh                      runs both methods
 figures/exp058_lenpen_fix.png          length + boxed vs bare collapse
 ```
+
+## 4-way comparison (all real, 420 steps, figures/exp058_4way_lenpen_comparison.png)
+
+| method | L50 len | L50 reward | L50 boxed |
+|---|---|---|---|
+| GRPO baseline | 622 | +3.74 | +1.51 |
+| gtpo_ema_flipped (bare) | 2121 | +1.91 | +0.38 |
+| gtpo_ema_lenpen | 456 | +2.74 | +0.72 |
+| gtpo_ema_lenpen_gated | 584 | +3.41 | **+1.24** |
+
+**gated length-penalty recovers gtpo_ema_flipped from the collapse to near-GRPO quality** (boxed +1.24 vs grpo +1.51, length 584 vs 622), while the bare method inflates length (2121) and stays low (boxed +0.38). lenpen controls length too but is weaker on quality (+0.72).

@@ -117,6 +117,17 @@ SHAPING_CONFIG = {
     "gtpo_ema_lenpen_gated": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
                               "conf_micro_bs": _CONF_MICRO_BS, "alpha_len": 0.005, "length_L": _LENGTH_L,
                               "gate_temps": (0.0, 0.5), "gate_max_tokens": 3584},
+    # NEW #3: gtpo_ema_flipped + ADAPTIVE length penalty. No fixed L — the knee
+    # floats with each group's own lengths: L=max((L_min+L_max)/2, L_mean), then a
+    # piecewise penalty in [-0.5,0] (ramp for L<len<2L, saturated -0.5 for len>=2L).
+    # Applied ALWAYS. Group-centered, subtracted from the shaped advantage.
+    "gtpo_ema_adaptlen": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
+                          "conf_micro_bs": _CONF_MICRO_BS},
+    # NEW #4: same adaptive penalty, GATED by low-temperature success (t=0 and
+    # t2=0.5); apply only when the problem is concisely solvable, else skip.
+    "gtpo_ema_adaptlen_gated": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
+                                "conf_micro_bs": _CONF_MICRO_BS,
+                                "gate_temps": (0.0, 0.5), "gate_max_tokens": 3584},
 }
 
 # exp_055: use Qwen3's NATIVE format — <think>...</think> for reasoning, then
@@ -369,6 +380,16 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
             **common, **SHAPING_CONFIG["gtpo_ema_lenpen_gated"],
             format_tag_patterns=format_tag_patterns,
             answer_extractor=_extract_boxed_answer)
+    if method == "gtpo_ema_adaptlen":
+        from src.gtpo_ema_adaptlen_trainer import GTPOEMAFlippedAdaptLenTrainer
+        return GTPOEMAFlippedAdaptLenTrainer(**common, **SHAPING_CONFIG["gtpo_ema_adaptlen"],
+                                             format_tag_patterns=format_tag_patterns)
+    if method == "gtpo_ema_adaptlen_gated":
+        from src.gtpo_ema_adaptlen_gated_trainer import GTPOEMAFlippedAdaptLenGatedTrainer
+        return GTPOEMAFlippedAdaptLenGatedTrainer(
+            **common, **SHAPING_CONFIG["gtpo_ema_adaptlen_gated"],
+            format_tag_patterns=format_tag_patterns,
+            answer_extractor=_extract_boxed_answer)
     raise ValueError(f"unknown method: {method}")
 
 
@@ -379,7 +400,9 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", required=True,
-                    choices=["grpo", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped", "gtpo_ema_lenpen", "gtpo_ema_lenpen_gated"])
+                    choices=["grpo", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped",
+                             "gtpo_ema_lenpen", "gtpo_ema_lenpen_gated",
+                             "gtpo_ema_adaptlen", "gtpo_ema_adaptlen_gated"])
     args_cli = ap.parse_args()
     method = args_cli.method
     reward_funcs = REWARD_FUNCS_FULL  # exp_055 uses full reward set, same as exp_050/051/052
@@ -390,6 +413,8 @@ def main():
     print(f"=== exp_058 [{method}] — Big-Math int-2000, Qwen3-4B-BASE (tagmasked shaping, FIXED non-bypassed) ===")
     if method in ("gtpo_ema_lenpen", "gtpo_ema_lenpen_gated"):
         print(f"  length penalty: alpha_len={SHAPING_CONFIG[method]['alpha_len']}  L={SHAPING_CONFIG[method]['length_L']}")
+    if method in ("gtpo_ema_adaptlen", "gtpo_ema_adaptlen_gated"):
+        print(f"  length penalty: ADAPTIVE  L=max((Lmin+Lmax)/2, Lmean) per group, penalty in [-0.5,0]")
     print(f"  seed={SEED}  max_seq={MODEL_CONFIG['max_seq_length']}  "
           f"steps={TRAINING_CONFIG['max_steps']}  "
           f"bs={TRAINING_CONFIG['per_device_train_batch_size']}x"

@@ -42,15 +42,25 @@ fig, ((axl, axb), (axL, axp)) = plt.subplots(2, 2, figsize=(15, 11))
 
 rows = []
 for fn, label, c, ls in CURVES:
+    focal = "adaptlen" in fn                      # the two new methods = focal
+    lw    = 2.7 if focal else 1.5
+    alpha = 1.0 if focal else 0.5
+    z     = 5 if focal else 1
     p = os.path.join(HERE, fn)
     cl = col(p, "completions/mean_length")
     bx = col(p, "reward_answer_boxed/mean")
     if cl:
-        ys = rolling(cl); axl.plot(range(len(ys)), ys, color=c, ls=ls, lw=2.0,
-                                   label=f"{label} ({last_mean(cl):.0f})")
+        ys = rolling(cl); axl.plot(range(len(ys)), ys, color=c, ls=ls, lw=lw, alpha=alpha,
+                                   zorder=z, label=f"{label} ({last_mean(cl):.0f})")
+        if focal:
+            axl.text(len(ys)+3, ys[-1], f" {last_mean(cl):.0f}", color=c, fontsize=8.5,
+                     va="center", weight="bold", zorder=6)
     if bx:
-        ys = rolling(bx); axb.plot(range(len(ys)), ys, color=c, ls=ls, lw=2.0,
-                                   label=f"{label} ({last_mean(bx):+.2f})")
+        ys = rolling(bx); axb.plot(range(len(ys)), ys, color=c, ls=ls, lw=lw, alpha=alpha,
+                                   zorder=z, label=f"{label} ({last_mean(bx):+.2f})")
+        if focal:
+            axb.text(len(ys)+3, ys[-1], f" {last_mean(bx):+.2f}", color=c, fontsize=8.5,
+                     va="center", weight="bold", zorder=6)
     if cl or bx:
         rows.append((label, last_mean(cl) if cl else float("nan"),
                      last_mean(bx) if bx else float("nan"), len(bx or cl)))

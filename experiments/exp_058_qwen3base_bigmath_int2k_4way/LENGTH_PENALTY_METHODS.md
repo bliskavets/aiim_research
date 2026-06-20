@@ -115,3 +115,47 @@ Plot: `figures/exp058_lenpen_Lsweep.png`. Reference: GRPO baseline len 622, boxe
 - **Best config: gtpo_ema_lenpen_gated @ L=1536** — shortest of all six (601 ≈
   GRPO 622) AND highest boxed (+1.21, closest to GRPO +1.51). The gate is what
   lets a tight knee help rather than hurt.
+
+## Adaptive length penalty (no fixed L — knee from the group's own lengths)
+
+Instead of a fixed knee, derive L per group from its own length distribution:
+`L = max((L_min+L_max)/2, L_mean)`, with a bounded piecewise penalty in [-0.5,0]
+(0 for len≤L, linear ramp `-0.5·(len-L)/L` for L<len<2L, -0.5 for len≥2L),
+applied group-relative on the shaped advantage. Two axes of variation:
+- **scope**: whole-group knee (`adaptlen`) vs PER-POLARITY knee (`adaptlen_pm`) —
+  the latter computes L_+/L_- separately within each group's O+ (adv>0,
+  "correct") and O- (adv<0, "incorrect") subgroups and centers within each.
+- **gate**: always-on vs low-temp difficulty gate (t=0, t2=0.5), as before.
+
+Code: `src/adaptive_lenpen_utils.py` (both formulas, unit-tested),
+`src/gtpo_ema_adaptlen*_trainer.py`; `run_058_adaptlen.sh` + `run_058_adaptlen_pm.sh`;
+plot `figures/exp058_adaptlen.png` (`plot_adaptlen.py`). 300 steps each.
+
+| method | scope | gate | L50 len | L50 boxed | knee L→ |
+|---|---|---|---|---|---|
+| GRPO baseline            | —            | —   | 622 | **+1.51** | — |
+| fixed-L gated (L=1536)   | fixed        | yes | 601 | +1.21 | 1536 |
+| gtpo_ema_adaptlen        | whole-group  | no  | 985 | +0.90 | ~1238 |
+| gtpo_ema_adaptlen_gated  | whole-group  | yes | 2270 | +0.44 | ~2389 (drifts) |
+| gtpo_ema_adaptlen_pm     | per-polarity | no  | 1002 | +0.88 | ~1049 |
+| **gtpo_ema_adaptlen_pm_gated** | per-polarity | yes | **774** | **+0.94** | **~493** |
+
+**Findings**
+- **The adaptive penalty is gentle by construction** (bounded ±0.5; `|pen_rel|`
+  ~0.07–0.16 vs the fixed penalty's ~4–6), so it controls length more softly than
+  a fixed cap. always-on adaptlen lands at 985/+0.90; per-polarity-always is
+  near-identical (1002/+0.88) — splitting the knee alone changes little.
+- **Whole-group + gate COLLAPSES** (adaptlen_gated 2270/+0.44): the knee is
+  self-referential, so as length explodes L floats up with it (→2389) and the
+  bounded penalty never bites; the gate occasionally zeroing it makes it worse.
+  This reproduces the bare gtpo_ema_flipped length-explosion.
+- **Per-polarity + gate FIXES that collapse** (adaptlen_pm_gated 774/+0.94 — best
+  of the adaptive family): correct rollouts (O+) are short, incorrect (O-) are
+  long, so a per-polarity knee keeps L_+ anchored low (~493) instead of being
+  dragged up by the long O-. The penalty then keeps pressing correct answers
+  short AND ranks short-incorrect above long-incorrect — breaking the length
+  drift the whole-group knee suffered.
+- **Net**: no adaptive config beats GRPO (+1.51) or the best fixed-L gated
+  (+1.21). The fixed knee with a low-temp gate (L=1536) remains the strongest
+  length-penalty config; among adaptive variants, per-polarity + gate is the only
+  one that avoids collapse.

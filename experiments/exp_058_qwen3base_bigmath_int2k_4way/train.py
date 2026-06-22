@@ -105,6 +105,10 @@ SHAPING_CONFIG = {
     "grpo_s_entropy":   {"beta1": 1.0, "beta2": 0.1, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
     "gtpo_conf":        {"alpha1": 1.0, "alpha2": 0.1, "top_k": 20, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
     "gtpo_ema_flipped": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
+    # DIAGNOSTIC clone of gtpo_ema_flipped (identical math) + heavy per-step JSONL
+    # logging (generations, rewards, per-token bonuses by position/polarity) to
+    # diagnose the length explosion. Same shaping coeffs as gtpo_ema_flipped.
+    "gtpo_ema_flipped_diag": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
     # NEW #1: gtpo_ema_flipped + Lagrange-like length penalty alpha_len*max(0,|o|-L).
     # L=1024 (0 < L < max_completion 3584; base answers ~640 tok, leaves headroom).
     # alpha_len=0.0015 (~2000-tok overshoot ≈ -3 advantage, cancels a boxed hit).
@@ -378,6 +382,13 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
         from src.gtpo_ema_flipped_trainer import GTPOEMAFlippedTrainer
         return GTPOEMAFlippedTrainer(**common, **SHAPING_CONFIG["gtpo_ema_flipped"],
                                      format_tag_patterns=format_tag_patterns)
+    if method == "gtpo_ema_flipped_diag":
+        from src.gtpo_ema_flipped_diag_trainer import GTPOEMAFlippedDiagTrainer
+        return GTPOEMAFlippedDiagTrainer(**common, **SHAPING_CONFIG["gtpo_ema_flipped_diag"],
+                                         format_tag_patterns=format_tag_patterns,
+                                         answer_extractor=_extract_boxed_answer,
+                                         diag_dir=os.path.join(os.path.dirname(__file__), "diag"),
+                                         diag_tag="gtpo_ema_flipped")
     if method == "gtpo_ema_lenpen":
         from src.gtpo_ema_lenpen_trainer import GTPOEMAFlippedLenPenTrainer
         return GTPOEMAFlippedLenPenTrainer(**common, **SHAPING_CONFIG["gtpo_ema_lenpen"],
@@ -419,6 +430,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", required=True,
                     choices=["grpo", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped",
+                             "gtpo_ema_flipped_diag",
                              "gtpo_ema_lenpen", "gtpo_ema_lenpen_gated",
                              "gtpo_ema_adaptlen", "gtpo_ema_adaptlen_gated",
                              "gtpo_ema_adaptlen_pm", "gtpo_ema_adaptlen_pm_gated"])

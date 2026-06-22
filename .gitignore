@@ -33,3 +33,6 @@ experiments/**/outputs_*/
 experiments/**/run_*.out
 experiments/**/rollout_logs/
 experiments/**/*.log
+
+# exp_058 diagnostic raw dumps (large; commit aggregates/plots only)
+experiments/**/diag/*.jsonl

@@ -159,3 +159,40 @@ plot `figures/exp058_adaptlen.png` (`plot_adaptlen.py`). 300 steps each.
   (+1.21). The fixed knee with a low-temp gate (L=1536) remains the strongest
   length-penalty config; among adaptive variants, per-polarity + gate is the only
   one that avoids collapse.
+
+## GROP — Group Relative Overlong Punishment (arXiv:2508.04349, Appendix D)
+
+The length-control heuristic from the GTPO/GRPO-S paper itself. Per group of G
+responses, classify the question by solve rate `frac = n_correct/G`:
+- **easy** (`frac ≥ γ₁`): penalize the CORRECT responses, knee `L⁺=max((min+max)/2, mean)` over correct lengths;
+- **hard** (`frac ≤ 1−γ₁`): NO penalty (preserve solving ability);
+- **medium**: knee `L⁻` over ALL G lengths; penalize correct if `n>m` else incorrect.
+Penalty `R = −0.5·(|o|−L)/L` on `L≤|o|<2L`, `−0.5` for `|o|≥2L`. γ₁=0.75.
+"Correct" = exact boxed match (terminal reward). Code:
+`src/gtpo_ema_flipped_grop_trainer.py`, helper
+`adaptive_lenpen_utils.group_relative_overlong_punishment` (unit-tested vs the
+paper). Injection: paper adds R to the reward; our flipped shaping is
+magnitude-insensitive (sign-only O+/O−), so we subtract R from the shaped
+advantage to preserve intent. Plot: `figures/exp058_grop.png`.
+
+| method | L50 len | L50 boxed |
+|---|---|---|
+| GRPO baseline | 622 | +1.51 |
+| gtpo_ema_flipped (bare) | 2121 | +0.38 |
+| fixed-L gated (L=1536) | 601 | +1.21 |
+| **GROP (App.D, γ₁=0.75)** | **2894** | **+0.10** |
+
+**Finding — GROP does NOT prevent the collapse on this (broken) base; its
+difficulty gate disables the penalty exactly when length explodes.** As the model
+degrades, the solve rate falls (`frac_correct → 0.11`), so most groups become
+**hard** (`frac_hard → 0.94`) and hard → *no penalty by design*. The applied
+penalty decays to ~0.005 and length runs to 2894 (boxed +0.10). In the first
+~100 steps GROP did apply (easy/medium present), but the bounded ±0.5 penalty on
+top of the broken flipped shaping (B=1 reward inversion, see
+`DIAG_LENGTH_EXPLOSION.md`) drove correctness down and triggered the
+self-disabling loop. This is the opposite failure mode to our `fixed-L gated`,
+whose gate keys on low-temperature *solvability* (stable) rather than the group's
+current correctness (collapses). Caveat: GROP was designed for the paper's
+*working* GTPO (magnitude-sensitive `α₁·rᵢ`, full-group token loss, stable Qwen2.5
+training), where the "model stays mostly correct → easy/medium dominate" premise
+holds; on our degenerate B=1 flipped base it does not.

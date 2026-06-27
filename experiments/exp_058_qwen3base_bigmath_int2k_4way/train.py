@@ -140,6 +140,13 @@ SHAPING_CONFIG = {
     "gtpo_ema_adaptlen_pm_gated": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
                                    "conf_micro_bs": _CONF_MICRO_BS,
                                    "gate_temps": (0.0, 0.5), "gate_max_tokens": 3584},
+    # GROP: Group Relative Overlong Punishment (Appendix D of arXiv:2508.04349,
+    # the GTPO/GRPO-S paper). Per-group difficulty routing by solve rate
+    # frac=n_correct/G: easy(frac>=gamma1)->penalize correct (knee L+ over
+    # correct); hard(frac<=1-gamma1)->no penalty; medium->knee L- over all G,
+    # penalize correct if n>m else incorrect. Penalty R in [-0.5,0].
+    "gtpo_ema_flipped_grop": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0,
+                              "conf_micro_bs": _CONF_MICRO_BS, "gamma1": 0.75},
 }
 
 # exp_055: use Qwen3's NATIVE format — <think>...</think> for reasoning, then
@@ -419,6 +426,12 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
             **common, **SHAPING_CONFIG["gtpo_ema_adaptlen_pm_gated"],
             format_tag_patterns=format_tag_patterns,
             answer_extractor=_extract_boxed_answer)
+    if method == "gtpo_ema_flipped_grop":
+        from src.gtpo_ema_flipped_grop_trainer import GTPOEMAFlippedGROPTrainer
+        return GTPOEMAFlippedGROPTrainer(
+            **common, **SHAPING_CONFIG["gtpo_ema_flipped_grop"],
+            format_tag_patterns=format_tag_patterns,
+            answer_extractor=_extract_boxed_answer)
     raise ValueError(f"unknown method: {method}")
 
 
@@ -433,7 +446,8 @@ def main():
                              "gtpo_ema_flipped_diag",
                              "gtpo_ema_lenpen", "gtpo_ema_lenpen_gated",
                              "gtpo_ema_adaptlen", "gtpo_ema_adaptlen_gated",
-                             "gtpo_ema_adaptlen_pm", "gtpo_ema_adaptlen_pm_gated"])
+                             "gtpo_ema_adaptlen_pm", "gtpo_ema_adaptlen_pm_gated",
+                             "gtpo_ema_flipped_grop"])
     args_cli = ap.parse_args()
     method = args_cli.method
     reward_funcs = REWARD_FUNCS_FULL  # exp_055 uses full reward set, same as exp_050/051/052
@@ -448,6 +462,8 @@ def main():
         print(f"  length penalty: ADAPTIVE  L=max((Lmin+Lmax)/2, Lmean) per group, penalty in [-0.5,0]")
     if method in ("gtpo_ema_adaptlen_pm", "gtpo_ema_adaptlen_pm_gated"):
         print(f"  length penalty: ADAPTIVE PER-POLARITY  L_+/L_- within O+(adv>0)/O-(adv<0) subgroups, penalty in [-0.5,0]")
+    if method == "gtpo_ema_flipped_grop":
+        print(f"  length penalty: GROP (arXiv:2508.04349 App.D)  gamma1={SHAPING_CONFIG[method]['gamma1']} (easy>=g1 penalize-correct / hard<=1-g1 none / medium L- over all G)")
     print(f"  seed={SEED}  max_seq={MODEL_CONFIG['max_seq_length']}  "
           f"steps={TRAINING_CONFIG['max_steps']}  "
           f"bs={TRAINING_CONFIG['per_device_train_batch_size']}x"

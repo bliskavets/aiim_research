@@ -95,3 +95,61 @@ def adaptive_length_penalty_polarity(lengths, advantages, ng):
                 pen_rel[base + idx] = p
                 L_own[base + idx] = L
     return pen_rel, L_own
+
+
+def _knee(ls):
+    return torch.maximum((ls.min() + ls.max()) * 0.5, ls.mean()).clamp(min=1.0)
+
+
+def _overlong_mag(ls, L):
+    """Piecewise overlong penalty MAGNITUDE in [0,0.5] (Appendix D):
+    0 if |o|<L ; 0.5·(|o|−L)/L if L≤|o|<2L ; 0.5 if |o|≥2L."""
+    r = (ls - L) / L
+    p = torch.zeros_like(ls)
+    mid = (ls >= L) & (ls < 2.0 * L)
+    high = ls >= 2.0 * L
+    p = torch.where(mid, 0.5 * r, p)
+    p = torch.where(high, torch.full_like(ls, 0.5), p)
+    return p
+
+
+def group_relative_overlong_punishment(lengths, correct, ng, gamma1=0.75):
+    """Group Relative Overlong Punishment — Appendix D of arXiv:2508.04349.
+
+    lengths (B,) float; correct (B,) bool (terminal-reward correctness). Per group
+    of ng responses with n correct / m incorrect, frac = n/(n+m):
+      - EASY   (frac >= gamma1, n>0): penalize CORRECT responses; knee L+ over the
+        CORRECT lengths.
+      - HARD   (frac <= 1-gamma1): no penalty (preserve ability to solve).
+      - MEDIUM (otherwise): knee L- over ALL G lengths; if n>m penalize CORRECT,
+        else penalize INCORRECT.
+      knee L = max((min+max)/2, mean) over the relevant subset.
+    Returns (pen (B,) >=0 magnitude = -R(i), regime (B,) int: 0 hard/none, 1 easy,
+    2 medium). The penalty is the paper's reward term R(i) <= 0; the caller decides
+    the injection point (we subtract it from the shaped advantage)."""
+    n_tot = lengths.numel()
+    pen = torch.zeros(n_tot, device=lengths.device)
+    regime = torch.zeros(n_tot, dtype=torch.long, device=lengths.device)
+    if not (n_tot % ng == 0 and n_tot >= ng):
+        return pen, regime
+    g2 = 1.0 - gamma1
+    for gi in range(n_tot // ng):
+        b = gi * ng
+        ls = lengths[b:b + ng]
+        cr = correct[b:b + ng].bool()
+        n = int(cr.sum().item()); m = ng - n
+        frac = n / ng
+        if frac >= gamma1 and n > 0:                       # EASY -> penalize correct, L+ over correct
+            regime[b:b + ng] = 1
+            L = _knee(ls[cr])
+            idx = cr.nonzero(as_tuple=True)[0]
+            pen[b + idx] = _overlong_mag(ls[cr], L)
+        elif frac <= g2:                                   # HARD -> no penalty
+            regime[b:b + ng] = 0
+        else:                                              # MEDIUM -> L- over all G
+            regime[b:b + ng] = 2
+            L = _knee(ls)
+            sub = cr if n > m else (~cr)
+            idx = sub.nonzero(as_tuple=True)[0]
+            pen[b + idx] = _overlong_mag(ls[sub], L)
+    return pen, regime

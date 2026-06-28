@@ -196,3 +196,38 @@ current correctness (collapses). Caveat: GROP was designed for the paper's
 *working* GTPO (magnitude-sensitive `α₁·rᵢ`, full-group token loss, stable Qwen2.5
 training), where the "model stays mostly correct → easy/medium dominate" premise
 holds; on our degenerate B=1 flipped base it does not.
+
+## Follow-ups: GROP on a working base + fixing gtpo_ema_flipped
+
+Two confirmatory runs (300 steps; plot `figures/exp058_fix_grop.png`).
+
+| method | L50 len | L50 boxed |
+|---|---|---|
+| GRPO baseline | 622 | +1.51 |
+| gtpo_ema_flipped (bare / broken B=1) | 2121 | +0.38 |
+| GROP @ GRPO (paper, reward-level) | 679 | +1.36 |
+| **gtpo_ema_flipped FIXED (group-shaped)** | **570** | **+1.49** |
+
+1. **GROP on plain GRPO (reward-level, paper-faithful)** — `grpo_grop`, GROP added
+   as a reward term (R(i)∈[-0.5,0]) so GRPO group-normalizes it into the advantage.
+   On this *working*, magnitude-sensitive base GROP behaves as the paper intends:
+   length stays near baseline (679 vs GRPO 622) with almost no quality cost
+   (+1.36 vs +1.51). Confirms GROP's earlier failure was the broken flipped base,
+   not the method.
+
+2. **Fixed gtpo_ema_flipped** — `gtpo_ema_flipped_fixed` computes the shaped
+   per-token advantage ONCE on the FULL group in `_generate_and_score`
+   (proper per-position Σ + per-polarity z-norm, policy still θ_old) and propagates
+   the 2-D advantage to compute_loss for injection, instead of recomputing in the
+   degenerate B=1 compute_loss. **This single fix removes BOTH pathologies with no
+   length penalty at all**: length 570 (≪ 2121, even below GRPO 622) and boxed
+   +1.49 (≈ GRPO +1.51, vs the broken +0.38). It confirms the
+   `DIAG_LENGTH_EXPLOSION.md` root cause — the explosion + reward inversion were
+   artifacts of the B=1 group-op degeneracy, not inherent to the shaping.
+
+**Bottom line for exp_058's length investigation:** the length explosion was a
+B=1-microbatch implementation bug, not a property of gtpo_ema_flipped. Fixing the
+group-visibility makes the shaped method match GRPO (at shorter length) without
+any length penalty; and the paper's own GROP works once placed on a sound base.
+The length-penalty zoo (lenpen / L-sweep / adaptive / per-polarity) controlled the
+*symptom*; the group-shaped fix removes the *cause*.

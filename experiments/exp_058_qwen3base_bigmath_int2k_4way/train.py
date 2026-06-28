@@ -109,6 +109,9 @@ SHAPING_CONFIG = {
     # logging (generations, rewards, per-token bonuses by position/polarity) to
     # diagnose the length explosion. Same shaping coeffs as gtpo_ema_flipped.
     "gtpo_ema_flipped_diag": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
+    # FIXED gtpo_ema_flipped: shaped advantage computed on the FULL group in
+    # _generate_and_score (not degenerate B=1 compute_loss). Same shaping coeffs.
+    "gtpo_ema_flipped_fixed": {"alpha1": 0.9, "alpha2": 0.1, "lam": 0.9, "top_k": 20, "reward_threshold": 0.0, "conf_micro_bs": _CONF_MICRO_BS},
     # NEW #1: gtpo_ema_flipped + Lagrange-like length penalty alpha_len*max(0,|o|-L).
     # L=1024 (0 < L < max_completion 3584; base answers ~640 tok, leaves headroom).
     # alpha_len=0.0015 (~2000-tok overshoot ≈ -3 advantage, cancels a boxed hit).
@@ -364,6 +367,41 @@ def reward_answer_numeric(prompts, completions, answer, **kwargs):
 REWARD_FUNCS_FULL = [reward_format_thinking, reward_answer_boxed, reward_answer_numeric]
 
 
+def make_grop_reward(tokenizer, num_generations, gamma1=0.75):
+    """GROP (arXiv:2508.04349 App.D) as a REWARD function — the paper-faithful
+    injection point (R(i) added to the reward, then GRPO group-normalizes it into
+    the advantage). Called on the FULL generation batch (all completions for the
+    step, grouped consecutively by prompt in chunks of num_generations), so the
+    group is available — no B=1 degeneracy. R(i) in [-0.5, 0]."""
+    import torch
+    from src.adaptive_lenpen_utils import group_relative_overlong_punishment
+    G = num_generations
+
+    def reward_grop_overlong(prompts, completions, answer, **kwargs):
+        texts = [c[0]["content"] for c in completions]
+        lengths = [len(tokenizer(t, add_special_tokens=False)["input_ids"]) for t in texts]
+        correct = []
+        for t, gold in zip(texts, answer):
+            guess = _extract_boxed_answer(t)
+            ok = False
+            if guess is not None:
+                try:
+                    ok = float(str(guess).strip().replace(",", "")) == float(str(gold).strip())
+                except (ValueError, TypeError):
+                    ok = False
+            correct.append(1.0 if ok else 0.0)
+        n = len(texts)
+        if n % G != 0:
+            return [0.0] * n
+        pen, _regime = group_relative_overlong_punishment(
+            torch.tensor(lengths, dtype=torch.float32),
+            torch.tensor(correct), G, gamma1=gamma1)
+        return [-float(p) for p in pen.tolist()]   # R(i) = -penalty <= 0
+
+    reward_grop_overlong.__name__ = "reward_grop_overlong"
+    return reward_grop_overlong
+
+
 # =============================================================================
 # TRAINER FACTORY
 # =============================================================================
@@ -375,6 +413,13 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
     if method == "grpo":
         # baseline has no per-token shaping → mask is a no-op; serves as control
         return GRPOTrainer(**common)
+    if method == "grpo_grop":
+        # plain GRPO + GROP as a REWARD term (paper-faithful injection point on a
+        # working, magnitude-sensitive base — the advantage normalizes the reward).
+        grop = make_grop_reward(tokenizer, TRAINING_CONFIG["num_generations"], gamma1=0.75)
+        common_grop = dict(common)
+        common_grop["reward_funcs"] = list(reward_funcs) + [grop]
+        return GRPOTrainer(**common_grop)
     if method == "grpo_s_entropy":
         from src.grpo_s_trainer import GRPOSTrainer
         # GRPO-S shaping is seq-level (mean entropy modifies the seq-level
@@ -389,6 +434,10 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
         from src.gtpo_ema_flipped_trainer import GTPOEMAFlippedTrainer
         return GTPOEMAFlippedTrainer(**common, **SHAPING_CONFIG["gtpo_ema_flipped"],
                                      format_tag_patterns=format_tag_patterns)
+    if method == "gtpo_ema_flipped_fixed":
+        from src.gtpo_ema_flipped_fixed_trainer import GTPOEMAFlippedFixedTrainer
+        return GTPOEMAFlippedFixedTrainer(**common, **SHAPING_CONFIG["gtpo_ema_flipped_fixed"],
+                                          format_tag_patterns=format_tag_patterns)
     if method == "gtpo_ema_flipped_diag":
         from src.gtpo_ema_flipped_diag_trainer import GTPOEMAFlippedDiagTrainer
         return GTPOEMAFlippedDiagTrainer(**common, **SHAPING_CONFIG["gtpo_ema_flipped_diag"],
@@ -442,8 +491,8 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", required=True,
-                    choices=["grpo", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped",
-                             "gtpo_ema_flipped_diag",
+                    choices=["grpo", "grpo_grop", "grpo_s_entropy", "gtpo_conf", "gtpo_ema_flipped",
+                             "gtpo_ema_flipped_diag", "gtpo_ema_flipped_fixed",
                              "gtpo_ema_lenpen", "gtpo_ema_lenpen_gated",
                              "gtpo_ema_adaptlen", "gtpo_ema_adaptlen_gated",
                              "gtpo_ema_adaptlen_pm", "gtpo_ema_adaptlen_pm_gated",

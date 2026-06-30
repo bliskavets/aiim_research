@@ -162,6 +162,13 @@ def prepare_dataset(name):
         ds = ds.filter(lambda x: _clean_integer(x["answer"]) != "")
         n1 = len(ds)
         ds = ds.map(lambda x: _to_prompt(x["problem"], _clean_integer(x["answer"])))
+    elif name == "bigmath":
+        # exact exp_058 setup (the exp058_fix_grop.png figure): integer subset, first 2000
+        ds = load_dataset("SynthLabsAI/Big-Math-RL-Verified", split="train", token=tok)
+        n0 = len(ds)
+        ds = ds.filter(lambda x: _clean_integer(x["answer"]) != "")
+        n1 = len(ds)
+        ds = ds.map(lambda x: _to_prompt(x["problem"], _clean_integer(x["answer"])))
     else:
         raise ValueError(f"unknown dataset: {name}")
     ds = ds.shuffle(seed=DATA_COMMON["shuffle_seed"])
@@ -277,7 +284,7 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs, format_
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True, choices=["gsm8k", "math500", "omnimath"])
+    ap.add_argument("--dataset", required=True, choices=["gsm8k", "math500", "omnimath", "bigmath"])
     ap.add_argument("--method", required=True,
                     choices=["grpo", "grpo_grop", "gtpo_ema_flipped_fixed",
                              "sign_gate", "pos_discount", "raw_c", "ref_delta"])

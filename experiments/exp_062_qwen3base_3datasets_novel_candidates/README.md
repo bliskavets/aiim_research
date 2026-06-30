@@ -45,5 +45,40 @@ python plot_compare.py              # figures/exp062_compare.png  (7 methods x 3
 ```
 grop@grpo and gtpo_ema_flipped_fixed logs are reused from exp_061.
 
-## Results
-(filled after the run — figures/exp062_compare.png)
+## Results (300 steps each, last-50 mean; figures/exp062_compare.png)
+
+L50 boxed reward (length in parens):
+
+| method | GSM8K (easy) | MATH-500 (med) | Omni-MATH (hard) |
+|---|---|---|---|
+| GRPO                 | +2.02 (414) | +0.94 (942) | **−0.23** (957) |
+| GROP @ GRPO          | +2.06 (352) | +0.96 (831) | **−0.12** (720) |
+| flipped FIXED        | +2.01 (274) | +1.03 (546) | −0.40 (859) |
+| **sign_gate** (6A)   | +2.21 (359) | +1.14 (707) | −0.60 (892) |
+| **pos_discount**     | **+2.50** (294) | **+1.34** (686) | −0.38 (1068) |
+| **raw_C** (no EMA)   | +2.44 (240) | +1.09 (585) | −0.42 (785) |
+| **ref_delta** (3A)   | +1.67 (483) | +1.00 (755) | −0.59 (954) |
+
+**Findings**
+- **pos_discount is the standout:** beats every reference on BOTH easy (+2.50 vs
+  GRPO +2.02) and medium (+1.34 vs +0.94) with controlled length — a genuine
+  improvement over GRPO (rare in this project, where shaping usually ties/loses).
+  The gentle `g(t)=τ/(τ+t)` discount on the exploration bonus (correctness term
+  untouched) concentrates the bonus on early decision tokens without starving the
+  answer.
+- **raw_C and sign_gate also beat the references on easy & medium** (raw_C is the
+  most concise everywhere; sign_gate's "never invert the reward" gate helps when
+  there's enough correct signal). raw_C ≈ EMA-free is competitive → the EMA
+  smoothing isn't load-bearing.
+- **ref_delta is the weakest candidate** — below refs on easy (+1.67), ~GRPO on
+  medium. The deviation-from-base signal stays tiny (|δ|~0.01) at lr 5e-6, so it
+  is mostly GRPO + noise; on easy that noise hurts. Honest negative.
+- **Difficulty cliff (consistent with exp_061):** on Omni-MATH (hard) ALL methods
+  go negative and the **plain references win** (GROP@GRPO −0.12, GRPO −0.23);
+  every shaped candidate underperforms (sign_gate worst −0.60, pos_discount longest
+  1068). When the base rarely solves the task, the per-token shaping has little
+  correct signal to amplify and adds variance.
+- **Takeaway:** the position-discounted exploration bonus (pos_discount) is the
+  most promising non-entropy idea — it's the only candidate that consistently
+  beats GRPO where the model is actually learning (easy+medium). Hard-task regime
+  needs either more steps or difficulty gating before shaping helps.

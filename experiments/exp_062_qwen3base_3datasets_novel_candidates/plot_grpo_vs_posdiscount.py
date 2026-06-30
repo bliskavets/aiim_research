@@ -11,7 +11,9 @@ import matplotlib.pyplot as plt
 HERE = os.path.dirname(__file__)
 DATASETS = [("gsm8k", "GSM8K (easy)"), ("math500", "MATH-500 (medium)"),
             ("bigmath", "Big-Math int-2k"), ("omnimath", "Omni-MATH (hard)")]
-PAIR = [("grpo", "GRPO", "#64748b"), ("pos_discount", "pos_discount", "#d97706")]
+PAIR = [("grpo", "GRPO", "#64748b"),
+        ("gtpo_ema_flipped_fixed", "flipped FIXED", "#0ea5e9"),
+        ("pos_discount", "pos_discount", "#d97706")]
 
 
 def rolling(xs, w=30):

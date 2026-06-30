@@ -288,9 +288,16 @@ def main():
     ap.add_argument("--method", required=True,
                     choices=["grpo", "grpo_grop", "gtpo_ema_flipped_fixed",
                              "sign_gate", "pos_discount", "raw_c", "ref_delta"])
+    ap.add_argument("--lam", type=float, default=None,
+                    help="override EMA lambda for gtpo_ema_flipped_fixed (default 0.9)")
     a = ap.parse_args()
 
-    output_dir = os.path.join(os.path.dirname(__file__), f"outputs_{a.dataset}_{a.method}")
+    tag = a.method
+    if a.lam is not None and a.method == "gtpo_ema_flipped_fixed":
+        SHAPING_CONFIG["gtpo_ema_flipped_fixed"]["lam"] = a.lam
+        tag = f"{a.method}_lam{a.lam}"
+        print(f"[lam override] gtpo_ema_flipped_fixed lam={a.lam}")
+    output_dir = os.path.join(os.path.dirname(__file__), f"outputs_{a.dataset}_{tag}")
     os.makedirs(output_dir, exist_ok=True)
     print(f"=== exp_061 [{a.dataset} | {a.method}] Qwen3-4B-BASE — steps={TRAINING_CONFIG['max_steps']} "
           f"bs1xga4xng4 seed={SEED} ===")

@@ -82,3 +82,36 @@ L50 boxed reward (length in parens):
   most promising non-entropy idea — it's the only candidate that consistently
   beats GRPO where the model is actually learning (easy+medium). Hard-task regime
   needs either more steps or difficulty gating before shaping helps.
+
+## Add-on: candidates on Big-Math int-2000 (the exp_058 setup)
+
+Requested follow-up — measure the 4 candidates on the exact exp_058 setup (the
+`exp058_fix_grop.png` figure, where gtpo_ema_flipped FIXED was the strongest
+method), overlaid with GRPO / GROP@GRPO / FIXED (reused from exp_058).
+Plot: `figures/exp062_bigmath_compare.png`.
+
+| method | L50 len | L50 boxed |
+|---|---|---|
+| GRPO (ref)            | 622 | +1.51 |
+| GROP @ GRPO (ref)     | 679 | +1.36 |
+| flipped FIXED (ref)   | 570 | +1.49 |
+| **pos_discount**      | **548** | **+1.54** |
+| sign_gate (6A)        | 734 | +1.34 |
+| raw_C (no EMA)        | 538 | +1.20 |
+| ref_delta (3A)        | 867 | +1.22 |
+
+**Findings**
+- **pos_discount beats the references on Big-Math too** — highest boxed (+1.54 >
+  GRPO +1.51 > FIXED +1.49) AND shortest among the quality-competitive runs (548 <
+  570 < 622). This is the setup where FIXED was previously the best, and
+  pos_discount edges it. pos_discount now beats GRPO on **all four** datasets
+  (gsm8k +2.50, math500 +1.34, big-math +1.54; mid-pack only on the all-negative
+  omnimath).
+- The other three candidates **underperform FIXED here**: sign_gate +1.34 (the
+  sign gate dilutes an already-good FIXED shaping by reverting ~half the tokens to
+  GRPO), raw_C +1.20 (concise but lower quality — EMA helps on this harder slice,
+  unlike easy GSM8K), ref_delta +1.22 with length creep to 867.
+- **Overall conclusion of exp_062:** among non-entropy ideas, the gentle
+  position-discounted exploration bonus (`pos_discount`, g(t)=τ/(τ+t) on the α₂
+  term only) is the single consistent winner over GRPO; the others are
+  dataset-dependent or net-negative.

@@ -96,7 +96,7 @@ class GRPOPosStatsTrainer(GRPOTrainer):
         self._warned = False
         os.makedirs(os.path.dirname(stats_path) or ".", exist_ok=True)
 
-    def _save(self):
+    def _save_stats(self):
         flat = {f"{g}_{k}": self.acc[g][k] for g in self.acc for k in self.acc[g]}
         flat["gen_calls"] = np.array([self._gen_calls])
         np.savez(self.stats_path, **flat)
@@ -125,7 +125,7 @@ class GRPOPosStatsTrainer(GRPOTrainer):
                                 cm.cpu().numpy(), correct)
             self._gen_calls += 1
             if self._gen_calls % self._save_every == 0:
-                self._save()
+                self._save_stats()
         except Exception as e:
             if not self._warned:
                 print(f"[posstats] logging skipped: {e!r}", flush=True); self._warned = True
@@ -133,5 +133,5 @@ class GRPOPosStatsTrainer(GRPOTrainer):
 
     def train(self, *a, **k):
         r = super().train(*a, **k)
-        self._save()
+        self._save_stats()
         return r

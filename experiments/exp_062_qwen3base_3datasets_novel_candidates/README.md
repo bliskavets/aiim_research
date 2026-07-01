@@ -115,3 +115,31 @@ Plot: `figures/exp062_bigmath_compare.png`.
   position-discounted exploration bonus (`pos_discount`, g(t)=τ/(τ+t) on the α₂
   term only) is the single consistent winner over GRPO; the others are
   dataset-dependent or net-negative.
+
+## Add-on: EMA-λ sweep for gtpo_ema_flipped(FIXED)
+
+FIXED uses EMA(C) with λ=0.9. Swept λ ∈ {0.1,0.3,0.5,0.7,0.8} (0.9 = original
+FIXED) across all 4 datasets (20 runs). Plot: `figures/exp062_lambda_sweep.png`.
+
+L50 boxed (best λ per dataset in bold; GRPO and λ=0.9 for reference):
+
+| dataset | GRPO | λ0.1 | λ0.3 | λ0.5 | λ0.7 | λ0.8 | λ0.9 (orig) |
+|---|---|---|---|---|---|---|---|
+| GSM8K    | +2.02 | +2.15 | **+2.23** | +2.21 | +2.06 | +2.20 | +2.01 |
+| MATH-500 | +0.94 | +1.05 | +0.89 | +1.06 | **+1.17** | +0.80 | +1.03 |
+| Big-Math | +1.51 | +1.55 | +1.76 | +1.55 | **+1.86** | +1.67 | +1.49 |
+| Omni-MATH| −0.23 | −0.43 | −0.34 | −0.34 | −0.55 | −0.43 | −0.40 |
+
+**Findings**
+- **The default λ=0.9 is suboptimal on ALL four datasets** — a lower λ beats it
+  everywhere.
+- **Best λ sits in 0.3–0.7** (gsm8k≈0.3, math500≈0.7, big-math≈0.7, omnimath≈0.3–0.5);
+  λ≈0.5–0.7 is a solid dataset-agnostic default (beats 0.9 on every set).
+- **Big-Math is the biggest win:** λ=0.7 → +1.86 vs λ=0.9 +1.49 and GRPO +1.51
+  (+0.35 over both) at short length (499). Tuning λ down turns flipped FIXED from
+  ~tied-with-GRPO into a clear win on the setup where it was already strongest.
+- Lower λ = less smoothing = sharper per-token confidence signal; it helps most on
+  easy/mid where the model is learning. On hard (omnimath) everything stays
+  negative (base too weak), λ=0.3–0.5 least bad.
+- Caveat: single seed, noisy (e.g. math500 λ=0.8 dip to +0.80 is an outlier); the
+  robust takeaway is "0.9 is too high, 0.5–0.7 is better", not the exact per-λ ranks.

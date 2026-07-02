@@ -36,3 +36,6 @@ experiments/**/*.log
 
 # exp_058 diagnostic raw dumps (large; commit aggregates/plots only)
 experiments/**/diag/*.jsonl
+
+# exp_067 raw logprob dumps (large)
+experiments/**/diag/lpdump_*/

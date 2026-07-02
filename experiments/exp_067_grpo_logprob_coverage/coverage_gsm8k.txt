@@ -1,0 +1,30 @@
+[gsm8k] files=100  valid tokens=361520  K=128
+
+coverage(k) = prob mass in top-k  (across 361520 tokens)
+   k    mean     min      p5     p50     p95     max
+   1   0.710   0.001   0.048   0.951   1.000   1.000
+   2   0.772   0.002   0.079   0.988   1.000   1.000
+   3   0.798   0.003   0.102   0.994   1.000   1.000
+   5   0.824   0.004   0.136   0.997   1.000   1.000
+  10   0.852   0.008   0.190   0.999   1.000   1.001
+  20   0.873   0.013   0.250   0.999   1.000   1.001
+  40   0.891   0.023   0.320   1.000   1.000   1.001
+  64   0.902   0.033   0.371   1.000   1.000   1.001
+ 128   0.918   0.057   0.451   1.000   1.000   1.002
+
+k needed to reach top-p mass  (nucleus)
+    p  mean_k   p50   p95    %>K
+  0.5     5.6     1    31    6.6
+  0.8     5.1     1    24   15.8
+  0.9     5.5     1    28   19.6
+ 0.95     5.9     1    31   22.7
+ 0.99     7.0     1    40   29.5
+
+fraction of SAMPLED tokens within top-k
+  top-1  :  71.6%
+  top-3  :  78.8%
+  top-5  :  81.9%
+  top-10 :  85.0%
+  top-20 :  87.2%
+
+saved /root/aiim/aiim_research/experiments/exp_067_grpo_logprob_coverage/figures/exp067_coverage_gsm8k.png

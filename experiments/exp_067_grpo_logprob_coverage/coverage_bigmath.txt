@@ -1,0 +1,30 @@
+[bigmath] files=100  valid tokens=366979  K=128
+
+coverage(k) = prob mass in top-k  (across 366979 tokens)
+   k    mean     min      p5     p50     p95     max
+   1   0.753   0.004   0.070   0.979   1.000   1.000
+   2   0.815   0.006   0.113   0.996   1.000   1.000
+   3   0.840   0.009   0.143   0.998   1.000   1.000
+   5   0.863   0.014   0.185   0.999   1.000   1.000
+  10   0.888   0.024   0.249   1.000   1.000   1.000
+  20   0.906   0.042   0.319   1.000   1.000   1.001
+  40   0.921   0.070   0.395   1.000   1.000   1.001
+  64   0.930   0.098   0.453   1.000   1.000   1.001
+ 128   0.942   0.154   0.533   1.000   1.000   1.001
+
+k needed to reach top-p mass  (nucleus)
+    p  mean_k   p50   p95    %>K
+  0.5     4.6     1    20    4.2
+  0.8     4.6     1    20   11.2
+  0.9     4.7     1    20   14.6
+ 0.95     5.1     1    23   17.3
+ 0.99     6.6     1    35   23.0
+
+fraction of SAMPLED tokens within top-k
+  top-1  :  75.9%
+  top-3  :  83.0%
+  top-5  :  85.9%
+  top-10 :  88.6%
+  top-20 :  90.6%
+
+saved /root/aiim/aiim_research/experiments/exp_067_grpo_logprob_coverage/figures/exp067_coverage_bigmath.png

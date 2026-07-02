@@ -13,6 +13,8 @@ DATASETS = [("gsm8k", "GSM8K (easy)"), ("math500", "MATH-500 (medium)"),
 # (suffix, label, color)
 CURVES = [
     ("grpo",                "GRPO",        "#94a3b8"),
+    ("posdisc_lam0.7_k1",   "k=1",         "#7c3aed"),
+    ("posdisc_lam0.7_k3",   "k=3",         "#db2777"),
     ("posdisc_lam0.7_k5",   "k=5",         "#1d4ed8"),
     ("posdisc_lam0.7_k10",  "k=10",        "#0891b2"),
     ("posdisc_lam0.7_k20",  "k=20 (def)",  "#16a34a"),
@@ -56,7 +58,7 @@ for j, (ds, ds_lab) in enumerate(DATASETS):
     axl.grid(alpha=0.3); axl.legend(fontsize=8, loc="upper right"); axl.set_xlabel("step"); axl.set_ylabel("tokens")
 
 fig.suptitle("exp_066 — top_k sweep for C on pos_discount + FIXED λ0.7 (Qwen3-4B-Base, 300 steps) [intermediate]\n"
-             "C = -mean over top-k logprobs; k∈{5,10,20(def),40}. top=boxed, bottom=length.",
+             "C = -mean over top-k logprobs; k∈{1,3,5,10,20(def),40}. top=boxed, bottom=length.",
              fontsize=11, weight="bold")
 out = os.path.join(HERE, "figures", "exp066_topk_sweep.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)

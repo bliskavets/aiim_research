@@ -71,8 +71,8 @@ SHAPING_CONFIG = {
     "pos_discount": dict(_SHAPE_BASE, pos_tau=1024.0),        # gentle g(t)=tau/(tau+t) on bonus
     "raw_c":        dict(_SHAPE_BASE),                         # raw C instead of EMA(C)
     "ref_delta":    dict(_SHAPE_BASE),                         # 3A reference-relative log-delta
-    # exp_068: dynamic nucleus (top-p) k for C, base FIXED lam=0.5 + pos_discount
-    "nucleus_c": dict(_SHAPE_BASE, lam=0.5, pos_tau=1024.0, nucleus_top_p=0.9, min_k=1, nucleus_cap=256),
+    # exp_068: dynamic nucleus (top-p) k for C, base FIXED lam=0.7 + pos_discount
+    "nucleus_c": dict(_SHAPE_BASE, lam=0.7, pos_tau=1024.0, nucleus_top_p=0.9, min_k=1, nucleus_cap=256),
 }
 GROP_GAMMA1 = 0.75
 PRINT_EVERY_STEPS = 10

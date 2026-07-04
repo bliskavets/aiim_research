@@ -16,6 +16,19 @@ logs the gated fraction.
 
 **Expected:** omnimath gap to GRPO closes/flips; no regression on gsm8k/math500/bigmath.
 
-## Results
+## Results (300 steps, L50 boxed / len)
 
-_(in progress)_
+| dataset | GRPO | best (posdisc λ0.7 k5) | **zvgate** |
+|---|---|---|---|
+| gsm8k    | +2.02 / 414 | +2.49 / 317 | **+2.49 / 314** (=best) |
+| math500  | +0.94 / 942 | **+1.63** / 635 | +1.55 / 632 |
+| bigmath  | +1.51 / 622 | +1.81 / 529 | **+1.84 / 586** |
+| omnimath | **−0.23** / 957 | −0.33 / 733 | −0.48 / 831 |
+
+Gate fires exactly as predicted (~40% of omnimath groups; 0.63 in the last window as
+saturation grows). **No regression** on the easy/medium datasets (gsm8k identical to best,
+bigmath slightly up). **Omnimath not fixed though:** transient improvement mid-run
+(window 180–240: −0.07, briefly the best-ever shaped score there) but the last window fell
+back to −0.42 — removing the zero-variance noise updates alone is insufficient; the shaping
+signal on the ~60% non-degenerate groups still hurts on the hard tail. Takeaway: keep the
+gate (free, principled, no downside) but omnimath needs signal-level changes (see exp_072/075).

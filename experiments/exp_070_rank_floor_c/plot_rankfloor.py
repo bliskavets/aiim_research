@@ -14,7 +14,8 @@ CURVES = [
     ("grpo",              "GRPO",             "#94a3b8", False),
     ("posdisc_lam0.7_k5", "pos_disc k=5",     "#16a34a", False),
     ("rank_c",            "rank_c (k≤5)",     "#f59e0b", False),
-    ("rank_floor_c",      "rank_floor (k≥5)", "#dc2626", True),
+    ("rank_floor_c",      "rank_floor (k≥5)", "#2563eb", True),
+    ("rank_floor3_c",     "rank_floor (k≥3)", "#dc2626", True),
 ]
 
 

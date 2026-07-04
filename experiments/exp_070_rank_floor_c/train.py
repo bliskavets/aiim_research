@@ -77,6 +77,8 @@ SHAPING_CONFIG = {
     "rank_c": dict(_SHAPE_BASE, lam=0.7, pos_tau=1024.0, rank_cap=5, min_k=1),
     # exp_070: k = max(rank_of_sampled_token, 5) = clamp(rank, min_k=5, cap=256) — floor at 5, grow on tail
     "rank_floor_c": dict(_SHAPE_BASE, lam=0.7, pos_tau=1024.0, rank_cap=256, min_k=5),
+    # exp_070b: same but floor at 3 (exp_066 sweet-spot k) — k = max(rank, 3)
+    "rank_floor3_c": dict(_SHAPE_BASE, lam=0.7, pos_tau=1024.0, rank_cap=256, min_k=3),
 }
 GROP_GAMMA1 = 0.75
 PRINT_EVERY_STEPS = 10
@@ -285,7 +287,7 @@ def build_trainer(method, model, tokenizer, args, dataset, reward_funcs, format_
         cls = {"sign_gate": SignGateTrainer, "pos_discount": PosDiscountTrainer,
                "raw_c": RawCTrainer, "ref_delta": RefDeltaTrainer}[method]
         return cls(**common, **SHAPING_CONFIG[method], format_tag_patterns=format_tag_patterns)
-    if method in ("rank_c", "rank_floor_c"):
+    if method in ("rank_c", "rank_floor_c", "rank_floor3_c"):
         from src.rank_c_trainer import RankCTrainer
         return RankCTrainer(**common, **SHAPING_CONFIG[method], format_tag_patterns=format_tag_patterns)
     raise ValueError(f"unknown method: {method}")
@@ -296,7 +298,7 @@ def main():
     ap.add_argument("--dataset", required=True, choices=["gsm8k", "math500", "omnimath", "bigmath"])
     ap.add_argument("--method", required=True,
                     choices=["grpo", "grpo_grop", "gtpo_ema_flipped_fixed",
-                             "sign_gate", "pos_discount", "raw_c", "ref_delta", "nucleus_c", "rank_c", "rank_floor_c"])
+                             "sign_gate", "pos_discount", "raw_c", "ref_delta", "nucleus_c", "rank_c", "rank_floor_c", "rank_floor3_c"])
     ap.add_argument("--lam", type=float, default=None,
                     help="override EMA lambda for gtpo_ema_flipped_fixed (default 0.9)")
     ap.add_argument("--top_k", type=int, default=None, help="override fixed top_k for C")

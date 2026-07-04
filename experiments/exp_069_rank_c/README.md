@@ -51,4 +51,23 @@ exp_063 / exp_066.
 
 ## Results
 
-_(in progress)_
+**NEGATIVE — rank_c collapses on all 4 datasets** (same length-farming failure as nucleus
+exp_068). L50 boxed / L50 length (300 steps):
+
+| dataset | GRPO | pos_disc k=5 (best) | **rank_c (k≤5)** |
+|---|---|---|---|
+| gsm8k    | +2.02 / 414 | **+2.49 / 317** | +0.04 / 3467 ❌ |
+| math500  | +0.94 / 942 | **+1.63 / 635** | −0.02 / 3370 ❌ |
+| bigmath  | +1.51 / 622 | **+1.81 / 529** | +0.32 / 3165 ❌ |
+| omnimath | −0.23 / 957 | −0.33 / 733 | −0.26 / 2908 ❌ |
+
+`rank_c/mean_k ≈ 1.18` throughout (as designed: ~83% of tokens are argmax-sampled → k=1).
+gsm8k held boxed ~+1.0 up to ~step 70, then drifted into collapse (len 720→1867→3467) —
+identical trajectory to nucleus p=0.9.
+
+**Takeaway:** making k depend on the sampled token's rank does NOT rescue the idea. Because
+the model samples its argmax ~83% of the time, k=1 dominates and the confidence signal is
+again essentially `−log p_max` on most tokens → same instability as fixed k=1 (exp_066).
+Adaptivity keyed on rank doesn't help; the *stable* recipe remains a small **fixed** top-k
+(k≈3–5, exp_066). Per-token adaptive k (nucleus or rank) is a dead end for this signal.
+figures/exp069_rank.png.

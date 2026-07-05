@@ -11,6 +11,18 @@ logprob gather) → cheapest method in the family. posdisc λ0.7 kept.
 **Run:** `bash run_setup.sh`, `python plot_compare.py` → `figures/exp074_surprisal_credit.png`.
 Metric `surprisal_credit/mean_s`.
 
-## Results
+## Results (300 steps, L50 boxed / len) — NEGATIVE
 
-_(in progress)_
+| dataset | GRPO | best (posdisc λ0.7 k5) | **surprisal_credit** |
+|---|---|---|---|
+| gsm8k    | +2.02 / 414 | **+2.49** / 317 | +2.06 / 375 |
+| math500  | +0.94 / 942 | **+1.63** / 635 | +0.51 / 600 |
+| bigmath  | +1.51 / 622 | **+1.81** / 529 | +0.81 / 630 |
+| omnimath | **−0.23** / 957 | −0.33 / 733 | −0.63 / 656 |
+
+**The cheap variant fails** (≈GRPO on gsm8k, WORSE than GRPO on math500/bigmath/omnimath).
+Additive per-polarity z(−log p(o_t)) is too weak/noisy a signal: the realized-token
+surprisal is dominated by routine high-prob tokens, and z-normalizing it injects
+low-information direction that the head-truncated C avoids. Takeaway: the value is in the
+top-k HEAD statistic (C / branching h), not the single sampled-token surprisal — quantifies
+what the extra forward buys. Confirms exp_072's head-signal as the right estimator.

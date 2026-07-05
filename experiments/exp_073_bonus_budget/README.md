@@ -11,6 +11,18 @@ budget vs posdisc, both vs GRPO).
 
 **Run:** `bash run_setup.sh`, `python plot_compare.py` → `figures/exp073_flipped_budget.png`.
 
-## Results
+## Results (300 steps, L50 boxed / len)
 
-_(in progress)_
+| dataset | GRPO | best (posdisc λ0.7 k5) | **flipped_budget (no posdisc)** |
+|---|---|---|---|
+| gsm8k    | +2.02 / 414 | +2.49 / 317 | **+2.54 / 319** |
+| math500  | +0.94 / 942 | **+1.63** / 635 | +1.36 / 621 |
+| bigmath  | +1.51 / 622 | **+1.81** / 529 | +1.79 / 660 |
+| omnimath | **−0.23** / 957 | −0.33 / 733 | −0.42 / 986 |
+
+**Length-invariant budget BEATS the tuned posdisc on gsm8k (+2.54, new best there)** and
+ties on bigmath (+1.79 vs +1.81), confirming the budget is a valid principled replacement
+for the hyperbolic position discount (no length farming — lengths comparable). But it is
+below posdisc on math500 (+1.36) — removing the position decay entirely costs medium-hardness
+accuracy. Best used TOGETHER with a mild posdisc rather than as a full replacement (a budget
++ light posdisc variant is the natural follow-up).

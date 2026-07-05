@@ -29,6 +29,17 @@ bash run_setup.sh        # dapo × 4 datasets
 python plot_compare.py   # figures/exp076_dapo.png (DAPO vs GRPO vs our best posdisc λ0.7 k5)
 ```
 
-## Results
+## Results (300 steps, L50 boxed / len)
 
-_(in progress)_
+| dataset | GRPO | our best (posdisc λ0.7 k5) | **DAPO** |
+|---|---|---|---|
+| gsm8k    | +2.02 / 414 | +2.49 / 317 | +1.57 / 620 |
+| math500  | +0.94 / 942 | +1.63 / 635 | +1.02 / 725 |
+| bigmath  | +1.51 / 622 | +1.81 / 529 | +1.33 / 762 |
+| omnimath | −0.23 / 957 | −0.33 / 733 | −0.29 / 1178 |
+
+**DAPO underperforms plain GRPO on this setup** (below on gsm8k/math500/bigmath, ~tied on
+omnimath) and consistently produces LONGER completions (Clip-Higher rewards upside token
+moves; overlong masking doesn't offset it within 300 steps at ng=4). This makes it a good
+stress test for our per-token shaping — see exp_077, where the shaping recovers DAPO to
+best-in-class on every dataset.

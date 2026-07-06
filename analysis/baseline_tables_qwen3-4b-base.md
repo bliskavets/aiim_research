@@ -37,9 +37,11 @@ speed-positive but not final-accuracy-positive for the sequence-level GSPO._
 
 ## vs Dr.GRPO (arXiv:2503.20783)
 
-_(baseline done; shaped runs: gsm8k done, math500/bigmath/omnimath still running — partial)_
+| method | GSM8k peak reward | GSM8k min steps to reach baseline's peak reward | MATH-500 peak reward | MATH-500 min steps to reach baseline's peak reward | BigMath Int peak reward | BigMath Int min steps to reach baseline's peak reward |
+|-|-|-|-|-|-|-|
+| Ours (Dr.GRPO + shaping) | +2.67 | 115 | +2.51 | 99 | +2.36 | 71 |
+| Dr.GRPO | +2.06 | 223 | +1.41 | 182 | +1.39 | 259 |
 
-| method | GSM8k peak reward | GSM8k min steps to reach baseline's peak reward |
-|-|-|-|
-| Ours (Dr.GRPO + shaping) | +2.14 | 115 |
-| Dr.GRPO | +2.06 | 223 |
+**Dr.GRPO + shaping is the strongest learnable-set config** (peaks +2.67/+2.51/+2.36, all
+top-of-study), ~2× faster to baseline peak. Full cross-method summary + L50 table:
+experiments/exp_079_drgrpo/README.md.

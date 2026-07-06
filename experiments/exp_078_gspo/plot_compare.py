@@ -55,7 +55,7 @@ for j, (ds, ds_lab) in enumerate(DATASETS):
 
 fig.suptitle("exp078 — our per-token shaping (posdisc λ0.7 k5) ON TOP of GSPO (seq-level IS, arXiv:2507.18071) vs baseline, "
              "shaping-on-GRPO, and GRPO (Qwen3-4B-Base, 300 steps)\n"
-             "does the per-token add-on still help under a stronger RL algorithm?",
+             "does the per-token add-on still help under a stronger RL algorithm? [FINAL: all 4 datasets x 300 steps]",
              fontsize=11, weight="bold")
 out = os.path.join(HERE, "figures", "exp078_gspo_shaped.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)

@@ -21,8 +21,25 @@ Regenerate for any base model by rerunning the same setups and pointing --dirs a
 
 ## vs GSPO (arXiv:2507.18071)
 
-_(exp_078 queued — will be filled when runs complete)_
+| method | GSM8k peak reward | GSM8k min steps to reach baseline's peak reward | MATH-500 peak reward | MATH-500 min steps to reach baseline's peak reward | BigMath Int peak reward | BigMath Int min steps to reach baseline's peak reward |
+|-|-|-|-|-|-|-|
+| Ours (GSPO + shaping) | +2.06 | — | +1.56 | 30 | +1.81 | 62 |
+| GSPO | +2.41 | 257 | +1.05 | 213 | +1.55 | 241 |
+
+_NOTE: GSPO is the mixed case. On peaks, shaping wins big on MATH-500/BigMath (higher peak,
+reaches GSPO's peak ~4–7× faster) but LOSES on GSM8k (peak +2.06 < GSPO +2.41, never reaches
+it — the "—"). At L50-final shaping is marginally below GSPO on all datasets (Δ −0.08/−0.05/
+−0.22). GSPO's tight sequence-level clip (3e-4/4e-4) partly resists per-token advantage
+structure: the shaping accelerates early convergence but the sequence-level IS caps how much
+of the per-token signal survives, so the lead doesn't hold late-run. Honest paper framing:
+the add-on is clearly additive for token-level algorithms (GRPO/DAPO/Dr.GRPO) and
+speed-positive but not final-accuracy-positive for the sequence-level GSPO._
 
 ## vs Dr.GRPO (arXiv:2503.20783)
 
-_(exp_079 queued — will be filled when runs complete)_
+_(baseline done; shaped runs: gsm8k done, math500/bigmath/omnimath still running — partial)_
+
+| method | GSM8k peak reward | GSM8k min steps to reach baseline's peak reward |
+|-|-|-|
+| Ours (Dr.GRPO + shaping) | +2.14 | 115 |
+| Dr.GRPO | +2.06 | 223 |

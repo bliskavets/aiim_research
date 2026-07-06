@@ -25,6 +25,20 @@ python ../../skills/baseline_peak_table.py --dirs . \
   --ours-suffix ours --ours-label "Ours (GRPO + shaping)"
 ```
 
-## Results
+## Results (300 steps, L50 boxed / len) — NEGATIVE for direct transfer
 
-_(in progress)_
+| dataset | GRPO | Ours (posdisc λ0.7 k5, no gate) | Δ |
+|---|---|---|---|
+| gsm8k    | **+2.33** / 260 | +0.09 / 132 | **−2.24** |
+| math500  | +0.33 / 643 | **+0.49** / 641 | +0.16 |
+| bigmath  | **+0.43** / 629 | +0.25 / 505 | −0.18 |
+| omnimath | −0.61 / 1104 | −0.65 / 687 | −0.04 |
+
+**The tuned Qwen config does NOT transfer as-is to Llama-3.2-3B-Instruct.** gsm8k shows a
+slow degradation (healthy +1.32 in steps 1–40, then declines to +0.09 with shrinking
+completions 211→128) — NOT a length-farming collapse. Hypotheses: (1) no zero-variance gate
+— Llama saturates gsm8k fast, ~33–45% of groups have std(R)=0 and the ungated shaping turns
+them into penalty noise (exp_071 diagnosis); (2) C-scale miscalibration — Llama's logprob
+distribution differs from Qwen's, so α₂=0.1/λ=0.7/k=5 are off-scale; (3) Instruct (SFT'd)
+policy vs the Base policy used in the whole Qwen study. exp_081 tests (3) directly by
+rerunning on Llama-3.2-3B **Base**.

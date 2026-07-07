@@ -1,5 +1,5 @@
 """
-exp_080 — Llama-3.2-3B-Instruct: GRPO vs Ours (best per-token shaping, posdisc λ0.7 k5).
+exp_082 — Llama-3.2-3B-Instruct on the exp_050 harness: GRPO vs Ours (metric: answer_exact).
 Per dataset: boxed (top) + length (bottom).
 """
 import os, re
@@ -50,10 +50,10 @@ for j, (ds, ds_lab) in enumerate(DATASETS):
     axl.set_title(f"{ds_lab} — length", fontsize=11, weight="bold")
     axl.grid(alpha=0.3); axl.legend(fontsize=8, loc="upper right"); axl.set_xlabel("step"); axl.set_ylabel("tokens")
 
-fig.suptitle("exp_080 — Llama-3.2-3B-Instruct: Ours (per-token shaping, posdisc λ0.7 k5) vs GRPO "
-             "(same hyperparameters as the Qwen3-4B-Base study, 300 steps)",
+fig.suptitle("exp_082 — Llama-3.2-3B-Instruct, exp_050 harness (working_out/SOLUTION tags, graded rewards): "
+             "Ours (per-token shaping) vs GRPO (500 steps)",
              fontsize=11, weight="bold")
-out = os.path.join(HERE, "figures", "exp080_llama.png")
+out = os.path.join(HERE, "figures", "exp082_llama050.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.tight_layout(rect=[0, 0, 1, 0.93]); fig.savefig(out, dpi=140)
 print(f"saved {out}")

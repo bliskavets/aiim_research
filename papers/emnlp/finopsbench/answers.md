@@ -168,20 +168,22 @@ We tested this directly with a **closed-book baseline**: every v2 environment pr
 
 | Model | Closed-book | Agentic (paper) | Δ |
 |---|---|---|---|
+| GPT-5-mini (n=1,174) | **14.7%** | 67.5% | −52.8 pp |
 | GPT-4.1 (n=300) | **13.3%** | 60.6% | −47.3 pp |
-| GPT-5-mini (n=1,174) | **[final]%** | 67.5% | **[final]** |
-| Qwen3-30B-A3B (n=1,174) | **[final]%** | 53.0% | **[final]** |
+| Qwen3-30B-A3B (n=1,174) | **13.8%** | 53.0% | −39.2 pp |
 
-Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If contamination were driving v2 performance, closed-book accuracy would approach agentic accuracy — instead it collapses by ~50 points.
+Closed-book accuracy is essentially flat (~13–15%) across model families and capability levels, while agentic accuracy varies by 15 points — consistent with the residual closed-book score reflecting scenario narratives that legitimately contain the needed figure, not memorization (which would scale with training exposure).
 
-`TODO: fill gpt-5-mini / qwen finals when runs complete (experiments/e1_closed_book/).`
+Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If contamination were driving v2 performance, closed-book accuracy would approach agentic accuracy — instead it collapses to a flat ~14% floor (−39 to −53 points).
+
+
 
 ---
 
 ## Общий чек-лист перед постингом
 
 - [ ] E0: анонимное зеркало обновлено и открывается инкогнито-браузером
-- [x] E1: closed-book запущен; gpt-4.1 подтверждён (13.3% vs 60.6%); дождаться gpt-5-mini/qwen finals
+- [x] E1: готово — 14.7/13.3/13.8% closed-book vs 67.5/60.6/53.0% agentic (experiments/e1_closed_book/)
 - [x] E2: готово (4.4% скалярных; 74.3% agreement; 93 кейса для ручной разметки в experiments/e2_judge_agreement/results/)
 - [ ] E3: human eval числа вставлены (PVoW-1/2, R2-4, R3-1)
 - [ ] E4: Claude/DeepSeek строки таблицы (PVoW-8, R3-4)

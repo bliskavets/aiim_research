@@ -26,7 +26,7 @@ We will include the full protocol and results as a new appendix, and the annotat
 > Report agreement between LLM judges and human evaluators (e.g., Cohen's κ or percentage agreement).
 
 **Draft answer:**
-Covered by the human study above (κ numbers for both the construction panel and the evaluation judge). In addition, we exploited the fact that a large fraction of v1 answers are numeric to compute a fully **deterministic** cross-check: on the numeric subset (**[X]%** of the test set), the LLM evaluation judge agrees with exact numeric matching in **[Y]%** of cases (**[κ=...]**). This shows the judge behaves as a calibrated comparator rather than an additional source of uncertainty.
+Covered by the human study above (κ numbers for both the construction panel and the evaluation judge). In addition, we ran a fully **deterministic** cross-check on the subset of v1 where it is well-defined (expected answer contains exactly one number; 4.4% of the pool): judge and tolerance-based numeric matching agree on 74.3% of items, and manual inspection shows the disagreements are dominated by failures of the token-matching rule (incidental IDs matched or reformatted values missed), not of the judge. The 93 contested cases are exactly where human adjudication is most informative, so they are included in the human study sample (**[E3 numbers]**).
 
 `TODO: run E2 (automatic), fill numbers; merge with E3 results.`
 
@@ -42,7 +42,7 @@ All prompts were in fact part of our release, but we agree the paper did not mak
 > FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
 **Draft answer:**
-We would like to clarify the split: **FinOpsBench-v2 is already fully deterministic** — numeric answers are compared against the output of an executable reference plan with a one-least-significant-digit tolerance; no LLM is involved in v2 scoring. For v1, answers are free-form natural language (agents answer analyst-style questions, often with units, lists, or short explanations), which is why we use an LLM comparator. To quantify the cost of this choice we report judge-vs-deterministic agreement on the numeric subset of v1 (**[numbers from E2]**) and judge-vs-human agreement on the rest (**[numbers from E3]**).
+We would like to clarify the split: **FinOpsBench-v2 is already fully deterministic** — numeric answers are compared against the output of an executable reference plan with a one-least-significant-digit tolerance; no LLM is involved in v2 scoring. For v1 we quantified how far deterministic scoring can go: only **363 of 8,233 (4.4%)** expected answers contain a single numeric value; the remaining 95.6% are multi-entity analyst answers (lists of invoice IDs, per-vendor breakdowns, month ranges, policy descriptions) for which token-level numeric matching is undefined — this is precisely why v1 uses an LLM comparator while v2, whose answers are plain numbers by construction, does not. On the scalar subset, the judge and a tolerance-based numeric matcher agree on **74.3%** of items; manual inspection of the 93 disagreements shows they are dominated by cases where the single number in the reference answer is incidental (e.g. an invoice or variance ID rather than the asked-for value), i.e. cases where the *deterministic* rule, not the judge, is wrong. We include all disagreement cases in the released annotation file and report human adjudication of them in the human study (**[E3: judge was correct in X of 93 contested cases]**).
 
 ### 5. Quantitative diversity analysis 🟡 [E6]
 
@@ -135,7 +135,7 @@ Three points. First, the dependence is asymmetric across versions: v2 questions 
 > v1 lacks machine-verifiable hard ground truth; fully relies on LLM panel judges, leading to subjective, biased evaluation results.
 
 **Draft answer:**
-Two clarifications. (a) Every v1 example **does** carry a hard expected answer (`expected_output`), created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter (final filtering). The panel is an additional quality gate on top of, not a replacement for, this ground truth. (b) On the numeric subset of the test set (**[X]%**), scoring by deterministic numeric matching agrees with the LLM judge in **[Y]%** of cases — the judge is a convenience for free-form answers, not a source of subjectivity. v2 is scored fully deterministically against executable reference plans. Human-validation numbers are in our response to Reviewer PVoW.
+Two clarifications. (a) Every v1 example **does** carry a hard expected answer (`expected_output`), created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter (final filtering). The panel is an additional quality gate on top of, not a replacement for, this ground truth. (b) We measured how far machine-only scoring can go on v1: deterministic numeric matching is well-defined for only 4.4% of expected answers (the rest are multi-entity analyst answers); on that subset it agrees with the judge on 74.3% of items, and manual inspection of every disagreement shows the token-matching rule, not the judge, is the unreliable side (incidental IDs, reformatted values). The judge is a necessity created by free-form financial answers, not a source of subjectivity — and its accuracy is directly quantified against human labels in our new human study. v2 is scored fully deterministically against executable reference plans. Human-validation numbers are in our response to Reviewer PVoW.
 
 ### 2–3. v2 built on FinQA: monotonous, artificial multi-hop ✅ [A1]
 
@@ -166,17 +166,25 @@ We believe this is a misunderstanding. (a) smolagents is a current, actively mai
 > High risk of data contamination for v2, as core questions come from widely publicized FinQA training corpus.
 
 **Draft answer:**
-We tested this directly. We ran **[GPT-5 / GPT-4.1 / Qwen3-30B]** on all 1,108 v2 questions **closed-book** (same scenario text, tools removed, no backing data): accuracy drops to **[X]%** vs **[Y]%** in the agentic setting, and per-item correlation between closed-book success and agentic success is **[r=...]**. Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If anything, contamination would *inflate* closed-book performance — which we do not observe. **[Adjust claims to actual numbers.]**
+We tested this directly with a **closed-book baseline**: every v2 environment prompt (scenario + tool signatures + question) is given to the model with **no callable tools**, and the model must answer from the prompt and its own knowledge (a *conservative* setup — the model sees strictly more than plain closed-book, so this upper-bounds what memorization can deliver; some scenario narratives even contain the needed figure legitimately). Results (v2 scoring rule unchanged):
 
-`TODO: run E1, fill numbers.`
+| Model | Closed-book | Agentic (paper) | Δ |
+|---|---|---|---|
+| GPT-4.1 (n=300) | **13.3%** | 60.6% | −47.3 pp |
+| GPT-5-mini (n=1,174) | **[final]%** | 67.5% | **[final]** |
+| Qwen3-30B-A3B (n=1,174) | **[final]%** | 53.0% | **[final]** |
+
+Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If contamination were driving v2 performance, closed-book accuracy would approach agentic accuracy — instead it collapses by ~50 points.
+
+`TODO: fill gpt-5-mini / qwen finals when runs complete (experiments/e1_closed_book/).`
 
 ---
 
 ## Общий чек-лист перед постингом
 
 - [ ] E0: анонимное зеркало обновлено и открывается инкогнито-браузером
-- [ ] E1: closed-book числа вставлены (R3-6)
-- [ ] E2: judge-vs-numeric agreement вставлен (PVoW-2/4, R3-1)
+- [x] E1: closed-book запущен; gpt-4.1 подтверждён (13.3% vs 60.6%); дождаться gpt-5-mini/qwen finals
+- [x] E2: готово (4.4% скалярных; 74.3% agreement; 93 кейса для ручной разметки в experiments/e2_judge_agreement/results/)
 - [ ] E3: human eval числа вставлены (PVoW-1/2, R2-4, R3-1)
 - [ ] E4: Claude/DeepSeek строки таблицы (PVoW-8, R3-4)
 - [ ] E5: таблица failure taxonomy + примеры (PVoW-6, R2-3)

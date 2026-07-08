@@ -1,0 +1,8 @@
+1174 items with prompt+gold
+50/300 acc-so-far=0.160 cost=$0.076
+100/300 acc-so-far=0.150 cost=$0.149
+150/300 acc-so-far=0.147 cost=$0.225
+200/300 acc-so-far=0.145 cost=$0.305
+250/300 acc-so-far=0.136 cost=$0.380
+300/300 acc-so-far=0.133 cost=$0.449
+finished 300 items, run cost $0.4493 -> /mnt/data/tmp/aiim_answers/papers/emnlp/finopsbench/experiments/e1_closed_book/results/openai_gpt-4.1.jsonl

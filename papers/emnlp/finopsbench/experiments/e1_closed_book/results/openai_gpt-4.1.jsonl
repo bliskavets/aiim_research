@@ -1,0 +1,300 @@
+{"agent_id": "agent_338", "gold": "-5.8%", "prediction": "Cannot be determined", "cost": 0.001336, "prompt_tokens": 652, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_404", "gold": "247", "prediction": "247", "cost": 0.001316, "prompt_tokens": 650, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_197", "gold": "13", "prediction": "30", "cost": 0.001308, "prompt_tokens": 646, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1267", "gold": "10%", "prediction": "Cannot determine", "cost": 0.001006, "prompt_tokens": 491, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1300", "gold": "26%", "prediction": "40%", "cost": 0.001036, "prompt_tokens": 506, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_194", "gold": "-5821", "prediction": "Cannot be determined", "cost": 0.001094, "prompt_tokens": 531, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_269", "gold": "0.8%", "prediction": "0.8%", "cost": 0.002636, "prompt_tokens": 1298, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_1143", "gold": "0", "prediction": "0", "cost": 0.001252, "prompt_tokens": 618, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_280", "gold": "773%", "prediction": "Cannot determine", "cost": 0.00116, "prompt_tokens": 568, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_911", "gold": "29.46%", "prediction": "1.74%", "cost": 0.001624, "prompt_tokens": 792, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_411", "gold": "2376487.57", "prediction": "1,492,784.67", "cost": 0.00157, "prompt_tokens": 753, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_701", "gold": "1.88", "prediction": "1.88", "cost": 0.001858, "prompt_tokens": 913, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_106", "gold": "4640", "prediction": "4665", "cost": 0.001134, "prompt_tokens": 555, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1259", "gold": "67.9%", "prediction": "Cannot be determined", "cost": 0.001098, "prompt_tokens": 533, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1025", "gold": "2%", "prediction": "Cannot be determined", "cost": 0.001746, "prompt_tokens": 857, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_371", "gold": "48.1%", "prediction": "Cannot determine", "cost": 0.001978, "prompt_tokens": 977, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1173", "gold": "0.75", "prediction": "Cannot determine", "cost": 0.00128, "prompt_tokens": 628, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_130", "gold": "-44.9%", "prediction": "Cannot be determined.", "cost": 0.001172, "prompt_tokens": 566, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_741", "gold": "8%", "prediction": "Unable to determine.", "cost": 0.001896, "prompt_tokens": 928, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_247", "gold": "52.32%", "prediction": "Cannot be determined", "cost": 0.002066, "prompt_tokens": 1017, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_713", "gold": "-10%", "prediction": "Cannot be determined", "cost": 0.001466, "prompt_tokens": 717, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_344", "gold": "1%", "prediction": "Cannot be determined", "cost": 0.001404, "prompt_tokens": 686, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1287", "gold": "87.3", "prediction": "Cannot determine", "cost": 0.001074, "prompt_tokens": 525, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_332", "gold": "52.9%", "prediction": "Cannot be determined.", "cost": 0.001312, "prompt_tokens": 636, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_545", "gold": "5.4%", "prediction": "0", "cost": 0.001288, "prompt_tokens": 636, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_287", "gold": "24.2%", "prediction": "100.0%", "cost": 0.001202, "prompt_tokens": 581, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_952", "gold": "125", "prediction": "Cannot be determined", "cost": 0.002352, "prompt_tokens": 1160, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_560", "gold": "65%", "prediction": "Cannot be determined", "cost": 0.002542, "prompt_tokens": 1255, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_7", "gold": "63.6%", "prediction": "Cannot be determined", "cost": 0.00097, "prompt_tokens": 469, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_699", "gold": "1.17", "prediction": "1.171", "cost": 0.001458, "prompt_tokens": 713, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_980", "gold": "9.235%", "prediction": "Cannot be determined.", "cost": 0.00174, "prompt_tokens": 850, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_816", "gold": "-30.56%", "prediction": "Cannot be determined", "cost": 0.000972, "prompt_tokens": 470, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1242", "gold": "35.9%", "prediction": "Cannot be determined", "cost": 0.001894, "prompt_tokens": 931, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_452", "gold": "4", "prediction": "Approximately two-thirds of the total unrecognized compensation cost as of December 31, 2017.", "cost": 0.001104, "prompt_tokens": 468, "completion_tokens": 21, "passed": false}
+{"agent_id": "agent_961", "gold": "-10%", "prediction": "Cannot be determined", "cost": 0.001034, "prompt_tokens": 501, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_345", "gold": "0", "prediction": "0", "cost": 0.001126, "prompt_tokens": 555, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_522", "gold": "67%", "prediction": "83%", "cost": 0.00313, "prompt_tokens": 1553, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_737", "gold": "3.2%", "prediction": "Cannot be determined", "cost": 0.000818, "prompt_tokens": 393, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_72", "gold": "14.3%", "prediction": "14%", "cost": 0.00253, "prompt_tokens": 1253, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1277", "gold": "67451", "prediction": "Cannot be determined", "cost": 0.00104, "prompt_tokens": 504, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_726", "gold": "-18.3%", "prediction": "Cannot be determined", "cost": 0.000986, "prompt_tokens": 477, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_409", "gold": "10122", "prediction": "Cannot determine", "cost": 0.002382, "prompt_tokens": 1179, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_176", "gold": "8.6%", "prediction": "Cannot be determined.", "cost": 0.001442, "prompt_tokens": 701, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_225", "gold": "19.4%", "prediction": "Cannot be determined", "cost": 0.00102, "prompt_tokens": 494, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_922", "gold": "38.74", "prediction": "38.74", "cost": 0.002942, "prompt_tokens": 1455, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_892", "gold": "31.4%", "prediction": "0", "cost": 0.002676, "prompt_tokens": 1330, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_546", "gold": "9.5", "prediction": "9.5", "cost": 0.000984, "prompt_tokens": 476, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_323", "gold": "9.2%", "prediction": "Cannot be determined", "cost": 0.001434, "prompt_tokens": 701, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_577", "gold": "126.0", "prediction": "Cannot be determined", "cost": 0.001102, "prompt_tokens": 535, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_182", "gold": "1.32%", "prediction": "Cannot be determined", "cost": 0.00144, "prompt_tokens": 704, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_76", "gold": "3.5%", "prediction": "Cannot be determined", "cost": 0.002068, "prompt_tokens": 1018, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_343", "gold": "27.4", "prediction": "No", "cost": 0.000872, "prompt_tokens": 428, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_630", "gold": "1.9%", "prediction": "Cannot be determined", "cost": 0.001132, "prompt_tokens": 550, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1268", "gold": "-1693", "prediction": "-1,693", "cost": 0.001632, "prompt_tokens": 796, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_381", "gold": "14.3%", "prediction": "9%", "cost": 0.001706, "prompt_tokens": 841, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_29", "gold": "0.96", "prediction": "Cannot be determined", "cost": 0.001402, "prompt_tokens": 685, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_953", "gold": "17.8%", "prediction": "Not determinable", "cost": 0.00165, "prompt_tokens": 809, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_982", "gold": "4.8", "prediction": "The exact value cannot be determined.", "cost": 0.0019, "prompt_tokens": 918, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_567", "gold": "1.74%", "prediction": "Cannot be determined", "cost": 0.00129, "prompt_tokens": 629, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_115", "gold": "2.33", "prediction": "Cannot determine", "cost": 0.000974, "prompt_tokens": 475, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_21", "gold": "16.7%", "prediction": "16.7%", "cost": 0.001314, "prompt_tokens": 637, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_769", "gold": "2476.50", "prediction": "Cannot determine", "cost": 0.001828, "prompt_tokens": 902, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1269", "gold": "20.5", "prediction": "The exact value cannot be determined.", "cost": 0.001806, "prompt_tokens": 871, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_617", "gold": "8.5%", "prediction": "Cannot be determined", "cost": 0.001026, "prompt_tokens": 497, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1002", "gold": "11.1%", "prediction": "11.1%", "cost": 0.00143, "prompt_tokens": 695, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_688", "gold": "15.1%", "prediction": "15.1%", "cost": 0.001152, "prompt_tokens": 556, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_70", "gold": "538.56%", "prediction": "Cannot be determined.", "cost": 0.001044, "prompt_tokens": 502, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_1086", "gold": "1575000", "prediction": "1575000", "cost": 0.002288, "prompt_tokens": 1128, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_268", "gold": "8%", "prediction": "Cannot determine", "cost": 0.00126, "prompt_tokens": 618, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_838", "gold": "10.14%", "prediction": "The exact value cannot be determined from the scenario text alone.", "cost": 0.001146, "prompt_tokens": 521, "completion_tokens": 13, "passed": false}
+{"agent_id": "agent_1291", "gold": "37.9%", "prediction": "Cannot be determined", "cost": 0.000968, "prompt_tokens": 468, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_73", "gold": "7%", "prediction": "16", "cost": 0.002464, "prompt_tokens": 1224, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_140", "gold": "11%", "prediction": "Cannot be determined", "cost": 0.001096, "prompt_tokens": 532, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_32", "gold": "14.9", "prediction": "14.9", "cost": 0.00168, "prompt_tokens": 824, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_226", "gold": "13.0%", "prediction": "Cannot determine", "cost": 0.000982, "prompt_tokens": 479, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_825", "gold": "58.98%", "prediction": "Cannot be determined.", "cost": 0.001452, "prompt_tokens": 706, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_532", "gold": "8.7%", "prediction": "Cannot be determined.", "cost": 0.001396, "prompt_tokens": 678, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_324", "gold": "749524", "prediction": "749522", "cost": 0.00211, "prompt_tokens": 1043, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_886", "gold": "77", "prediction": "Cannot determine", "cost": 0.001046, "prompt_tokens": 511, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_584", "gold": "8953", "prediction": "7300", "cost": 0.001458, "prompt_tokens": 717, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1282", "gold": "32%", "prediction": "25%", "cost": 0.000976, "prompt_tokens": 476, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_835", "gold": "43.67", "prediction": "0.00", "cost": 0.001096, "prompt_tokens": 532, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_294", "gold": "-151100", "prediction": "0", "cost": 0.001456, "prompt_tokens": 720, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1085", "gold": "31904", "prediction": "I cannot determine the exact value.", "cost": 0.001492, "prompt_tokens": 714, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1078", "gold": "61%", "prediction": "Cannot determine.", "cost": 0.001706, "prompt_tokens": 837, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_993", "gold": "12%", "prediction": "Cannot determine", "cost": 0.001182, "prompt_tokens": 579, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_242", "gold": "61.5%", "prediction": "Cannot be determined.", "cost": 0.001768, "prompt_tokens": 864, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_551", "gold": "24%", "prediction": "Cannot be determined", "cost": 0.001208, "prompt_tokens": 588, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_666", "gold": "4.5%", "prediction": "The exact percentual increase in expected volatility during 2007 and 2008 cannot be determined from the scenario text, as the actual expected stock-price volatilities are not provided. My best estimate is: unknown.", "cost": 0.001874, "prompt_tokens": 761, "completion_tokens": 44, "passed": false}
+{"agent_id": "agent_513", "gold": "270111", "prediction": "0", "cost": 0.001192, "prompt_tokens": 588, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_188", "gold": "66.6%", "prediction": "Cannot be determined", "cost": 0.001134, "prompt_tokens": 551, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_412", "gold": "1.31", "prediction": "1.31", "cost": 0.001484, "prompt_tokens": 726, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_114", "gold": "11.3", "prediction": "11.1", "cost": 0.002002, "prompt_tokens": 985, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_207", "gold": "15.1%", "prediction": "Cannot be determined", "cost": 0.00119, "prompt_tokens": 579, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_157", "gold": "4.8", "prediction": "The exact value cannot be determined.", "cost": 0.003274, "prompt_tokens": 1605, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_15", "gold": "65.6%", "prediction": "The exact value cannot be determined.", "cost": 0.000882, "prompt_tokens": 409, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1231", "gold": "24123727", "prediction": "24133828", "cost": 0.001292, "prompt_tokens": 630, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_963", "gold": "350824 thousand", "prediction": "Cannot determine", "cost": 0.00136, "prompt_tokens": 668, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_698", "gold": "31%", "prediction": "Cannot be determined", "cost": 0.00135, "prompt_tokens": 659, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_965", "gold": "70.9%", "prediction": "Cannot be determined", "cost": 0.001264, "prompt_tokens": 616, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_719", "gold": "3.884%", "prediction": "3.500%", "cost": 0.001036, "prompt_tokens": 498, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_938", "gold": "9.81%", "prediction": "Cannot be determined", "cost": 0.0015, "prompt_tokens": 734, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1188", "gold": "98.2%", "prediction": "98.2%", "cost": 0.001452, "prompt_tokens": 706, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_516", "gold": "41.7%", "prediction": "Cannot be determined", "cost": 0.001366, "prompt_tokens": 667, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_90", "gold": "-1579", "prediction": "The exact value cannot be determined.", "cost": 0.002648, "prompt_tokens": 1292, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1004", "gold": "4.97", "prediction": "Cannot be determined", "cost": 0.001086, "prompt_tokens": 527, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_442", "gold": "39.6", "prediction": "39.6", "cost": 0.001836, "prompt_tokens": 902, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_654", "gold": "49%", "prediction": "Cannot be determined", "cost": 0.001056, "prompt_tokens": 512, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_125", "gold": "257.95%", "prediction": "Cannot be determined", "cost": 0.001002, "prompt_tokens": 485, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1158", "gold": "71%", "prediction": "Cannot be determined", "cost": 0.001144, "prompt_tokens": 556, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_126", "gold": "295.4", "prediction": "295", "cost": 0.00266, "prompt_tokens": 1322, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_425", "gold": "76", "prediction": "76", "cost": 0.00312, "prompt_tokens": 1552, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_356", "gold": "966", "prediction": "Cannot be determined", "cost": 0.001104, "prompt_tokens": 536, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_890", "gold": "17.18", "prediction": "38.96", "cost": 0.002006, "prompt_tokens": 987, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_780", "gold": "13.5%", "prediction": "Cannot be determined", "cost": 0.001768, "prompt_tokens": 868, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1009", "gold": "0.913", "prediction": "The exact value cannot be determined.", "cost": 0.001704, "prompt_tokens": 820, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1318", "gold": "13.4%", "prediction": "Cannot be determined", "cost": 0.00278, "prompt_tokens": 1374, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_971", "gold": "20.4", "prediction": "Cannot be determined", "cost": 0.001254, "prompt_tokens": 611, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_5", "gold": "56.25%%", "prediction": "Cannot be determined", "cost": 0.002188, "prompt_tokens": 1078, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_914", "gold": "2.5%", "prediction": "Cannot be determined.", "cost": 0.001394, "prompt_tokens": 677, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_88", "gold": "11", "prediction": "11", "cost": 0.001148, "prompt_tokens": 566, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_466", "gold": "6.3%", "prediction": "Not determinable", "cost": 0.001146, "prompt_tokens": 557, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1070", "gold": "60%", "prediction": "Cannot be determined", "cost": 0.00092, "prompt_tokens": 444, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_79", "gold": "7.7%", "prediction": "Cannot be determined", "cost": 0.001014, "prompt_tokens": 491, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_234", "gold": "no", "prediction": "No", "cost": 0.002866, "prompt_tokens": 1425, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_1063", "gold": "10.7%", "prediction": "13.0%", "cost": 0.002132, "prompt_tokens": 1046, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_264", "gold": "-54%", "prediction": "The exact value cannot be determined.", "cost": 0.001222, "prompt_tokens": 579, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_588", "gold": "-46.29%", "prediction": "Cannot determine", "cost": 0.001068, "prompt_tokens": 522, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_845", "gold": "-1", "prediction": "The exact value cannot be determined.", "cost": 0.001704, "prompt_tokens": 820, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_415", "gold": "120384.6", "prediction": "Not enough information", "cost": 0.001356, "prompt_tokens": 662, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_135", "gold": "11.25%", "prediction": "11.00%", "cost": 0.002522, "prompt_tokens": 1241, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_690", "gold": "0.0%", "prediction": "64.6%", "cost": 0.001604, "prompt_tokens": 782, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_13", "gold": "43990.0%", "prediction": "Cannot determine", "cost": 0.001022, "prompt_tokens": 499, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_249", "gold": "1016", "prediction": "The exact value cannot be determined.", "cost": 0.00136, "prompt_tokens": 648, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_696", "gold": "23.3", "prediction": "Cannot be determined", "cost": 0.001236, "prompt_tokens": 602, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_69", "gold": "1008.5", "prediction": "497.9", "cost": 0.001132, "prompt_tokens": 550, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_398", "gold": "7.9%", "prediction": "Cannot be determined.", "cost": 0.001308, "prompt_tokens": 634, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_306", "gold": "27.2%", "prediction": "19.3%", "cost": 0.00106, "prompt_tokens": 510, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_460", "gold": "282076", "prediction": "0", "cost": 0.001128, "prompt_tokens": 556, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_228", "gold": "17.2%", "prediction": "Cannot be determined", "cost": 0.001252, "prompt_tokens": 610, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1077", "gold": "-17.4%", "prediction": "Cannot determine", "cost": 0.001058, "prompt_tokens": 517, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_634", "gold": "86.3", "prediction": "86.3", "cost": 0.001916, "prompt_tokens": 942, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_762", "gold": "7.1%", "prediction": "Cannot be determined.", "cost": 0.001152, "prompt_tokens": 556, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_1177", "gold": "no", "prediction": "no", "cost": 0.00114, "prompt_tokens": 562, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_1139", "gold": "8.1", "prediction": "0.0", "cost": 0.001356, "prompt_tokens": 662, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1092", "gold": "14000000", "prediction": "0", "cost": 0.001276, "prompt_tokens": 630, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1006", "gold": "2.72", "prediction": "Cannot determine", "cost": 0.001512, "prompt_tokens": 744, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_201", "gold": "0.1%", "prediction": "Cannot be determined", "cost": 0.00099, "prompt_tokens": 479, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_739", "gold": "41%", "prediction": "36%", "cost": 0.001178, "prompt_tokens": 577, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_434", "gold": "2.7%", "prediction": "Cannot be determined", "cost": 0.00153, "prompt_tokens": 749, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_802", "gold": "2439", "prediction": "Cannot determine", "cost": 0.001238, "prompt_tokens": 607, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_496", "gold": "275.9%", "prediction": "Cannot be determined", "cost": 0.001298, "prompt_tokens": 633, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1124", "gold": "1224", "prediction": "0", "cost": 0.001136, "prompt_tokens": 560, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_903", "gold": "10.8%", "prediction": "Cannot be determined.", "cost": 0.001888, "prompt_tokens": 924, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_337", "gold": "-51.3%", "prediction": "16.0%", "cost": 0.00138, "prompt_tokens": 670, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_709", "gold": "81%", "prediction": "Cannot be determined", "cost": 0.002368, "prompt_tokens": 1168, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1303", "gold": "97%", "prediction": "97%", "cost": 0.001144, "prompt_tokens": 560, "completion_tokens": 3, "passed": true}
+{"agent_id": "agent_570", "gold": "357", "prediction": "Cannot be determined", "cost": 0.001776, "prompt_tokens": 872, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_134", "gold": "2825000", "prediction": "2825000", "cost": 0.002476, "prompt_tokens": 1222, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_255", "gold": "89.8%", "prediction": "Cannot be determined", "cost": 0.00199, "prompt_tokens": 979, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_437", "gold": "199", "prediction": "0", "cost": 0.000884, "prompt_tokens": 434, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_429", "gold": "8.3%", "prediction": "Cannot be determined", "cost": 0.00136, "prompt_tokens": 664, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1106", "gold": "467", "prediction": "Not enough information to determine.", "cost": 0.00211, "prompt_tokens": 1027, "completion_tokens": 7, "passed": false}
+{"agent_id": "agent_614", "gold": "-38.54%", "prediction": "Cannot be determined", "cost": 0.001022, "prompt_tokens": 495, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1066", "gold": "19.8", "prediction": "119.8", "cost": 0.002002, "prompt_tokens": 985, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1262", "gold": "75%", "prediction": "Cannot be determined", "cost": 0.001598, "prompt_tokens": 783, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1205", "gold": "48%", "prediction": "Cannot be determined", "cost": 0.001682, "prompt_tokens": 825, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_525", "gold": "41%", "prediction": "40.68%", "cost": 0.002064, "prompt_tokens": 1012, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_555", "gold": "73", "prediction": "11", "cost": 0.002656, "prompt_tokens": 1320, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_708", "gold": "3.21", "prediction": "3.21", "cost": 0.001804, "prompt_tokens": 886, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_1087", "gold": "$ 1928.88", "prediction": "1930148.88", "cost": 0.002348, "prompt_tokens": 1150, "completion_tokens": 6, "passed": false}
+{"agent_id": "agent_722", "gold": "1.9%", "prediction": "-3%", "cost": 0.002404, "prompt_tokens": 1186, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_92", "gold": "331.2", "prediction": "Cannot be determined", "cost": 0.001208, "prompt_tokens": 588, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_401", "gold": "1.18", "prediction": "1.18", "cost": 0.001994, "prompt_tokens": 981, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_413", "gold": "13%", "prediction": "Cannot be determined", "cost": 0.001182, "prompt_tokens": 575, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1264", "gold": "8.4", "prediction": "The exact value cannot be determined.", "cost": 0.000852, "prompt_tokens": 394, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1099", "gold": "17.4%", "prediction": "17.4%", "cost": 0.003434, "prompt_tokens": 1697, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_156", "gold": "44%", "prediction": "44%", "cost": 0.002098, "prompt_tokens": 1037, "completion_tokens": 3, "passed": true}
+{"agent_id": "agent_943", "gold": "0.99", "prediction": "0.997", "cost": 0.001558, "prompt_tokens": 763, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_471", "gold": "-1365", "prediction": "Cannot be determined", "cost": 0.001872, "prompt_tokens": 920, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1258", "gold": "7341", "prediction": "Cannot determine", "cost": 0.001418, "prompt_tokens": 697, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1008", "gold": "-10%", "prediction": "Cannot be determined", "cost": 0.001184, "prompt_tokens": 576, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_313", "gold": "50.0%", "prediction": "Cannot determine", "cost": 0.000834, "prompt_tokens": 405, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_798", "gold": "5805209", "prediction": "Cannot determine", "cost": 0.001462, "prompt_tokens": 719, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1307", "gold": "122604300", "prediction": "122616430", "cost": 0.000944, "prompt_tokens": 456, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_578", "gold": "-256245", "prediction": "The exact value cannot be determined.", "cost": 0.001684, "prompt_tokens": 810, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1182", "gold": "8.36", "prediction": "The exact value cannot be determined.", "cost": 0.001068, "prompt_tokens": 502, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_520", "gold": "82%", "prediction": "Cannot be determined", "cost": 0.001408, "prompt_tokens": 688, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1142", "gold": "450000", "prediction": "950000", "cost": 0.001274, "prompt_tokens": 625, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_347", "gold": "60%", "prediction": "33", "cost": 0.000818, "prompt_tokens": 401, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_246", "gold": "28%", "prediction": "Cannot be determined", "cost": 0.001322, "prompt_tokens": 645, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_295", "gold": "55.3%", "prediction": "The exact value cannot be determined.", "cost": 0.001158, "prompt_tokens": 547, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1095", "gold": "1.9", "prediction": "Cannot determine", "cost": 0.001346, "prompt_tokens": 661, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_885", "gold": "16.7%", "prediction": "Cannot be determined", "cost": 0.001464, "prompt_tokens": 716, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_720", "gold": "151", "prediction": "138", "cost": 0.001432, "prompt_tokens": 708, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_296", "gold": "1.4%", "prediction": "Cannot be determined", "cost": 0.002046, "prompt_tokens": 1007, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_211", "gold": "4.2%", "prediction": "Cannot be determined", "cost": 0.001358, "prompt_tokens": 663, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1110", "gold": "1.5", "prediction": "Cannot determine", "cost": 0.000952, "prompt_tokens": 464, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_947", "gold": "36804.76", "prediction": "38,571.43", "cost": 0.003242, "prompt_tokens": 1597, "completion_tokens": 6, "passed": false}
+{"agent_id": "agent_626", "gold": "16759.5", "prediction": "The exact value cannot be determined.", "cost": 0.001558, "prompt_tokens": 747, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1239", "gold": "8.1%", "prediction": "4.9%", "cost": 0.00127, "prompt_tokens": 615, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_1105", "gold": "146180", "prediction": "The exact value cannot be determined.", "cost": 0.001732, "prompt_tokens": 834, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_918", "gold": "18%", "prediction": "Cannot be determined", "cost": 0.002096, "prompt_tokens": 1032, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_916", "gold": "50%", "prediction": "Cannot be determined", "cost": 0.001312, "prompt_tokens": 640, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_576", "gold": "9.15%", "prediction": "Cannot be determined.", "cost": 0.001032, "prompt_tokens": 496, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_421", "gold": "177.7", "prediction": "177.6", "cost": 0.00355, "prompt_tokens": 1759, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_632", "gold": "10.8%", "prediction": "Cannot be determined", "cost": 0.00115, "prompt_tokens": 559, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_418", "gold": "4.7", "prediction": "4.7", "cost": 0.001046, "prompt_tokens": 507, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_341", "gold": "0.32", "prediction": "0.50", "cost": 0.00101, "prompt_tokens": 489, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_58", "gold": "1.5%", "prediction": "Cannot be determined", "cost": 0.001058, "prompt_tokens": 513, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_944", "gold": "10428", "prediction": "11840", "cost": 0.001168, "prompt_tokens": 572, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_122", "gold": "154.55", "prediction": "Cannot be determined", "cost": 0.001146, "prompt_tokens": 557, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1306", "gold": "-4.1", "prediction": "0", "cost": 0.00207, "prompt_tokens": 1027, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1060", "gold": "748.5", "prediction": "609.9", "cost": 0.002412, "prompt_tokens": 1190, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_360", "gold": "117%", "prediction": "178%", "cost": 0.001046, "prompt_tokens": 511, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_498", "gold": "-5.4%", "prediction": "Cannot be determined", "cost": 0.002416, "prompt_tokens": 1192, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_895", "gold": "128.4", "prediction": "286", "cost": 0.001356, "prompt_tokens": 670, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_689", "gold": "37%", "prediction": "Cannot determine", "cost": 0.001118, "prompt_tokens": 547, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1027", "gold": "840", "prediction": "Cannot be determined", "cost": 0.001126, "prompt_tokens": 547, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_141", "gold": "48.1%", "prediction": "The exact value cannot be determined.", "cost": 0.00103, "prompt_tokens": 483, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_403", "gold": "53.2%", "prediction": "0%", "cost": 0.001462, "prompt_tokens": 719, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1185", "gold": "20", "prediction": "3", "cost": 0.001178, "prompt_tokens": 581, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1081", "gold": "-5.8%", "prediction": "The exact value cannot be determined.", "cost": 0.001636, "prompt_tokens": 786, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_1227", "gold": "76.6", "prediction": "86.8", "cost": 0.001538, "prompt_tokens": 753, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_438", "gold": "2176422", "prediction": "0", "cost": 0.002222, "prompt_tokens": 1103, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_612", "gold": "5.89%", "prediction": "15%", "cost": 0.001504, "prompt_tokens": 740, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_65", "gold": "13.4%", "prediction": "Cannot determine", "cost": 0.00087, "prompt_tokens": 423, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_783", "gold": "64%", "prediction": "64%", "cost": 0.002818, "prompt_tokens": 1397, "completion_tokens": 3, "passed": true}
+{"agent_id": "agent_1309", "gold": "15.7%", "prediction": "Cannot be determined", "cost": 0.001166, "prompt_tokens": 567, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1005", "gold": "6.7%", "prediction": "3.6%", "cost": 0.001368, "prompt_tokens": 664, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_424", "gold": "431.7", "prediction": "Cannot determine", "cost": 0.001238, "prompt_tokens": 607, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_354", "gold": "1370666.66667", "prediction": "Cannot be determined", "cost": 0.001092, "prompt_tokens": 530, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_9", "gold": "56.6", "prediction": "Cannot determine", "cost": 0.001328, "prompt_tokens": 652, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1058", "gold": "40.31%", "prediction": "Cannot be determined.", "cost": 0.001128, "prompt_tokens": 544, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_912", "gold": "63%", "prediction": "Unknown", "cost": 0.001382, "prompt_tokens": 683, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_372", "gold": "13", "prediction": "Cannot be determined.", "cost": 0.001858, "prompt_tokens": 909, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_270", "gold": "25.0%", "prediction": "25.0%", "cost": 0.00187, "prompt_tokens": 915, "completion_tokens": 5, "passed": true}
+{"agent_id": "agent_494", "gold": "15.9%", "prediction": "Cannot be determined", "cost": 0.001124, "prompt_tokens": 546, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_311", "gold": "1.3", "prediction": "The exact value cannot be determined.", "cost": 0.000888, "prompt_tokens": 412, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_673", "gold": "-2.8%", "prediction": "Cannot be determined", "cost": 0.001274, "prompt_tokens": 621, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_810", "gold": "179", "prediction": "179", "cost": 0.001994, "prompt_tokens": 989, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_1191", "gold": "20.3%", "prediction": "15.8", "cost": 0.002278, "prompt_tokens": 1123, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_74", "gold": "395%", "prediction": "Cannot be determined", "cost": 0.001372, "prompt_tokens": 670, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_342", "gold": "14%", "prediction": "Cannot be determined", "cost": 0.001172, "prompt_tokens": 570, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_658", "gold": "-9.5%", "prediction": "Cannot be determined", "cost": 0.001048, "prompt_tokens": 508, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_924", "gold": "1.74", "prediction": "1.74", "cost": 0.001512, "prompt_tokens": 740, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_768", "gold": "2947.9", "prediction": "Not determinable", "cost": 0.002236, "prompt_tokens": 1102, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_764", "gold": "140003", "prediction": "Cannot be determined", "cost": 0.001084, "prompt_tokens": 526, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_209", "gold": "20.75", "prediction": "8.46", "cost": 0.001, "prompt_tokens": 484, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_586", "gold": "2.3%", "prediction": "37.7%", "cost": 0.001784, "prompt_tokens": 872, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_806", "gold": "83.68%", "prediction": "84.22%", "cost": 0.001876, "prompt_tokens": 918, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_1068", "gold": "yes", "prediction": "yes", "cost": 0.001202, "prompt_tokens": 593, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_793", "gold": "500100000", "prediction": "500100000", "cost": 0.001412, "prompt_tokens": 690, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_999", "gold": "48.5%", "prediction": "Cannot be determined", "cost": 0.00117, "prompt_tokens": 569, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_844", "gold": "7.7", "prediction": "Cannot determine", "cost": 0.00093, "prompt_tokens": 453, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_181", "gold": "76.9%", "prediction": "Cannot be determined", "cost": 0.000976, "prompt_tokens": 472, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_202", "gold": "32.1%", "prediction": "35%", "cost": 0.001324, "prompt_tokens": 650, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1257", "gold": "1064", "prediction": "Cannot determine", "cost": 0.001388, "prompt_tokens": 682, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_436", "gold": "151.0", "prediction": "Cannot determine", "cost": 0.001232, "prompt_tokens": 604, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1211", "gold": "71.33", "prediction": "Cannot be determined.", "cost": 0.001086, "prompt_tokens": 523, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_1166", "gold": "52.62%", "prediction": "Cannot be determined", "cost": 0.001284, "prompt_tokens": 626, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_836", "gold": "0.08%", "prediction": "Cannot be determined", "cost": 0.001164, "prompt_tokens": 566, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_995", "gold": "2023", "prediction": "Cannot determine", "cost": 0.000958, "prompt_tokens": 467, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_888", "gold": "17.34%", "prediction": "Not determinable", "cost": 0.00136, "prompt_tokens": 664, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1273", "gold": "56%", "prediction": "56%", "cost": 0.002758, "prompt_tokens": 1367, "completion_tokens": 3, "passed": true}
+{"agent_id": "agent_1294", "gold": "806.7", "prediction": "Cannot be determined", "cost": 0.00112, "prompt_tokens": 544, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1044", "gold": "6.00%", "prediction": "Cannot be determined.", "cost": 0.000918, "prompt_tokens": 439, "completion_tokens": 5, "passed": false}
+{"agent_id": "agent_697", "gold": "-67%", "prediction": "Cannot determine", "cost": 0.001238, "prompt_tokens": 607, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1054", "gold": "36500", "prediction": "0", "cost": 0.000882, "prompt_tokens": 433, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1108", "gold": "2.7%", "prediction": "Cannot be determined", "cost": 0.001114, "prompt_tokens": 541, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1112", "gold": "4578", "prediction": "Cannot determine", "cost": 0.000994, "prompt_tokens": 485, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_1315", "gold": "10%", "prediction": "0", "cost": 0.001026, "prompt_tokens": 505, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_335", "gold": "2078", "prediction": "0", "cost": 0.001372, "prompt_tokens": 678, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1190", "gold": "2.4%", "prediction": "Cannot be determined", "cost": 0.001096, "prompt_tokens": 532, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_305", "gold": "63.4%", "prediction": "Cannot be determined", "cost": 0.001036, "prompt_tokens": 502, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_27", "gold": "1.6%", "prediction": "Not determinable", "cost": 0.00107, "prompt_tokens": 519, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1043", "gold": "16.3%", "prediction": "Cannot be determined", "cost": 0.001268, "prompt_tokens": 618, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_459", "gold": "-48.49%", "prediction": "Cannot determine", "cost": 0.00124, "prompt_tokens": 608, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_909", "gold": "116515424", "prediction": "Cannot be determined", "cost": 0.00151, "prompt_tokens": 739, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_509", "gold": "78.%", "prediction": "Cannot be determined", "cost": 0.001138, "prompt_tokens": 553, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_996", "gold": "23", "prediction": "0", "cost": 0.0023, "prompt_tokens": 1142, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_1102", "gold": "-2.5%", "prediction": "Cannot be determined", "cost": 0.00286, "prompt_tokens": 1414, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_852", "gold": "yes", "prediction": "yes", "cost": 0.001068, "prompt_tokens": 526, "completion_tokens": 2, "passed": true}
+{"agent_id": "agent_1016", "gold": "-1.0%", "prediction": "-1.0%", "cost": 0.001552, "prompt_tokens": 752, "completion_tokens": 6, "passed": true}
+{"agent_id": "agent_259", "gold": "23.3%", "prediction": "The exact value cannot be determined.", "cost": 0.001442, "prompt_tokens": 689, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_897", "gold": "12.31%", "prediction": "Cannot be determined", "cost": 0.001058, "prompt_tokens": 513, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_693", "gold": "26.6%", "prediction": "Cannot be determined", "cost": 0.001042, "prompt_tokens": 505, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1022", "gold": "11.2", "prediction": "13", "cost": 0.002626, "prompt_tokens": 1305, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_865", "gold": "48%", "prediction": "Cannot determine", "cost": 0.00127, "prompt_tokens": 623, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_572", "gold": "1878", "prediction": "1,878", "cost": 0.003498, "prompt_tokens": 1733, "completion_tokens": 4, "passed": true}
+{"agent_id": "agent_1207", "gold": "1.2", "prediction": "Cannot be determined", "cost": 0.00091, "prompt_tokens": 439, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_538", "gold": "-21%", "prediction": "Cannot be determined", "cost": 0.001442, "prompt_tokens": 705, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_774", "gold": "3956", "prediction": "Cannot determine", "cost": 0.001404, "prompt_tokens": 690, "completion_tokens": 3, "passed": false}
+{"agent_id": "agent_271", "gold": "12%", "prediction": "Cannot be determined", "cost": 0.001034, "prompt_tokens": 501, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1189", "gold": "127", "prediction": "0", "cost": 0.001004, "prompt_tokens": 494, "completion_tokens": 2, "passed": false}
+{"agent_id": "agent_39", "gold": "2.6%", "prediction": "The exact value cannot be determined.", "cost": 0.00164, "prompt_tokens": 788, "completion_tokens": 8, "passed": false}
+{"agent_id": "agent_333", "gold": "25.8%", "prediction": "Cannot be determined", "cost": 0.001378, "prompt_tokens": 673, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1214", "gold": "86.97", "prediction": "Cannot be determined", "cost": 0.002026, "prompt_tokens": 997, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_180", "gold": "390.5", "prediction": "Cannot be determined", "cost": 0.001536, "prompt_tokens": 752, "completion_tokens": 4, "passed": false}
+{"agent_id": "agent_1274", "gold": "64.75%", "prediction": "Cannot determine", "cost": 0.001084, "prompt_tokens": 530, "completion_tokens": 3, "passed": false}

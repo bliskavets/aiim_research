@@ -1,0 +1,14 @@
+{
+  "judge_model": "openai/o4-mini",
+  "n": 362,
+  "scalar_numeric_gold_items_in_pool": 363,
+  "agreement": 0.7431,
+  "cohen_kappa": 0.1742,
+  "confusion": {
+    "both_correct": 246,
+    "both_incorrect": 23,
+    "numeric_only": 54,
+    "judge_only": 39
+  },
+  "judge_run_cost_usd": 0.6348
+}

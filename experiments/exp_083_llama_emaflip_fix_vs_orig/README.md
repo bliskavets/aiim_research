@@ -21,6 +21,41 @@ bash run_setup.sh        # grpo, gtpo_ema_flipped (orig), gtpo_ema_flipped_fixed
 python plot_compare.py   # figures/exp083_emaflip_fix_vs_orig.png (4-panel like exp_050)
 ```
 
-## Results
+## Results (Big-Math, 500 steps, L50) — the FIX HELPS on Qwen but HURTS on Llama
 
-_(in progress)_
+| method | total reward | format_exact | answer_numeric | len |
+|---|---|---|---|---|
+| GRPO                          | +0.56 | +0.03 | +0.18 | 336 |
+| **gtpo_ema_flipped (ORIGINAL)** | **+0.98** | **+0.20** | **+0.40** | 286 |
+| gtpo_ema_flipped (FIXED)      | −1.07 | +0.00 | +0.14 | 371 |
+
+Trajectory (total reward by phase): all three start identical at step 1 (−1.625, same seed).
+Then they diverge:
+
+| phase | GRPO | ORIGINAL | FIXED |
+|---|---|---|---|
+| 1–100   | −1.30 | −1.22 | −1.27 |
+| 100–250 | −0.49 | −0.13 | −1.19 |
+| 250–400 | +0.41 | +0.66 | −1.06 |
+| 400–500 | +0.51 | **+0.88** | **−1.04** |
+
+**Findings (reversal of the Qwen story):**
+- The ORIGINAL trainer's shaping IS active here (it diverges from GRPO — step-1 identity rules
+  out a pure bypass) and it is the **best** method: format_exact climbs to +0.17, answers
+  improve, length shrinks healthily. So on Llama the exp_050 shaped curve was a genuine gain.
+- The **FIXED** (group-visible) trainer **collapses**: format never acquired (fmt_ex +0.01),
+  total stuck at −1.0 for all 500 steps.
+- **Why the reversal:** the FIX makes the O+/O− polarity split GROUP-VISIBLE and
+  group-relative (`adv>0`). On Llama cold-start nothing is correct, so O+ = "less-bad junk"
+  and the shaping reinforces junk / punishes fluent peaked text (exactly the exp_082
+  mechanism) → format never forms. The ORIGINAL's per-microbatch (B=1) degeneracy sidesteps
+  the group-relative polarity split, acting like a mild per-sequence confidence bonus that
+  happens to help. On Qwen (strong base, format saturates instantly) group-relative polarity
+  ≈ true correctness, so the FIX was strictly better there; on Llama that assumption breaks.
+
+**Takeaway:** the group-visible FIX is not universally superior — it is superior only when
+advantage-polarity tracks correctness (strong base / fast format acquisition). The proper
+cross-model method needs **correctness-grounded polarity** (O+ iff answer-reward>0) rather
+than group-relative `adv>0` — the same conclusion exp_082 reached, now shown via the
+FIX-vs-ORIGINAL contrast. Single seed / bigmath — directional, to confirm with the
+correctness-grounded variant (exp_084 candidate).

@@ -50,6 +50,22 @@ first training step at which that row's curve reaches the *baseline's* peak (low
 | Ours (Dr.GRPO + shaping) | +2.67 | **115** | +2.51 | **99** | +2.36 | **71** |
 | Dr.GRPO | +2.06 | 223 | +1.41 | 182 | +1.39 | 259 |
 
+## Consolidated table — all 4 baselines stacked (Tables 1–4 in one)
+
+Each baseline paired with its shaped counterpart; "min steps" = first step reaching that
+baseline's own peak (lower = faster; "—" = never reached).
+
+| method | GSM8k peak reward | GSM8k min steps to reach baseline's peak reward | MATH-500 peak reward | MATH-500 min steps to reach baseline's peak reward | BigMath Int peak reward | BigMath Int min steps to reach baseline's peak reward |
+|-|-|-|-|-|-|-|
+| Ours (GRPO + shaping) | +2.73 | **94** | +2.27 | **87** | +2.06 | **120** |
+| GRPO | +2.26 | 261 | +1.51 | 222 | +1.86 | 385 |
+| Ours (DAPO + shaping) | +2.66 | **54** | +2.29 | **97** | +2.26 | **74** |
+| DAPO | +2.05 | 257 | +1.52 | 199 | +1.68 | 259 |
+| Ours (GSPO + shaping) | +2.06 | — | +1.56 | **30** | +1.81 | **62** |
+| GSPO | +2.41 | 257 | +1.05 | 213 | +1.55 | 241 |
+| Ours (Dr.GRPO + shaping) | +2.67 | **115** | +2.51 | **99** | +2.36 | **71** |
+| Dr.GRPO | +2.06 | 223 | +1.41 | 182 | +1.39 | 259 |
+
 ## Consolidated L50-final (last-50-step mean boxed), all 4 datasets
 
 baseline → **+ our shaping**:

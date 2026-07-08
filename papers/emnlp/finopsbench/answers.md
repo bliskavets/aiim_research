@@ -49,9 +49,7 @@ We would like to clarify the split: **FinOpsBench-v2 is already fully determinis
 > Analyze benchmark diversity more quantitatively. Statistics on reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, and template diversity would strengthen the benchmark description.
 
 **Draft answer:**
-We have added a quantitative diversity appendix: (a) SQL complexity of reference traces (distribution of JOINs, aggregations, GROUP BY, subqueries per example); (b) tool-chain depth (tool calls per reference solution for both versions); (c) numerical-operation types in v2 (ratio / YoY change / share-of-total / aggregation); (d) lexical diversity of v1 queries (distinct n-gram ratios; the paper already reports 60+ user roles and UMAP spread); (e) financial-concept coverage. **[Insert summary table.]**
-
-`TODO: run E6 scripts over final_exp10k.jsonl and correct_plan_augmented.py files.`
+We have added a quantitative diversity appendix. For **v1** (8,233-item pool): **742 distinct user roles** (the paper conservatively said "60+"), zero duplicate queries, distinct 3-gram ratio 0.52; SQL complexity of reference solutions — 70% of examples require a JOIN, 42% ORDER BY, 35% aggregate functions, 31% GROUP BY, 22% subqueries, 19% date arithmetic, 9% CASE expressions, 7% HAVING. For **v2**: reference plans make a median of **5 tool calls** (p90 = 7, max 15) against a median of **9 available tools** per environment (core + partial-information + distractor); numerical-operation mix — aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent change 11%. Scripts and full distributions are released with the benchmark (`experiments/e6_diversity/`).
 
 ### 6. Qualitative failure analysis 🟡 [E5]
 
@@ -188,7 +186,7 @@ Memorization of FinQA thus does not provide an answer pathway: the system prompt
 - [ ] E3: human eval числа вставлены (PVoW-1/2, R2-4, R3-1)
 - [ ] E4: Claude/DeepSeek строки таблицы (PVoW-8, R3-4)
 - [ ] E5: таблица failure taxonomy + примеры (PVoW-6, R2-3)
-- [ ] E6: diversity-статистика (PVoW-5, R3-2)
+- [x] E6: готово (742 роли, SQL-фичи, tool-chain depth, op-mix — experiments/e6_diversity/)
 - [ ] E7: costs (PVoW-7)
 - [ ] Все `[...]`-плейсхолдеры заменены реальными числами
 - [ ] Тон: благодарный, конкретный, без обещаний «in future work» там, где можно дать число сейчас

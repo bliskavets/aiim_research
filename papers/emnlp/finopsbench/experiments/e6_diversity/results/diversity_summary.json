@@ -1,0 +1,49 @@
+{
+  "v1": {
+    "n_examples": 8233,
+    "distinct_user_roles": 742,
+    "tool_calls_per_example": {
+      "mean": 1.43,
+      "median": 1,
+      "p90": 3,
+      "max": 10
+    },
+    "sql_feature_share_of_examples": {
+      "JOIN": 0.701,
+      "ORDER BY": 0.423,
+      "aggregate": 0.353,
+      "GROUP BY": 0.305,
+      "subquery": 0.216,
+      "date function": 0.192,
+      "CASE": 0.091,
+      "HAVING": 0.066
+    },
+    "query_lexical_diversity": {
+      "distinct_1gram_ratio": 0.0225,
+      "distinct_3gram_ratio": 0.5195,
+      "distinct_queries_ratio": 1.0
+    }
+  },
+  "v2": {
+    "n_examples": 1301,
+    "reference_plan_calls_per_example": {
+      "mean": 4.86,
+      "median": 5,
+      "p90": 7,
+      "max": 15
+    },
+    "tools_per_example": {
+      "mean": 8.86,
+      "median": 9,
+      "p90": 11,
+      "max": 14
+    },
+    "operation_share_of_examples": {
+      "sum / aggregation": 0.511,
+      "difference": 0.414,
+      "ratio / division": 0.315,
+      "average": 0.112,
+      "percent change": 0.112
+    }
+  }
+}

@@ -98,21 +98,45 @@ if task == "v1_answer":
     with st.expander("Automatic-scorer verdicts (open AFTER labelling)"):
         st.write({"numeric_match": case["numeric_match"], "judge_correct": case["judge_correct"]})
 else:
-    st.markdown("**Question**")
-    st.markdown(f"> {case['question']}")
-    c1, c2 = st.columns([1, 2])
-    with c1:
-        st.markdown("**Gold answer**")
-        st.text_area("g", case["gold"], height=120, label_visibility="collapsed", disabled=True)
-        st.markdown("**Tools available**")
-        st.text_area("t", "\n".join(case.get("tool_names", [])), height=200,
-                     label_visibility="collapsed", disabled=True)
-    with c2:
-        st.markdown("**Reference plan (should compute the gold from the tools)**")
-        st.code(case.get("reference_plan", ""), language="python")
+    top1, top2 = st.columns(2)
+    with top1:
+        st.markdown("**Agentic question (v2, rephrased)**")
+        st.markdown(f"> {case['question']}")
+        st.markdown(f"**v2 gold answer:** `{case['gold']}`")
+    with top2:
+        if case.get("finqa_question"):
+            flag = case.get("finqa_answer_matches_gold")
+            badge = "✅ matches gold" if flag else "⚠️ differs from gold"
+            st.markdown(f"**Original FinQA question** ({case.get('finqa_id','?')})")
+            st.markdown(f"> {case['finqa_question']}")
+            st.markdown(f"**FinQA answer:** `{case.get('finqa_answer','')}`  ·  {badge}")
+        else:
+            st.caption("Original FinQA item not resolved for this example.")
+
     b1, b2, b3, b4 = st.columns(4)
     b1.button("✅ Valid", on_click=set_label, args=(True,), use_container_width=True)
     b2.button("❌ Invalid", on_click=set_label, args=(False,), use_container_width=True)
     b3.button("🤷 Unclear", on_click=set_label, args=("unclear",), use_container_width=True)
     b4.button("Skip →", on_click=lambda: st.session_state.update(idx=min(st.session_state.idx + 1, n - 1)),
               use_container_width=True)
+    st.caption("Valid = the reference plan computes the gold from the tools AND the "
+               "agentic question is a faithful, well-posed transformation of the FinQA item.")
+
+    if case.get("finqa_table_md"):
+        st.markdown("**Original FinQA table**")
+        st.markdown(case["finqa_table_md"])
+    ft1, ft2 = st.columns(2)
+    with ft1:
+        with st.expander("FinQA pre-text (narrative before the table)"):
+            st.text(case.get("finqa_pre_text", "") or "—")
+    with ft2:
+        with st.expander("FinQA post-text (narrative after the table)"):
+            st.text(case.get("finqa_post_text", "") or "—")
+
+    col_t, col_p = st.columns(2)
+    with col_t:
+        st.markdown(f"**Tools ({len(case.get('tool_names', []))}): full definitions**")
+        st.code(case.get("tool_source", "\n".join(case.get("tool_names", []))), language="python")
+    with col_p:
+        st.markdown("**Reference plan (should compute the gold from the tools)**")
+        st.code(case.get("reference_plan", ""), language="python")

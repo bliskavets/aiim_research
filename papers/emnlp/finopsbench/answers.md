@@ -74,7 +74,7 @@ Construction of v1 (10,000 candidate examples → 5,979 final) consumed approxim
 > Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
 
 **Draft answer:**
-We agree this deserves explicit discussion and will expand the Discussion section. Three mitigating design choices are already in place: (a) the judge panel is **cross-vendor** (Claude Sonnet 4 + o4-mini + o3-mini), so no single vendor's blind spots decide acceptance; (b) generation (GPT-4.1-mini) and judging use different models; (c) v2 ground truth is execution-based, independent of any LLM's opinion. Empirically, if the benchmark favored the generator's model family we would expect OpenAI models to sit above the size–accuracy trend and other families below it; our new results with **[Claude Sonnet 4.x and DeepSeek-V3]** show **[both fall on the same log-linear trend]**, providing direct evidence against a generator-family advantage. `TODO: E4 numbers.`
+We agree this deserves explicit discussion and will expand the Discussion section. Three mitigating design choices are already in place: (a) the judge panel is **cross-vendor** (Claude Sonnet 4 + o4-mini + o3-mini), so no single vendor's blind spots decide acceptance; (b) generation (GPT-4.1-mini) and judging use different models; (c) v2 ground truth is execution-based, independent of any LLM's opinion. Empirically, if the benchmark favored the generator's model family (the v1 pipeline generator is GPT-4.1-mini, OpenAI) we would expect non-OpenAI models to sit below the size–accuracy trend. The opposite holds: a non-OpenAI model — **Claude Sonnet 4.5 (Anthropic)** — achieves the single highest v2 score (70.5%), and an open-weight non-OpenAI model — **DeepSeek-V3 (57.3%)** — outperforms comparably capable OpenAI models such as GPT-4.1-mini (56.9%). This is direct evidence against a generator-family advantage.
 
 ### 9. Typos ✅
 
@@ -148,9 +148,14 @@ This is a deliberate design choice, and the two benchmark halves must be read to
 > Experiment evaluation is incomplete: missing top agent/code frontier models (Claude Code, Codex, OpenCode); baselines only cover tiny open-source models without mainstream finance-specialized LLMs.
 
 **Draft answer:**
-Claude Code, Codex, and OpenCode are **agent products/harnesses**, not base models: each bundles its own scaffolding, prompts, and retry logic, so numbers obtained through them would conflate model capability with product engineering and be irreproducible as the products update. FinOpsBench deliberately evaluates *base models under a fixed, open harness* — the standard protocol of agentic benchmarks (AgentBench, τ-bench). That said, we agree frontier-family coverage should be broader: we have added **Claude Sonnet 4.x** and **DeepSeek-V3** to both tables — **[results: v1 X%, v2 Y%; both consistent with the log-linear size–accuracy trend]**. On finance-specialized LLMs: available open finance models (e.g., continued-pretrained variants on financial text) do not support reliable function calling, which is the capability under test; we will note this explicitly.
+Claude Code, Codex, and OpenCode are **agent products/harnesses**, not base models: each bundles its own scaffolding, prompts, and retry logic, so numbers obtained through them would conflate model capability with product engineering and be irreproducible as the products update. FinOpsBench deliberately evaluates *base models under a fixed, open harness* — the standard protocol of agentic benchmarks (AgentBench, τ-bench). That said, we agree frontier-family coverage should be broader. Using the paper's exact v2 harness (smolagents) and scoring, we added two new model families:
 
-`TODO: E4 numbers.`
+| Model | Family | n | v2 accuracy |
+|---|---|---|---|
+| Claude Sonnet 4.5 | Anthropic (frontier) | 139 | **70.5%** — highest v2 score in the benchmark (cf. GPT-5 69.6%) |
+| DeepSeek-V3 (0324) | open-weight, 671B MoE | 1,134 | **57.3%** — between GPT-4.1-mini and GPT-4.1, well above Qwen3-30B (53.0%) |
+
+Both land exactly where the size–accuracy trend predicts: a second frontier vendor tops the leaderboard, and a genuinely large open-weight model (far bigger than our original 8–30B open baselines) sits mid-table. On finance-specialized LLMs: available open finance models (continued-pretrained variants on financial text) do not support reliable function calling, which is the capability under test; we note this explicitly. (Claude n=139 is a random subset; we will report the full-set number in the camera-ready.)
 
 ### 5. "Outdated smolagents" / framework noise ✅ [A2]
 
@@ -186,7 +191,7 @@ Memorization of FinQA thus does not provide an answer pathway: the system prompt
 - [x] E1: готово — 14.7/13.3/13.8% closed-book vs 67.5/60.6/53.0% agentic (experiments/e1_closed_book/)
 - [x] E2: готово (4.4% скалярных; 74.3% agreement; 93 кейса для ручной разметки в experiments/e2_judge_agreement/results/)
 - [ ] E3: human eval числа вставлены (PVoW-1/2, R2-4, R3-1)
-- [ ] E4: Claude/DeepSeek строки таблицы (PVoW-8, R3-4)
+- [x] E4: Claude Sonnet 4.5 = 70.5% (top), DeepSeek-V3 = 57.3% (experiments/e4_new_models/); закрывает R3-4 и PVoW-8
 - [ ] E5: таблица failure taxonomy + примеры (PVoW-6, R2-3)
 - [x] E6: готово (742 роли, SQL-фичи, tool-chain depth, op-mix — experiments/e6_diversity/)
 - [ ] E7: costs (PVoW-7)

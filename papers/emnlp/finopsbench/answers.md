@@ -21,7 +21,7 @@ In total the expert verification covers **372 examples across both versions** (1
 
 Protocol, scripts, and all labels are released (`experiments/e3_human_eval/`).
 
-_All numbers final: v1 judge accuracy 85.1% (170 expert labels), v2 cleanliness 92% (100 expert-verified). Data and scripts in `experiments/e3_human_eval/`._
+_All numbers final: v1 judge accuracy 85.1% (170 expert labels), v2 cleanliness 85% (170/200 expert-verified). Data and scripts in `experiments/e3_human_eval/`._
 
 ### 2. LLM-judge ↔ human agreement (Cohen's κ) ✅ [E2]
 

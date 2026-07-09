@@ -1,0 +1,190 @@
+{
+  "n_measured": 2,
+  "avg_cost_per_example": 0.0367,
+  "avg_seconds_per_example": 68.5,
+  "runs": [
+    {
+      "stages": [
+        {
+          "stage": "1_query_gen (/20)",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 4.9e-05,
+          "in": 106,
+          "out": 586,
+          "s": 12.7,
+          "note": "cost shown per-example (1 call -> 20 queries)"
+        },
+        {
+          "stage": "2_schema_gen",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.0008248,
+          "in": 114,
+          "out": 487,
+          "s": 6.7,
+          "note": ""
+        },
+        {
+          "stage": "3_data_gen",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.002376,
+          "in": 336,
+          "out": 1401,
+          "s": 19.6,
+          "note": ""
+        },
+        {
+          "stage": "4_sql_repair",
+          "model": "openai/o4-mini",
+          "cost": 0.0096701,
+          "in": 855,
+          "out": 1984,
+          "s": 14.0,
+          "note": "(triggered: build failed)"
+        },
+        {
+          "stage": "4_sql_validation",
+          "model": "(sqlite, local)",
+          "cost": 0.0,
+          "in": 0,
+          "out": 0,
+          "s": 0.0,
+          "note": "executed, no repair needed"
+        },
+        {
+          "stage": "5_agent_trace (loop)",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.0011764,
+          "in": 1233,
+          "out": 427,
+          "s": 7.5,
+          "note": "multi-round tool-calling"
+        },
+        {
+          "stage": "6_judge:claude-sonnet-4",
+          "model": "anthropic/claude-sonnet-4",
+          "cost": 0.011985,
+          "in": 2325,
+          "out": 334,
+          "s": 5.2,
+          "note": ""
+        },
+        {
+          "stage": "6_judge:o4-mini",
+          "model": "openai/o4-mini",
+          "cost": 0.0115753,
+          "in": 1971,
+          "out": 2138,
+          "s": 15.0,
+          "note": ""
+        },
+        {
+          "stage": "6_judge:o3-mini",
+          "model": "openai/o3-mini",
+          "cost": 0.0151393,
+          "in": 1971,
+          "out": 2948,
+          "s": 8.3,
+          "note": ""
+        },
+        {
+          "stage": "final_answer_check",
+          "model": "openai/o4-mini",
+          "cost": 0.0016368,
+          "in": 412,
+          "out": 269,
+          "s": 2.5,
+          "note": ""
+        }
+      ],
+      "total_cost": 0.0544,
+      "total_seconds": 91.5
+    },
+    {
+      "stages": [
+        {
+          "stage": "1_query_gen (/20)",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 4.82e-05,
+          "in": 106,
+          "out": 576,
+          "s": 15.2,
+          "note": "cost shown per-example (1 call -> 20 queries)"
+        },
+        {
+          "stage": "2_schema_gen",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.0007084,
+          "in": 111,
+          "out": 415,
+          "s": 5.5,
+          "note": ""
+        },
+        {
+          "stage": "3_data_gen",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.0009956,
+          "in": 293,
+          "out": 549,
+          "s": 6.6,
+          "note": ""
+        },
+        {
+          "stage": "4_sql_validation",
+          "model": "(sqlite, local)",
+          "cost": 0.0,
+          "in": 0,
+          "out": 0,
+          "s": 0.0,
+          "note": "executed, no repair needed"
+        },
+        {
+          "stage": "5_agent_trace (loop)",
+          "model": "openai/gpt-4.1-mini",
+          "cost": 0.00047520000000000006,
+          "in": 588,
+          "out": 150,
+          "s": 2.9,
+          "note": "multi-round tool-calling"
+        },
+        {
+          "stage": "6_judge:claude-sonnet-4",
+          "model": "anthropic/claude-sonnet-4",
+          "cost": 0.007005,
+          "in": 1255,
+          "out": 216,
+          "s": 5.4,
+          "note": ""
+        },
+        {
+          "stage": "6_judge:o4-mini",
+          "model": "openai/o4-mini",
+          "cost": 0.0031295,
+          "in": 1037,
+          "out": 452,
+          "s": 3.2,
+          "note": ""
+        },
+        {
+          "stage": "6_judge:o3-mini",
+          "model": "openai/o3-mini",
+          "cost": 0.0047135,
+          "in": 1037,
+          "out": 812,
+          "s": 2.5,
+          "note": ""
+        },
+        {
+          "stage": "final_answer_check",
+          "model": "openai/o4-mini",
+          "cost": 0.0019382,
+          "in": 286,
+          "out": 369,
+          "s": 4.2,
+          "note": ""
+        }
+      ],
+      "total_cost": 0.019,
+      "total_seconds": 45.5
+    }
+  ]
+}

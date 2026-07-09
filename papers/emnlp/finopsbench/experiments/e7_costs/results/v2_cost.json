@@ -1,0 +1,95 @@
+{
+  "model": "openai/o3",
+  "n_measured": 1,
+  "avg_cost_per_example": 0.2688,
+  "avg_seconds_per_example": 123.5,
+  "runs": [
+    {
+      "agent_id": "agent_338",
+      "stages": [
+        {
+          "step": 1,
+          "file": "initial_solution.py",
+          "prompt_tokens": 2473,
+          "completion_tokens": 5215,
+          "cost": 0.046666,
+          "seconds": 28.6
+        },
+        {
+          "step": 2,
+          "file": "synthetic_db_generator.py",
+          "prompt_tokens": 2780,
+          "completion_tokens": 1159,
+          "cost": 0.011376,
+          "seconds": 9.5
+        },
+        {
+          "step": 3,
+          "file": "tools.py",
+          "prompt_tokens": 3365,
+          "completion_tokens": 544,
+          "cost": 0.008394,
+          "seconds": 4.3
+        },
+        {
+          "step": 4,
+          "file": "correct_plan.py",
+          "prompt_tokens": 3933,
+          "completion_tokens": 512,
+          "cost": 0.009274,
+          "seconds": 4.6
+        },
+        {
+          "step": 5,
+          "file": "synthetic_db_generator_augmented.py",
+          "prompt_tokens": 4248,
+          "completion_tokens": 5400,
+          "cost": 0.049008,
+          "seconds": 29.3
+        },
+        {
+          "step": 6,
+          "file": "tools_augmented.py",
+          "prompt_tokens": 6506,
+          "completion_tokens": 1777,
+          "cost": 0.02454,
+          "seconds": 9.9
+        },
+        {
+          "step": 7,
+          "file": "correct_plan_augmented.py",
+          "prompt_tokens": 7587,
+          "completion_tokens": 515,
+          "cost": 0.019294,
+          "seconds": 3.5
+        },
+        {
+          "step": 8,
+          "file": "agent_system_prompt.txt",
+          "prompt_tokens": 7986,
+          "completion_tokens": 834,
+          "cost": 0.019956,
+          "seconds": 5.3
+        },
+        {
+          "step": 9,
+          "file": "agent.py",
+          "prompt_tokens": 10099,
+          "completion_tokens": 2949,
+          "cost": 0.041102,
+          "seconds": 15.3
+        },
+        {
+          "step": 10,
+          "file": "test_agent.py",
+          "prompt_tokens": 11633,
+          "completion_tokens": 2322,
+          "cost": 0.039154,
+          "seconds": 13.2
+        }
+      ],
+      "total_cost": 0.2688,
+      "total_seconds": 123.5
+    }
+  ]
+}

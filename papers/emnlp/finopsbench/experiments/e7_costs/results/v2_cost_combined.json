@@ -1,0 +1,13 @@
+{
+  "n_measured": 2,
+  "avg_cost_per_example": 0.2369,
+  "avg_seconds_per_example": 111.8,
+  "per_example_costs": [
+    0.2688,
+    0.2051
+  ],
+  "per_example_seconds": [
+    123.5,
+    100.2
+  ]
+}

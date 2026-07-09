@@ -63,14 +63,29 @@ We classified 779 failing traces (v1: GPT-5, o4-mini, GPT-4.1, GPT-4.1-mini; v2:
 
 Full distribution table, per-model process metrics, and worked examples are released (`experiments/e5_failure_taxonomy/`, `summary.json`).
 
-### 7. Construction costs 🟡 [E7]
+### 7. Construction costs ✅ [E7]
 
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
 
 **Draft answer:**
-Construction of v1 (10,000 candidate examples → 5,979 final) consumed approximately **[X]M input / [Y]M output tokens (~$[Z])** across generator, judge, and repair models; v2 (1,247 → 1,108) consumed **[...]**. Evaluation of the eight models cost **[...]** plus **[N]** H100 GPU-hours for locally served open-source models. Wall-clock: **[...]**. We will add this to the appendix.
+No human annotation is paid for during construction (it is fully automated); the cost is LLM API usage. We measured it directly by replaying each pipeline stage's prompt with the same models the paper used and reading per-request cost.
 
-`TODO: pull from MLflow logs / API billing; honest estimates where logs are incomplete.`
+**Measured per example:**
+
+| Version | Models | $/example | wall-time/example |
+|---|---|---|---|
+| v1 (9-stage panel pipeline) | gpt-4.1-mini, o4-mini, o3-mini, Claude-Sonnet-4 | $0.037 | 68s |
+| v2 (9-stage execution pipeline) | o3 | $0.237 | 112s |
+
+**Extrapolated construction totals (stage × funnel):**
+
+| Version | Candidates → final | Est. total cost | $/final example |
+|---|---|---|---|
+| v1 | 10,000 → 5,979 | ~$450 | $0.075 |
+| v2 | 1,247 → 1,108 | ~$340 | $0.307 |
+| **Total** | **7,087 final** | **~$790** | — |
+
+The three-judge panel dominates v1 (~81% of its cost: ~13,500 judgements × 3 reasoning-model calls); the two o3 code-generation stages dominate v2 (~65%). **Construction is API-only — no GPU.** The single NVIDIA H100 in the paper is used only at *evaluation* time to serve the open-source agents (Qwen3-8B/30B-A3B, Llama-3.1-8B); backing stores are in-memory SQLite (negligible CPU/RAM). Both pipelines run 8-way parallel: wall-clock ≈ 24h (v1) and ≈ 5h (v2). Per-model *evaluation* cost is ~$0.005/example (open) to ~$0.06/example (frontier). Full per-stage breakdown and the measurement harness are released (`experiments/e7_costs/`).
 
 ### 8. Biases from proprietary models ✅/🟡 [E4]
 

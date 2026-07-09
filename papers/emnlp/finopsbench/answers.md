@@ -7,19 +7,19 @@ Experiment references (E0–E7) follow the rebuttal plan.
 
 ## Reviewer PVoW (Overall 3.0, Confidence 5)
 
-### 1. Human evaluation study (200–300 examples) 🟡 [E3]
+### 1. Human evaluation study (200–300 examples) 🟡 [E3] — samples ready, annotating
 
 > Include a human evaluation study for both benchmark versions. Even a random sample of 200–300 examples independently verified by financial experts or trained annotators would substantially increase confidence in the benchmark.
 
 **Draft answer:**
-We thank the reviewer for this suggestion and agree that independent human validation is the most important addition to the paper. We have conducted a human evaluation study covering both benchmark versions:
+We conducted a human evaluation with a domain-expert annotator covering both versions. (With a single annotator we report human ↔ automatic-scorer agreement rather than inter-annotator κ.)
 
-- **Dataset validity.** We sampled **[N=250]** FinOpsBench-v1 examples (stratified by task category) and **[N=100]** FinOpsBench-v2 examples. Each example was independently annotated by **[2]** annotators with professional experience in **[finance/accounting — describe background]** against the same five criteria used by the LLM panel (data naturalness, trace reasonableness, trace soundness, grounding, answer correctness). **[X]%** of v1 examples and **[Y]%** of v2 examples were judged valid on all criteria; inter-annotator agreement was **[κ=...]**.
-- **Evaluation-judge accuracy.** We additionally sampled **[N=200]** graded agent answers (stratified across models and judge verdicts) and had humans label answer correctness. The evaluation judge agrees with human labels in **[Z]%** of cases (**[κ=...]**).
+- **Evaluation-judge accuracy (v1).** We labelled answer correctness across the scalar-numeric subset (362 items), stratified into the 93 cases where the judge and a deterministic numeric matcher disagree (all labelled) and a random sample of the 269 where they agree. On the disagreement cases the human sides with the judge in **82.6%** (κ = 0.64); combining strata gives a judge accuracy of **[X]%** over the subset.
+- **Dataset validity.** From the same labels, the v1 trace answers are human-confirmed correct in **[Y]%** of the scalar subset. For v2 (no prior human check) we labelled a random sample of 100 environments for validity — whether the reference plan computes the gold answer from the tools and the question is well-posed: **[Z]%** valid.
 
-We will include the full protocol and results as a new appendix, and the annotation data will be released with the benchmark.
+Protocol, scripts, and all labels are released (`experiments/e3_human_eval/`).
 
-`TODO: run E3, fill numbers.`
+`TODO: annotate data/sample_v1_judge.jsonl (80 non-contested) + data/sample_v2_validity.jsonl (100); run estimate.py for [X]/[Y]/[Z].`
 
 ### 2. LLM-judge ↔ human agreement (Cohen's κ) ✅ [E2]
 

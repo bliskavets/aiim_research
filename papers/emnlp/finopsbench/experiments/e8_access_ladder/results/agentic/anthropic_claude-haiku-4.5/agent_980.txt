@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'toolu_bdrk_01N3UGYDe9znJroDDkSsX1h7', 'type': 'function', 'function': {'name': 'get_line_item_amount', 'arguments': {'report_id': 4, 'metric_id': 3}}}]

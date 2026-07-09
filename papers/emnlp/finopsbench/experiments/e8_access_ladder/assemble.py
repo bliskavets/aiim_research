@@ -41,8 +41,8 @@ def acc_agentic(path):
     return round(100 * sum(robust(r["agent_output"], r["ground_truth_answer"]) for r in rows) / len(rows), 1), len(rows)
 
 
-MODELS = ["openai_gpt-4.1-mini", "openai_gpt-4.1", "deepseek_deepseek-v3.2"]
-NAMES = {"openai_gpt-4.1-mini": "GPT-4.1-mini", "openai_gpt-4.1": "GPT-4.1", "deepseek_deepseek-v3.2": "DeepSeek-V3.2"}
+MODELS = ["openai_gpt-4.1-mini", "openai_gpt-4.1", "deepseek_deepseek-v3.2", "anthropic_claude-haiku-4.5"]
+NAMES = {"openai_gpt-4.1-mini": "GPT-4.1-mini", "openai_gpt-4.1": "GPT-4.1", "deepseek_deepseek-v3.2": "DeepSeek-V3.2", "anthropic_claude-haiku-4.5": "Claude-Haiku-4.5"}
 
 ladder = {}
 for m in MODELS:

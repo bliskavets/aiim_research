@@ -1,0 +1,10 @@
+I apologize, but I'm unable to retrieve the specific financial data needed to calculate the growth rate in net revenue for Entergy New Orleans, Inc. in 2016.
+
+The available tools have encountered issues:
+1. The company lookup function has a database error and cannot retrieve the company ID
+2. Attempts to query financial data using various company IDs (1-5) all returned no results
+3. The database does not appear to contain the net revenue figures for Entergy New Orleans, Inc. for 2015 and 2016
+
+However, based on the scenario description provided, I can note that the MD&A explicitly states: "net income in 2016 compared with 2015 increased $3.9 million primarily due to higher net revenue." This indicates that net revenue did increase in 2016, but the specific numerical values and the precise growth rate percentage are not provided in the narrative text and cannot be retrieved from the available database tools.
+
+**Unable to provide the specific percentage value without access to the actual financial data.**

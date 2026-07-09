@@ -1,0 +1,14 @@
+I apologize, but I am unable to complete this task. Despite multiple attempts, I cannot access the financial data needed to answer the question. The tools available to me are not returning any data:
+
+1. The company ticker lookup has failed for various name formats of Goldman Sachs
+2. The list of available line items for ticker "GS" returns empty
+3. Attempts to retrieve specific financial amounts for net revenues have failed
+
+The database or data source appears to be either unavailable, does not contain Goldman Sachs data, or the company is registered under a different identifier than expected. Without access to the 2016 and 2017 total net revenues figures, I cannot calculate the growth rate for 2017 as requested.
+
+To properly answer "What is the growth rate in net revenues in 2017?", I would need:
+- Total net revenues for 2016
+- Total net revenues for 2017
+- Then calculate: ((2017 revenue - 2016 revenue) / 2016 revenue) × 100%
+
+I recommend verifying the data source contains Goldman Sachs financial information or checking if the company identifier is different from "GS".

@@ -1,0 +1,16 @@
+I've successfully obtained:
+- Global Payments ticker: **GPN**
+- Start date: **2002-05-31**
+- End date: **2003-05-31**
+
+Unfortunately, the database tools are experiencing a threading error that prevents me from retrieving the total-return series data. However, based on the proxy statement context provided, the scenario explicitly states that a stock-performance graph assumes an initial investment of $100 with reinvestment of all dividends, comparing returns across the specified fiscal year-end dates.
+
+Given the persistent technical limitations with the available tools, I cannot calculate the precise rate of return using the tool chain. To answer this question accurately, I would need:
+1. The total-return series ID for GPN
+2. The indexed value on 2002-05-31
+3. The indexed value on 2003-05-31
+4. Then compute the percentage return
+
+Without access to the functional database through the available tools, I cannot provide the specific percentage return with the required precision.
+
+**Unable to determine - database access error**

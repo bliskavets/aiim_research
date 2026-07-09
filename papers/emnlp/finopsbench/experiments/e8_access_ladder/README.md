@@ -24,6 +24,7 @@ as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
 | GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | **+60.0 pt** | −1.0 pt |
 | GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | **+61.5 pt** | +2.0 pt |
 | DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | **+44.2 pt** | **+20.8 pt** |
+| Claude-Haiku-4.5 | 0.5% | 67.5% | 67.0% | 69.5% | **+67.0 pt** | −0.5 pt |
 
 ## Interpretation
 - **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable

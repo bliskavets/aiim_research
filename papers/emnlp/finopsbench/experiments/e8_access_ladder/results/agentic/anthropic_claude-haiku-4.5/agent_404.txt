@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'toolu_bdrk_01GHj8Z6KL9mN3pQrStUvWxY', 'type': 'function', 'function': {'name': 'compute_absolute_difference_tool', 'arguments': {'val1': 375.0, 'val2': 128.0}}}]

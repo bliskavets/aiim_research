@@ -1,0 +1,25 @@
+I appreciate the detailed scenario, but I need to be honest about the situation: all attempts to access the finance database have failed with "no such table" errors. The database appears to be unavailable or not properly initialized.
+
+However, based on the scenario description provided, I can see that:
+
+1. The passage discusses changes in the effective income-tax rate for continuing operations from 2004 through 2006
+2. It emphasizes that this rate changed due to factors like foreign operations, state and local taxes, and other tax effects
+3. The question asks specifically about the change from 2005 to 2006
+
+**The problem is:** Without access to the actual database tables (rate_types, effective_rates, rate_components, and component_rates), I cannot retrieve the specific numerical values for:
+- The effective tax rate for continuing operations in 2005
+- The effective tax rate for continuing operations in 2006
+- The difference between these two years
+
+**What would be needed to answer this question:**
+1. Access to a functioning finance database with the tax rate data
+2. Or access to the actual annual report text that contains the specific percentages
+
+Without either of these, I cannot provide the numeric answer in the format requested (e.g., "8.5%").
+
+**Recommendation:** Please verify that:
+- The finance database is properly initialized and accessible
+- The required tables exist and contain the 2005-2006 effective tax rate data for continuing operations
+- The database connection is working correctly
+
+Once the database is functional, I would call `get_effective_rate("continuing_operations", 2005)` and `get_effective_rate("continuing_operations", 2006)` to calculate the increase.

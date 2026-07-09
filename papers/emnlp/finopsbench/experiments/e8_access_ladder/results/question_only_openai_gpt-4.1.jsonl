@@ -1,0 +1,200 @@
+{"agent_id": "agent_404", "gold": "247", "prediction": "0", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_197", "gold": "13", "prediction": "40", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_1300", "gold": "26%", "prediction": "No", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_194", "gold": "-5821", "prediction": "0", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_247", "gold": "52.32%", "prediction": "140", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_280", "gold": "773%", "prediction": "No", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_911", "gold": "29.46%", "prediction": "0", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_269", "gold": "0.8%", "prediction": "No", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_1143", "gold": "0", "prediction": "0", "passed": true, "cost": 0.000162}
+{"agent_id": "agent_411", "gold": "2376487.57", "prediction": "2,283,172.04", "passed": false, "cost": 0.000332}
+{"agent_id": "agent_371", "gold": "48.1%", "prediction": "80", "passed": false, "cost": 0.000134}
+{"agent_id": "agent_106", "gold": "4640", "prediction": "2807", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_1267", "gold": "10%", "prediction": "29", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_1259", "gold": "67.9%", "prediction": "83", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_130", "gold": "-44.9%", "prediction": "0", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_701", "gold": "1.88", "prediction": "1.60", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_1173", "gold": "0.75", "prediction": "2.", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_1025", "gold": "2%", "prediction": "0", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_741", "gold": "8%", "prediction": "No", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_344", "gold": "1%", "prediction": "0", "passed": false, "cost": 0.000136}
+{"agent_id": "agent_713", "gold": "-10%", "prediction": "0", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_1287", "gold": "87.3", "prediction": "0", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_287", "gold": "24.2%", "prediction": "No.", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_816", "gold": "-30.56%", "prediction": "I don't have enough information to answer.", "passed": false, "cost": 0.0002}
+{"agent_id": "agent_560", "gold": "65%", "prediction": "-29", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_699", "gold": "1.17", "prediction": "1.05", "passed": false, "cost": 0.00017}
+{"agent_id": "agent_545", "gold": "5.4%", "prediction": "0", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_7", "gold": "63.6%", "prediction": "85", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_1242", "gold": "35.9%", "prediction": "Approximately two-thirds", "passed": false, "cost": 0.000164}
+{"agent_id": "agent_522", "gold": "67%", "prediction": "62", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_345", "gold": "0", "prediction": "0", "passed": true, "cost": 0.000144}
+{"agent_id": "agent_1277", "gold": "67451", "prediction": "0", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_961", "gold": "-10%", "prediction": "0", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_737", "gold": "3.2%", "prediction": "0", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_980", "gold": "9.235%", "prediction": "0", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_72", "gold": "14.3%", "prediction": "13", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_332", "gold": "52.9%", "prediction": "0", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_952", "gold": "125", "prediction": "22", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_452", "gold": "4", "prediction": "460", "passed": false, "cost": 0.0002}
+{"agent_id": "agent_726", "gold": "-18.3%", "prediction": "I don't have enough information to answer.", "passed": false, "cost": 0.000202}
+{"agent_id": "agent_176", "gold": "8.6%", "prediction": "4", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_338", "gold": "-5.8%", "prediction": "18", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_409", "gold": "10122", "prediction": "100", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_892", "gold": "31.4%", "prediction": "0", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_922", "gold": "38.74", "prediction": "No", "passed": false, "cost": 0.000128}
+{"agent_id": "agent_546", "gold": "9.5", "prediction": "85", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_76", "gold": "3.5%", "prediction": "0", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_182", "gold": "1.32%", "prediction": "53", "passed": false, "cost": 0.000176}
+{"agent_id": "agent_343", "gold": "27.4", "prediction": "15-40", "passed": false, "cost": 0.000178}
+{"agent_id": "agent_577", "gold": "126.0", "prediction": "Cannot determine.", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_1268", "gold": "-1693", "prediction": "0", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_953", "gold": "17.8%", "prediction": "10", "passed": false, "cost": 0.000136}
+{"agent_id": "agent_825", "gold": "58.98%", "prediction": "No.", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_29", "gold": "0.96", "prediction": "15", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_225", "gold": "19.4%", "prediction": "9", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_567", "gold": "1.74%", "prediction": "20", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_115", "gold": "2.33", "prediction": "2.0", "passed": false, "cost": 0.000186}
+{"agent_id": "agent_982", "gold": "4.8", "prediction": "26.6", "passed": false, "cost": 0.00021}
+{"agent_id": "agent_21", "gold": "16.7%", "prediction": "40", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_1269", "gold": "20.5", "prediction": "125", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_381", "gold": "14.3%", "prediction": "0", "passed": false, "cost": 0.000132}
+{"agent_id": "agent_769", "gold": "2476.50", "prediction": "82000", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_630", "gold": "1.9%", "prediction": "43", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_688", "gold": "15.1%", "prediction": "100", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_1291", "gold": "37.9%", "prediction": "12", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_838", "gold": "10.14%", "prediction": "-8", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_70", "gold": "538.56%", "prediction": "427", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_268", "gold": "8%", "prediction": "15", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_324", "gold": "749524", "prediction": "164", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_617", "gold": "8.5%", "prediction": "3.5", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_73", "gold": "7%", "prediction": "21", "passed": false, "cost": 0.000154}
+{"agent_id": "agent_1002", "gold": "11.1%", "prediction": "16", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_666", "gold": "4.5%", "prediction": "100", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_140", "gold": "11%", "prediction": "5", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_226", "gold": "13.0%", "prediction": "1", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_584", "gold": "8953", "prediction": "116", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_886", "gold": "77", "prediction": "395", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_294", "gold": "-151100", "prediction": "Decreased", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_242", "gold": "61.5%", "prediction": "9", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_1085", "gold": "31904", "prediction": "18045", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_32", "gold": "14.9", "prediction": "1334", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_835", "gold": "43.67", "prediction": "8600", "passed": false, "cost": 0.000164}
+{"agent_id": "agent_323", "gold": "9.2%", "prediction": "80", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_551", "gold": "24%", "prediction": "33", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_993", "gold": "12%", "prediction": "15", "passed": false, "cost": 0.000186}
+{"agent_id": "agent_1078", "gold": "61%", "prediction": "45", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_532", "gold": "8.7%", "prediction": "0", "passed": false, "cost": 0.000174}
+{"agent_id": "agent_1086", "gold": "1575000", "prediction": "0", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_412", "gold": "1.31", "prediction": "0.5", "passed": false, "cost": 0.000174}
+{"agent_id": "agent_513", "gold": "270111", "prediction": "1537", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_207", "gold": "15.1%", "prediction": "100", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_188", "gold": "66.6%", "prediction": "No", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_114", "gold": "11.3", "prediction": "352", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_963", "gold": "350824 thousand", "prediction": "100", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_157", "gold": "4.8", "prediction": "25", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_15", "gold": "65.6%", "prediction": "34", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_965", "gold": "70.9%", "prediction": "It depends.", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_1231", "gold": "24123727", "prediction": "201", "passed": false, "cost": 0.000196}
+{"agent_id": "agent_1188", "gold": "98.2%", "prediction": "11", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_698", "gold": "31%", "prediction": "No", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_938", "gold": "9.81%", "prediction": "No.", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_90", "gold": "-1579", "prediction": "0", "passed": false, "cost": 0.00017}
+{"agent_id": "agent_125", "gold": "257.95%", "prediction": "0", "passed": false, "cost": 0.000136}
+{"agent_id": "agent_719", "gold": "3.884%", "prediction": "10", "passed": false, "cost": 0.000136}
+{"agent_id": "agent_516", "gold": "41.7%", "prediction": "0.", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_126", "gold": "295.4", "prediction": "4857", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_442", "gold": "39.6", "prediction": "0", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_654", "gold": "49%", "prediction": "82", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_1004", "gold": "4.97", "prediction": "Cannot determine.", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_356", "gold": "966", "prediction": "372", "passed": false, "cost": 0.000184}
+{"agent_id": "agent_1158", "gold": "71%", "prediction": "40", "passed": false, "cost": 0.00013}
+{"agent_id": "agent_1282", "gold": "32%", "prediction": "38", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_780", "gold": "13.5%", "prediction": "No data.", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_1318", "gold": "13.4%", "prediction": "50", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_1009", "gold": "0.913", "prediction": "1.05", "passed": false, "cost": 0.000164}
+{"agent_id": "agent_1070", "gold": "60%", "prediction": "56", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_466", "gold": "6.3%", "prediction": "I don't have enough information to answer.", "passed": false, "cost": 0.00019}
+{"agent_id": "agent_5", "gold": "56.25%%", "prediction": "3%", "passed": false, "cost": 0.000164}
+{"agent_id": "agent_971", "gold": "20.4", "prediction": "1", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_79", "gold": "7.7%", "prediction": "10", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_425", "gold": "76", "prediction": "250", "passed": false, "cost": 0.00021}
+{"agent_id": "agent_914", "gold": "2.5%", "prediction": "No data.", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_88", "gold": "11", "prediction": "3", "passed": false, "cost": 0.000128}
+{"agent_id": "agent_264", "gold": "-54%", "prediction": "0", "passed": false, "cost": 0.000182}
+{"agent_id": "agent_234", "gold": "no", "prediction": "Yes.", "passed": false, "cost": 0.000196}
+{"agent_id": "agent_845", "gold": "-1", "prediction": "2", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_415", "gold": "120384.6", "prediction": "Cannot determine.", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_890", "gold": "17.18", "prediction": "23.83", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_135", "gold": "11.25%", "prediction": "2", "passed": false, "cost": 0.000182}
+{"agent_id": "agent_588", "gold": "-46.29%", "prediction": "100", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_1063", "gold": "10.7%", "prediction": "19", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_690", "gold": "0.0%", "prediction": "100", "passed": false, "cost": 0.000178}
+{"agent_id": "agent_337", "gold": "-51.3%", "prediction": "-29", "passed": false, "cost": 0.000188}
+{"agent_id": "agent_13", "gold": "43990.0%", "prediction": "0", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_249", "gold": "1016", "prediction": "2401", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_398", "gold": "7.9%", "prediction": "5", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_306", "gold": "27.2%", "prediction": "-2", "passed": false, "cost": 0.000166}
+{"agent_id": "agent_696", "gold": "23.3", "prediction": "0", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_228", "gold": "17.2%", "prediction": "5", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_1077", "gold": "-17.4%", "prediction": "-23", "passed": false, "cost": 0.000194}
+{"agent_id": "agent_634", "gold": "86.3", "prediction": "No", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_460", "gold": "282076", "prediction": "No", "passed": false, "cost": 0.000138}
+{"agent_id": "agent_1177", "gold": "no", "prediction": "No", "passed": true, "cost": 0.000136}
+{"agent_id": "agent_762", "gold": "7.1%", "prediction": "No", "passed": false, "cost": 0.000132}
+{"agent_id": "agent_1139", "gold": "8.1", "prediction": "0", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_434", "gold": "2.7%", "prediction": "30", "passed": false, "cost": 0.000136}
+{"agent_id": "agent_1092", "gold": "14000000", "prediction": "176", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_201", "gold": "0.1%", "prediction": "2", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_739", "gold": "41%", "prediction": "40", "passed": false, "cost": 0.000134}
+{"agent_id": "agent_1006", "gold": "2.72", "prediction": "0.49", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_1124", "gold": "1224", "prediction": "1,450", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_802", "gold": "2439", "prediction": "I don't have enough information to answer.", "passed": false, "cost": 0.000234}
+{"agent_id": "agent_401", "gold": "1.18", "prediction": "0.5", "passed": false, "cost": 0.000166}
+{"agent_id": "agent_709", "gold": "81%", "prediction": "100", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_1303", "gold": "97%", "prediction": "41", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_496", "gold": "275.9%", "prediction": "I don't have enough information to answer.", "passed": false, "cost": 0.0002}
+{"agent_id": "agent_134", "gold": "2825000", "prediction": "150,000", "passed": false, "cost": 0.000174}
+{"agent_id": "agent_429", "gold": "8.3%", "prediction": "No", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_255", "gold": "89.8%", "prediction": "72", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_437", "gold": "199", "prediction": "-114,013", "passed": false, "cost": 0.000178}
+{"agent_id": "agent_614", "gold": "-38.54%", "prediction": "-135", "passed": false, "cost": 0.000184}
+{"agent_id": "agent_525", "gold": "41%", "prediction": "0", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_570", "gold": "357", "prediction": "0", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_1205", "gold": "48%", "prediction": "41", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_1262", "gold": "75%", "prediction": "15", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_1066", "gold": "19.8", "prediction": "255", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_903", "gold": "10.8%", "prediction": "0.", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_722", "gold": "1.9%", "prediction": "0", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_555", "gold": "73", "prediction": "17", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_708", "gold": "3.21", "prediction": "2.0", "passed": false, "cost": 0.000188}
+{"agent_id": "agent_1087", "gold": "$ 1928.88", "prediction": "129032000000", "passed": false, "cost": 0.000168}
+{"agent_id": "agent_413", "gold": "13%", "prediction": "7", "passed": false, "cost": 0.000154}
+{"agent_id": "agent_1264", "gold": "8.4", "prediction": "7", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_69", "gold": "1008.5", "prediction": "0", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_1099", "gold": "17.4%", "prediction": "12.8", "passed": false, "cost": 0.00016}
+{"agent_id": "agent_1008", "gold": "-10%", "prediction": "No data provided.", "passed": false, "cost": 0.00017}
+{"agent_id": "agent_943", "gold": "0.99", "prediction": "1.1", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_1258", "gold": "7341", "prediction": "It decreases by the amount of the increase in receivables (or increases by the amount of the decrease in receivables).", "passed": false, "cost": 0.000356}
+{"agent_id": "agent_92", "gold": "331.2", "prediction": "Cannot determine.", "passed": false, "cost": 0.000158}
+{"agent_id": "agent_471", "gold": "-1365", "prediction": "-599", "passed": false, "cost": 0.000194}
+{"agent_id": "agent_313", "gold": "50.0%", "prediction": "100", "passed": false, "cost": 0.000154}
+{"agent_id": "agent_1307", "gold": "122604300", "prediction": "49", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_1106", "gold": "467", "prediction": "184,600", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_1142", "gold": "450000", "prediction": "600,000", "passed": false, "cost": 0.000152}
+{"agent_id": "agent_1182", "gold": "8.36", "prediction": "1", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_578", "gold": "-256245", "prediction": "0", "passed": false, "cost": 0.000146}
+{"agent_id": "agent_347", "gold": "60%", "prediction": "20", "passed": false, "cost": 0.000134}
+{"agent_id": "agent_295", "gold": "55.3%", "prediction": "13", "passed": false, "cost": 0.000134}
+{"agent_id": "agent_1095", "gold": "1.9", "prediction": "13", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_520", "gold": "82%", "prediction": "100", "passed": false, "cost": 0.000154}
+{"agent_id": "agent_246", "gold": "28%", "prediction": "42", "passed": false, "cost": 0.000142}
+{"agent_id": "agent_156", "gold": "44%", "prediction": "34", "passed": false, "cost": 0.000148}
+{"agent_id": "agent_296", "gold": "1.4%", "prediction": "7", "passed": false, "cost": 0.000144}
+{"agent_id": "agent_211", "gold": "4.2%", "prediction": "I do not have enough data to answer.", "passed": false, "cost": 0.00025}
+{"agent_id": "agent_720", "gold": "151", "prediction": "8", "passed": false, "cost": 0.000156}
+{"agent_id": "agent_1110", "gold": "1.5", "prediction": "1.2", "passed": false, "cost": 0.000162}
+{"agent_id": "agent_626", "gold": "16759.5", "prediction": "100", "passed": false, "cost": 0.00014}
+{"agent_id": "agent_947", "gold": "36804.76", "prediction": "2482", "passed": false, "cost": 0.00015}
+{"agent_id": "agent_798", "gold": "5805209", "prediction": "The balance will be the initial long-term debt minus the scheduled principal repayments for the year.", "passed": false, "cost": 0.000298}
+{"agent_id": "agent_885", "gold": "16.7%", "prediction": "500,000", "passed": false, "cost": 0.00015}

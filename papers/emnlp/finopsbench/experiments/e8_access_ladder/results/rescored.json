@@ -1,0 +1,22 @@
+{
+  "full_context_openai_gpt-4.1-mini": {
+    "n": 200,
+    "raw_acc": 22.5,
+    "robust_acc": 64.5
+  },
+  "full_context_openai_gpt-4.1": {
+    "n": 200,
+    "raw_acc": 26.0,
+    "robust_acc": 65.0
+  },
+  "question_only_openai_gpt-4.1-mini": {
+    "n": 200,
+    "raw_acc": 1.0,
+    "robust_acc": 1.5
+  },
+  "question_only_openai_gpt-4.1": {
+    "n": 200,
+    "raw_acc": 1.5,
+    "robust_acc": 2.0
+  }
+}

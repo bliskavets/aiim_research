@@ -1,0 +1,18 @@
+{
+  "GPT-4.1-mini": {
+    "n": 200,
+    "a_question_only": 1.5,
+    "c_agentic": 61.5,
+    "b_full_context": 64.5,
+    "tool_use_necessity_c_minus_a": 60.0,
+    "agentic_gap_b_minus_c": 3.0
+  },
+  "GPT-4.1": {
+    "n": 200,
+    "a_question_only": 2.0,
+    "c_agentic": 63.5,
+    "b_full_context": 65.0,
+    "tool_use_necessity_c_minus_a": 61.5,
+    "agentic_gap_b_minus_c": 1.5
+  }
+}

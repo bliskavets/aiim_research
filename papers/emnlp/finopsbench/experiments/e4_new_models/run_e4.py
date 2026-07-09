@@ -35,6 +35,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--runner", default="SA", help="Runner from the benchmark's agent_runners/")
     p.add_argument("--python", default=sys.executable, help="Python with smolagents+mlflow installed")
     p.add_argument("--sample", type=int, default=None, help="Random subsample size (seed 13)")
+    p.add_argument("--subset_file", type=Path, default=None, help="JSON list of agent_ids to restrict to")
     p.add_argument("--limit", type=int, default=None, help="Cap items this invocation (pilots)")
     p.add_argument("--concurrency", type=int, default=6)
     p.add_argument("--budget_usd", type=float, required=True, help="Hard cap for this run")
@@ -90,6 +91,10 @@ def main() -> None:
             if (d / "agent_system_prompt.txt").is_file()
             and (d / "initial_solution.txt").is_file()
             and (d / "tool_proxy.py").is_file()]
+    if args.subset_file:
+        import json as _json
+        keep = set(_json.loads(args.subset_file.read_text()))
+        dirs = [d for d in dirs if d.name in keep]
     print(f"{len(dirs)} runnable environments")
     if args.sample:
         dirs = random.Random(13).sample(dirs, args.sample)

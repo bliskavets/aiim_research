@@ -1,0 +1,15 @@
+Let's proceed step by step:
+
+1. **Identify codes:**  
+   You have already successfully listed AFUDC categories.  
+   - **BORR:** Allowance for borrowed funds used during construction  
+   - **OTHR:** Allowance for other funds used during construction
+
+2. **Retrieve 2015 values:**  
+   I will now retrieve the AFUDC allowance amounts for both 'BORR' and 'OTHR' in 2015.
+
+---
+
+Calling tools:
+- get_afudc_allowance(2015, 'BORR')
+- get_afudc_allowance(2015, 'OTHR')

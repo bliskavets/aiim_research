@@ -1,0 +1,41 @@
+# E8 — Information-access ladder (novelty / "what new capability?", Reviewer R2)
+
+**Claim addressed:** R2 — "multiple recent benchmarks already do agentic financial
+tool use; what *fundamentally new evaluation capability* does FinOpsBench provide?"
+
+**Idea.** FinOpsBench can hold the *item* fixed and vary the *information-access
+mode*, decomposing accuracy into three rungs on the SAME 200 v2 items / same model:
+
+| rung | prompt | measures |
+|---|---|---|
+| (a) question-only | just the question, no data, no tools | parametric / memorised knowledge |
+| (c) agentic | tools only (our benchmark, SA runner) | agentic retrieval + planning |
+| (b) full-context | original FinQA narrative+table in prompt, no tools | reading-comprehension ceiling |
+
+Scoring is percent-robust (the benchmark's compare_answers treats a trailing '%'
+as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
+100x off — the real agents keep the '%' sign so are unaffected. `rescore.py`/
+`assemble.py` credit the percent-scaling case consistently across all rungs).
+
+## Result (percent-robust, n=200)
+| Model | (a) question-only | (c) agentic | (b) full-context | tool-use necessity (c−a) | agentic gap (b−c) |
+|---|---|---|---|---|---|
+| GPT-4.1-mini | 1.5% | 61.5% | 64.5% | **+60.0 pt** | 3.0 pt |
+| GPT-4.1 | 2.0% | 63.5% | 65.0% | **+61.5 pt** | 1.5 pt |
+
+## Interpretation
+- **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable
+  from parametric memory (1.5–2%); accuracy only appears once tools retrieve the
+  data. This is a capability static financial QA cannot measure and a direct
+  refutation of contamination.
+- **Agentic gap ≈ 1.5–3 pt (b−c).** A model that can *read* the disclosure can also
+  *retrieve* it through tools with minimal loss — so the tool wrapper is faithful
+  (adds no spurious difficulty) and the reading ceiling (~65%) confirms the items
+  are well-posed. Remaining agentic failures are genuine tool-use/planning errors
+  (see e5_failure_taxonomy), not artifacts.
+- **The novel capability:** decomposing a fixed item into memorisation / agentic
+  retrieval / reading ceiling. No static benchmark (no tool requirement) or live
+  benchmark (cannot hold the item fixed or reproduce it) can produce this.
+
+Run: `python run_context.py --mode {question_only,full_context} --model M`
+(rungs a,b) + `run_e4.py --subset_file subset_200.json` (rung c) + `python assemble.py`.

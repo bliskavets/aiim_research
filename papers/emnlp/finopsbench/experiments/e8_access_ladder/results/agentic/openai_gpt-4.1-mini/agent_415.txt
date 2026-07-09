@@ -1,0 +1,3 @@
+I was unable to retrieve both net income and basic EPS data for Hologic, Inc. for any recent years from the database. Without either net income or EPS data, I cannot calculate the number of outstanding shares.
+
+Therefore, the estimated number of outstanding shares cannot be determined from the available data.

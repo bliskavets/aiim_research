@@ -1,0 +1,16 @@
+Total shares vested in nonzero buckets for PlanA are from buckets: ['2017', '2018', '2019', '2020', '2021', 'thereafter']
+Shares per bucket:
+2017: 1476832
+2018: 199850
+2019: 2352443
+2020: 539790
+2021: 110494
+thereafter: 4358728
+
+Sum of all shares = 1476832 + 199850 + 2352443 + 539790 + 110494 + 4358728 = 9122137
+
+Sum of shares vesting after 2021 (thereafter only) = 4358728
+
+Percentage vesting after 2021 = (4358728 / 9122137) * 100 = approximately 47.8%
+
+Answer: 48%

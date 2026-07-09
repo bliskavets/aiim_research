@@ -1,0 +1,29 @@
+[
+ {
+  "model": "openai/gpt-4.1-mini",
+  "items_run_now": 15,
+  "items_scored_total": 15,
+  "accuracy": 60.0,
+  "spent_usd": 0.0299,
+  "budget_usd": 2.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "openai/gpt-4.1-mini",
+  "items_run_now": 185,
+  "items_scored_total": 200,
+  "accuracy": 59.5,
+  "spent_usd": 0.5852,
+  "budget_usd": 8.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "openai/gpt-4.1",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 62.0,
+  "spent_usd": 2.9413,
+  "budget_usd": 8.0,
+  "stopped_by_budget": false
+ }
+]

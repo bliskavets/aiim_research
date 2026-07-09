@@ -119,12 +119,19 @@ We suspect the reviewer could not access our release at review time, and we apol
 **Draft answer:**
 The capability FinOpsBench isolates is **planning under partial observability with grounded evidence aggregation**: the agent must discover what information exists (schema/tool probing), plan a multi-step retrieval strategy, filter distractors, and synthesize a faithful answer from intermediate tool outputs — with the domain contributing hard semantics (aging, variance attribution, revenue recognition) rather than mere surface flavor. Existing resources measure either reading comprehension over provided context (FinQA, TAT-QA) or query-string fidelity against a visible schema (Spider, BIRD); neither requires the agent to *decide what to look at* before reasoning. Our diagnostic design makes this capability measurable in isolation: every failure is attributable to a specific planning or tool-use mistake because the environment is fully controlled and the ground truth executable. The ReAct-vs-native finding (reasoning scaffolds help non-thinking models but hurt thinking ones) is an example of a general, transferable insight the benchmark surfaces.
 
-### 2. What's fundamentally new vs recent agentic finance benchmarks? ✅ [A1]
+### 2. What's fundamentally new vs recent agentic finance benchmarks? ✅ [A1 + E8]
 
 > multiple recent benchmarks have already moved in this direction. It remains somewhat unclear what fundamentally new evaluation capability FinOpsBench provides.
 
 **Draft answer:**
-Relative to FinGAIA, Finance Agent Benchmark, and FinAgentBench (discussed in §2), FinOpsBench is the only resource that combines: (1) **hermetic, executable environments** — no live web/API dependence, so results are exactly reproducible and failures attributable to the agent rather than external noise; (2) **controlled distractors** at both data and tool level; (3) **scale** (≈6k + 1.1k tasks vs. a few hundred); (4) **full reference traces** enabling process-level analysis, not just final-answer scoring. The realism-oriented benchmarks and FinOpsBench are complements, not substitutes: they measure deployment behavior, we measure diagnostic competence. We will restore the comparison table (currently cut for space) making these axes explicit. Notably, our Appendix A cross-benchmark analysis shows FinAgentBench exhibits an *inverse* size–accuracy trend — precisely the validity failure our controlled design avoids.
+The new capability is not "agentic financial tool use" per se but a **controllable, hermetic decomposition of agentic competence** that realism-oriented benchmarks cannot offer. Concretely, because our environments are synthetic and executable we can hold the *item* fixed and vary the *information-access mode* — a measurement no static (no tool requirement) or live/web benchmark (cannot reproduce or hold items fixed) can produce. We ran this **access ladder** on 200 v2 items (same model, percent-robust scoring):
+
+| Model | question-only (memorised) | agentic (tools) | full-context (reading ceiling) | tool-use necessity | agentic gap |
+|---|---|---|---|---|---|
+| GPT-4.1-mini | 1.5% | 61.5% | 64.5% | **+60.0 pt** | 3.0 pt |
+| GPT-4.1 | 2.0% | 63.5% | 65.0% | **+61.5 pt** | 1.5 pt |
+
+Two quantities fall out that existing benchmarks do not expose: (i) a **tool-use necessity of ~60 pts** — the questions are essentially unanswerable from parametric memory and only become answerable once tools retrieve the data (this also refutes contamination); (ii) an **agentic gap of ~1.5–3 pts** — a model that can *read* the disclosure retrieves it through tools with minimal loss, showing the tool wrapper is faithful and remaining failures are genuine planning/tool-use errors (see the failure taxonomy). Beyond this decomposition, FinOpsBench is the only finance benchmark combining hermetic/reproducible environments, controlled data- and tool-level distractors, ~6k+1.1k scale, and full reference traces; our Appendix cross-benchmark analysis further shows FinAgentBench's *inverse* size–accuracy trend, the validity failure our controlled design avoids. Full harness: `experiments/e8_access_ladder/`.
 
 ### 3. Fine-grained diagnostics beyond final-answer accuracy ✅ [E5]
 

@@ -1,0 +1,7 @@
+Reasoning: 
+To find the balance of long-term debt after one year, we need to subtract the portion of long-term debt due within the next year from the total current long-term debt, under the assumption that all scheduled payments are made as planned and no new debt is raised. The result is the long-term debt that remains after these payments. 
+
+Using the tools: 
+- Pulled the projected long-term debt balance after one year directly, which is 5,805,209 (in thousands of U.S. dollars).
+
+Final Answer: 5805209

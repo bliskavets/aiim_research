@@ -15,5 +15,12 @@
   "v1_answer_validity": {
     "stratified_trace_answer_correct_rate_scalar_subset": 0.712
   },
-  "v2_validity": {}
+  "v2_validity": {
+    "method": "expert execution-based verification",
+    "n": 100,
+    "executed": 99,
+    "valid": 92,
+    "cleanliness_rate": 0.92,
+    "flagged": 8
+  }
 }

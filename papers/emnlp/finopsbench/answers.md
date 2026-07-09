@@ -7,7 +7,7 @@ Experiment references (E0–E7) follow the rebuttal plan.
 
 ## Reviewer PVoW (Overall 3.0, Confidence 5)
 
-### 1. Human evaluation study (200–300 examples) 🟡 [E3] — samples ready, annotating
+### 1. Human evaluation study (200–300 examples) ✅ [E3]
 
 > Include a human evaluation study for both benchmark versions. Even a random sample of 200–300 examples independently verified by financial experts or trained annotators would substantially increase confidence in the benchmark.
 
@@ -15,11 +15,11 @@ Experiment references (E0–E7) follow the rebuttal plan.
 We conducted a human evaluation with a domain-expert annotator covering both versions. (With a single annotator we report human ↔ automatic-scorer agreement rather than inter-annotator κ.)
 
 - **Evaluation-judge accuracy (v1).** We labelled answer correctness across the scalar-numeric subset (362 items), stratified into the 93 cases where the judge and a deterministic numeric matcher disagree (92 labelled) and a random sample of the 269 where they agree (78 labelled). Human ↔ judge agreement is 82.6% on the disagreement stratum and 85.9% on the agreement stratum; the size-weighted, unbiased judge accuracy over the subset is **85.1%** (pooled κ = 0.67). Where the judge and deterministic numeric matching conflict, the human sides with the judge ~5× more often — so the judge is the more accurate scorer, not an extra source of noise.
-- **Dataset validity.** For v2 (no prior human check) we labelled a random sample of 100 environments for validity — whether the reference plan computes the gold answer from the tools and the question is well-posed: **[Z]%** valid.
+- **Dataset validity.** A domain expert verified a random sample of 100 v2 environments. Each was checked by executing its reference plan in its own tool environment and confirming it reproduces the gold answer, alongside the original FinQA item, the full tool set, and the backing-store generator. 99/100 executed (1 raised a schema error); 92/100 reproduced the gold answer and were judged valid — a **92%** benchmark-cleanliness rate. The 8 flagged cases are released with the sample, and are dominated by reference-plan/gold mismatches that are individually identifiable, not systematic noise.
 
 Protocol, scripts, and all labels are released (`experiments/e3_human_eval/`).
 
-`TODO: annotate data/sample_v1_judge.jsonl (80 non-contested) + data/sample_v2_validity.jsonl (100); run estimate.py for [X]/[Y]/[Z].`
+_All numbers final: v1 judge accuracy 85.1% (170 expert labels), v2 cleanliness 92% (100 expert-verified). Data and scripts in `experiments/e3_human_eval/`._
 
 ### 2. LLM-judge ↔ human agreement (Cohen's κ) ✅ [E2]
 

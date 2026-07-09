@@ -1,0 +1,10 @@
+{
+  "labelled": 92,
+  "unclear": 0,
+  "remaining": 1,
+  "human_correct": 40,
+  "human_incorrect": 52,
+  "agreement_human_vs_judge": 0.8261,
+  "agreement_human_vs_numeric": 0.1739,
+  "cohen_kappa_human_vs_judge": 0.6441
+}

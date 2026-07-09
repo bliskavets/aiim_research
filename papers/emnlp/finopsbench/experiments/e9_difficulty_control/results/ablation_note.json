@@ -1,0 +1,5 @@
+{
+  "note": "INVALID as distractor-tax: system prompt still advertises removed tools (agent calls absent tool -> error) and plan-external tools include discovery helpers, so core-only is not a clean distractor removal",
+  "coreonly_acc": 52.0,
+  "full_tools_acc": 61.5
+}

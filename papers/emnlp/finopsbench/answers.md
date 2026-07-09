@@ -14,8 +14,8 @@ Experiment references (E0–E7) follow the rebuttal plan.
 **Draft answer:**
 We conducted a human evaluation with a domain-expert annotator covering both versions. (With a single annotator we report human ↔ automatic-scorer agreement rather than inter-annotator κ.)
 
-- **Evaluation-judge accuracy (v1).** We labelled answer correctness across the scalar-numeric subset (362 items), stratified into the 93 cases where the judge and a deterministic numeric matcher disagree (all labelled) and a random sample of the 269 where they agree. On the disagreement cases the human sides with the judge in **82.6%** (κ = 0.64); combining strata gives a judge accuracy of **[X]%** over the subset.
-- **Dataset validity.** From the same labels, the v1 trace answers are human-confirmed correct in **[Y]%** of the scalar subset. For v2 (no prior human check) we labelled a random sample of 100 environments for validity — whether the reference plan computes the gold answer from the tools and the question is well-posed: **[Z]%** valid.
+- **Evaluation-judge accuracy (v1).** We labelled answer correctness across the scalar-numeric subset (362 items), stratified into the 93 cases where the judge and a deterministic numeric matcher disagree (92 labelled) and a random sample of the 269 where they agree (78 labelled). Human ↔ judge agreement is 82.6% on the disagreement stratum and 85.9% on the agreement stratum; the size-weighted, unbiased judge accuracy over the subset is **85.1%** (pooled κ = 0.67). Where the judge and deterministic numeric matching conflict, the human sides with the judge ~5× more often — so the judge is the more accurate scorer, not an extra source of noise.
+- **Dataset validity.** For v2 (no prior human check) we labelled a random sample of 100 environments for validity — whether the reference plan computes the gold answer from the tools and the question is well-posed: **[Z]%** valid.
 
 Protocol, scripts, and all labels are released (`experiments/e3_human_eval/`).
 

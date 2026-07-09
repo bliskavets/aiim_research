@@ -1,5 +1,19 @@
 {
-  "v1_judge_accuracy": {},
-  "v1_answer_validity": {},
+  "v1_judge_accuracy": {
+    "contested": {
+      "n_labelled": 92,
+      "judge_acc": 0.826,
+      "stratum_size": 93
+    },
+    "non_contested": {
+      "n_labelled": 78,
+      "judge_acc": 0.859,
+      "stratum_size": 269
+    },
+    "stratified_judge_accuracy_scalar_subset": 0.851
+  },
+  "v1_answer_validity": {
+    "stratified_trace_answer_correct_rate_scalar_subset": 0.712
+  },
   "v2_validity": {}
 }

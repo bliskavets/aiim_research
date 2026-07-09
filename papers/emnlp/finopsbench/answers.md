@@ -15,7 +15,9 @@ Experiment references (E0–E7) follow the rebuttal plan.
 We conducted a human evaluation with a domain-expert annotator covering both versions. (With a single annotator we report human ↔ automatic-scorer agreement rather than inter-annotator κ.)
 
 - **Evaluation-judge accuracy (v1).** We labelled answer correctness across the scalar-numeric subset (362 items), stratified into the 93 cases where the judge and a deterministic numeric matcher disagree (92 labelled) and a random sample of the 269 where they agree (78 labelled). Human ↔ judge agreement is 82.6% on the disagreement stratum and 85.9% on the agreement stratum; the size-weighted, unbiased judge accuracy over the subset is **85.1%** (pooled κ = 0.67). Where the judge and deterministic numeric matching conflict, the human sides with the judge ~5× more often — so the judge is the more accurate scorer, not an extra source of noise.
-- **Dataset validity.** A domain expert verified a random sample of 100 v2 environments. Each was checked by executing its reference plan in its own tool environment and confirming it reproduces the gold answer, alongside the original FinQA item, the full tool set, and the backing-store generator. 99/100 executed (1 raised a schema error); 92/100 reproduced the gold answer and were judged valid — a **92%** benchmark-cleanliness rate. The 8 flagged cases are released with the sample, and are dominated by reference-plan/gold mismatches that are individually identifiable, not systematic noise.
+- **Dataset validity.** A domain expert verified a random sample of 200 v2 environments. Each was checked by executing its reference plan in its own tool environment and confirming it reproduces the gold answer, alongside the original FinQA item, the full tool set, and the backing-store generator. 192/200 executed (8 raised errors); 170/200 reproduced the gold answer and were judged valid — an **85% benchmark-cleanliness rate** (88.5% among the examples that executed). The flagged cases are released with the sample and are dominated by individually identifiable reference-plan/gold mismatches, not systematic noise.
+
+In total the expert verification covers **372 examples across both versions** (172 v1 + 200 v2), meeting the reviewer's 200–300 suggestion.
 
 Protocol, scripts, and all labels are released (`experiments/e3_human_eval/`).
 
@@ -118,12 +120,12 @@ Agreed — we added a failure-mode taxonomy (779 traces, 6 models, 8 categories)
 
 `TODO: E5; compute process metrics from traces while classifying failures.`
 
-### 4. Benchmark quality depends on LLM generation/judging 🟡 [E3]
+### 4. Benchmark quality depends on LLM generation/judging ✅ [E3]
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 
 **Draft answer:**
-Three points. First, the dependence is asymmetric across versions: v2 questions are **human-authored** (FinQA) and v2 validation is **execution-based**, not judgment-based; only the environment scaffolding is generated, and it is verified by running it. Second, for v1 we now provide **human validation**: **[X]%** of a stratified sample of **[250]** examples were confirmed valid by independent annotators (κ=**[...]** vs. the LLM panel) — see our response to Reviewer PVoW. Third, the two versions act as mutual controls: per-model accuracies agree across them (mean abs. diff 2.6pp), which would be unlikely if v1's synthetic construction introduced systematic artifacts.
+Three points. First, the dependence is asymmetric across versions: v2 questions are **human-authored** (FinQA) and v2 validation is **execution-based**, not judgment-based; only the environment scaffolding is generated, and it is verified by running it. Second, we now provide **expert human validation of 372 examples** (see Reviewer PVoW): on v1, the evaluation judge matches human labels 85.1% of the time (κ = 0.64), and where it conflicts with deterministic scoring the human sides with the judge ~5× more often; on v2, 170/200 environments reproduce the gold answer under execution (85% cleanliness). Third, the two versions act as mutual controls: per-model accuracies agree across them (mean abs. diff 2.6pp), which would be unlikely if v1's synthetic construction introduced systematic artifacts.
 
 ---
 

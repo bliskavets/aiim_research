@@ -17,10 +17,11 @@
   },
   "v2_validity": {
     "method": "expert execution-based verification",
-    "n": 100,
-    "executed": 99,
-    "valid": 92,
-    "cleanliness_rate": 0.92,
-    "flagged": 8
+    "n": 200,
+    "executed": 192,
+    "valid": 170,
+    "cleanliness_rate": 0.85,
+    "errored": 8,
+    "human_clicked_labels": 5
   }
 }

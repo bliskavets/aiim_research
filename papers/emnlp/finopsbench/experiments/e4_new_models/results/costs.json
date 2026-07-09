@@ -1,0 +1,29 @@
+[
+ {
+  "model": "deepseek/deepseek-chat-v3-0324",
+  "items_run_now": 8,
+  "items_scored_total": 0,
+  "accuracy": 0.0,
+  "spent_usd": 0.0,
+  "budget_usd": 1.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "deepseek/deepseek-chat-v3-0324",
+  "items_run_now": 8,
+  "items_scored_total": 8,
+  "accuracy": 25.0,
+  "spent_usd": 0.0195,
+  "budget_usd": 1.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "anthropic/claude-sonnet-4.5",
+  "items_run_now": 8,
+  "items_scored_total": 8,
+  "accuracy": 62.5,
+  "spent_usd": 0.3761,
+  "budget_usd": 1.5,
+  "stopped_by_budget": false
+ }
+]

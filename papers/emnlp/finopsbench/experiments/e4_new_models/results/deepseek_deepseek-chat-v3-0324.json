@@ -1,0 +1,50 @@
+[
+ {
+  "agent_id": "agent_0",
+  "ground_truth_answer": "380",
+  "agent_output": "3.8",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_10",
+  "ground_truth_answer": "0.0",
+  "agent_output": "6.9",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1000",
+  "ground_truth_answer": "2014.00",
+  "agent_output": "The average of the deductions for the 'disposition and retirements' category during 2003-2006 is approximately 9780.33.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1001",
+  "ground_truth_answer": "-21.5%",
+  "agent_output": "Let me systematically calculate the percentage change:\n\n1. Calculating the 2005 year-end balance:\n- Opening balance (2005): 11,500,000 (from get_opening_balance(2005))\n- Net activity (2005): 2,000,000 granted - 500,000 exercised - 356,239 forfeited = 1,143,761\n- 2005 year-end balance: 11,500,000 + 1,143,761 = 12,643,761\n\n2. The 2008 opening balance is actually the 2007 year-end balance. However, we can directly use the 2008 opening balance as it represents the outstanding options at the start of 2008 (which equals the end of 2007):\n- Opening balance (2008): 11,270,815 (from get_opening_balance(2008))\n\n3. Calculating percentage change:\n- Initial (2005 year-end): 12,643,761\n- Final (2008 opening/2007 year-end): 11,270,815\n- Change = (11,270,815 - 12,643,761)/12,643,761 \u00d7 100\n\nCalling tools:\n[{'id': '019f4628e8b1e2aeb9ecf8e0a2a7d9f1', 'type': 'function', 'function': {'name': 'percentage_change_tool', 'arguments': {'initial_value': 12643761, 'final_value': 11270815, 'precision': 1}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1002",
+  "ground_truth_answer": "11.1%",
+  "agent_output": "11.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1003",
+  "ground_truth_answer": "39.1%",
+  "agent_output": "39.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1004",
+  "ground_truth_answer": "4.97",
+  "agent_output": "No data available for the year 2012 to determine the range of average prices paid per share in October, November, and December.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1005",
+  "ground_truth_answer": "6.7%",
+  "agent_output": "I'll help calculate the portion of total future minimum lease payments due within the next 12 months for Entergy Louisiana. Let me proceed step by step.\n\nCalling tools:\n```json\n{\"id\":\"call_kJj5hF6fYpZQ9vT2WXb3nR8e\",\"type\":\"function\",\"function\":{\"name\":\"get_contract_id_tool\",\"arguments\":{\"lessee_name\":\"Entergy Louisiana\",\"unit_name\":\"Waterford 3\"}}}\n```",
+  "passed": false
+ }
+]

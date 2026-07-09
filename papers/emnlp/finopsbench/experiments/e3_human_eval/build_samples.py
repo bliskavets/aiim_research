@@ -93,6 +93,10 @@ def build_v2_validity(n: int, root: Path, out: Path, finqa_train: Path) -> int:
             tools_f = d / "tools_augmented.py"
             tool_src = tools_f.read_text() if tools_f.is_file() else ""
             tool_names = re.findall(r"^def ([a-z_][a-z0-9_]*)", tool_src, re.M)
+            dbgen_f = d / "synthetic_db_generator_augmented.py"
+            if not dbgen_f.is_file():
+                dbgen_f = d / "synthetic_db_generator.py"
+            db_generator_src = dbgen_f.read_text() if dbgen_f.is_file() else ""
             gold = (d / "initial_solution.txt").read_text().strip()
 
             # original FinQA item: agent_<N> is built positionally from train[N]
@@ -119,6 +123,7 @@ def build_v2_validity(n: int, root: Path, out: Path, finqa_train: Path) -> int:
                 "gold": gold,
                 "tool_names": tool_names,
                 "tool_source": tool_src,
+                "db_generator_source": db_generator_src,
                 "reference_plan": plan_f.read_text() if plan_f.is_file() else "",
                 **finqa,
                 "human_label": None,

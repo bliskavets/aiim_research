@@ -113,6 +113,14 @@ else:
         else:
             st.caption("Original FinQA item not resolved for this example.")
 
+    # execution status of the reference plan (actually run in its environment)
+    if case.get("plan_run_ok"):
+        m = case.get("plan_answer_matches_gold")
+        st.markdown(f"**Reference plan executed:** ✅ ran · computed `{case.get('plan_computed_answer')}` · "
+                    + ("✅ matches gold" if m else "⚠️ ≠ gold"))
+    elif "plan_run_ok" in case:
+        st.markdown(f"**Reference plan executed:** ❌ failed — `{case.get('plan_error')}`")
+
     b1, b2, b3, b4 = st.columns(4)
     b1.button("✅ Valid", on_click=set_label, args=(True,), use_container_width=True)
     b2.button("❌ Invalid", on_click=set_label, args=(False,), use_container_width=True)
@@ -138,5 +146,8 @@ else:
         st.markdown(f"**Tools ({len(case.get('tool_names', []))}): full definitions**")
         st.code(case.get("tool_source", "\n".join(case.get("tool_names", []))), language="python")
     with col_p:
-        st.markdown("**Reference plan (should compute the gold from the tools)**")
-        st.code(case.get("reference_plan", ""), language="python")
+        st.markdown("**Reference plan — traced (`# var = value` from a real run)**")
+        st.code(case.get("annotated_plan") or case.get("reference_plan", ""), language="python")
+
+    with st.expander("Synthetic DB generator (how the backing store is built)"):
+        st.code(case.get("db_generator_source", "") or "—", language="python")

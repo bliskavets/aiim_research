@@ -1,0 +1,152 @@
+{
+  "n_classified": {
+    "GPT-5": 150,
+    "o4-mini": 150,
+    "GPT-4.1": 150,
+    "GPT-4.1-mini": 150,
+    "Claude-Sonnet-4.5": 41,
+    "DeepSeek-V3": 150
+  },
+  "category_counts": {
+    "GPT-5": {
+      "incomplete_retrieval": 33,
+      "round_limit_exhaustion": 14,
+      "financial_misunderstanding": 20,
+      "wrong_tool_selection": 11,
+      "malformed_arguments": 61,
+      "calculation_error": 10,
+      "format_unit_error": 1
+    },
+    "o4-mini": {
+      "malformed_arguments": 56,
+      "incomplete_retrieval": 47,
+      "financial_misunderstanding": 15,
+      "calculation_error": 15,
+      "round_limit_exhaustion": 4,
+      "wrong_tool_selection": 12,
+      "other": 1
+    },
+    "GPT-4.1": {
+      "malformed_arguments": 63,
+      "calculation_error": 7,
+      "round_limit_exhaustion": 5,
+      "incomplete_retrieval": 49,
+      "format_unit_error": 3,
+      "wrong_tool_selection": 6,
+      "financial_misunderstanding": 17
+    },
+    "GPT-4.1-mini": {
+      "malformed_arguments": 54,
+      "incomplete_retrieval": 56,
+      "financial_misunderstanding": 17,
+      "wrong_tool_selection": 15,
+      "calculation_error": 8
+    },
+    "Claude-Sonnet-4.5": {
+      "wrong_tool_selection": 8,
+      "calculation_error": 7,
+      "incomplete_retrieval": 6,
+      "financial_misunderstanding": 6,
+      "format_unit_error": 6,
+      "malformed_arguments": 5,
+      "round_limit_exhaustion": 3
+    },
+    "DeepSeek-V3": {
+      "round_limit_exhaustion": 38,
+      "financial_misunderstanding": 8,
+      "malformed_arguments": 11,
+      "wrong_tool_selection": 34,
+      "incomplete_retrieval": 24,
+      "format_unit_error": 11,
+      "calculation_error": 21,
+      "other": 3
+    }
+  },
+  "category_share_pct": {
+    "GPT-5": {
+      "wrong_tool_selection": 7.3,
+      "malformed_arguments": 40.7,
+      "incomplete_retrieval": 22.0,
+      "calculation_error": 6.7,
+      "financial_misunderstanding": 13.3,
+      "format_unit_error": 0.7,
+      "round_limit_exhaustion": 9.3
+    },
+    "o4-mini": {
+      "wrong_tool_selection": 8.0,
+      "malformed_arguments": 37.3,
+      "incomplete_retrieval": 31.3,
+      "calculation_error": 10.0,
+      "financial_misunderstanding": 10.0,
+      "round_limit_exhaustion": 2.7,
+      "other": 0.7
+    },
+    "GPT-4.1": {
+      "wrong_tool_selection": 4.0,
+      "malformed_arguments": 42.0,
+      "incomplete_retrieval": 32.7,
+      "calculation_error": 4.7,
+      "financial_misunderstanding": 11.3,
+      "format_unit_error": 2.0,
+      "round_limit_exhaustion": 3.3
+    },
+    "GPT-4.1-mini": {
+      "wrong_tool_selection": 10.0,
+      "malformed_arguments": 36.0,
+      "incomplete_retrieval": 37.3,
+      "calculation_error": 5.3,
+      "financial_misunderstanding": 11.3
+    },
+    "Claude-Sonnet-4.5": {
+      "wrong_tool_selection": 19.5,
+      "malformed_arguments": 12.2,
+      "incomplete_retrieval": 14.6,
+      "calculation_error": 17.1,
+      "financial_misunderstanding": 14.6,
+      "format_unit_error": 14.6,
+      "round_limit_exhaustion": 7.3
+    },
+    "DeepSeek-V3": {
+      "wrong_tool_selection": 22.7,
+      "malformed_arguments": 7.3,
+      "incomplete_retrieval": 16.0,
+      "calculation_error": 14.0,
+      "financial_misunderstanding": 5.3,
+      "format_unit_error": 7.3,
+      "round_limit_exhaustion": 25.3,
+      "other": 2.0
+    }
+  },
+  "process_metrics_mean": {
+    "GPT-5": {
+      "n_tool_calls": 1.91,
+      "n_sql_errors": 0,
+      "round_exhausted": 0
+    },
+    "o4-mini": {
+      "n_tool_calls": 1.33,
+      "n_sql_errors": 0,
+      "round_exhausted": 0
+    },
+    "GPT-4.1": {
+      "n_tool_calls": 1.37,
+      "n_sql_errors": 0,
+      "round_exhausted": 0
+    },
+    "GPT-4.1-mini": {
+      "n_tool_calls": 1.35,
+      "n_sql_errors": 0,
+      "round_exhausted": 0
+    },
+    "Claude-Sonnet-4.5": {
+      "n_tool_calls": 4.12,
+      "n_tool_errors": 0.54,
+      "round_exhausted": 0.07
+    },
+    "DeepSeek-V3": {
+      "n_tool_calls": 3.91,
+      "n_tool_errors": 1.03,
+      "round_exhausted": 0.11
+    }
+  }
+}

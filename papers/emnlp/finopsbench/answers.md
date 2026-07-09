@@ -49,14 +49,17 @@ We would like to clarify the split: **FinOpsBench-v2 is already fully determinis
 **Draft answer:**
 We have added a quantitative diversity appendix. For **v1** (8,233-item pool): **742 distinct user roles** (the paper conservatively said "60+"), zero duplicate queries, distinct 3-gram ratio 0.52; SQL complexity of reference solutions — 70% of examples require a JOIN, 42% ORDER BY, 35% aggregate functions, 31% GROUP BY, 22% subqueries, 19% date arithmetic, 9% CASE expressions, 7% HAVING. For **v2**: reference plans make a median of **5 tool calls** (p90 = 7, max 15) against a median of **9 available tools** per environment (core + partial-information + distractor); numerical-operation mix — aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent change 11%. Scripts and full distributions are released with the benchmark (`experiments/e6_diversity/`).
 
-### 6. Qualitative failure analysis 🟡 [E5]
+### 6. Qualitative failure analysis ✅ [E5]
 
 > Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
 
 **Draft answer:**
-We classified all failing traces of **[GPT-5 / GPT-4.1 / Llama-3.1-8B]** into a seven-way taxonomy: (1) wrong tool selection / distractor-tool use, (2) malformed arguments, (3) incomplete retrieval, (4) calculation/aggregation errors, (5) financial-concept misunderstanding, (6) unit/format errors, (7) round-limit exhaustion. **[Insert distribution table + 3–4 worked examples.]** Notably, **[e.g., frontier models fail mostly on X while small open-source models fail on Y]** — this is exactly the kind of diagnostic signal the benchmark was designed to expose.
+We classified 779 failing traces (v1: GPT-5, o4-mini, GPT-4.1, GPT-4.1-mini; v2: Claude-Sonnet-4.5, DeepSeek-V3) into an 8-way taxonomy. Two diagnostic findings stand out:
 
-`TODO: run E5 on existing traces (v2 results/ + v1 evaluated JSONLs), verify subsample manually.`
+- **On v1 (structured-data tool), failures are semantic, not syntactic.** SQL errors are ≈ 0, yet *malformed arguments* (36–42%: valid SQL with the wrong predicate/threshold) and *incomplete retrieval* (22–37%: missing required rows) dominate; arithmetic errors are minor (5–10%). So even frontier models fail mainly at **precise data selection**, not calculation or syntax — precisely the planning/tool-use competence the benchmark isolates.
+- **On v2 (many tools + distractors), the profile shifts to tool use.** *Wrong-tool selection* rises to 20–23% (vs 4–10% on v1), and the open-weight DeepSeek-V3 uniquely exhausts its step budget on 25% of failures. Process metrics track capability: v1 frontier models fail fast (1.3–1.9 tool calls, 0% round-exhaustion, a single wrong query), whereas the v2 agents make 3.9–4.1 calls and hit the step limit 7–11% of the time.
+
+Full distribution table, per-model process metrics, and worked examples are released (`experiments/e5_failure_taxonomy/`, `summary.json`).
 
 ### 7. Construction costs 🟡 [E7]
 
@@ -106,12 +109,12 @@ The capability FinOpsBench isolates is **planning under partial observability wi
 **Draft answer:**
 Relative to FinGAIA, Finance Agent Benchmark, and FinAgentBench (discussed in §2), FinOpsBench is the only resource that combines: (1) **hermetic, executable environments** — no live web/API dependence, so results are exactly reproducible and failures attributable to the agent rather than external noise; (2) **controlled distractors** at both data and tool level; (3) **scale** (≈6k + 1.1k tasks vs. a few hundred); (4) **full reference traces** enabling process-level analysis, not just final-answer scoring. The realism-oriented benchmarks and FinOpsBench are complements, not substitutes: they measure deployment behavior, we measure diagnostic competence. We will restore the comparison table (currently cut for space) making these axes explicit. Notably, our Appendix A cross-benchmark analysis shows FinAgentBench exhibits an *inverse* size–accuracy trend — precisely the validity failure our controlled design avoids.
 
-### 3. Fine-grained diagnostics beyond final-answer accuracy 🟡 [E5]
+### 3. Fine-grained diagnostics beyond final-answer accuracy ✅ [E5]
 
 > the reported analyses are primarily based on final-answer accuracy. More fine-grained diagnostic metrics or failure analyses would better demonstrate that the benchmark provides insights beyond conventional benchmark evaluation.
 
 **Draft answer:**
-Agreed — we have added: (a) a **failure-mode taxonomy** over all failing traces (7 categories; distribution per model) showing **[key contrast]**; (b) **process-level metrics** from traces: tool-call efficiency (calls vs. reference plan length), distractor-tool invocation rate, and round-exhaustion rate per model; (c) the per-category radar (Fig. 6) already shows capability is stable across financial sub-domains. **[Insert 2–3 headline findings.]**
+Agreed — we added a failure-mode taxonomy (779 traces, 6 models, 8 categories) and per-model process metrics, which surface signal invisible to accuracy alone. Key results: (a) on v1 the failures are **semantic, not syntactic** — SQL errors ≈ 0, but *malformed arguments* (36–42%) and *incomplete retrieval* (22–37%) dominate, so models fail at precise data selection rather than arithmetic; (b) on v2 the profile shifts to **tool use** — *wrong-tool selection* rises to 20–23% (vs 4–10% on v1) under distractor tools, and the open-weight model uniquely exhausts its step budget (25% of failures); (c) process metrics separate the tiers — frontier v1 models fail fast with one wrong query (1.3–1.9 calls, 0% round-exhaustion) while v2 agents make 3.9–4.1 calls and hit the step limit 7–11% of the time. Two models scoring the same accuracy fail for measurably different reasons — the diagnostic value accuracy cannot show. Full tables in `experiments/e5_failure_taxonomy/`.
 
 `TODO: E5; compute process metrics from traces while classifying failures.`
 

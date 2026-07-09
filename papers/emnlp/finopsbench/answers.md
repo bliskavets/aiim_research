@@ -182,8 +182,9 @@ Claude Code, Codex, and OpenCode are **agent products/harnesses**, not base mode
 |---|---|---|---|
 | Claude Sonnet 4.5 | Anthropic (frontier) | 139 | **70.5%** — highest v2 score in the benchmark (cf. GPT-5 69.6%) |
 | DeepSeek-V3 (0324) | open-weight, 671B MoE | 1,134 | **57.3%** — between GPT-4.1-mini and GPT-4.1, well above Qwen3-30B (53.0%) |
+| DeepSeek-V3.2 | open-weight, latest gen | 199* | **48.2%** — reads FinQA at 69% but drops 21 pt when it must use tools (see R2 access ladder) |
 
-Both land exactly where the size–accuracy trend predicts: a second frontier vendor tops the leaderboard, and a genuinely large open-weight model (far bigger than our original 8–30B open baselines) sits mid-table. On finance-specialized LLMs: available open finance models (continued-pretrained variants on financial text) do not support reliable function calling, which is the capability under test; we note this explicitly. (Claude n=139 is a random subset; we will report the full-set number in the camera-ready.)
+Both frontier/open additions land where the size–accuracy trend predicts (a second frontier vendor tops the leaderboard; a large open-weight model sits mid-table), and the newest DeepSeek-V3.2 illustrates the diagnostic point directly — strong at reading, markedly weaker at tool use. (*V3.2 measured on the 200-item access-ladder subset.) On finance-specialized LLMs: available open finance models (continued-pretrained variants on financial text) do not support reliable function calling, which is the capability under test; we note this explicitly. (Claude n=139 is a random subset; we will report the full-set number in the camera-ready.)
 
 ### 5. "Outdated smolagents" / framework noise ✅ [A2]
 

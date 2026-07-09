@@ -1,0 +1,149 @@
+Official Review of Submission5243 by Reviewer PVoW
+Official Reviewby Reviewer PVoW03 Jul 2026, 00:25 (modified: 08 Jul 2026, 14:18)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Authors, Reviewer PVoWRevisions
+Paper Summary:
+This paper introduces FinOpsBench, a new benchmark for evaluating agentic LLMs on financial analysis tasks that require explicit tool use rather than reasoning directly from in-context information. The benchmark consists of two complementary components. FinOpsBench-v1 contains 5,979 synthetically generated financial analysis tasks where agents interact with a structured SQLite database through a single tool. The dataset is generated through a nine-stage pipeline involving query generation, schema and data generation, execution-based validation, agent trace generation, LLM-panel quality control, feedback refinement, and final filtering. FinOpsBench-v2 contains 1,108 tasks derived from FinQA, where original questions are transformed into agentic environments with custom Python tools, distractor tools, and multi-hop reasoning requirements.
+
+The benchmark is designed so that all information must be retrieved through tool calls, preventing models from answering directly from the prompt. The authors evaluate several frontier (GPT-5, GPT-4.1, o4-mini) and open-source (Qwen3, Llama-3.1) models and show that the strongest model achieves only around 69% accuracy on both benchmark variants, suggesting substantial room for improvement in financial tool-use reasoning. The paper further compares native tool calling with ReAct prompting and observes that ReAct improves non-thinking models but degrades reasoning models. The benchmark, evaluation code, and model traces are planned for public release.
+
+Summary Of Strengths:
+The paper addresses an increasingly important problem: evaluating LLM agents that interact with structured financial data through tools instead of relying on static context.
+The separation into FinOpsBench-v1 (synthetic, highly controlled) and FinOpsBench-v2 (FinQA-derived, realistic) is well motivated.
+The benchmark contains nearly 6,000 synthetic examples and over 1,000 realistic multi-hop tasks, making it substantially larger than many prior agentic finance benchmarks.
+Assuming public release, the benchmark, environments, agent traces, and evaluation code are likely to be useful resources for future work on financial AI agents.
+Summary Of Weaknesses:
+Heavy dependence on LLM-generated data without human validation This is the paper's largest weakness. Almost every stage of FinOpsBench-v1—including query generation, schema generation, data generation, agent traces, and quality control—is performed by LLMs. No human evaluation is conducted to verify whether generated financial scenarios are realistic, whether reasoning traces are correct, or whether the LLM judges make reliable decisions. Consequently, benchmark quality ultimately depends on the behavior of a small collection of proprietary models rather than independent validation.
+
+LLM-as-judge validation is insufficiently justified Although the authors employ a committee of three LLM judges, there is no measurement of agreement with human annotators or any estimate of judge accuracy. Majority voting among LLMs cannot substitute for demonstrating that the judgments are actually correct.
+
+Limited transparency of dataset construction The paper describes the nine pipeline stages but does not release or describe the actual prompts used in these stages. This significantly limits reproducibility because prompt design likely has a major influence on the generated benchmark.
+
+Evaluation methodology is relatively weak FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible. This introduces another layer of uncertainty since evaluation and dataset generation both depend heavily on LLM judgments.
+
+Overall, while the benchmark is promising, the absence of human validation substantially weakens confidence in the reliability of both the dataset and the reported evaluation.
+
+Comments Suggestions And Typos:
+Minor Typos and Writing Issues
+
+Some wording could be improved for readability, for example, "Figure 1 shows that..." instead of "As Figure 1 shows that...".
+There are occasional formatting inconsistencies around "FinOpsBench-v1" and "FinOpsBench-v2" where spacing appears inconsistent.
+Formatting issue: There are several instances throughout the manuscript where the text "FinOpsBenchis" appears instead of "FinOpsBench is". These should be corrected consistently throughout the paper.
+Major Suggestions
+
+Include a human evaluation study for both benchmark versions. Even a random sample of 200–300 examples independently verified by financial experts or trained annotators would substantially increase confidence in the benchmark.
+Report agreement between LLM judges and human evaluators (e.g., Cohen's κ or percentage agreement). This is especially important because the benchmark relies extensively on LLM judgments.
+Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction. These are essential for reproducibility.
+Analyze benchmark diversity more quantitatively. Statistics on reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, and template diversity would strengthen the benchmark description.
+Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
+Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
+Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
+Confidence: 5 = Positive that my evaluation is correct. I read the paper very carefully and am familiar with related work.
+Soundness: 3 = Acceptable: This study provides sufficient support for its main claims. Some minor points may need extra support or details.
+Excitement: 3 = Interesting: I might mention some points of this paper to others and/or attend its presentation in a conference if there's time.
+Overall Assessment: 3 = Findings: I think this paper could be accepted to the Findings of the ACL.
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 2 = They would be hard pressed to reproduce the results: The contribution depends on data that are simply not available outside the author's institution or consortium and/or not enough details are provided.
+Datasets: 4 = Useful: I would recommend the new datasets to other researchers or developers for their ongoing work.
+Software: 1 = No usable software released.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+
+
+
+=======================
+
+
+
+Paper Summary:
+This paper introduces FinOpsBench, a benchmark for evaluating agentic LLMs on financial analysis tasks that require tool use rather than answering from provided context alone. The benchmark contains two parts: FinOpsBench-v1, a large synthetic set of financial analysis tasks paired with generated structured databases and quality-controlled by LLM judges, and FinOpsBench-v2, a smaller set of FinQA-derived tasks transformed into multi-hop tool-use environments with custom Python tools and distractors. In both settings, models must retrieve relevant information through tool calls, reason over intermediate outputs, and produce final financial answers. The paper evaluates several frontier and open-source LLMs as agent backbones, showing that even the strongest models remain far from perfect and that open-source models lag substantially behind frontier systems. The authors position the benchmark as a resource for studying financial tool use, multi-step agentic reasoning, and reproducible evaluation of LLM agents in structured business-data environments.
+
+Summary Of Strengths:
+Addresses a timely and important problem by introducing a benchmark specifically designed to evaluate agentic LLMs on financial analysis tasks requiring genuine tool use.
+Provides a comprehensive benchmark design through two complementary datasets: a large synthetic benchmark with executable ground truth for diagnostic analysis and a benchmark grounded in real financial documents for evaluating realistic multi-hop reasoning, balancing controllability and realism.
+Conducts a broad empirical evaluation across multiple frontier and open-source LLMs, providing useful insights into the current capabilities and limitations of agentic financial reasoning and tool use.
+Summary Of Weaknesses:
+While the benchmark targets agentic financial analysis, it remains unclear what fundamental NLP capability it advances beyond a domain-specific evaluation resource.
+The paper argues that existing financial benchmarks do not adequately evaluate agentic tool use, but multiple recent benchmarks have already moved in this direction. It remains somewhat unclear what fundamentally new evaluation capability FinOpsBench provides.
+Although the benchmark is positioned as a diagnostic evaluation of agentic reasoning, the reported analyses are primarily based on final-answer accuracy. More fine-grained diagnostic metrics or failure analyses would better demonstrate that the benchmark provides insights beyond conventional benchmark evaluation.
+FinOpsBench-v1 is entirely LLM-generated, while FinOpsBench-v2 is largely constructed by transforming FinQA into tool-use environments. Although the authors employ a three-judge panel and execution-based validation, the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
+Comments Suggestions And Typos:
+Please see my weaknesses.
+
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 2.5
+Excitement: 2.5
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Reproducibility: 3 = They could reproduce the results with some difficulty. The settings of parameters are underspecified or subjectively determined, and/or the training/evaluation data are not widely available.
+Datasets: 3 = Potentially useful: Someone might find the new datasets useful for their work.
+Software: 3 = Potentially useful: Someone might find the new software useful for their work.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+
+
+
+==========================
+
+
+
+Paper Summary:
+This work proposes FinOpsBench, a dual-subset benchmark (v1 synthetic dataset, v2 FinQA-derived agentic dataset) targeting tool-use financial agent evaluation, filling the gap between static financial QA benchmarks and general agent tool benchmarks. The core motivation—separating genuine dynamic tool planning from static context reading comprehension—is well-aligned with current financial LLM agent research demands, and the open-sourced benchmark, evaluation pipeline and model traces provide valuable reproducible infrastructure for the community. However, the benchmark design, data source construction and experimental evaluation setup contain several critical limitations that significantly weaken the reliability and generalization value of the paper’s conclusions, detailed criticisms are elaborated below:
+
+Summary Of Strengths:
+Proposes the first dual-version benchmark FinOpsBench targeting agentic financial tool-use, filling the gap between static financial QA and general agent benchmarks.
+
+Separates synthetic diagnostic subset (v1) and real-doc grounded subset (v2), balancing controllability and real financial scenario authenticity.
+
+Open-sources full dataset, evaluation code and model traces, supporting reproducible financial agent research.
+
+Validates benchmark validity via log-linear correlation between model parameter size and accuracy.
+
+Summary Of Weaknesses:
+v1 lacks machine-verifiable hard ground truth; fully relies on LLM panel judges, leading to subjective, biased evaluation results.
+
+v2 is built entirely on FinQA, which was not designed for agent tool workflows; query types are monotonous and fail to integrate deep financial domain knowledge.
+
+v2 inherits FinQA’s simple numerical questions, with artificially added multi-hop tool logic rather than native business-driven agent tasks.
+
+Experiment evaluation is incomplete: missing top agent/code frontier models (Claude Code, Codex, OpenCode); baselines only cover tiny open-source models without mainstream finance-specialized LLMs.
+
+Adopts outdated smolagents as agent harness, which may introduce framework noise and interfere with reliable tool-use performance measurement.
+
+High risk of data contamination for v2, as core questions come from widely publicized FinQA training corpus.
+
+Comments Suggestions And Typos:
+NA
+
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 2.5
+Excitement: 2.5
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 3 = They could reproduce the results with some difficulty. The settings of parameters are underspecified or subjectively determined, and/or the training/evaluation data are not widely available.
+Datasets: 3 = Potentially useful: Someone might find the new datasets useful for their work.
+Software: 1 = No usable software released.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+
+
+
+

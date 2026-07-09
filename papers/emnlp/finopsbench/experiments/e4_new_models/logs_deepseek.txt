@@ -1,0 +1,286 @@
+1173 runnable environments
+1165 to run (rest already done)
+credits used before run: $4675.598
+25/1165 spent=$0.129 ($0.0052/item, projected $6.00)
+FAIL agent_1036: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:19:00 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+50/1165 spent=$0.216 ($0.0043/item, projected $5.04)
+75/1165 spent=$0.354 ($0.0047/item, projected $5.50)
+100/1165 spent=$0.443 ($0.0044/item, projected $5.16)
+125/1165 spent=$0.597 ($0.0048/item, projected $5.57)
+FAIL agent_1150: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:26:58 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+150/1165 spent=$0.700 ($0.0047/item, projected $5.44)
+175/1165 spent=$0.826 ($0.0047/item, projected $5.50)
+200/1165 spent=$0.920 ($0.0046/item, projected $5.36)
+225/1165 spent=$1.040 ($0.0046/item, projected $5.39)
+250/1165 spent=$1.163 ($0.0047/item, projected $5.42)
+FAIL agent_1263: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:37:31 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+275/1165 spent=$1.265 ($0.0046/item, projected $5.36)
+300/1165 spent=$1.397 ($0.0047/item, projected $5.42)
+325/1165 spent=$1.491 ($0.0046/item, projected $5.34)
+350/1165 spent=$1.617 ($0.0046/item, projected $5.38)
+375/1165 spent=$1.714 ($0.0046/item, projected $5.33)
+400/1165 spent=$1.816 ($0.0045/item, projected $5.29)
+425/1165 spent=$1.924 ($0.0045/item, projected $5.27)
+450/1165 spent=$2.022 ($0.0045/item, projected $5.23)
+475/1165 spent=$2.137 ($0.0045/item, projected $5.24)
+FAIL agent_302: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:53:28 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+500/1165 spent=$2.219 ($0.0044/item, projected $5.17)
+525/1165 spent=$2.325 ($0.0044/item, projected $5.16)
+FAIL agent_353: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:58:49 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_365: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 09:59:37 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+550/1165 spent=$2.441 ($0.0044/item, projected $5.17)
+FAIL agent_379: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:00:10 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_389: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:01:09 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_391: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:01:35 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+575/1165 spent=$2.547 ($0.0044/item, projected $5.16)
+FAIL agent_39: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:02:24 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_412: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:03:46 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+600/1165 spent=$2.650 ($0.0044/item, projected $5.15)
+FAIL agent_448: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:05:48 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+625/1165 spent=$2.753 ($0.0044/item, projected $5.13)
+FAIL agent_464: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:07:03 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+650/1165 spent=$2.857 ($0.0044/item, projected $5.12)
+675/1165 spent=$2.974 ($0.0044/item, projected $5.13)
+FAIL agent_508: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:09:04 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+700/1165 spent=$3.093 ($0.0044/item, projected $5.15)
+725/1165 spent=$3.218 ($0.0044/item, projected $5.17)
+750/1165 spent=$3.338 ($0.0045/item, projected $5.19)
+FAIL agent_585: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:16:24 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_551: olagents/agents.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object is not subscriptable
+2026/07/09 10:16:51 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_595: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:17:28 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+775/1165 spent=$3.418 ($0.0044/item, projected $5.14)
+800/1165 spent=$3.540 ($0.0044/item, projected $5.15)
+FAIL agent_643: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:20:54 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_582: olagents/agents.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object is not subscriptable
+2026/07/09 10:21:08 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+825/1165 spent=$3.636 ($0.0044/item, projected $5.13)
+FAIL agent_66: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:22:06 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_668: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:22:41 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_679: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:23:30 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+850/1165 spent=$3.731 ($0.0044/item, projected $5.11)
+FAIL agent_685: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:23:57 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_687: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:24:00 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+875/1165 spent=$3.853 ($0.0044/item, projected $5.13)
+FAIL agent_722: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:26:47 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_729: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:27:16 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+900/1165 spent=$3.961 ($0.0044/item, projected $5.13)
+FAIL agent_742: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:28:10 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_746: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:28:38 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+925/1165 spent=$4.049 ($0.0044/item, projected $5.10)
+FAIL agent_760: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:29:55 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_761: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:30:14 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+950/1165 spent=$4.180 ($0.0044/item, projected $5.13)
+975/1165 spent=$4.282 ($0.0044/item, projected $5.12)
+1000/1165 spent=$4.394 ($0.0044/item, projected $5.12)
+FAIL agent_837: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:33:42 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_84: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:33:55 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_854: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:34:43 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1025/1165 spent=$4.509 ($0.0044/item, projected $5.12)
+FAIL agent_860: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:35:19 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1050/1165 spent=$4.611 ($0.0044/item, projected $5.12)
+FAIL agent_893: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:37:07 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+FAIL agent_899: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:37:54 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1075/1165 spent=$4.708 ($0.0044/item, projected $5.10)
+FAIL agent_931: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:39:42 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1100/1165 spent=$4.848 ($0.0044/item, projected $5.13)
+FAIL agent_963: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:41:48 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1125/1165 spent=$4.992 ($0.0044/item, projected $5.17)
+1150/1165 spent=$5.096 ($0.0044/item, projected $5.16)
+FAIL agent_925: nts.py", line 1325, in _step_stream
+    raise AgentGenerationError(f"Error while generating output:\n{e}", self.logger) from e
+smolagents.utils.AgentGenerationError: Error while generating output:
+'NoneType' object has no attribute 'prompt_tokens'
+2026/07/09 10:44:31 INFO mlflow.tracing.export.async_export_queue: Flushing the async trace logging queue before program exit. This may take a while...
+
+1165/1165 spent=$5.169 ($0.0044/item, projected $5.17)
+
+=== deepseek/deepseek-chat-v3-0324: n=1134 accuracy=57.3% spend this run=$5.183 (stopped_by_budget=False) ===

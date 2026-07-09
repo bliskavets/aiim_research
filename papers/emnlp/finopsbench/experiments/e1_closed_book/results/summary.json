@@ -1,0 +1,27 @@
+{
+  "openai_gpt-4.1": {
+    "n": 300,
+    "closed_book_acc": 13.3,
+    "agentic_acc_paper": 60.6,
+    "cost_usd": 0.4493
+  },
+  "openai_gpt-5-mini": {
+    "n": 1174,
+    "closed_book_acc": 14.7,
+    "agentic_acc_paper": 67.5,
+    "cost_usd": 0.731
+  },
+  "qwen_qwen3-30b-a3b": {
+    "n": 1174,
+    "closed_book_acc": 13.8,
+    "agentic_acc_paper": 53.0,
+    "cost_usd": 0.9064
+  },
+  "gpt41_overlap": {
+    "n": 25,
+    "both": 2,
+    "agentic_only": 16,
+    "closed_only": 1,
+    "neither": 6
+  }
+}

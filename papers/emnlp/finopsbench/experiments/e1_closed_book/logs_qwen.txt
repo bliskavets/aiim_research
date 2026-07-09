@@ -1,0 +1,24 @@
+1174 items with prompt+gold
+resuming: 155 already done
+50/1019 acc-so-far=0.120 cost=$0.032
+100/1019 acc-so-far=0.120 cost=$0.071
+150/1019 acc-so-far=0.120 cost=$0.111
+200/1019 acc-so-far=0.135 cost=$0.147
+250/1019 acc-so-far=0.140 cost=$0.187
+300/1019 acc-so-far=0.147 cost=$0.227
+350/1019 acc-so-far=0.137 cost=$0.265
+400/1019 acc-so-far=0.133 cost=$0.306
+450/1019 acc-so-far=0.138 cost=$0.341
+500/1019 acc-so-far=0.144 cost=$0.378
+550/1019 acc-so-far=0.144 cost=$0.412
+600/1019 acc-so-far=0.143 cost=$0.454
+650/1019 acc-so-far=0.145 cost=$0.493
+700/1019 acc-so-far=0.146 cost=$0.532
+750/1019 acc-so-far=0.145 cost=$0.568
+800/1019 acc-so-far=0.144 cost=$0.608
+850/1019 acc-so-far=0.141 cost=$0.643
+900/1019 acc-so-far=0.140 cost=$0.685
+950/1019 acc-so-far=0.141 cost=$0.724
+1000/1019 acc-so-far=0.139 cost=$0.762
+1019/1019 acc-so-far=0.136 cost=$0.783
+finished 1019 items, run cost $0.7833 -> /mnt/data/tmp/aiim_answers/papers/emnlp/finopsbench/experiments/e1_closed_book/results/qwen_qwen3-30b-a3b.jsonl

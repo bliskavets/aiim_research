@@ -1,0 +1,11 @@
+1173 runnable environments
+247 to run (rest already done)
+credits used before run: $4680.781
+25/247 spent=$1.286 ($0.0515/item, projected $12.71)
+50/247 spent=$2.355 ($0.0471/item, projected $11.64)
+75/247 spent=$4.349 ($0.0580/item, projected $14.32)
+100/247 spent=$5.942 ($0.0594/item, projected $14.68)
+125/247 spent=$7.678 ($0.0614/item, projected $15.17)
+BUDGET STOP: spent $7.68, projected $15.17 > cap $13.0
+
+=== anthropic/claude-sonnet-4.5: n=139 accuracy=70.5% spend this run=$7.827 (stopped_by_budget=True) ===

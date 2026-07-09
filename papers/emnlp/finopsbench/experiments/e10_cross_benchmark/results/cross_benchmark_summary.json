@@ -1,0 +1,20 @@
+{
+  "model": "openai/gpt-4.1-mini",
+  "external_TATQA_static_reading": {
+    "n": 200,
+    "acc": 89.0,
+    "note": "arithmetic questions, table+text in prompt, no tools"
+  },
+  "FinOpsBench_v2_full_context_reading": {
+    "n": 200,
+    "acc": 64.5
+  },
+  "FinOpsBench_v2_agentic_tools": {
+    "n": 200,
+    "acc": 61.5
+  },
+  "FinOpsBench_v2_closed_book": {
+    "n": 200,
+    "acc": 1.5
+  }
+}

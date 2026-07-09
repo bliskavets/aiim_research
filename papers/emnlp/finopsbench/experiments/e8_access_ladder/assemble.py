@@ -48,17 +48,20 @@ ladder = {}
 for m in MODELS:
     a, _ = acc_jsonl(HERE / "results" / f"question_only_{m}.jsonl")
     b, _ = acc_jsonl(HERE / "results" / f"full_context_{m}.jsonl")
+    fq, _ = acc_jsonl(HERE / "results" / f"finqa_canonical_{m}.jsonl")
     c, n = acc_agentic(HERE / "results" / "agentic" / f"{m}.json")
-    ladder[NAMES[m]] = {"n": n, "a_question_only": a, "c_agentic": c, "b_full_context": b,
+    ladder[NAMES[m]] = {"n": n, "a_question_only": a, "c_agentic": c,
+                        "d_finqa_canonical": fq, "b_full_context": b,
                         "tool_use_necessity_c_minus_a": round(c - a, 1),
-                        "agentic_gap_b_minus_c": round(b - c, 1)}
+                        "agentic_gap_vs_finqa": round(fq - c, 1),
+                        "agentic_gap_vs_fullctx": round(b - c, 1)}
 
 (HERE / "results" / "ladder_summary.json").write_text(json.dumps(ladder, indent=2))
 
 print("### Information-access ladder (200 v2 items, percent-robust scoring)\n")
-print("| Model | (a) question-only | (c) agentic (tools) | (b) full-context (reading) | tool-use necessity (c−a) | agentic gap (b−c) |")
-print("|---|---|---|---|---|---|")
+print("| Model | (a) question-only | (c) agentic (tools) | (d) FinQA-native (gold facts) | (b) full-context (whole doc) | tool-use necessity (c−a) | agentic gap (d−c) |")
+print("|---|---|---|---|---|---|---|")
 for name, d in ladder.items():
-    print(f"| {name} | {d['a_question_only']}% | {d['c_agentic']}% | {d['b_full_context']}% | "
-          f"+{d['tool_use_necessity_c_minus_a']} pt | {d['agentic_gap_b_minus_c']} pt |")
+    print(f"| {name} | {d['a_question_only']}% | {d['c_agentic']}% | {d['d_finqa_canonical']}% | {d['b_full_context']}% | "
+          f"+{d['tool_use_necessity_c_minus_a']} pt | {d['agentic_gap_vs_finqa']} pt |")
 print(json.dumps(ladder, indent=2))

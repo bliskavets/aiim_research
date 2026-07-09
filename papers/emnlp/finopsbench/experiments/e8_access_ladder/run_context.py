@@ -65,7 +65,7 @@ async def main():
     p = argparse.ArgumentParser()
     p.add_argument("--benchmark_root", type=Path, default=Path("/tmp/FinOpsBench"))
     p.add_argument("--finqa_train", type=Path, default=Path("/tmp/finqa_train.json"))
-    p.add_argument("--mode", required=True, choices=["question_only", "full_context"])
+    p.add_argument("--mode", required=True, choices=["question_only", "full_context", "finqa_canonical"])
     p.add_argument("--model", required=True)
     p.add_argument("--limit", type=int, default=None)
     p.add_argument("--concurrency", type=int, default=8)
@@ -88,6 +88,11 @@ async def main():
         q = sample["qa"]["question"]
         if args.mode == "question_only":
             prompt = f"{INSTR_QO}\n\nQuestion: {q}"
+        elif args.mode == "finqa_canonical":
+            # the native FinQA input: gold-retrieved supporting facts (qa.model_input)
+            facts = "\n".join(f"- {txt}" for _id, txt in sample["qa"].get("model_input", []))
+            prompt = (f"Based on the following financial facts, answer the question.\n\n"
+                      f"Facts:\n{facts}\n\n{INSTR_FC}\n\nQuestion: {q}")
         else:
             prompt = f"Company disclosure:\n{finqa_context(sample)}\n\n{INSTR_FC}\n\nQuestion: {q}"
         items.append({"agent_id": aid, "gold": gold, "prompt": prompt})

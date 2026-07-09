@@ -10,7 +10,8 @@ mode*, decomposing accuracy into three rungs on the SAME 200 v2 items / same mod
 |---|---|---|
 | (a) question-only | just the question, no data, no tools | parametric / memorised knowledge |
 | (c) agentic | tools only (our benchmark, SA runner) | agentic retrieval + planning |
-| (b) full-context | original FinQA narrative+table in prompt, no tools | reading-comprehension ceiling |
+| (d) FinQA-native | the original FinQA input for the item — gold-retrieved facts (`qa.model_input`) | static-benchmark reading (source setting) |
+| (b) full-context | whole FinQA narrative+table in prompt, no tools | reading with imperfect retrieval |
 
 Scoring is percent-robust (the benchmark's compare_answers treats a trailing '%'
 as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
@@ -18,17 +19,17 @@ as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
 `assemble.py` credit the percent-scaling case consistently across all rungs).
 
 ## Result (percent-robust, n=200)
-| Model | (a) question-only | (c) agentic | (b) full-context | tool-use necessity (c−a) | agentic gap (b−c) |
-|---|---|---|---|---|---|
-| GPT-4.1-mini | 1.5% | 61.5% | 64.5% | **+60.0 pt** | 3.0 pt |
-| GPT-4.1 | 2.0% | 63.5% | 65.0% | **+61.5 pt** | 1.5 pt |
+| Model | (a) question-only | (c) agentic | (d) FinQA-native (gold facts) | (b) full-context (whole doc) | tool-use necessity (c−a) | agentic gap (d−c) |
+|---|---|---|---|---|---|---|
+| GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | **+60.0 pt** | −1.0 pt |
+| GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | **+61.5 pt** | +2.0 pt |
 
 ## Interpretation
 - **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable
   from parametric memory (1.5–2%); accuracy only appears once tools retrieve the
   data. This is a capability static financial QA cannot measure and a direct
   refutation of contamination.
-- **Agentic gap ≈ 1.5–3 pt (b−c).** A model that can *read* the disclosure can also
+- **Agentic gap ≈ 0 pt (d−c).** Solving the agentic version is about as accurate as being handed FinQA's own gold facts (the native static setting) — a model that can *read* the disclosure can also
   *retrieve* it through tools with minimal loss — so the tool wrapper is faithful
   (adds no spurious difficulty) and the reading ceiling (~65%) confirms the items
   are well-posed. Remaining agentic failures are genuine tool-use/planning errors

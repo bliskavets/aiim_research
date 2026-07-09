@@ -1,4 +1,14 @@
 {
+  "finqa_canonical_openai_gpt-4.1-mini": {
+    "n": 200,
+    "raw_acc": 21.0,
+    "robust_acc": 60.5
+  },
+  "finqa_canonical_openai_gpt-4.1": {
+    "n": 200,
+    "raw_acc": 28.5,
+    "robust_acc": 65.5
+  },
   "full_context_openai_gpt-4.1-mini": {
     "n": 200,
     "raw_acc": 22.5,

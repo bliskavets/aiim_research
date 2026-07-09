@@ -92,3 +92,116 @@ Classified **791** failing traces (GPT-5, o4-mini, GPT-4.1, GPT-4.1-mini, Claude
 
 **Takeaways.** v1 failures are semantic not syntactic (SQL errors ≈ 0; dominated by wrong predicate/threshold and incomplete retrieval → precise data selection is the bottleneck, not arithmetic). v2 shifts to tool-use failures (wrong-tool selection ↑ under distractors; open-weight DeepSeek exhausts its step budget). Frontier v1 models fail fast with one wrong query; v2 agents take more steps and hit the limit more often. Two models at the same accuracy fail for measurably different reasons.
 
+
+---
+
+## Coverage of the reviewer's requests (supplement)
+
+This section closes the two items the tables above did not fully address: **qualitative failure examples** (failure ask) and **financial-concept coverage / explicit reasoning-operation mix / template diversity** (diversity ask). SQL complexity, tool-chain depth and numerical operations are in `../e6_diversity/`.
+
+### Qualitative failure examples (one per category)
+
+Each is a real trace; the explanation is the LLM judge's reasoning (v1) or the classifier rationale (v2).
+
+**wrong_tool_selection** — DeepSeek-V3 (v2)
+- *Query:* ────────
+What was the difference in percentage cumulative total return for the five-year period ending 4/14 between NetApp Inc. and the S&P 500 Information Technology Index?
+
+Your task
+─────────
+Use w
+- *Expected:* -38.54%
+- *Model answer:* The entities required for this task (NetApp, Inc., S&P 500 Information Technology Index) could not be found in the database. Therefore, the requested comparison
+- *Why it failed:* The agent failed because it could not find the required entities due to using incorrect or incomplete entity resolution methods.
+
+**malformed_arguments** — o4-mini (v1)
+- *Query:* Are there invoices marked as paid but where shipment or service delivery confirmation is missing?
+- *Expected:* Yes, there are invoices marked as paid but missing shipment or service delivery confirmation. Specifically, invoice 2 is missing service delivery confirmation, 
+- *Model answer:* Yes. There is one paid invoice with neither a shipment nor a service‐delivery confirmation:
+
+• Invoice ID: 4
+- *Why it failed:* The correct answer states there are three paid invoices missing confirmation: invoice 2 (service missing), invoice 3 (shipment missing), and invoice 4 (both missing). The agent only mentions invoice 4 and ignores invoice
+
+**incomplete_retrieval** — GPT-5 (v1)
+- *Query:* What trends exist in delays in payments to our main suppliers compared to the last reporting period?
+- *Expected:* For our main suppliers, payment delays show mixed trends compared to the last reporting period. Alpha Supplies experienced a clear increase in payment delays in
+- *Model answer:* Here’s what I’m seeing for main suppliers, comparing the latest two payment months (by payment date): 2025-06 vs 2025-05.
+
+Overall
+- Share of invoices paid late
+- *Why it failed:* The agent’s figures do not match the correct answer’s metrics. The correct answer shows Alpha Supplies’ average delay rising from 0.67 to 5 days (a 4.33-day increase) and Beta Goods improving from a 1.33-day delay to 0.5
+
+**calculation_error** — o4-mini (v1)
+- *Query:* Have adjustments in liability recognition impacted our compliance with financial covenants?
+- *Expected:* Yes, adjustments in liability recognition have impacted compliance with financial covenants. Initially, the company was compliant with the "Max Liability Total"
+- *Model answer:* A review of the covenant‐level snapshots and the timing/magnitude of your liability adjustments shows that the post-recognition adjustments have meaningfully in
+- *Why it failed:* The agent’s answer is incorrect. They report liabilities of $950k on 03/31/2025 and $920k on 05/15/2025 yet still call those compliant under a $900k cap, which contradicts the covenant threshold. Their numbers and compli
+
+**financial_misunderstanding** — o4-mini (v1)
+- *Query:* Are there any inconsistencies in amortization schedules affecting intangible asset valuations quarter over quarter?
+- *Expected:* Yes, there are inconsistencies in the amortization schedules affecting intangible asset valuations quarter over quarter. For example, Patent A (asset_id=1) show
+- *Model answer:* Yes. When you match each quarter’s amortization to the change in valuation for the same asset/period, there are several mismatches (i.e. valuation change ≠ amor
+- *Why it failed:* The agent’s answer identifies inconsistencies for all three assets (Assets 1, 2, and 3), but the correct analysis states that only Asset 1 shows inconsistencies while Assets 2 and 3 are consistent. Therefore, the agent’s
+
+**format_unit_error** — DeepSeek-V3 (v2)
+- *Query:* What is the value of the total premiums and ASO fees, in billions?
+- *Expected:* 12.525
+- *Model answer:* 3.8701
+- *Why it failed:* Agent returned the correct value but failed to convert it into billions as requested.
+
+**round_limit_exhaustion** — DeepSeek-V3 (v2)
+- *Query:* What is the percentage change in comprehensive income attributable to NBCUniversal from 2014 to 2015?
+
+Instructions for the assistant
+• Think step-by-step, deciding which tool to call and with what ar
+- *Expected:* 13%
+- *Model answer:* Calling tools:
+[{'id': '019f4656f5f9b3c3e6c15c7f6cacd3c6', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'new_value
+- *Why it failed:* The agent reached the maximum step limit before completing the final answer.
+
+### Financial-concept coverage (% of examples mentioning each concept)
+
+| Concept | v1 (n=8233) | v2 (n=548) |
+|---|---|---|
+| Accounts payable / invoices / vendors | 52.2% | 0.0% |
+| Approval / authorization / controls | 18.1% | 1.5% |
+| Overdue / aging / late payment | 15.6% | 11.1% |
+| Variance / budget vs actual | 12.8% | 0.7% |
+| Revenue recognition / deferred | 4.9% | 2.2% |
+| Reconciliation / discrepancy | 6.0% | 0.4% |
+| Tax / VAT | 3.8% | 4.4% |
+| Cash flow / liquidity | 4.0% | 2.0% |
+| Fraud / duplicate / anomaly | 2.7% | 0.2% |
+| Ratios / financial statement (v2/FinQA) | 7.3% | 76.6% |
+
+### Reasoning operations
+
+**v1 task categories** (keyword-assigned, non-exclusive):
+
+| Category | % of v1 |
+|---|---|
+| Accounts Payable analysis | 51.9% |
+| Variance analysis | 12.8% |
+| Data integrity & reconciliation | 6.5% |
+| Revenue recognition | 7.7% |
+| Financial reporting | 25.2% |
+
+**v1 query operation type** (analyst intent):
+
+| Operation | % of v1 |
+|---|---|
+| detect/identify (anomaly search) | 16.1% |
+| list/retrieve (enumeration) | 22.4% |
+| compute/quantify (aggregation) | 1.7% |
+| compare (relative reasoning) | 4.0% |
+
+**v2 numerical operations** (from `../e6_diversity/`): aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% of reference plans.
+
+### Template diversity
+
+- v1 expansion: **12 seed queries → 8233 examples** (686× expansion) with cosine-0.9 near-duplicate filtering.
+- v1 distinct queries: **8233/8233 = 100.0%** (no exact duplicates).
+- v1 distinct-token-3-gram ratio: **0.5195**; distinct-4-gram ratio: **0.7395**.
+- v1 high-overlap pair rate (token-Jaccard ≥ 0.8 on a 400-query sample): **0.0%** — templated phrasings are rare.
+- v2 distinct questions: **548/548** (human-authored FinQA questions).
+

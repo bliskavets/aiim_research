@@ -1,0 +1,9 @@
+The company's valuation allowance decreased by 30.56% from 2012 to 2013.
+
+**Analysis:**
+- The primary reporting segment is "consolidated"
+- 2012 year-end balance: 19,520
+-九百     2013 year-end balance: 13,555
+- Percentage change: -30.56%
+
+This decrease of 30.56% corresponds with the discrete tax benefit of $2,979 mentioned in the narrative, which would have reduced the valuation allowance in 2013.

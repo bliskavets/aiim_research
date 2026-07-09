@@ -1,0 +1,4 @@
+Now I need to get capitalized interest values for 2015 and 2016:
+
+Calling tools:
+[{'id': 'call_0b8a94b853174173b4324cbb', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'metric_name': 'capitalized interest', 'year': 2015}}}]

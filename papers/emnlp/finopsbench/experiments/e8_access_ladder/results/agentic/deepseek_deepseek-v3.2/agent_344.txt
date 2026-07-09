@@ -1,0 +1,8 @@
+I need to continue gathering data for PlanA and check for other plans. Let me continue getting shares for PlanA in all its buckets:
+Calling tools:
+[
+    {'id': 'call_LoJv1fE7y1LfHp8jD6sB7t', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': '2019'}}},
+    {'id': 'call_97JgR8y4nKs2f3lP5tVw9m', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': '2020'}}},
+    {'id': 'call_3kLm9sD2qNr5tB8vW1jP4x', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': '2021'}}},
+    {'id': 'call_8pQr7sT2wNl5vB9mK3jD1x', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': 'thereafter'}}}
+]

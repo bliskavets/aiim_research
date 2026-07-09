@@ -1,0 +1,3 @@
+Now get metric value for year_id=2 (2014) and metric_id=4 (atoi). Call the get_metric_value_tool.
+Calling tools:
+[{'id': 'call_fc5b9a1e99b94307b38c8f7c', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'year_id': 2, 'metric_id': 4}}}]

@@ -1,0 +1,1 @@
+Error: Unable to access the entity database. The list_all_entities_tool returns an empty list, suggesting there may be an issue with the tool or database connection. Without access to entity data, I cannot resolve entity IDs or fetch cumulative returns to answer the question.

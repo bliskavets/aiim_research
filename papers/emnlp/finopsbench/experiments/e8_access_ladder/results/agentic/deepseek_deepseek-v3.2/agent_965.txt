@@ -1,0 +1,6 @@
+I need to calculate the portion of securities approved by security holders that remains available for future issuance. I found plan ID 101 as approved by security holders. Let me gather the data for this plan.
+
+First, let me get the number of securities issued for plan 101 as of fiscal year 2018 (since the data is as of December 31, 2018):
+
+Calling tools:
+[{'id': 'call_7d2b9e8c3b4f4b7f9a1c3d5e6', 'type': 'function', 'function': {'name': 'get_number_issued_tool', 'arguments': {'plan_id': 101, 'fiscal_year': 2018}}}]

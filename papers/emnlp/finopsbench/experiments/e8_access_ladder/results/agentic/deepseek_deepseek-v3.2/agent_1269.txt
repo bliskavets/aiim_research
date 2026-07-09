@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_f5f3aa706fbb46ee8f5d765a', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'metric_id': 1, 'year': 2018}}}]

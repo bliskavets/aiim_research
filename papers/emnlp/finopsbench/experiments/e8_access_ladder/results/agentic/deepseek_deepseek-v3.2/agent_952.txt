@@ -1,0 +1,4 @@
+I need to get the necessary data from the tools. First, let's see what sections are available.
+
+Calling tools:
+[{'id': 'call_c1d39a68bf7b436e8923c0a3', 'type': 'function', 'function': {'name': 'list_sections_tool', 'arguments': {}}}]

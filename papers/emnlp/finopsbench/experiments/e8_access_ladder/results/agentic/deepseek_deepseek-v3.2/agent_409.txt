@@ -1,0 +1,11 @@
+I need to calculate the absolute value of the combined effect of "market change" and "fx impact" for "asset allocation and balanced" category in 2015. Based on my earlier tool calls, I found:
+
+market_change = -6731  
+fx_impact = -3391
+
+The combined effect = (-6731) + (-3391) = -10122
+The absolute value = |-10122| = 10122
+
+Therefore, the answer is 10122 million U.S. dollars.
+
+10122

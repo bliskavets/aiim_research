@@ -1,0 +1,19 @@
+Let me calculate this step by step using the data I've already collected:
+
+2006 amounts:
+- Recurring leasing costs: 32,983
+- Building improvements: 8,122
+- Recurring tenant improvements: 41,895
+
+Total 2006 = 32,983 + 8,122 + 41,895 = 83,000 (in thousands)
+
+2007 amounts:
+- Recurring leasing costs: 32,238
+- Building improvements: 8,402
+- Recurring tenant improvements: 45,296
+
+Total 2007 = 32,238 + 8,402 + 45,296 = 85,936 (in thousands)
+
+Now I need to calculate the percent change from 2006 to 2007. Let me use the calculate_percentage_change tool:
+Calling tools:
+[{'id': 'call_0d7c7dfb80c64f89aeef6e41', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'old_value': 83000, 'new_value': 85936}}}]

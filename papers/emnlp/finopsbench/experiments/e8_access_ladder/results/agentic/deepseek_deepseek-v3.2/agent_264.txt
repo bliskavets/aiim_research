@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_00_4z6jD9NYmuiw3fZVy8yEq8cp', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'metric_code': 'EQ_REV', 'year': 2002}}}]

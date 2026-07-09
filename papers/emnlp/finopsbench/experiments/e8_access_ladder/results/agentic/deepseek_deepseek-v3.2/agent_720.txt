@@ -1,0 +1,6 @@
+I need to get the data for Alternative Investments for 2015, 2016, and 2017. Let me use the tools systematically.
+
+First, I need the asset class ID for "alternative investments" (which I know is 1 from earlier), and year IDs for 2015 (which is 2), 2016, and 2017.
+
+Let me get the year ID for 2016:Calling tools:
+[{'id': 'call_798e5dbf1b0d458ba90f5dc3', 'type': 'function', 'function': {'name': 'get_year_id', 'arguments': {'year': 2016}}}]

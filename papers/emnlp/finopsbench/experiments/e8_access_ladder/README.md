@@ -23,13 +23,14 @@ as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
 |---|---|---|---|---|---|---|
 | GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | **+60.0 pt** | −1.0 pt |
 | GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | **+61.5 pt** | +2.0 pt |
+| DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | **+44.2 pt** | **+20.8 pt** |
 
 ## Interpretation
 - **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable
   from parametric memory (1.5–2%); accuracy only appears once tools retrieve the
   data. This is a capability static financial QA cannot measure and a direct
   refutation of contamination.
-- **Agentic gap ≈ 0 pt (d−c).** Solving the agentic version is about as accurate as being handed FinQA's own gold facts (the native static setting) — a model that can *read* the disclosure can also
+- **Agentic gap is model-discriminating (d−c).** ~0 pt for the GPT-4.1 family but **+20.8 pt for DeepSeek-V3.2**, which reads FinQA better than GPT-4.1 (69% vs 65%) yet acts on it far worse (48% vs 64%) — a distinction static benchmarks cannot see. Where the gap is ~0 a model that can *read* the disclosure can also
   *retrieve* it through tools with minimal loss — so the tool wrapper is faithful
   (adds no spurious difficulty) and the reading ceiling (~65%) confirms the items
   are well-posed. Remaining agentic failures are genuine tool-use/planning errors

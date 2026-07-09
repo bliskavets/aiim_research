@@ -1,0 +1,3 @@
+The portion of 2009 operating leases that are current liabilities is **10.8%**.
+
+This percentage is calculated by taking the scheduled payment for 2010 ($576 million) as the current portion and dividing it by the total minimum lease payments ($5,312 million), then rounding to one decimal place.

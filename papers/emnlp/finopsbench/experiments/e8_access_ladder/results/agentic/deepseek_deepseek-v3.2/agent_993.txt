@@ -1,0 +1,8 @@
+Now I need to compute the percentage change between the 2017 and 2018 end-of-year balances for the sales_return_rebate_discount category. I have:
+- 2017 end_of_year balance: 4172.0 million
+- ND: Let me check if I should be using end_of_year or beginning_of_year balances for the comparison. The question asks for "liability balances" between 2017 and 2018. Typically when comparing year-over-year changes, we compare the balance at the end of each year. However, let me also check beginning_of_year balances to be thorough.
+
+Actually, looking at the available metrics, I should check if I need to consider multiple metrics or if "end_of_year" is the correct metric for liability balances. Since the question asks for "liability balances" and this is typically reported as year-end balances on balance sheets, I'll proceed with the end_of_year figures.
+
+Let me compute the percentage change using the tool. Calling tools:
+[{'id': 'call_d53fd18a9b53450d8f1083a8', 'type': 'function', 'function': {'name': 'compute_percentage_change_tool', 'arguments': {'new_value': 4678.2, 'old_value': 4172.0}}}]

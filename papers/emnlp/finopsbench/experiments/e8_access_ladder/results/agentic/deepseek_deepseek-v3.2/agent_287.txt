@@ -1,0 +1,12 @@
+I need to calculate the percentage of total assets that equals the total identifiable net assets. Let me gather the necessary data systematically.
+
+First, I already have the total identifiable net assets: 144,357 thousand USD.
+
+Now I need to calculate the total assets. To do this, I need to:
+1. Identify all asset categories
+2. Get their amounts for SICOM Systems, Inc.
+3. Sum them up
+
+Let me first get the balance types for all categories. I'll start with a few to understand the pattern:
+Calling tools:
+[{'id': 'call_2a1b3c4d5e6f7g8h', 'type': 'function', 'function': {'name': 'get_balance_type_tool', 'arguments': {'category_name': 'property_and_equipment'}}}]

@@ -1,0 +1,5 @@
+Calling tools:
+[{'id': 'call_5705aecdf4a04349bb6b549b', 'type': 'function', 'function': {'name': 'get_payment_amount_tool', 'arguments': {'category_name': 'long-term debt (excl. capital leases)', 'period_label': 'fiscal_2020'}}}]
+[{'id': 'call_8ca275b0db4449fd8c93a1e4', 'type': 'function', 'function': {'name': 'get_payment_amount_tool', 'arguments': {'category_name': 'long-term debt (excl. capital leases)', 'period_label': 'fiscal_2021_2022'}}}]
+[{'id': 'call_94fe61f584c84081a74ff3d3', 'type': 'function', 'function': {'name': 'get_payment_amount_tool', 'arguments': {'category_name': 'long-term debt (excl. capital leases)', 'period_label': 'fiscal_2023_2024'}}}]
+[{'id': 'call_3c6e7b2f206b41f99e59011c', 'type': 'function', 'function': {'name': 'get_payment_amount_tool', 'arguments': {'category_name': 'long-term debt (excl. capital leases)', 'period_label': 'after_2024'}}}]

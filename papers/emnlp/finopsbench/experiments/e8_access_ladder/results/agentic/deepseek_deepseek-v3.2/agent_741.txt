@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_00_R5pN5tS1o4aP4dQ17cX8W4Ck', 'type': 'function', 'function': {'name': 'get_commitment_amount_usd', 'arguments': {'year': 2015, 'commitment_type': 'operating leases'}}}]

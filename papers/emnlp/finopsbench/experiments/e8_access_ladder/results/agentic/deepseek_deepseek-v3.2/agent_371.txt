@@ -1,0 +1,2 @@
+Calling tools:
+[{"id": "res_vehicles_call", "type": "function", "function": {"name": "get_vehicle_count", "arguments": {"line_of_business": "residential", "reporting_date": "2016-12-31"}}}]

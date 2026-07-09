@@ -1,0 +1,4 @@
+I need to complete the calculation. I have the data for 2011 (20,963) and 2012 (18,884). Let me calculate the percentage change and format it properly.
+
+Calling tools:
+[{'id': 'call_3e2a2e6b2d3a4f5ca0b7f8c9', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'old_value': 20963, 'new_value': 18884, 'decimals': 2}}}]

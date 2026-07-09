@@ -1,0 +1,14 @@
+Looking at the narrative text provided:
+
+1. For Insurance North American in 2008:
+   - Catastrophe losses were $298 million
+   - Net favorable prior period development was $351 million
+
+The ratio is prior period development to catastrophe losses: $351 million / $298 million
+
+Let me calculate this ratio:
+351 ÷ 298 = 1.17785234899
+
+Rounded to two decimal places: 1.18
+
+1.18

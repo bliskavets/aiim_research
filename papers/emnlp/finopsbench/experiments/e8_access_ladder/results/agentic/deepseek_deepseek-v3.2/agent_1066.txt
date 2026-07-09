@@ -1,0 +1,9 @@
+To find the 2017 cigarette shipment volume if the same percentage change as 2016 happens again:
+
+2016 cigarette shipment volume: 122.9 billion units
+2016 year-over-year percentage change: -2.5%
+
+Applying the same -2.5% change to 2016 volume to get 2017 volume:
+122.9 billion × (1 - 0.025) = 122.9 billion × 0.975 = 119.8275 billion units
+
+Therefore, the 2017 cigarette shipment volume would be approximately 119.83 billion units.

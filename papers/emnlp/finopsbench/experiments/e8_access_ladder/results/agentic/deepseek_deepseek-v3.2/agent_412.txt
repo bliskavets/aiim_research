@@ -1,0 +1,7 @@
+Based on the scenario description and tool data:
+- 2016 floating-rate notes: $126 million
+- 2017 floating-rate notes: $96 million
+
+Ratio = 126 ÷ 96 = 1.3125 ≈ 1.31 when rounded to two decimal places.
+
+1.31

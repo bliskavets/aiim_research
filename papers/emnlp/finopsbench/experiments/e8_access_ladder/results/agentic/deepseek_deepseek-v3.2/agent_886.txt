@@ -1,0 +1,6 @@
+Based on the data retrieved:
+- CAPEX for 2015: 90 million
+- CAPEX for ди16: 64 million
+- Average (floor): 77 million
+
+77

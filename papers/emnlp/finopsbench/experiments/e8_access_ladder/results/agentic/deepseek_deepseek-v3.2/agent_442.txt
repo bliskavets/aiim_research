@@ -1,0 +1,1 @@
+[{'type': 'text', 'text': 'Calling tools:\n[{\'id\': \'call_0c99d8eb249f4d7b83855dc3\', \'type\': \'function\', \'function\': {\'name\': \'get_obligation_header_id_tool\', \'arguments\': {\'year_id\': 3, \'obligation_type_name\': \'Financing Obligation\'}}}]'}]

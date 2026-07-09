@@ -1,0 +1,9 @@
+Let me approach this systematically using the tools:
+
+1. First, get the year_id for 2012
+2. Get the period_ids for H1 and H2  
+3. Get prices for both periods in 2012
+4. Compute the average
+
+Calling tools:
+[{'id': 'call_8249e1d4f69f48dc8a9e3c28', 'type': 'function', 'function': {'name': 'find_year_id_tool', 'arguments': {'year': 2012}}}]

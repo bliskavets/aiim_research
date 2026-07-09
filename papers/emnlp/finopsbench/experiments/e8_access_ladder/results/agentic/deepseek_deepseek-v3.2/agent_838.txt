@@ -1,0 +1,4 @@
+I need to get the end value for 2015. From the earlier observation, I know the start value on 31-Dec-2010 was 100.0. Now I need to get the end value for 31-Dec-2015.
+
+Calling tools:
+[{'id': 'call_7f6b2e8e5a1e4329b4c5d890', 'type': 'function', 'function': {'name': 'get_cumulative_return_value_tool', 'arguments': {'asset_id': 1, 'date': '31-dec-2015'}}}]

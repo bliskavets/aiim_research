@@ -1,0 +1,10 @@
+{"agent_id": "agent_338", "gold": "-5.8%", "prediction": "Global Payments\u2019 value decreased from 100.00 in 2002 to 94.20 in 2003.\n\nRate of return = (94.20 \u2212 100.00) / 100.00 \u00d7 100 = -5.8\n\nFinal answer: -5.8", "passed": false, "cost": 0.00603}
+{"agent_id": "agent_404", "gold": "247", "prediction": "Final answer: 247", "passed": true, "cost": 0.005125}
+{"agent_id": "agent_1300", "gold": "26%", "prediction": "Food and ingredients net sales in 2005 = 2,986  \nTotal net sales in 2005 = 11,384  \n\nPercentage = (2,986 / 11,384) \u00d7 100 = 26.23%\n\nFinal answer: 26.23", "passed": false, "cost": 0.00644}
+{"agent_id": "agent_194", "gold": "-5821", "prediction": "The balance decreased from 18,874 in 2008 to 13,053 in 2009.\n\nNet change = 13,053 - 18,874 = -5,821\n\nFinal answer: -5821", "passed": true, "cost": 0.010205}
+{"agent_id": "agent_269", "gold": "0.8%", "prediction": "The adjusted effective tax rate increased from 18.6 in 2018 to 19.4 in 2019.\n\nVariation = 19.4 - 18.6 = 0.8\n\nFinal answer: 0.8", "passed": false, "cost": 0.00596}
+{"agent_id": "agent_197", "gold": "13", "prediction": "Final answer: 40", "passed": false, "cost": 0.005755}
+{"agent_id": "agent_1267", "gold": "10%", "prediction": "Lease obligations as a percentage of total contractual obligations:\n\n\\( \\frac{514.9}{5245.9} \\times 100 = 9.8 \\)\n\nFinal answer: 9.8", "passed": false, "cost": 0.01073}
+{"agent_id": "agent_1143", "gold": "0", "prediction": "Final answer: -0.9", "passed": false, "cost": 0.004155}
+{"agent_id": "agent_911", "gold": "29.46%", "prediction": "Balance increased from 177.2 in 2016 to 229.4 in 2018.\n\nPercent increase = ((229.4 - 177.2) / 177.2) \u00d7 100 = 29.5%\n\nFinal answer: 29.5", "passed": false, "cost": 0.006415}
+{"agent_id": "agent_280", "gold": "773%", "prediction": "The additions were 103,698 and the deductions were 11,869.\n\nDifference = 103,698 - 11,869 = 91,829\n\nFinal answer: 91829", "passed": false, "cost": 0.06094}

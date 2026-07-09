@@ -1,0 +1,5 @@
+I need to systematically gather the data. Let me start by getting the deductions amounts for 2006 and 2007.
+
+First, get the deductions amount for 2006 (report_id: 2):
+Calling tools:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'get_depreciation_amount_tool', 'arguments': {'report_id': 2, 'category': 'deductions'}}}]

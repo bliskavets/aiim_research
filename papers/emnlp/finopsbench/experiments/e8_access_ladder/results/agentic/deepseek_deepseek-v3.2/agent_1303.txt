@@ -1,0 +1,7 @@
+I need to continue gathering all necessary data to calculate the percentage. Let me get the remaining metric values:
+
+Calling tools:
+[{'id': 'call_AbcdEfGhIjKlMnOpQrStUvWx', 'type': 'function', 'function': {'name': 'fetch_metric_value_by_ids_tool', 'arguments': {'business_unit_id':妨泡淹吹换机? Let me properly call the tool for Retail Brokerage non_interest_revenue first.
+
+Calling tools:
+[{'id': 'call_1234567890ABCDEFGHIJKLMN', 'type': 'function', 'function': {'name': 'fetch_metric_value_by_ids_tool', 'arguments': {'business_unit_id': 1, 'year': 2009, 'metric_id': 1}}}]

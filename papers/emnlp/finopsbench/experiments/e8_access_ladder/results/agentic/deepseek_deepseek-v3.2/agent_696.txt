@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_39b8ead2c9014272ba51ed35', 'type': 'function', 'function': {'name': 'get_financial_fact_tool', 'arguments': {'company_id': 1, 'year': 2015, 'metric_id': 1}}}]

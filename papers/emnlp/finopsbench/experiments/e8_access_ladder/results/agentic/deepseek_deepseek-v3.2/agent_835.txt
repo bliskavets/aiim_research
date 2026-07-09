@@ -1,0 +1,4 @@
+I need to get all the expenses for U.K. for all three plan types (DB, DC, PR) across all three years (2016-2018). So far I have 2016 data. Let me get the rest.
+
+Calling tools:
+[{'id': 'call_00_Q7CgLZfPj0n1tFq8m51gOj37', 'type': 'function', 'function': {'name': 'get_expense_tool', 'arguments': {'region_id': 1, 'year_id': 4, 'plan_type_id': 2}}}, {'id': 'call_01_q1V5EoB1tZc72R8pG0dWwB1X', 'type': 'function', 'function': {'name': 'get_expense_tool', 'arguments': {'region_id': 1, 'year_id': 4, 'plan_type_id': 1}}}, {'id': 'call_02_eSgv2GfZqj9Yrq8Uv7tUwOoD', 'type': 'function', 'function': {'name': 'get_expense_tool', 'arguments': {'region_id': 1, 'year_id': 4, 'plan_type_id': 3}}}]

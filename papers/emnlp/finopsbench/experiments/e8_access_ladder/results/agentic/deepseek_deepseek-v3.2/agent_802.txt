@@ -1,0 +1,4 @@
+Let’s proceed step-by-step with tool calls.
+
+**Step 1: Confirm company name.**  
+[{"type": "function", "function": {"name": "search_companies", "arguments": {"keyword": "Entergy Louisiana"}}}]

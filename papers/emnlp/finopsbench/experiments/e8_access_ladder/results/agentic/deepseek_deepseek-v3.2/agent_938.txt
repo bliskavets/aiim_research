@@ -1,0 +1,13 @@
+I need to systematically gather the data. Let me start from the beginning:
+
+1. First, get the company ID for EOG Resources.
+2. Then get the category ID for "net capitalized costs".
+3. Check that 2017 and 2018 are available fiscal years.
+4. Get fiscal year IDs for 2017 and 2018.
+5. Query the net capitalized costs for both years.
+6. Calculate percentage increase: ((2018 value - 2017 value) / 2017 value) × 100%.
+
+Let me begin:
+
+Calling tools:
+[{'id': 'call_fv8z5r3Xb6u9Wph0K7A7p2rF', 'type': 'function', 'function': {'name': 'get_company_id_tool', 'arguments': {'company_name': 'EOG Resources'}}}]

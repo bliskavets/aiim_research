@@ -1,0 +1,9 @@
+Based on the data retrieved from the tools:
+
+1. The Syndicated Letter of Credit Facility has a credit limit of 1000.0 million USD
+2. The total credit-line limits for all active facilities is 4770.80 million USD
+
+Calculating the portion:
+(1000.0 / 4770.80) × 100 = 20.96% ≈ 21.0%
+
+21.0%

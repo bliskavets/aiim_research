@@ -1,0 +1,1 @@
+[{'type': 'text', 'text': "Calling tools:\n[{'id': 'call_a8b2a1c87dc04a95a8c4b4ea', 'type': 'function', 'function': {'name': 'calculate_dollar_value_tool', 'arguments': {'shares': 20759, 'price': 37.25}}}]"}]

@@ -238,7 +238,7 @@ Following the reviewer's request, we ran a human annotation study with a human j
 | Half | check | agreement |
 |---|---|---|
 | v1 | scoring vs a human judge with domain knowledge | 85.1%, Cohen's κ = 0.67 |
-| v2 | reference plan reproduces gold under execution | 178 of 200 |
+| v2 | reference plan reproduces gold under execution | 89% |
 
 Because the scores are anchored this way, the diagnostics built on them are meaningful rather than circular. A failure-mode taxonomy over 779 failing traces in eight categories then shows the profile shifting from v1 to v2, where each cell is the share of that model's failing traces:
 
@@ -265,16 +265,16 @@ On v1 the failures are semantic, not syntactic: SQL errors are near zero, while 
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 
-We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 178 of 200 do so.
+We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 89% do so.
 
 Where judgements are used, they are aligned with human perception, which we measured rather than assumed:
 
 | Half | check | agreement |
 |---|---|---|
 | v1 | judge vs a human judge with domain knowledge | 85.1%, Cohen's κ = 0.67 |
-| v2 | reference plan reproduces gold under execution | 178 of 200 |
+| v2 | reference plan reproduces gold under execution | 89% |
 
-So the judgement tracks a knowledgeable reader rather than adding noise. [PLACEHOLDER: inter-annotator κ from a second independent annotator, to report human-human agreement next to the human vs judge number above.]
+So the judgement tracks a knowledgeable reader rather than adding noise.
 
 Acceptance also does not rest on one model's opinion. The construction panel is three independent judges from two vendors, and on the released items they agree as follows:
 

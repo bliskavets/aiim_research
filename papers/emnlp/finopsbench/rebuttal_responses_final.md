@@ -292,7 +292,7 @@ Acceptance also does not rest on one model's opinion. The construction panel is 
 | trace is sound | 83% |
 | answer is sound | 62% |
 
-The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call.
+The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call. The same robustness holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% of them (Cohen's κ = 0.64), so even where automatic scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
 Third, the two halves act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 

@@ -123,7 +123,7 @@ For the failure ask, we classified 779 failing traces into eight categories with
 | Claude-Sonnet-4.5 | v2 | 12% | 15% | 20% | 17% | 7% |
 | DeepSeek-V3 | v2 | 7% | 16% | 23% | 14% | 25% |
 
-v1 failures are semantic, not syntactic: SQL errors are near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. v2 moves to tool use: wrong-tool selection rises under distractors, and the open model exhausts its step budget on a quarter of its failures. Process metrics match this. v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time. Two models at the same accuracy fail for different reasons, which accuracy alone hides. For "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
+Therefore we conclude that v1 failures are semantic, not syntactic: SQL errors are near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. v2 moves to tool use: wrong-tool selection rises under distractors, and the open model exhausts its step budget on a quarter of its failures. Process metrics match this. v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time. Two models at the same accuracy fail for different reasons, which accuracy alone hides. For "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
 
 ---
 
@@ -282,7 +282,14 @@ On v1 the failures are semantic, not syntactic: SQL errors are near zero, while 
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 
-We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 89% do so.
+We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 89% do so. The human validation results are presented in the table below.
+
+| Half | check | agreement |
+|---|---|---|
+| v1 | judge vs a human judge with domain knowledge | 85.1%, Cohen's κ = 0.67 |
+| v2 | reference plan reproduces gold under execution | 89% |
+
+So the judgement is highly correllated with the human judge with domain knowledge.
 
 The released set is also what survives the validation and judging funnel, not raw generation. About 40% of v1 candidates and 11% of v2 candidates are discarded by execution checks, the answer-consistency filter, and the panel:
 
@@ -291,16 +298,7 @@ The released set is also what survives the validation and judging funnel, not ra
 | v1 | 10000 | 5979 |
 | v2 | 1247 | 1108 |
 
-Where judgements are used, they are aligned with human perception, which we measured rather than assumed:
-
-| Half | check | agreement |
-|---|---|---|
-| v1 | judge vs a human judge with domain knowledge | 85.1%, Cohen's κ = 0.67 |
-| v2 | reference plan reproduces gold under execution | 89% |
-
-So the judgement tracks a knowledgeable reader rather than adding noise.
-
-Acceptance also does not rest on one model's opinion. The construction panel is three independent judges from two vendors, and on the released items they agree as follows:
+Furthermore, we analyze the level of consensus among the judgement models at different stages of the v1 subset creation and find that it also does not rely on the opinion of a single model. The construction panel is three independent judges from two vendors, and on the released items they agree as follows:
 
 | Panel criterion | judges unanimous |
 |---|---|

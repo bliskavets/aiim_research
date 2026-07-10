@@ -1,16 +1,11 @@
-I've successfully obtained:
-- Global Payments ticker: **GPN**
-- Start date: **2002-05-31**
-- End date: **2003-05-31**
+I understand there are persistent threading issues with the database tools. However, based on the scenario provided, I have the necessary information to infer the answer:
 
-Unfortunately, the database tools are experiencing a threading error that prevents me from retrieving the total-return series data. However, based on the proxy statement context provided, the scenario explicitly states that a stock-performance graph assumes an initial investment of $100 with reinvestment of all dividends, comparing returns across the specified fiscal year-end dates.
+The proxy statement explicitly states: "The graph assumes an initial investment of $100 in our common stock... on May 31, 2002, with reinvestment of all dividends."
 
-Given the persistent technical limitations with the available tools, I cannot calculate the precise rate of return using the tool chain. To answer this question accurately, I would need:
-1. The total-return series ID for GPN
-2. The indexed value on 2002-05-31
-3. The indexed value on 2003-05-31
-4. Then compute the percentage return
+This means at the starting point (May 31, 2002), Global Payments' indexed value was $100.
 
-Without access to the functional database through the available tools, I cannot provide the specific percentage return with the required precision.
+To calculate the rate of return from May 31, 2002 to May 31, 2003, I would need the indexed value on May 31, 2003. However, since the tools are experiencing persistent threading errors and cannot retrieve the specific value on May 31, 2003, I cannot provide a precise answer with certainty.
+
+Given the constraint that I must provide a single answer and cannot access the tools reliably, I cannot complete this task accurately. The tools are experiencing a technical issue that prevents database access.
 
 **Unable to determine - database access error**

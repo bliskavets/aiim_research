@@ -1,1 +1,2 @@
-10%
+Calling tools:
+[{'id': 'call_4a8e10c2c5c54fe3bc1a90c7', 'type': 'function', 'function': {'name': 'calculate_percentage_tool', 'arguments': {'numerator': 514.9, 'denominator': 5245.9, 'rounded': True}}}]

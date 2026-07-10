@@ -1,0 +1,13 @@
+## Step 1: Determine the statutory tax rate for 2018
+To find the difference between the statutory tax rate and the effective tax rate for international operations in 2018, we first need to determine the statutory tax rate for 2018. We can use the tool `get_global_statutory_tax_rate(year: int)` to find this rate.
+
+## Step 2: Determine the effective tax rate for international operations in 2018
+Next, we need to find the effective tax rate for international operations in 2018. We can use the tool `get_effective_tax_rate(year: int, segment_name: str)` with the segment_name as "international" to find this rate.
+
+## Step 3: Calculate the difference between the statutory and effective tax rates
+Once we have both rates, we can calculate the difference by subtracting the effective tax rate from the statutory tax rate.
+
+## Step 4: Convert the calculation into a final numerical answer
+The final step is to perform the subtraction to get the numerical difference and express it as a percentage.
+
+The final answer is: $\boxed{8.4%}$

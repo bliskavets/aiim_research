@@ -1,10 +1,12 @@
-To determine the average yearly amortization expense for purchased technology, I will need:  
-1. The carrying amount of purchased technology (in millions USD).
-2. The weighted average useful life (in years) for purchased technology, or the straight-line amortization percentage if that’s available.
+To calculate the average yearly amortization expense for purchased technology, two pieces of data are needed:
+1. The carrying amount of purchased technology (in millions of USD).
+2. The weighted-average useful life (in years) for purchased technology.
 
-Since the weighted average useful life years metric is not available, I will check the most recent carrying amount and see if the amortization percentage can be calculated from other available data.
+The internal database shows the metric names are:
+- carrying_amount_musd
+- weighted_average_useful_life_years
 
-Fetching the most recent carrying amount for purchased technology...
+However, attempts to fetch either metric for all likely available years (2018, 2019, ..., 2023, and "most recent") returned "not found." Therefore, a direct calculation is not possible with the available data from the database at this time.
 
-Calling tools:
-[{'id': 'call_A8ZJOOh6VXv3kW0vHyAAQMCx', 'type': 'function', 'function': {'name': 'fetch_metric_value', 'arguments': {'category_id': 1, 'metric_name': 'carrying_amount_musd'}}}]
+Final answer:
+The average yearly amortization expense related to purchased technology cannot be determined from the currently available data in the internal database.

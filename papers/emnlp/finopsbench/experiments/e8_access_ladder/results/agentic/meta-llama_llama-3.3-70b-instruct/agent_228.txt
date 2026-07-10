@@ -1,13 +1,12 @@
-## Step 1: Determine the statutory tax rate for 2018
-To find the difference between the statutory tax rate and the effective tax rate for international operations in 2018, we first need to determine the statutory tax rate for 2018. We can use the tool `get_global_statutory_tax_rate(year: int)` to find this rate.
+To find the difference between the statutory tax rate and the effective tax rate for international operations in 2018, we need to first identify the statutory tax rate for the "global" jurisdiction in 2018 and the effective tax rate for the "international" segment in 2018.
 
-## Step 2: Determine the effective tax rate for international operations in 2018
-Next, we need to find the effective tax rate for international operations in 2018. We can use the tool `get_effective_tax_rate(year: int, segment_name: str)` with the segment_name as "international" to find this rate.
+1. **Statutory Tax Rate for Global Jurisdiction in 2018**: The statutory tax rate for the "global" jurisdiction in 2018 is 19.0%, as observed.
 
-## Step 3: Calculate the difference between the statutory and effective tax rates
-Once we have both rates, we can calculate the difference by subtracting the effective tax rate from the statutory tax rate.
+2. **Effective Tax Rate for International Operations in 2018**: The effective tax rate for international operations in 2018 is 22.0%, as observed.
 
-## Step 4: Convert the calculation into a final numerical answer
-The final step is to perform the subtraction to get the numerical difference and express it as a percentage.
+3. **Calculating the Difference**: The difference between the statutory tax rate and the effective tax rate for international operations in 2018 can be calculated as follows:
+   - Difference = Effective Tax Rate - Statutory Tax Rate
+   - Difference = 22.0% - 19.0%
+   - Difference = 3.0%
 
-The final answer is: $\boxed{8.4%}$
+Therefore, the difference between the statutory tax rate and the effective tax rate for international operations in 2018 is 3.0%.

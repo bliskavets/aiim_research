@@ -1,0 +1,11 @@
+<|start|>assistant<|channel|>commentary<|message|>{
+  "name": "fetch_issuer_id",
+  "arguments": {
+    "issuer_name": "Kilimanjaro Re Limited"
+  }
+}<|call|>We wait for observation.Observation:<|start|>assistant<|channel|>commentary<|message|>{
+  "name": "fetch_instrument_id",
+  "arguments": {
+    "instrument_type": "notes"
+  }
+}<|call|>Observation:1575000

@@ -1,1 +1,1 @@
-On December 31, 2017, the estimated unrecognized compensation cost related to non-vested RSUs (with and without performance conditions) that is expected to be recognized as of December 31, 2018, is approximately 2.79 million USD (for RSU_NONVESTED) plus 1.49 million USD (for STOCK_OPTIONS), totaling approximately 4.28 million USD.
+On December 31, 2017, the estimated unrecognized compensation cost related to the non-vested RSUs, with and without performance conditions, that is expected to be recognized as of December 31, 2018, is approximately 2.79 million dollars.

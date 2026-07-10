@@ -1,1 +1,1 @@
-Unable to determine - no restricted cash category data is available in the system
+Unable to determine - the restricted cash categories database appears to be empty or the data for July 1, 2006 is not available in the system. The list_cash_categories_tool returned no categories, and searches for relevant keywords (insurance trusts, insurance, workers compensation) all returned None. Without access to the category codes and amounts, the percentage cannot be calculated.

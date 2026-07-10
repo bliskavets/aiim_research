@@ -1,1 +1,2 @@
-12900
+Calling tools:
+[{'id': 'chatcmpl-tool-23cd7aa45b1a939f', 'type': 'function', 'function': {'name': 'get_balance_record_tool', 'arguments': {'contract_id': 1, 'year': 2009}}}]

@@ -1,3 +1,9 @@
-The growth rate for Engineered Products and Solutions from 2015 to 2016 is 7.0%. The management narrative does not explicitly provide the Transportation and Construction Solutions growth rate, but the scenario text states: "third-party sales for the transportation and construction solutions segment decreased 4% (4%) in 2016 compared with 2015." Therefore, the growth rate is -4%. The difference is 7.0% - (-4.0%) = 11.00%. 
+The growth rate for the third-party sales of the Engineered Products and Solutions segment in 2016 compared with 2015 is 7%.  
+The growth rate for the Transportation and Construction Solutions segment in the same period is -4% (as it decreased by 4%).
 
-Final Answer: 11.00%
+The difference in growth rates is:
+
+7% - (-4%) = 11%
+
+**Final answer:**  
+11.00%

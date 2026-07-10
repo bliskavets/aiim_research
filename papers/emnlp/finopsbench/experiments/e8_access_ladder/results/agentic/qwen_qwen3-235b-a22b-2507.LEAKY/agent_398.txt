@@ -1,0 +1,9 @@
+The available narrative does not provide the exact numerical values for net revenue in 2015 and 2016 for Entergy New Orleans, Inc. While it mentions that net income increased in 2016 due in part to higher net revenue, no specific figures for net revenue are given, and the referenced table with detailed numbers is not accessible in this prompt.
+
+Additionally, attempts to retrieve data using the available tools have failed due to a repeated system error in the `get_company_id_by_legal_name` function, which prevents further data retrieval.
+
+Given the lack of quantifiable data on net revenue and the inability to access financial amounts through the tools, the growth rate in net revenue cannot be calculated.
+
+Therefore, based on the information provided, the growth rate in net revenue in 2016 for Entergy New Orleans, Inc. cannot be determined.
+
+Answer: Cannot be determined.

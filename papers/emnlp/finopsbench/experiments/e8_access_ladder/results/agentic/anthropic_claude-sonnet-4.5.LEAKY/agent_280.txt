@@ -1,0 +1,23 @@
+Let me solve this step by step.
+
+**Step 1: Retrieve the data for 2009**
+
+I called two tools to get the movements during calendar year 2009:
+- `get_additions_during_year(2009)` returned **103,698** (thousand USD)
+- `get_deductions_during_year(2009)` returned **11,869** (thousand USD)
+
+**Step 2: Calculate how much bigger additions are compared to deductions**
+
+To find how much bigger the additions are in comparison with deductions, I need to calculate:
+(Additions / Deductions) × 100%
+
+Calculation:
+(103,698 / 11,869) × 100% = 8.7364... × 100% = 873.64%
+
+Rounding to the nearest whole number: **874%**
+
+This means the additions during 2009 are 874% the size of the deductions, or equivalently, additions are 774% larger than deductions (874% - 100% = 774% larger).
+
+However, since the question asks "How bigger are the additions in comparison with the deductions", this is asking for the ratio expressed as a percentage.
+
+**Final Answer: 874%**

@@ -1,0 +1,11 @@
+I apologize, but I'm unable to retrieve the specific commitment amounts from the database due to persistent operational errors with the available tools. The tools are returning database errors when attempting to access the commitment data for fiscal year 2015.
+
+Without access to the actual numerical values for operating leases and total commitments for fiscal year 2015, I cannot calculate the requested percentage accurately.
+
+To properly answer this question, I would need to:
+1. Retrieve the operating leases commitment amount for 2015
+2. Retrieve all other commitment types for 2015
+3. Sum them to get total commitments
+4. Calculate (operating leases / total commitments) × 100
+
+I recommend verifying the database connection and schema to resolve the "no such column" errors before proceeding with this analysis.

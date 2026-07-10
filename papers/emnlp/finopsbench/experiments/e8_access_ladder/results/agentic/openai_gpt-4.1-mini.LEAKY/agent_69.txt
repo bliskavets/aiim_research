@@ -1,0 +1,48 @@
+The intangible asset categories are:
+- Customer Base & Network Location (Amortisable)
+- Deferred Financing Costs (Amortisable but no accumulated amortisation recorded for 2007)
+- Goodwill (Not amortisable)
+- Licenses & Other (Amortisable but no accumulated amortisation recorded for 2007)
+
+Since accumulated amortisation data for certain categories (Licenses & Other, Deferred Financing Costs, Customer Base & Network Location) for 2007 is not available, I will estimate accumulated amortisation at the end of 2007 by summing yearly amortisation expenses for each amortisable category from the earliest year available (2004 or 2005) through 2007.
+
+From background information:
+- Total amortisation expense (excluding deferred financing costs) was approx $136.0 million in 2005.
+- Management expects amortisation expense for 2006: $183.6 million; 2007: $178.3 million.
+
+From amortisation expenses retrieved:
+Customer Base & Network Location amortisation expense:
+- 2005: 118.0 million
+- 2006: 160.0 million
+- 2007: 155.0 million
+
+Licenses & Other amortisation expense:
+- 2005: 8.0 million
+- 2006: 11.1 million
+- 2007: 11.3 million
+
+Deferred Financing Costs category is amortisable, but no accumulated amortisation data for 2007 and earlier queries said no such data. Also, the problem states deferred-financing-cost amortisation booked in interest expense, which is excluded from intangible amortisation expense in the background, so skip that.
+
+Goodwill is not amortisable.
+
+Thus, accumulated amortisation at the end of 2007 would be roughly sum of amortisation expenses from 2005 through 2007 for the amortisable categories (excluding deferred financing costs and goodwill):
+
+Customer Base & Network Location total amortisation 2005-2007:
+118.0 + 160.0 + 155.0 = 433.0 million
+
+Licenses & Other total amortisation 2005-2007:
+8.0 + 11.1 + 11.3 = 30.4 million
+
+Sum is 433.0 + 30.4 = 463.4 million
+
+Plus amortisation expense for other amortisable intangibles (if any):
+
+Check other amortisable categories: get_amortisable_intangible_categories() was not called but from initial list, only the three above except goodwill.
+
+Deferred Financing Costs are amortisable but were excluded.
+
+Hence the total accumulated amortisation at end of 2007 is approximately 463.4 million.
+
+Final answer:
+
+463.4

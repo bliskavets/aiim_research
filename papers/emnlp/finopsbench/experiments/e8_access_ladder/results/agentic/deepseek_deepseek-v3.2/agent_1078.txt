@@ -1,1 +1,1 @@
-28%
+[{'type': 'text', 'text': 'Let me check the total_citigroup entity:'}]

@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_4c23203c86a747c9924842', 'type': 'function', 'function': {'name': 'get_annual_amortisation_expense_tool', 'arguments': {'category': 'Deferred Financing Costs', 'year': 2006}}}]

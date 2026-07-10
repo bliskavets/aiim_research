@@ -1,4 +1,3 @@
-I have the entity ID for "peer group" (2) and the year IDs for 2010 (3) and 2011 (4). I now attempt to retrieve the cumulative return values for the peer group in 2010 and 2011.
+The cumulative value of the peer group at the beginning of 2010 (year_id=3) is 100.0, representing the initial $100 investment. By the end of 2011 (year_id=4), the cumulative value is 136.78. Using the compute_percentage_change function, the percentage change from 100.0 to 136.78 is calculated as 36.8%. This represents the total return (including reinvested dividends) for the peer group from 2010 to 2011.
 
-Calling tools:
-[{'id': 'call_1b8c79231728490eb66282e7', 'type': 'function', 'function': {'name': 'get_return_series_value_tool', 'arguments': {'entity_id': 2, 'year_id': 3, 'series_type': 'cumulative'}}}]
+36.8%

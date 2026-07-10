@@ -1,1 +1,7 @@
-27.2%
+Now I have the values:
+- 2017: 1701.1 million
+- 2018: 2163.0 million
+
+I need to calculate the percentage change. Let me use the calculate_percentage_change tool.
+Calling tools:
+[{'id': 'call_7353884c3e494692bbd39dba', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'previous_value': 1701.1, 'new_value': 2163.0}}}]

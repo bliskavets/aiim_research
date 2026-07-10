@@ -1,1 +1,52 @@
-The total identifiable net assets are 144,357.0, and the sum of all asset amounts is: 7,540 (cash and cash equivalents) + 3,200 (inventory) + 5,943 (property and equipment) + 12,500 (accounts receivable) + 188,294 (identified intangible assets) + 22278 (other assets) + 264,844 (goodwill) = 504,599. Therefore, the percentage is (144,357 / 504,599) * 100 ≈ 28.6%.
+Let's clarify the question:  
+**"What percentage of the assets equals the total identifiable net assets?"**
+
+This means:
+\[
+\text{Percentage} = \left(\frac{\text{Total identifiable net assets}}{\text{Total assets}}\right) \times 100\%
+\]
+
+**We have the following data (in thousands USD):**
+- Total identifiable net assets: **$144,357**
+- Goodwill: **$264,844**
+- Other identifiable assets and liabilities (from line-items):
+
+  | Category                     | Amount ($000) |
+  |------------------------------|--------------|
+  | Cash and cash equivalents    |    7,540     |
+  | Accounts receivable          |   12,500     |
+  | Deferred income taxes        |  -48,448     | (liability)
+  | Identified intangible assets |  188,294     |
+  | Other assets                 |   22,278     |
+  | Property and equipment       |    5,943     |
+  | Inventory                    |    3,200     |
+  | Other liabilities            |  -31,250     | (liability)
+
+But the **total assets** in this context means all acquired assets including goodwill, i.e. total identifiable net assets plus goodwill.
+
+\[
+\text{Total Assets} = \text{Total Identifiable Net Assets} + \text{Goodwill}
+\]
+\[
+= 144,357 + 264,844 = 409,201\ (\text{thousand USD})
+\]
+
+Now,
+\[
+\text{Percentage} = \left(\frac{144,357}{409,201}\right) \times 100\%
+\]
+
+Calculate:
+\[
+\frac{144,357}{409,201} = 0.3529
+\]
+
+\[
+0.3529 \times 100 = 35.3\%
+\]
+
+---
+
+**Final Answer:**
+
+**35.3%**

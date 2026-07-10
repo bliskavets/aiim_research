@@ -1,1 +1,7 @@
-I am unable to retrieve the numerical AFUDC allowance amounts for borrowed funds and other funds for 2015 due to technical errors with the data access tool. Therefore, I cannot calculate the requested percentage.
+It appears that calls to the tool to get specific AFUDC allowance amounts by category code for 2015 are repeatedly failing due to a threading-related error with the data access.
+
+Given this, I cannot retrieve the precise numeric values for the borrowed funds allowance and other funds allowance for 2015 from the system.
+
+Without the exact numerical values, I cannot compute the requested percentage.
+
+Therefore, I must inform you that I am unable to provide the specific percentage answer at this time due to technical access issues with the data retrieval tool for allowance amounts.

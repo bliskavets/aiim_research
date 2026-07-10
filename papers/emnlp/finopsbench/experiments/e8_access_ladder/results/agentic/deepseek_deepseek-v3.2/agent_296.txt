@@ -1,1 +1,2 @@
-0.1%
+Calling tools:
+[{'id': 'call_c363fe2df4d04ab5863f262b', 'type': 'function', 'function': {'name': 'sum_total_yearly_shares_kt', 'arguments': {'fiscal_year': 2005}}}]

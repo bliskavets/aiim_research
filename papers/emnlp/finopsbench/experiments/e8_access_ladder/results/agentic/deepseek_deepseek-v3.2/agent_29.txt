@@ -1,1 +1,4 @@
-0.96
+I need to find the average effect of dilutive securities from 2012 to 2014. Let me start by getting the total dilutive effects for each year in that range.
+
+Calling tools:
+[{'id': 'call_0b2a1a69fc5b4a3baa9e5cd7', 'type': 'function', 'function': {'name': 'list_yearly_total_effects_tool', 'arguments': {'start_year': 2012, 'end_year': 2014}}}]

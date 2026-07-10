@@ -1,0 +1,5 @@
+It appears that I was unable to retrieve any of the necessary entity names or data from the internal tools provided—every attempt to list or resolve entities returned no results. Since there is no access to the underlying dataset or the ability to look up entity identifiers and returns, I am not able to compute the requested difference for the five-year cumulative total return between NetApp Inc. and the S&P 500 Information Technology Index for the period ending April 2014.
+
+If you can provide the entity IDs, cumulative return values, or a more detailed data listing, I would be able to use the available financial calculation functions to give you the precise answer. Alternatively, if you can supply the cumulative total return percentages for both NetApp and the S&P 500 Information Technology Index for that period, I’ll be able to compute the difference as requested.
+
+Please let me know if you have any of that information or can adjust the data query scope!

@@ -1,1 +1,1 @@
--17.4%
+[{'type': 'text', 'text': "I have the start price: 46.53 (highest during Q4 2007) and end price: 38.44 (closing price on Feb 29, 2008). Now I need to compute the growth rate using compute_percentage_change_tool. Growth rate = (end_price - start_price) / start_price * 100.\nCalling tools:\n[{'id': 'call_c72a70c6378f441685c9b58c', 'type': 'function', 'function': {'name': 'compute_percentage_change_tool', 'arguments': {'start_price': 46.53, 'end_price': 38.44, 'dec_places': 1}}}]"}]

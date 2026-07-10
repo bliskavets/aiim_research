@@ -1,0 +1,1 @@
+compute_difference(fetch_one_day_var(get_instrument_id("interest-rate instruments"), get_fiscal_year_id(2018)), fetch_one_day_var(get_instrument_id("interest-rate instruments"), get_fiscal_year_id(2017)))

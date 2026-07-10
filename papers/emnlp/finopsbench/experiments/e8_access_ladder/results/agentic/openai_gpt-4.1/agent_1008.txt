@@ -1,2 +1,2 @@
-The percentage change = ((38.4 - 42.7) / 42.7) * 100 = -10%. 
+The percentage change is ((38.4 - 42.7) / 42.7) * 100 = -10%. 
 Answer: -10%

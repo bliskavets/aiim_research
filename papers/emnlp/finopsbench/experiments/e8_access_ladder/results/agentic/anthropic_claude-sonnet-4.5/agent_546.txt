@@ -1,0 +1,8 @@
+The yearly interest expense associated with the Certegy merger is $9.5 million.
+
+This is calculated from the $200 million principal amount of unsecured fixed-rate notes with a 4.75% annual coupon rate:
+- Principal: $200 million
+- Annual coupon rate: 4.75%
+- Annual interest expense: $200 million × 4.75% = $9.5 million
+
+The notes pay interest semi-annually (on March 15 and September 15), which means two payments of $4.75 million each per year.

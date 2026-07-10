@@ -1,0 +1,23 @@
+I apologize, but I'm unable to provide the answer to this question. Here's what happened:
+
+**Problem Encountered:**
+The dataset appears to be empty or inaccessible. When I attempted to:
+1. List all entities with various prefixes ("NetApp", "net", "n", "S&P", or even empty prefix)
+2. Resolve entity names directly
+
+All attempts returned empty results or errors indicating the entities don't exist in the system.
+
+**What I Tried:**
+- Multiple variations of "NetApp Inc." entity name
+- Listing all available entities with different prefixes
+- Attempting to access the data with various name formats
+
+**Conclusion:**
+Without access to the underlying data through the `list_all_entities` or `resolve_entity` tools, I cannot:
+- Identify the correct entity names as they're stored in the system
+- Retrieve the cumulative return values for NetApp Inc. and the S&P 500 Information Technology Index
+- Calculate the difference between their five-year returns
+
+The tools appear to be non-functional or the dataset is not loaded. To answer this question, I would need either:
+1. A working dataset with the entities properly loaded, or
+2. The actual cumulative return data provided directly

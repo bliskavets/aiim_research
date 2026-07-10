@@ -1,0 +1,4 @@
+I need to work through this step by step. Let me start by getting the company ID for Hologic, Inc.:
+
+Calling tools:
+[{"id": "call_001", "type": "function", "function": {"name": "get_company_id_by_name_tool", "arguments": {"official_name": "Hologic, Inc."}}}]

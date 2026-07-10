@@ -1,14 +1,1 @@
-The question asks for the net difference between the amounts used as hedging instruments. From the scenario and tool outputs, we identify two key figures as of October 31, 2009:
-
-1. The notional amount of derivative instruments **designated as hedging instruments**: This includes $375 million from the interest-rate swap agreements (fair-value hedges), confirmed via tool calls.
-2. The notional amount of **undesignated hedges**: $38 million, related to the "Undesignated commodity hedge portfolio", retrieved and verified through the tools.
-
-Although the scenario mentions "$128 million of other notes", this figure does not appear in any of the retrieved records and is not associated with any designated or undesignated instrument in the data. Therefore, based on tool-verified data, we rely only on the confirmed amounts: $375 million (designated hedges) and $38 million (undesignated hedges).
-
-The net difference between these two amounts is calculated as the absolute difference:
-
-|375 - 38| = 337
-
-Thus, the net difference between the amounts used as hedging instruments (designated vs. undesignated) is:
-
-337 million
+337

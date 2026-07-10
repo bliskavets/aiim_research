@@ -1,1 +1,1 @@
-N/A
+{"name":"get_company_id_by_legal_name","arguments":{"legal_name":"Entergy New Orleans, Inc."}}We need metric id for net revenue. Use get_metric_id.{"name":"get_metric_id","arguments":{"metric_name":"net revenue"}}{"name":"get_financial_amount_thousand","arguments":{"company_id":<COMPANY_ID_PLACEHOLDER>,"year":2016,"metric_id":<METRIC_ID_PLACEHOLDER>}}

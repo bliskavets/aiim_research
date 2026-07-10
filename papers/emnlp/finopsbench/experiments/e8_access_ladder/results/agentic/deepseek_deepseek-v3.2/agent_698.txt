@@ -1,4 +1,3 @@
-Now I need the quarterly rent expenses for 2016 to calculate the annual total for 2016, then compute the percentage change from 2015 to 2016.
-
+Now I need to compute the annual total for 2016 using the compute_total_from_quarters_tool.
 Calling tools:
-[{'id': 'call_7f3b8d9e1d294b1d91c3a4d2', 'type': 'function', 'function': {'name': 'get_quarterly_expense_tool', 'arguments': {'company_id': 'UA', 'account_id': 'RENT', 'fiscal_year': 2016}}}]
+[{'id': 'call_1U1G4mUjK5iX5pVh1x3lwJbS', 'type': 'function', 'function': {'name': 'compute_total_from_quarters_tool', 'arguments': {'quarterly_amounts': [27.24, 26.98, 27.25, 27.53]}}}]

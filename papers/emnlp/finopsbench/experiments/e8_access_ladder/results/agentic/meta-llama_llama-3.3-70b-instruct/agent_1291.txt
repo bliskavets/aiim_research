@@ -1,0 +1,24 @@
+To determine the average uncompounded annual return for JPMorgan Chase, I will follow these steps:
+
+1. Find the company ID for JPMorgan Chase.
+2. List the years for which cumulative return information exists for JPMorgan Chase.
+3. Get the cumulative values for JPMorgan Chase for each year from 2013 to 2018.
+4. Calculate the annual returns for each year.
+5. Calculate the average annual return.
+
+Here's how I can do it:
+
+```python
+def calculate_average_return():
+    company_id = find_company_id("JPMorgan Chase")
+    years = list_years_for_company(company_id)
+    cumulative_values = [get_cumulative_value_for_company(company_id, year) for year in years]
+    annual_returns = [(cumulative_values[i] - cumulative_values[i-1]) / cumulative_values[i-1] for i in range(1, len(cumulative_values))]
+    average_return = sum(annual_returns) / len(annual_returns)
+    return round(average_return * 100, 1)
+
+average_return = calculate_average_return()
+print(f"The average uncompounded annual return for JPMorgan Chase is {average_return}%")
+```
+
+Let me try to execute this function to get the final answer.

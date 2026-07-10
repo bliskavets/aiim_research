@@ -1,2 +1,5 @@
-Calling tools:
-[{'id': 'call_00_4z6jD9NYmuiw3fZVy8yEq8cp', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'metric_code': 'EQ_REV', 'year': 2002}}}]
+Let me start by finding the correct metric for revenues from ≤50% owned investments accounted for under the equity method.
+
+First, I'll search for metrics related to "equity" or "revenue":
+
+Calling: search_metrics("equity")

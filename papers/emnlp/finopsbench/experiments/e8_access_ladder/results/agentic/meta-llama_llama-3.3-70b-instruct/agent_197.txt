@@ -1,15 +1,1 @@
-To find the length of the lease for Pilgrim, we first need to understand that the "lease" in this context likely refers to the operating license period, given the information provided. 
-
-1. **Get the Current License Expiry for Pilgrim**: We use `get_current_license_expiry("Pilgrim")` to find the expiry date of Pilgrim's current operating license.
-
-2. **Extract the Year from the Expiry Date**: Once we have the expiry date, we can use `extract_year` to get the year from this date. However, due to the errors experienced, we should directly approach the calculation differently, focusing on the years mentioned in the context for renewal and expiry.
-
-3. **Calculate the Lease Length**: Given that the lease or operating license for several plants, including Pilgrim, was due to expire between 2012 and 2015, and considering the context does not provide a specific expiry or renewal period for Pilgrim but mentions that Vermont Yankee’s license was extended by 20 years, we might infer a similar or standard period for other plants when their licenses are renewed. However, without explicit information on Pilgrim's renewal, we must be cautious. 
-
-Given the direct question and the need for a specific answer, let's refocus on the fact that the context does not explicitly state the length of the lease for Pilgrim but implies that licenses can be renewed. The expiry and renewal process suggests that plants operate under licenses that can be extended, but the length of such extensions (e.g., 20 years for Vermont Yankee) is not universally applied without specific details for each plant.
-
-To directly answer the question with the information given and avoiding the errors from previous steps, we recognize that we do not have explicit details on Pilgrim's lease length or its renewal period in the provided context. However, considering typical practices and the information about Vermont Yankee's 20-year extension, if we were to make an educated guess based on standard practices for nuclear plants (and acknowledging this is speculative without direct data for Pilgrim), a 20-year lease or operating license period could be considered a plausible figure for discussion purposes. 
-
-However, this approach does not align with providing a definitive answer based on explicit data for Pilgrim. Given the constraints and aiming for compliance with the required format while acknowledging the speculative nature of the response:
-
-The final answer is: $\boxed{20}$
+years_between(extract_year(get_latest_acquisition_by_acquirer("Pilgrim")), extract_year(get_current_license_expiry("Pilgrim")))

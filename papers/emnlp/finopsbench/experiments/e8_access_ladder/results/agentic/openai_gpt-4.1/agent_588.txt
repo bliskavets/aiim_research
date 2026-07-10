@@ -1,1 +1,11 @@
-AOCI without unrecognized losses/costs would be (240.0 - (-31.2) - (-79.9)) = 240.0 + 31.2 + 79.9 = 351.1. Percent higher = ((351.1 - 240.0)/240.0)*100 = 46.29%.
+Accumulated other comprehensive income (AOCI) reported: 240.0
+
+Unrecognized pension-related costs and losses in OCI: -31.2 (prior service cost) + -79.9 (actuarial gains/losses) = -111.1
+
+If we exclude those unrecognized losses/costs, AOCI would be:
+
+240.0 - (-111.1) = 351.1
+
+Percent higher: ((351.1 - 240.0) / 240.0) * 100 = 46.29%
+
+Final answer: 46.29%

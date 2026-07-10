@@ -1,1 +1,1 @@
-The non‑interest revenue in 2009 was **103 %** of total revenues net of interest expense.
+[{"id":"chatcmpl-tool-5c7b9ef6c2d34e9a","type":"function","function":{"name":"fetch_metric_value_by_ids_tool","arguments":{"business_unit_id":4,"year":2009,"metric_id":1}}}]

@@ -1,6 +1,1 @@
-It appears that repeated attempts to list available entities have returned an empty list, and a prior attempt to resolve "S&P 500 Information Technology Index" failed. This suggests a possible issue with entity name recognition or tool availability.
-
-Let me try resolving the company "NetApp, Inc." directly to see if it is accessible:  
-
-Calling tools:
-[{'id': 'call_42dd503765e5496989881a', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'NetApp, Inc.'}}}]
+0.00%

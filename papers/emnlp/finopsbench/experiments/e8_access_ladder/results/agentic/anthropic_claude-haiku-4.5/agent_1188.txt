@@ -1,1 +1,9 @@
-98.2%
+Based on the data retrieved from the database:
+
+- S&P 500 index value on December 31, 2011: $100.00
+- S&P 500 index value on December 31, 2016: $198.18
+- Percentage change: 98.18%
+
+**The growth rate of the S&P 500 index from 2011 to 2016 was 98.18%**
+
+This aligns with the scenario description which mentions that the graph assumes an investment value of $100 on December 31, 2011, with all dividends reinvested through the five-year period ending December 31, 2016.

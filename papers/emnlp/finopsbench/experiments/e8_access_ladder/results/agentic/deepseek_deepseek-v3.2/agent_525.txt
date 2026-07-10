@@ -1,1 +1,3 @@
-41%
+Now let me get the 2015 amount for category ID 2:
+Calling tools:
+[{'id': 'call_8b77c0d3ac6447ff8d5a2a33', 'type': 'function', 'function': {'name': 'get_expense_amount_tool', 'arguments': {'year': 2015, 'category_id': 2}}}]

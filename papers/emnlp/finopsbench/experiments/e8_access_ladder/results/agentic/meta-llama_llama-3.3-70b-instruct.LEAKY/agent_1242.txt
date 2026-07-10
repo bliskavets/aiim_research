@@ -1,0 +1,65 @@
+To determine the portion of the total future minimum sponsorship and other payments that will be due in the next three years, we need to follow these steps:
+
+1. **List all payment buckets**: Use `list_payment_buckets()` to get all the time-bucket labels. This will help us understand the distribution of payments over time.
+
+2. **Identify the next three years' buckets**: From the list of payment buckets, identify the labels that correspond to the next three years (e.g., "2017", "2018", "2019"). 
+
+3. **Convert bucket labels to IDs**: For each of the next three years' bucket labels, use `bucket_label_to_id(bucket_label)` to get their internal numeric IDs.
+
+4. **Get the minimum sponsorship payments for each bucket**: For each of the IDs corresponding to the next three years, use `get_sponsorship_payment(bucket_id, payment_type="minimum")` to get the minimum sponsorship payments for those years.
+
+5. **Sum the minimum payments for the next three years**: Add up the minimum sponsorship payments for the next three years to get the total minimum payments due in that period.
+
+6. **Get the total minimum sponsorship payments**: Use `get_total_minimum_sponsorship_payments()` to get the grand total of all minimum sponsorship payments.
+
+7. **Calculate the percentage**: Divide the total minimum payments due in the next three years by the total minimum sponsorship payments, and then multiply by 100 to get the percentage.
+
+Let's proceed with the calculations:
+
+- **Step 1 & 2**: First, we list all payment buckets and identify the ones for the next three years.
+```python
+payment_buckets = list_payment_buckets()
+next_three_years_buckets = [bucket for bucket in payment_buckets if bucket in ["2017", "2018", "2019"]]
+```
+
+- **Step 3**: Convert these bucket labels to their IDs.
+```python
+bucket_ids = [bucket_label_to_id(bucket) for bucket in next_three_years_buckets]
+```
+
+- **Step 4**: Get the minimum sponsorship payments for each of these buckets.
+```python
+minimum_payments = [get_sponsorship_payment(bucket_id, payment_type="minimum") for bucket_id in bucket_ids]
+```
+
+- **Step 5**: Sum these payments to get the total for the next three years.
+```python
+total_minimum_next_three_years = sum(minimum_payments)
+```
+
+- **Step 6**: Get the total minimum sponsorship payments.
+```python
+total_minimum_payments = get_total_minimum_sponsorship_payments()
+```
+
+- **Step 7**: Calculate the percentage.
+```python
+percentage = (total_minimum_next_three_years / total_minimum_payments) * 100
+```
+
+Now, let's combine these steps into a single executable code block and execute it to get the final answer.
+
+```python
+def calculate_percentage():
+    payment_buckets = list_payment_buckets()
+    next_three_years_buckets = [bucket for bucket in payment_buckets if bucket in ["2017", "2018", "2019"]]
+    bucket_ids = [bucket_label_to_id(bucket) for bucket in next_three_years_buckets]
+    minimum_payments = [get_sponsorship_payment(bucket_id, payment_type="minimum") for bucket_id in bucket_ids]
+    total_minimum_next_three_years = sum(minimum_payments)
+    total_minimum_payments = get_total_minimum_sponsorship_payments()
+    percentage = (total_minimum_next_three_years / total_minimum_payments) * 100
+    return percentage
+
+percentage = calculate_percentage()
+print(f"The final answer is {percentage:.1f}%")
+```

@@ -1,0 +1,8 @@
+I have already obtained:
+- Peer group entity ID: 2
+- Year 2010 ID: 3
+
+Now I need to get the year ID for 2011 and then fetch the cumulative return values for both years.
+
+Calling tools:
+[{'id': 'toolu_bdrk_014sPqR8fS5xK5QvJqZ8L8aW', 'type': 'function', 'function': {'name': 'get_year_id_tool', 'arguments': {'year': 2011}}}]

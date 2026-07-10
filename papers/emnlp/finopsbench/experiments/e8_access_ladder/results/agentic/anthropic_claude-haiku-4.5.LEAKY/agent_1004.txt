@@ -1,0 +1,17 @@
+Based on the multiple failed attempts to access the database using various approaches, it appears that the data for Q4 2012 is not available in the current database system. 
+
+The tools have consistently returned errors indicating:
+- No months are listed for 2012 in `list_reporting_months`
+- No period IDs can be found for October, November, or December 2012 in `get_period_id`
+- Adjacent years (2011, 2013) also returned empty results
+
+**Conclusion:**
+
+I cannot complete this task as requested because the underlying database does not contain the repurchase data for October, November, and December 2012. To properly answer this question, I would need:
+
+1. Access to the actual Form 10-K filing document itself, or
+2. A functioning database connection that contains the Q4 2012 share repurchase information
+
+**Alternative approach:**
+
+If you have access to the actual Form 10-K filing, I could manually extract the average prices paid per share for each of the three months from Item 5 and calculate the range directly using the formula: max(prices) - min(prices), rounded to two decimal places.

@@ -1,29 +1,41 @@
-We need to calculate the percent change in total intangibles 2014 net from 2007 to 2008.
+The user question is: What was the percent of growth or decline in the total intangibles 2014 net from 2007 to 2008?
 
-Step 1: The components related to “intangibles 2014 net” are:  
-- developed_prod_tech_net  
-- goodwill  
-- other_intangibles_net  
+From the narrative, "intangibles 2014 net" appears as part of a phrase describing gains or losses recognized in other 2014net, but it is not clearly stated as a category or metric in our database.
 
-Step 2: Retrieve metric values for each component for years 2007 and 2008.
+Earlier attempts to list metrics in categories like "intangibles_2014_net" or "intangibles_net" failed because these categories do not exist in the database.
 
-I will get these values now:
+Given this, the best approach is to try the following:
 
-- developed_prod_tech_net for 2007 and 2008  
-- goodwill for 2007 and 2008  
-- other_intangibles_net for 2007 and 2008
+1. List all main categories available to check if "intangibles" or related terms exist.
+2. Alternatively, list all metrics for years 2007 and 2008 and look for any mention related to intangibles.
 
-Then, sum the components for each year to get total intangibles 2014 net for 2007 and 2008.
+Given that the tools do not directly provide this, I will try to list all metrics categories to identify any including intangibles-related metrics.
 
-Step 3: Compute the percent change from 2007 to 2008.
+I will try tool 1 with a more general category name "assets" or "intangibles" but these attempts yielded no results.
 
----
+Alternatively, since the narrative provides specific info:
 
-Calling tools to get the values:
+- Amortization expense for 2008, 2007, and 2006 was $193.4 million, $172.8 million, and $7.6 million before tax, respectively.
 
-get_metric_value_for_year('developed_prod_tech_net', 2007)  
-get_metric_value_for_year('developed_prod_tech_net', 2008)  
-get_metric_value_for_year('goodwill', 2007)  
-get_metric_value_for_year('goodwill', 2008)  
-get_metric_value_for_year('other_intangibles_net', 2007)  
-get_metric_value_for_year('other_intangibles_net', 2008)
+- Estimated amortization expense approximates $280 million before tax per year for the five succeeding years.
+
+- Goodwill and other intangible assets at December 31 were as follows: (But no numbers were provided in the narrative).
+
+Since no direct numeric data or access to intangibles metrics seem available from the database, and attempts to find these metrics via tools failed, I cannot compute the percentage change.
+
+Hence, there is no available metric for total intangibles 2014 net values in 2007 and 2008 from the structured data to compute the percentage change.
+
+Therefore, the answer is:
+
+"The database does not contain the specific data for total intangibles 2014 net in 2007 and 2008; thus, the percent growth or decline cannot be calculated based on the available information."
+
+If the user wants, I can provide the percent change in amortization expense from 2007 to 2008 as a proxy:
+
+2007 amortization expense = $172.8 million  
+2008 amortization expense = $193.4 million
+
+Percent change = (193.4 - 172.8) / 172.8 * 100 = approx 11.9%
+
+But this is amortization expense, not total intangibles.
+
+Final answer: The percent change in total intangibles 2014 net from 2007 to 2008 cannot be calculated as the database lacks these metric values.

@@ -1,9 +1,7 @@
-Let's proceed step by step, given that the direct "get_annual_metric_amount" approach has repeatedly failed with certain queries.
+Let's approach this step by step to avoid the previous errors and get the precise figures:
 
-Step 1: List the available metrics by category to find the exact name of the metric related to "interest net of capitalized interest."  
-I'll try a related category.
+Step 1: Since direct metric retrieval seems buggy, let's try to find the report IDs for 2016 and 2017.
 
-Calling:  
-list_metrics_by_category("interest")
+Call: list_reports(2016, report_type="10-K")
 
-(Once we know the metric's official name, I'll check report IDs for 2016 and 2017, and individually fetch the metric as a line item in each report.)
+Call: list_reports(2017, report_type="10-K")

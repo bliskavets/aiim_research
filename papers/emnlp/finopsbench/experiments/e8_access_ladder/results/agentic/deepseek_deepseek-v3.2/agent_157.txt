@@ -1,8 +1,1 @@
-Based on my investigation, I found two redemption events for preferred a units (unit_class_id: 1):
-
-1. Event ID 1: par_value_redeemed_millions = 2.0
-2. Event ID 2: par_value_redeemed_millions = 4.8
-
-The total par value of redeemed preferred a units is 2.0 + 4.8 = 6.8 million.
-
-6.8
+2.0

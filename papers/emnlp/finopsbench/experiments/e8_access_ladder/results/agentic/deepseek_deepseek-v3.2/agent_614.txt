@@ -1,1 +1,3 @@
-Error: Unable to access the entity database. The list_all_entities_tool returns an empty list, suggesting there may be an issue with the tool or database connection. Without access to entity data, I cannot resolve entity IDs or fetch cumulative returns to answer the question.
+I notice there are issues with calling the tools properly. Let me try a different approach. First, I need to get the fiscal date labels for the period in question. The question mentions the five-year period ending 4/14, and the scenario mentions April 24, 2009 through April 25, 2014. So I need the fiscal date label for April 2014.
+
+Let me try calling get_fiscal_dates_for_range to see what fiscal period labels are available:

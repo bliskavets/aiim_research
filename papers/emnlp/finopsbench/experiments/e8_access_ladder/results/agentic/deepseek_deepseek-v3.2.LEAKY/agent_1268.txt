@@ -1,0 +1,1 @@
+[{'type': 'text', 'text': "Calling tools:\n[{'id': 'call_urC46dt7s8ttnybA78g4V4oZ', 'type': 'function', 'function': {'name': 'sum_amounts_tool', 'arguments': {'amounts': [3500, 4085]}}}]"}]

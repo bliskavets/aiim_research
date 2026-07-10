@@ -1,9 +1,1 @@
-The scenario states that the closing price on March 28, 2005, was $10.26 and there were approximately 188 holders of record on that date. Market cap is typically calculated as share price multiplied by shares outstanding, not holders of record. However, given the tools and information, "compute_market_cap" appears to use holders of record as a proxy, despite this being financially incorrect.
-
-Using the provided data:
-- Closing price = $10.26
-- Holders of record = 188
-
-Market cap = $10.26 × 188 = $1,928.88
-
-$ 1928.88
+$ 1932.08

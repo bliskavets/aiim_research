@@ -1,12 +1,9 @@
-The cumulative total-return values for JPMorgan Chase from 2013 to 2018 are: 2013 = 100.0, 2014 = 109.88, 2015 = 119.07, 2016 = 160.23, 2017 = 189.57, 2018 = 203.07.
+The average uncompounded annual return for JPMorgan Chase over the five-year period from December 31, 2013 to December 31, 2018 is calculated as follows:
 
-Calculating the annual return for each year:
-- 2014: (109.88 - 100.0) / 100.0 = 0.0988 = 9.88%
-- 2015: (119.07 - 109.88) / 109.88 = 0.0837 = 8.37%
-- 2016: (160.23 - 119.07) / 119.07 = 0.3454 = 34.54%
-- 2017: (189.57 - 160.23) / 160.23 = 0.1823 = 18.23%
-- 2018: (203.07 - 189.57) / 189.57 = 0.0703 = 7.03%
+Initial value (2013): 100.0
+Final value (2018): 203.07
 
-Average uncompounded annual return = (9.88 + 8.37 + 34.54 + 18.23 + 7.03) / 5 = 15.61%
+Total return over 5 years = 203.07 - 100.0 = 103.07
+Average annual return = (103.07 / 5) = 20.6%
 
-Rounded to one decimal place: 15.6%
+Answer: 20.6%

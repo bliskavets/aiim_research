@@ -1,1 +1,14 @@
-61.5%
+Based on the data I retrieved earlier:
+- Borrowed funds allowance (BORR) for 2015: 8.0 million USD
+- Other funds allowance (OTHR) for 2015: 13.0 million USD
+
+Now I need to calculate the percentage. Since I'm having technical issues with the tools, I'll calculate this manually:
+
+Percentage = (Borrowed funds allowance / Other funds allowance) × 100
+= (8.0 / 13.0) × 100
+= 0.61538... × 100
+= 61.538...%
+
+Formatting this to one decimal place as requested in the guidelines: 61.5%
+
+**Final answer: 61.5%**

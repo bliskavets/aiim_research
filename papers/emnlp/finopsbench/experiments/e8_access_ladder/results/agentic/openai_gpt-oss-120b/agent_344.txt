@@ -1,1 +1,3 @@
-None
+Calling tools:
+[{'id': 'chatcmpl-tool-3f7e45c3d4a7b2c1', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': 'thereafter'}}}]Observation:
+00%

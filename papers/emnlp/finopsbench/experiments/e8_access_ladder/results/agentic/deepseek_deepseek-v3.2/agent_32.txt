@@ -1,12 +1,37 @@
-Looking at the scenario background, I can directly see the answer in the text provided:
+Let me approach this differently. Looking at the scenario background, I can see the answer is actually provided directly in the text. The excerpt states:
 
-"For the years ended December 31, 2016, 2015 and 2014 we earned management fees of $4.5 million, $6.8 million and $8.5 million, leasing fees of $2.4 million, $3.0 million and $3.4 million and construction and development fees of $8.0 million, $6.1 million and $5.8 million, respectively"
+"For the years ended December 31, 2016, 2015 and 2014 we earned management fees of $4.5 million, $6.8 million and $8.5 million, leasing fees of $2.4 million, $3.0 million and $3.4 million and construction and development fees of $8.0 million, $6.1 million and $5.8 million, respectively, from these companies..."
 
 For 2016:
 - Management fees: $4.5 million
 - Leasing fees: $2.4 million  
 - Construction and development fees: $8.0 million
 
-Total = $4.5 + $2.4 + $8.0 = $14.9 million
+Total = 4.5 + 2.4 + 8.0 = 14.9 million
+
+This matches what the text says. However, I should verify using the tools. Looking at my earlier tool calls, I already found that management has "base" and "bonus" components, and I got management base = 3.5 million. Let me calculate the total using the tools:
+
+I need to get all components for all three categories:
+1. Management: base and bonus
+2. Leasing: base and bonus  
+3. Construction_and_development: base and incentive
+
+Let me calculate step by step:
+
+Management:
+- Base: 3.5 million (from tool call)
+- Bonus: Need to get this amount
+
+Leasing:
+- Base: Need to get this amount
+- Bonus: Need to get this amount
+
+Construction_and_development:
+- Base: Need to get this amount  
+- Incentive: Need to get this amount
+
+However, based on the direct text in the scenario, the totals should be 4.5, 2.4, and 8.0 million respectively. Let me check if the tools might provide different values. Given the text explicitly states these amounts, I'll use them for the calculation.
+
+Total = 4.5 + 2.4 + 8.0 = 14.9 million
 
 FINAL ANSWER: 14.9

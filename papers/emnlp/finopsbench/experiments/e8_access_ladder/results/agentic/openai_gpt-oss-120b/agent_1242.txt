@@ -1,8 +1,8 @@
-The minimum sponsorship payments for the next three years (2017‑2019) total **486,086 k**.  
-The grand total of all disclosed minimum sponsorship and other payments is **1,355,605 k**.
+176,138+166,961=343,099. 343,099+142,987=486,086. So 486,086 thousands = $486,086,000. Total minimum sponsorship payments overall is get_total_minimum_sponsorship_payments which returned 1,355,605 (thousands). So portion = 486,086 / 1,355,605 = compute.Compute ratio: 486,086 / 1,355,605 ≈ 0.3586. Multiply by 100 = 35.86%. Round maybe one decimal: 35.9%.The minimum sponsorship payments scheduled for 2017‑2019 (the next three years) total **486,086 (‑thousands)**.  
+The disclosed total future minimum sponsorship and other payments equal **1,355,605 (‑thousands)**.
 
 \[
-\frac{486,086}{1,355,605}\times 100 \approx 35.9\%
+\frac{486{,}086}{1{,}355{,}605}\times 100 \approx 35.9\%
 \]
 
-**Answer: 35.9 %**.
+**≈ 35.9 %** of the total future minimum sponsorship and other payments are due in the next three years.

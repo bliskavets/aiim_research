@@ -1,1 +1,1 @@
-In 2017, the percentage of total regulatory liabilities that consisted of income taxes recovered through rates was approximately 74.7% (1242.0 out of 1664.0).
+The percentage of total regulatory liabilities consisting of income taxes recovered through rates in 2017 is (1242.0 / 1664.0) * 100 ≈ 74.7%.

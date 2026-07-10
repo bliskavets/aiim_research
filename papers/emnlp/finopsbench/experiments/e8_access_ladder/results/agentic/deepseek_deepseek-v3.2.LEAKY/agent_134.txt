@@ -1,0 +1,13 @@
+I have collected the face value and currency information for all 5 notes issued by Kilimanjaro within the specified period:
+
+1. Note ID 1: 450,000 thousand USD
+2. Note ID课后总结 2: 500,000 thousand USD
+3. Note ID 3: 625,000 thousand USD
+4. Note ID 4: 950,000 thousand USD
+5. Note ID 5: 300,000 thousand USD
+
+All notes are already in USD, so I can simply sum them up to get the total value in thousands of USD.
+
+450,000 + 500,000 + 625,000 + 950,000 + 300,000 = 2,825,000
+
+2825000

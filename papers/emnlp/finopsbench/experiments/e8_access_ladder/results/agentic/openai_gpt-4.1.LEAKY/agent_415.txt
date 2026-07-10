@@ -1,0 +1,7 @@
+I am unable to access the direct values for net income and EPS for Hologic, Inc. from the available data, which are required to estimate the number of outstanding shares using the formula:
+
+\[
+\text{Outstanding Shares} = \frac{\text{Net Income}}{\text{EPS (basic)}}
+\]
+
+Without at least one period’s net income and EPS data, I cannot compute the result. If you can provide the specific values of net income and basic EPS from the table referenced in the financial statements, I will be able to calculate the answer immediately.

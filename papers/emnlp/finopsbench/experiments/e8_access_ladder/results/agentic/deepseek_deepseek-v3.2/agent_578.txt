@@ -1,1 +1,13 @@
--256,245
+I need to find the principal payment amounts for 2006 and 2007, then calculate the change between them (2006 vs 2007). Let me start by getting the schedule ID for principal repayments.
+
+First, I'll list all repayment schedules:
+[{'type': 'function', 'function': {'name': 'list_all_repayment_schedules_tool', 'arguments': {}}}]
+
+Actually, I should format this properly. Let me call the tool to list all repayment schedules:
+
+```json
+{
+  "name": "list_all_repayment_schedules_tool",
+  "arguments": {}
+}
+```

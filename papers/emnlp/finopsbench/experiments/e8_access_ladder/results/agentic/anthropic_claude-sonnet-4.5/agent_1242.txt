@@ -1,1 +1,16 @@
-35.8%
+Now I can calculate the answer:
+
+**Step-by-step solution:**
+
+1. **Total future minimum sponsorship payments:** $1,355,605 thousand
+
+2. **Payments due in the next three years (2017, 2018, 2019):**
+   - 2017: $176,138 thousand
+   - 2018: $166,961 thousand
+   - 2019: $142,987 thousand
+   - **Sum:** $486,086 thousand
+
+3. **Percentage calculation:**
+   (486,086 / 1,355,605) × 100 = 35.9%
+
+**Answer: 35.9%**

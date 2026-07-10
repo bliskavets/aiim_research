@@ -1,0 +1,13 @@
+## Step 1: Identify the necessary tools to find the depreciation and amortization expense for 2005.
+To find the depreciation and amortization expense for 2005, we need to calculate the year-over-year change in the "Accumulated Depreciation and Amortization" account from 2004 to 2005. This can be directly achieved by using the compute_year_over_year_change tool if we know the canonical name of the "Accumulated Depreciation and Amortization" account.
+
+## Step 2: Determine the canonical name of the "Accumulated Depreciation and Amortization" account.
+Since we are not provided with the canonical name directly and resolving the alias failed, we can attempt to find it by listing all contra-asset accounts and then identifying the one that matches our target account.
+
+## Step 3: List all contra-asset accounts to identify the "Accumulated Depreciation and Amortization" account.
+Using the list_all_gl_accounts tool with account_type="contra_asset" should give us a list that includes the canonical name of the "Accumulated Depreciation and Amortization" account.
+
+## Step 4: Use the compute_year_over_year_change tool to find the depreciation and amortization expense for 2005.
+Once we have the canonical name of the account, we can use the compute_year_over_year_change tool to calculate the expense for 2005 by comparing the balances of 2005 and 2004.
+
+The final answer is: $\boxed{compute_year_over_year_change("Accumulated Depreciation and Amortization", 2005, 2004)}$

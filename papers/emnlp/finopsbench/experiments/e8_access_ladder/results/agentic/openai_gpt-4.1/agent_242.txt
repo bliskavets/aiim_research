@@ -1,15 +1,33 @@
-Let's proceed step by step:
+**Step-by-step approach:**
 
-1. **Identify codes:**  
-   You have already successfully listed AFUDC categories.  
-   - **BORR:** Allowance for borrowed funds used during construction  
-   - **OTHR:** Allowance for other funds used during construction
+1. Identify the codes for the required AFUDC categories:
+   - "Allowance for borrowed funds used during construction" = **BORR**
+   - "Allowance for other funds used during construction" = **OTHR**
 
-2. **Retrieve 2015 values:**  
-   I will now retrieve the AFUDC allowance amounts for both 'BORR' and 'OTHR' in 2015.
+2. Retrieve the AFUDC allowances for 2015 for both categories.
+
+3. Calculate the percentage: (BORR / OTHR) × 100.
+
+4. Format the result as a percentage string.
 
 ---
 
-Calling tools:
-- get_afudc_allowance(2015, 'BORR')
-- get_afudc_allowance(2015, 'OTHR')
+Let’s proceed:
+
+### Step 1: Retrieve AFUDC Allowances
+
+First, get values for 2015:
+
+- **BORR**: Allowance for borrowed funds used during construction.
+- **OTHR**: Allowance for other funds used during construction.
+
+Let's call the tools:
+
+---
+
+Calling tool: get_afudc_allowance(2015, "BORR")  
+Calling tool: get_afudc_allowance(2015, "OTHR")  
+
+---
+
+Let me fetch those values for you.

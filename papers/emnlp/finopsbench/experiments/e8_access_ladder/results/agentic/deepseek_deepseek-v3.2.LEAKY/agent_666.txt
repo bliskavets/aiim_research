@@ -1,0 +1,1 @@
+[{'type': 'text', 'text': "Calling tools:\n[{'id': 'call_4e9d5f8c1a9e4759b4d2b3c1', 'type': 'function', 'function': {'name': 'get_expected_volatility_ratio', 'arguments': {'year': 2008}}}]"}]

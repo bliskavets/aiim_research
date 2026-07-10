@@ -1,1 +1,4 @@
-[{'type': 'text', 'text': "Now I need the 2008 value.\nCalling tools:\n[{'id': 'call_YWc6PULn4or8ojAtbUqtlfwO', 'type': 'function', 'function': {'name': 'get_financial_value_tool', 'arguments': {'company_id': 7, 'metric_id': 1, 'year': 2008}}}]"}]
+Let me work through this step-by-step to find the percent change in net revenue for Entergy Texas, Inc. between 2007 and 2008.
+
+First, I need to identify the company:
+list_available_companies()

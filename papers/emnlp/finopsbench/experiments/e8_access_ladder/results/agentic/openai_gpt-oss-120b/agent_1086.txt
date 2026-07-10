@@ -1,11 +1,6 @@
-<|start|>assistant<|channel|>commentary<|message|>{
-  "name": "fetch_issuer_id",
-  "arguments": {
-    "issuer_name": "Kilimanjaro Re Limited"
-  }
-}<|call|>We wait for observation.Observation:<|start|>assistant<|channel|>commentary<|message|>{
-  "name": "fetch_instrument_id",
-  "arguments": {
-    "instrument_type": "notes"
-  }
-}<|call|>Observation:1575000
+Calling tools:
+[{'id': 'chatcmpl-tool-9a2f1c4d79f34e3a', 'type': 'function', 'function': {'name': 'fetch_instrument_id', 'arguments': {'instrument_type': 'notes'}}}]Observation:
+2Calling tools:
+[{'id': 'chatcmpl-tool-3bde7e1a5c6f40b8', 'type': 'function', 'function': {'name': 'list_issuance_amounts', 'arguments': {'issuer_id': 1, 'instrument_id': 2, 'start_year': 2014, 'end_year': 2015}}}]Observation:
+[450000, 500000, 625000]Calling tools:
+[{'id': 'chatcmpl-tool-7c9a4b08b5f3471c', 'type': 'function', 'function': {'name': 'aggregate_amounts', 'arguments': {'amounts': [450000, 500000, 625000]}}}]1575000

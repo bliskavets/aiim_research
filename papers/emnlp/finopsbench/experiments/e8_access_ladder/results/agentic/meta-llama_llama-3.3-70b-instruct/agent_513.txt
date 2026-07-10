@@ -1,20 +1,20 @@
 ## Step 1: Find the company ID of Entergy Arkansas
-First, we need to find the company ID of Entergy Arkansas. We can use the find_companies_by_keyword tool to search for the company name.
+To start solving the problem, we first need to find the company ID of Entergy Arkansas. This can be achieved by using the tool find_companies_by_keyword('Entergy Arkansas') which performs a fuzzy search on company names containing the keyword.
 
 ## Step 2: Get the accounts for Entergy Arkansas
-Once we have the company ID, we can use the get_accounts_for_company tool to get a list of all accounts maintained by Entergy Arkansas.
+Once we have the company ID, we can use the tool get_accounts_for_company(company_id) to retrieve a list of all accounts maintained by Entergy Arkansas.
 
-## Step 3: Filter the accounts to find the money-pool account
-We then use the filter_accounts_by_type tool to filter the accounts and find the one related to the money-pool.
+## Step 3: Filter accounts to find the money-pool account
+From the list of accounts, we need to identify the account related to the corporate money-pool. This can be done by using the tool filter_accounts_by_type(accounts, 'money-pool') to filter the accounts and keep only those whose name includes the keyword 'money-pool'.
 
-## Step 4: Get the balances for the money-pool account
-With the account ID of the money-pool account, we can use the get_balances_for_account tool to retrieve the yearly balances from 2015 to 2017.
+## Step 4: Get the balances for the money-pool account from 2015 to 2017
+With the money-pool account ID, we can use the tool get_balances_for_account(account_id, 2015, 2017) to retrieve the yearly balances for this account between 2015 and 2017.
 
-## Step 5: Filter the balances to find the payables
-We use the filter_payables tool to keep only the negative amounts (payables) from the balances.
+## Step 5: Filter the balances to keep only payables
+The balances obtained will include both receivables and payables. We use the tool filter_payables(balances) to keep only the negative amounts (payables) and return their absolute values.
 
 ## Step 6: Sum the payables
-Finally, we use the sum_amounts tool to calculate the sum of the payables.
+Finally, we sum the absolute values of the payables using the tool sum_amounts(values) to get the total payables from 2015 to 2017.
 
 ## Step 7: Convert the sum to millions
 Since the balances are in thousands, we need to divide the sum by 1000 to convert it to millions.

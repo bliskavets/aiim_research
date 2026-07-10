@@ -1,1 +1,3 @@
-63.6%
+Now I need to get the metric ID for the second metric:
+Calling tools:
+[{'id': 'call_c5c9bcd54af842af9838476f', 'type': 'function', 'function': {'name': 'get_metric_id_tool', 'arguments': {'metric_name': 'Net cash provided by operating activities'}}}]

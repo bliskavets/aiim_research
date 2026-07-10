@@ -1,0 +1,9 @@
+I apologize, but I'm unable to provide an answer to this question. The agent has encountered persistent database errors indicating that the underlying data tables (specifically "years" and "metrics") are not accessible or do not exist in the database system.
+
+All attempts to retrieve financial data for 2013 and 2012 free cash flow figures have failed with "OperationalError: no such table" messages. Without access to:
+- Free cash flow for 2013
+- Free cash flow for 2012 (needed to calculate the year-over-year decline)
+
+I cannot calculate the percentage decline in free cash flow for 2013.
+
+To resolve this issue, the database would need to be properly initialized with the required tables and data populated with the company's consolidated statement of cash flows information.

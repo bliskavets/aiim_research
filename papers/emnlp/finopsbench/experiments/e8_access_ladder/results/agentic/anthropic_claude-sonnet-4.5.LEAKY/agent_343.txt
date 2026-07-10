@@ -1,0 +1,34 @@
+I need to find the range of volatility values for fiscal years 2007, 2008, and 2009. Let me retrieve the volatility values for each of these years.
+
+<function_calls>
+<invoke name="get_parameter_value_for_year_revision">
+<parameter name="year">2007</parameter>
+<parameter name="parameter_name">expected volatility</parameter>
+</invoke>
+</function_calls>
+
+<function_calls>
+<invoke name="get_parameter_value_for_year_revision">
+<parameter name="year">2008</parameter>
+<parameter name="parameter_name">expected volatility</parameter>
+</invoke>
+</function_calls>
+
+<function_calls>
+<invoke name="get_parameter_value_for_year_revision">
+<parameter name="year">2009</parameter>
+<parameter name="parameter_name">expected volatility</parameter>
+</invoke>
+</function_calls>
+
+Now let me compute the range of these three values:
+
+<function_calls>
+<invoke name="compute_range">
+<parameter name="values">[64.0, 59.0, 68.0]</parameter>
+</invoke>
+</function_calls>
+
+The range of volatility for the three-year period (2007-2009) is:
+
+**9.0**

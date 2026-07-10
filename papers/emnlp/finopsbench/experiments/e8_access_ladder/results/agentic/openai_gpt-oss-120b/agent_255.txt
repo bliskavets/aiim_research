@@ -1,1 +1,9 @@
-None
+Calling tools:
+[{'id': 'chatcmpl-tool-6605e3ea001a4c2f', 'type': 'function', 'function': {'name': 'get_report_id', 'arguments': {'company_id': 1, 'year': 2012}}}]Observation:
+42Calling tools:
+[{'id': 'chatcmpl-tool-2d22c12c91534c55', 'type': 'function', 'function': {'name': 'list_segments_in_report', 'arguments': {'report_id': 42}}}]Observation:
+['e&p', 'osm', 'ig', 'midstream', 'total']Calling tools:
+[{'id': 'chatcmpl-tool-5dd5b495082242f5', 'type': 'function', 'function': {'name': 'get_segment_revenue', 'arguments': {'report_id': 42, 'segment_code': 'e&p'}}}]Observation:
+2150.0Calling tools:
+[{'id': 'chatcmpl-tool-932e5ac435c44e31', 'type': 'function', 'function': {'name': 'get_segment_revenue', 'arguments': {'report_id': 42, 'segment_code': 'total'}}}]Observation:
+3550.060.6%

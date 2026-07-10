@@ -1,0 +1,17 @@
+From the passage:  
+"North American consumer packaging net sales were $2.5 billion in 2011."
+
+We need to calculate the total consumer-packaging sales across all regions in 2011 and then compute the percentage.
+
+Step 1: Get North American sales in 2011 (already provided in passage as $2.5 billion), but verify via tool:
+- Region: North America, year: 2011 → $2.5 billion USD
+
+Step 2: Retrieve consumer-packaging sales for other regions in 2011:
+We already retrieved:
+- Asia: 0.92 billion EUR → Converted to 920 million EUR
+
+Now convert EUR to USD using FX rate for 2011. Need to use:
+convert_currency_to_usd(920, 'EUR', 2011)
+
+Calling tool:
+[{'id': 'call_88c7d798a15c4b0f8c0f6e8d', 'type': 'function', 'function': {'name': 'convert_currency_to_usd_tool', 'arguments': {'value': 920, 'currency_code': 'EUR', 'year': 2011}}}]

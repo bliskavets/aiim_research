@@ -1,1 +1,5 @@
-[{'type': 'text', 'text': "Calling tools:\n[{'id': 'call_a8b2a1c87dc04a95a8c4b4ea', 'type': 'function', 'function': {'name': 'calculate_dollar_value_tool', 'arguments': {'shares': 20759, 'price': 37.25}}}]"}]
+I need to continue gathering data for all three years. I have 2007 data: shares = 20759, price = 37.25. Now let me get data for 2008 and 2009.
+
+First, get shares issued for 2008:
+Calling tools:
+[{'id': 'call_ccba18a61a5e41d5bc07e3db', 'type': 'function', 'function': {'name': 'get_shares_issued_tool', 'arguments': {'program_id': 1, 'year': 2008}}}]

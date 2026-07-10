@@ -1,12 +1,11 @@
-I'll need to calculate what portion of the total future minimum sponsorship and other payments will be due in the next three years. From the timeline, I can see the buckets are: 2017, 2018, 2019, 2020, 2021, and 2022 and thereafter. The report is from 2017, so the next three years are 2017, 2018, and 2019.
+I need to calculate what portion of the total future minimum sponsorship payments will be due in the next three years. Based on the excerpt mentioning a shareholder filing on February 10, 2017, the report appears to be from early 2017, so "the next three years" would be 2017, 2018, and 2019.
 
-Let me proceed step by step:
+Let me use the available tools systematically:
 
-1. First, get the total minimum sponsorship payments to use as the denominator.
-2. Then get the minimum payments for 2017, 2018, and 2019.
-3. Calculate the sum for these three years.
-4. Calculate the percentage.
+1. First, get the total minimum sponsorship payments
+2. Then get the payments for 2017, 2018, and 2019
+3. Calculate the sum of payments for these three years
+4. Calculate the percentage
 
-Let me start by getting the total minimum sponsorship payments:
 Calling tools:
-[{'id': 'call_6d8a8b1ee33d4d04a32d4c86', 'type': 'function', 'function': {'name': 'get_total_minimum_sponsorship_payments_tool', 'arguments': {}}}]
+[{'id': 'call_total_minimum', 'type': 'function', 'function': {'name': 'get_total_minimum_sponsorship_payments_tool', 'arguments': {}}}]

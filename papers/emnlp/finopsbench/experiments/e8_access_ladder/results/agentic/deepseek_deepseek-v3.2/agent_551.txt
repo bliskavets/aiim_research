@@ -1,1 +1,5 @@
-24%
+I need to find the ROI from 2013 to 2014 for Teleflex. I need to get the cumulative values for both years and calculate the percentage change.
+
+Let me start by getting the company ID for Teleflex Incorporated.
+Calling tools:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'resolve_company_identifier_tool', 'arguments': {'name_or_alias': 'Teleflex Incorporated'}}}]

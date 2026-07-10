@@ -1,20 +1,31 @@
-To determine the percentage of the total future minimum sponsorship and other marketing payments that will be due in the next 12-month period, we need to find out the amount due in the next 12 months and the total amount of future minimum obligations.
+To determine the percentage of the total future minimum sponsorship and other marketing payments that will be due in the next 12-month period, we first need to identify the amount due in the next 12 months and the total amount of future minimum obligations. We can achieve this by using the provided Python functions.
+
+1. **Get the earliest future period label**: This will tell us the starting point for our calculations, which represents the next 12-month period.
+2. **Calculate the obligation amount for this period**: Using the `get_obligation_amount_for_period` function with the earliest future period label and the obligation type set to "minimum".
+3. **Get the total obligation amount**: Using the `get_total_obligation_amount` function with the obligation type set to "minimum" to find the grand total of all future minimum obligations.
+4. **Calculate the percentage**: Divide the amount due in the next 12 months by the total amount of future minimum obligations and multiply by 100 to convert to a percentage.
+
+Here is how you could write this in Python:
 
 ```python
 # Get the earliest future period label
 earliest_period = get_earliest_future_period_label()
 
-# Get the obligation amount for the earliest period
-obligation_earliest_period = get_obligation_amount_for_period(earliest_period, obligation_type="minimum")
+# Calculate the obligation amount for the earliest period
+amount_due_next_12_months = get_obligation_amount_for_period(earliest_period, obligation_type="minimum")
 
-# Get the total obligation amount
+# Get the total obligation amount across all periods
 total_obligation_amount = get_total_obligation_amount(obligation_type="minimum")
 
 # Calculate the percentage
-percentage = (obligation_earliest_period / total_obligation_amount) * 100
+percentage = (amount_due_next_12_months / total_obligation_amount) * 100
 
 # Round the percentage to one decimal place
 rounded_percentage = round(percentage, 1)
 
 print(f"{rounded_percentage}%")
 ```
+
+This code directly calculates the required percentage by dividing the amount due in the next 12 months by the total future minimum obligations and then multiplying by 100. The result is then rounded to one decimal place and printed out as a percentage. 
+
+Note: Ensure you have the necessary Python functions (`get_earliest_future_period_label`, `get_obligation_amount_for_period`, `get_total_obligation_amount`) defined and accessible in your environment for this code to work.

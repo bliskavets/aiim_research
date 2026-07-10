@@ -1,0 +1,5 @@
+The total identifiable net assets for SICOM Systems, Inc. is $144,357 thousand. The sum of the individual identifiable assets categories is: accounts receivable $12,500k + cash and cash equivalents $7,540k + identified intangible assets $188,294k + inventory $3,200k + property and equipment $5,943k + other assets $22,278k = $239,755 thousand (rounded to the nearest thousand). 
+
+Percentage of total identifiable net assets relative to these assets is: (144,357 / 239,755) * 100 = 60.2%.
+
+Final answer: 60.2%

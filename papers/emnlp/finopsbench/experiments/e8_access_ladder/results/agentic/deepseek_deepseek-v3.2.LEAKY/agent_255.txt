@@ -1,0 +1,4 @@
+I need to continue from where I left off. I have company ID 1 and know that 2012 is available. Now I need to get the report_id for company 1, year 2012.
+
+Calling tools:
+[{"id": "call_1", "type": "function", "function": {"name": "get_report_id", "arguments": {"company_id": 1, "year": 2012}}}]

@@ -1,1 +1,2 @@
-0.0%
+Calling tools:
+[{'id': 'call_5743f790b3d443178548bd65', 'type': 'function', 'function': {'name': 'get_assets_by_category_tool', 'arguments': {'acquisition_name': 'GPAP Philippines', 'category_name': 'Intangible'}}}]

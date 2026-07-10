@@ -1,0 +1,1202 @@
+[
+ {
+  "agent_id": "agent_1002",
+  "ground_truth_answer": "11.1%",
+  "agent_output": "11.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1004",
+  "ground_truth_answer": "4.97",
+  "agent_output": "There is no data available for October, November, and December of 2012 in the database. Therefore, it is not possible to determine the mathematical range of the average prices paid per share for those months.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1006",
+  "ground_truth_answer": "2.72",
+  "agent_output": "2.72",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1008",
+  "ground_truth_answer": "-10%",
+  "agent_output": "11%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1009",
+  "ground_truth_answer": "0.913",
+  "agent_output": "0.913",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1025",
+  "ground_truth_answer": "2%",
+  "agent_output": "2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_106",
+  "ground_truth_answer": "4640",
+  "agent_output": "4640",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1063",
+  "ground_truth_answer": "10.7%",
+  "agent_output": "The average operating margin for Missiles and Fire Control (MFC) from 2011 through 2013 was 16.5%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1066",
+  "ground_truth_answer": "19.8",
+  "agent_output": "The 2017 cigarette shipment volume in the United States, assuming the same revenue decline of 2.5% happened again as in 2016, would be approximately 25.4 billion units.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1070",
+  "ground_truth_answer": "60%",
+  "agent_output": "59.6% of worldwide distribution-channel doors as of March 31, 2012, were in the Americas.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1077",
+  "ground_truth_answer": "-17.4%",
+  "agent_output": "-17.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1078",
+  "ground_truth_answer": "61%",
+  "agent_output": "61% of the commercial paper outstanding as of December 31, 2010, was for bank subsidiaries.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1085",
+  "ground_truth_answer": "31904",
+  "agent_output": "31904",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1086",
+  "ground_truth_answer": "1575000",
+  "agent_output": "1575000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1087",
+  "ground_truth_answer": "$ 1928.88",
+  "agent_output": "$ 1928.88",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1092",
+  "ground_truth_answer": "14000000",
+  "agent_output": "14000000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1095",
+  "ground_truth_answer": "1.9",
+  "agent_output": "1.9",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1099",
+  "ground_truth_answer": "17.4%",
+  "agent_output": "17.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1106",
+  "ground_truth_answer": "467",
+  "agent_output": "In 2011, the change in non-vested incentive/performance unit shares was 830 thousand - 363 thousand = 467 thousand shares.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1110",
+  "ground_truth_answer": "1.5",
+  "agent_output": "1.5",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1124",
+  "ground_truth_answer": "1224",
+  "agent_output": "1224",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1139",
+  "ground_truth_answer": "8.1",
+  "agent_output": "8.1",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_114",
+  "ground_truth_answer": "11.3",
+  "agent_output": "The database only contains values for interest and penalties on unrecognized tax benefits for the years 2011, 2012, and 2013. Their amounts are 15 million, 10 million, and 9 million respectively. The average for these years is (15 + 10 + 9) / 3 = 11.33 million dollars. There is no data for other years from 2001 to 2013, so the best average we can provide is for these three years, which is 11.33 million.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1142",
+  "ground_truth_answer": "450000",
+  "agent_output": "The total reinsurance coverage secured in 2014 was $450,000 thousand.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1143",
+  "ground_truth_answer": "0",
+  "agent_output": "0.9",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_115",
+  "ground_truth_answer": "2.33",
+  "agent_output": "2.33",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1158",
+  "ground_truth_answer": "71%",
+  "agent_output": "71%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1173",
+  "ground_truth_answer": "0.75",
+  "agent_output": "The ratio of the Investor Services revenue to the Treasury Services revenue in 2003 is 1449.0 / 1927.0 = 0.752.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1177",
+  "ground_truth_answer": "no",
+  "agent_output": "no",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1182",
+  "ground_truth_answer": "8.36",
+  "agent_output": "8.36",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1188",
+  "ground_truth_answer": "98.2%",
+  "agent_output": "I encountered repeated errors accessing the data for the 2016 annual closing value of the S&P 500 index. Based on the scenario description, the investment value was $100 on December 31, 2011, and the question asks for the growth rate from 2011 to 2016. Without direct access to the 2016 closing value, I cannot compute the exact growth rate. Thus, I am unable to provide the growth rate for the S&P 500 index from 2011 to 2016 at this moment.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1205",
+  "ground_truth_answer": "48%",
+  "agent_output": "48%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1231",
+  "ground_truth_answer": "24123727",
+  "agent_output": "24123727",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1242",
+  "ground_truth_answer": "35.9%",
+  "agent_output": "The total minimum sponsorship and other payments due in the next three years (2017, 2018, and 2019) sum to 142,987 + 176,138 + 166,961 = 486,086 thousand dollars. The grand total of all minimum sponsorship payments is 1,355,605 thousand dollars. Therefore, the portion due in the next three years is (486,086 / 1,355,605) * 100 = 35.9%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_125",
+  "ground_truth_answer": "257.95%",
+  "agent_output": "27.43%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1258",
+  "ground_truth_answer": "7341",
+  "agent_output": "The cash flow from operating activities is positively affected by 7341 million USD due to the change in receivables from 2014 to 2015.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1259",
+  "ground_truth_answer": "67.9%",
+  "agent_output": "33.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_126",
+  "ground_truth_answer": "295.4",
+  "agent_output": "The total outstanding number of shares that received dividends in 2016 can be calculated by dividing the total dividends paid by the dividends per share. Total dividends paid in 2016 were $2.0 billion, and the dividend per share was $6.77. Thus, the number of shares = 2,000,000,000 / 6.77 \u2248 295.43 million shares. So, approximately 295.43 million shares received dividends in 2016.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1262",
+  "ground_truth_answer": "75%",
+  "agent_output": "The percentage of total regulatory liabilities in 2017 that consisted of income taxes recovered through rates is approximately 74.7%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1264",
+  "ground_truth_answer": "8.4",
+  "agent_output": "Net revenues in equity securities for 2017 including net gains from private equities were 4.58 + 3.82 = 8.4 billion USD.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1267",
+  "ground_truth_answer": "10%",
+  "agent_output": "10%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1268",
+  "ground_truth_answer": "-1693",
+  "agent_output": "-1693",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1269",
+  "ground_truth_answer": "20.5",
+  "agent_output": "20.6",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1277",
+  "ground_truth_answer": "67451",
+  "agent_output": "67451",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1282",
+  "ground_truth_answer": "32%",
+  "agent_output": "32%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1287",
+  "ground_truth_answer": "87.3",
+  "agent_output": "32.4",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1291",
+  "ground_truth_answer": "37.9%",
+  "agent_output": "The cumulative total-return values for JPMorgan Chase from 2013 to 2018 are: 2013 = 100.0, 2014 = 109.88, 2015 = 119.07, 2016 = 160.23, 2017 = 189.57, 2018 = 203.07.\n\nCalculating the annual return for each year:\n- 2014: (109.88 - 100.0) / 100.0 = 0.0988 = 9.88%\n- 2015: (119.07 - 109.88) / 109.88 = 0.0837 = 8.37%\n- 2016: (160.23 - 119.07) / 119.07 = 0.3454 = 34.54%\n- 2017: (189.57 - 160.23) / 160.23 = 0.1823 = 18.23%\n- 2018: (203.07 - 189.57) / 189.57 = 0.0703 = 7.03%\n\nAverage uncompounded annual return = (9.88 + 8.37 + 34.54 + 18.23 + 7.03) / 5 = 15.61%\n\nRounded to one decimal place: 15.6%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_13",
+  "ground_truth_answer": "43990.0%",
+  "agent_output": "-0.3%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_130",
+  "ground_truth_answer": "-44.9%",
+  "agent_output": "-44.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1300",
+  "ground_truth_answer": "26%",
+  "agent_output": "26%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1303",
+  "ground_truth_answer": "97%",
+  "agent_output": "As a percent of total revenues net of interest expense in 2009, non-interest revenue was 111%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1307",
+  "ground_truth_answer": "122604300",
+  "agent_output": "122604",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1318",
+  "ground_truth_answer": "13.4%",
+  "agent_output": "13.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_134",
+  "ground_truth_answer": "2825000",
+  "agent_output": "2825000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_135",
+  "ground_truth_answer": "11.25%",
+  "agent_output": "7.00%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_140",
+  "ground_truth_answer": "11%",
+  "agent_output": "The percent change of benefits expected to be paid between 2017 and 2018 is approximately 11% decrease.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_15",
+  "ground_truth_answer": "65.6%",
+  "agent_output": "65.7%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_156",
+  "ground_truth_answer": "44%",
+  "agent_output": "44%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_157",
+  "ground_truth_answer": "4.8",
+  "agent_output": "0",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_176",
+  "ground_truth_answer": "8.6%",
+  "agent_output": "8.6%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_182",
+  "ground_truth_answer": "1.32%",
+  "agent_output": "0.33%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_188",
+  "ground_truth_answer": "66.6%",
+  "agent_output": "66.6%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_194",
+  "ground_truth_answer": "-5821",
+  "agent_output": "The net change in the balance of accumulated other comprehensive loss from 2008 to 2009 is $5,821,000.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_197",
+  "ground_truth_answer": "13",
+  "agent_output": "43",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_201",
+  "ground_truth_answer": "0.1%",
+  "agent_output": "The growth rate in net revenue in 2003 for Entergy Corporation is approximately 0.0%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_207",
+  "ground_truth_answer": "15.1%",
+  "agent_output": "15.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_21",
+  "ground_truth_answer": "16.7%",
+  "agent_output": "16.7%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_211",
+  "ground_truth_answer": "4.2%",
+  "agent_output": "4.2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_225",
+  "ground_truth_answer": "19.4%",
+  "agent_output": "9.4%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_226",
+  "ground_truth_answer": "13.0%",
+  "agent_output": "The portion of the total future minimum sponsorship and other payments due in the next 12 months (2017) is (176,138 / 1,355,605) * 100 = 13.0%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_228",
+  "ground_truth_answer": "17.2%",
+  "agent_output": "3.0%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_234",
+  "ground_truth_answer": "no",
+  "agent_output": "A 0.5% decrease in expected long-term return on assets has a greater impact on pension expense (10.0 million) than a 0.5% decrease in discount rate (1.0 million).",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_242",
+  "ground_truth_answer": "61.5%",
+  "agent_output": "I am unable to retrieve the numerical AFUDC allowance amounts for borrowed funds and other funds for 2015 due to technical errors with the data access tool. Therefore, I cannot calculate the requested percentage.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_246",
+  "ground_truth_answer": "28%",
+  "agent_output": "28%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_247",
+  "ground_truth_answer": "52.32%",
+  "agent_output": "52.32%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_249",
+  "ground_truth_answer": "1016",
+  "agent_output": "1016",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_255",
+  "ground_truth_answer": "89.8%",
+  "agent_output": "Percentage of total revenues consisted of E&P production in 2012 = (E&P revenue / Total revenue) * 100 = (14084.0 / 15688.0) * 100 = 89.78%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_264",
+  "ground_truth_answer": "-54%",
+  "agent_output": "-54%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_268",
+  "ground_truth_answer": "8%",
+  "agent_output": "8%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_269",
+  "ground_truth_answer": "0.8%",
+  "agent_output": "0.8%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_280",
+  "ground_truth_answer": "773%",
+  "agent_output": "774%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_287",
+  "ground_truth_answer": "24.2%",
+  "agent_output": "The total identifiable net assets for SICOM Systems, Inc. is $144,357 thousand. The sum of the individual identifiable assets categories is: accounts receivable $12,500k + cash and cash equivalents $7,540k + identified intangible assets $188,294k + inventory $3,200k + property and equipment $5,943k + other assets $22,278k = $239,755 thousand (rounded to the nearest thousand). \n\nPercentage of total identifiable net assets relative to these assets is: (144,357 / 239,755) * 100 = 60.2%.\n\nFinal answer: 60.2%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_29",
+  "ground_truth_answer": "0.96",
+  "agent_output": "The average effect, in millions, of the dilutive securities in 2012-14 was 0.96.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_294",
+  "ground_truth_answer": "-151100",
+  "agent_output": "-151100",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_295",
+  "ground_truth_answer": "55.3%",
+  "agent_output": "I am unable to retrieve the required data from the database due to operational errors. Therefore, I cannot calculate the percentage decline in free cash flow for 2013.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_296",
+  "ground_truth_answer": "1.4%",
+  "agent_output": "0.14%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_306",
+  "ground_truth_answer": "27.2%",
+  "agent_output": "27.2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_313",
+  "ground_truth_answer": "50.0%",
+  "agent_output": "50.0%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_32",
+  "ground_truth_answer": "14.9",
+  "agent_output": "Total fees earned in 2016 for management, leasing, and construction and development are calculated as follows:\n\nManagement fees: base 3.5 + bonus 1.0 = 4.5 million\nLeasing fees: base 1.8 + bonus 0.6 = 2.4 million\nConstruction and development fees: base 5.0 + incentive 3.0 = 8.0 million\n\nTotal fees = 4.5 + 2.4 + 8.0 = 14.9 million dollars\n\nFINAL ANSWER: 14.9 million dollars",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_323",
+  "ground_truth_answer": "9.2%",
+  "agent_output": "9.2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_324",
+  "ground_truth_answer": "749524",
+  "agent_output": "749526",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_332",
+  "ground_truth_answer": "52.9%",
+  "agent_output": "-52.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_337",
+  "ground_truth_answer": "-51.3%",
+  "agent_output": "The difference in percentage cumulative total shareholder return on PMI's common stock versus the S&P 500 index for the five years ended December 31, 2017 is 156.8% - 208.1% = -51.3%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_338",
+  "ground_truth_answer": "-5.8%",
+  "agent_output": "Calling tools:\n[{'id': 'call_iX33xPiQNAYQTTx17LwT7a6a', 'type': 'function', 'function': {'name': 'compute_percentage_return_tool', 'arguments': {'start_value': 100.0, 'end_value': 94.2}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_343",
+  "ground_truth_answer": "27.4",
+  "agent_output": "25.0",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_344",
+  "ground_truth_answer": "1%",
+  "agent_output": "Total shares vested in nonzero buckets for PlanA are from buckets: ['2017', '2018', '2019', '2020', '2021', 'thereafter']\nShares per bucket:\n2017: 1476832\n2018: 199850\n2019: 2352443\n2020: 539790\n2021: 110494\nthereafter: 4358728\n\nSum of all shares = 1476832 + 199850 + 2352443 + 539790 + 110494 + 4358728 = 9122137\n\nSum of shares vesting after 2021 (thereafter only) = 4358728\n\nPercentage vesting after 2021 = (4358728 / 9122137) * 100 = approximately 47.8%\n\nAnswer: 48%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_345",
+  "ground_truth_answer": "0",
+  "agent_output": "0",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_347",
+  "ground_truth_answer": "60%",
+  "agent_output": "60%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_356",
+  "ground_truth_answer": "966",
+  "agent_output": "1016",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_371",
+  "ground_truth_answer": "48.1%",
+  "agent_output": "39.48%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_381",
+  "ground_truth_answer": "14.3%",
+  "agent_output": "14.3%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_398",
+  "ground_truth_answer": "7.9%",
+  "agent_output": "The provided scenario text indicates that the company name is \"EntEnergy New Orleans, Inc.\" (with an apparent typo in the original text) rather than \"Entergy New Orleans, Inc.\" This discrepancy could cause the company ID lookup to fail. Since attempts to get the company ID by using the exact legal name with the tool have failed, I conclude that I cannot retrieve exact numeric financial data from the tools due to data limitations or errors.\n\nGiven that the numerical values for net revenue are not included in the scenario and the tools to fetch the amounts are not responding due to company ID issues, I cannot calculate the exact growth rate using tool data.\n\nHowever, the scenario narrative states:\n\n- Net income increased in 2016 compared with 2015 by $3.9 million primarily due to higher net revenue (among other factors).\n\n- For 2015 compared with 2014, net income increased $13.9 million primarily due to lower operation and maintenance expenses and higher net revenue.\n\nThough exact figures are not given, we know net revenue rose in 2016 over 2015.\n\nWithout numeric data, I am unable to compute an exact growth rate percentage.\n\nTherefore, I cannot provide a precise growth rate percentage value. The scenario does not supply sufficient numerical data, and data tool lookups fail due to company naming and database constraints.\n\nFinal answer: Not available due to insufficient data.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_401",
+  "ground_truth_answer": "1.18",
+  "agent_output": "1.18",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_404",
+  "ground_truth_answer": "247",
+  "agent_output": "The net difference between the amounts used as hedging instruments is 247 million dollars.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_409",
+  "ground_truth_answer": "10122",
+  "agent_output": "The absolute value of the combined effect of 'market change' and 'fx impact' on the category 'asset allocation and balanced' for the year 2015 is 10122 million U.S. dollars (|-3391| + |-6731| = 10122).",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_411",
+  "ground_truth_answer": "2376487.57",
+  "agent_output": "2376487.57",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_412",
+  "ground_truth_answer": "1.31",
+  "agent_output": "1.31",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_413",
+  "ground_truth_answer": "13%",
+  "agent_output": "13%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_415",
+  "ground_truth_answer": "120384.6",
+  "agent_output": "I was unable to retrieve both net income and basic EPS data for Hologic, Inc. for any recent years from the database. Without either net income or EPS data, I cannot calculate the number of outstanding shares.\n\nTherefore, the estimated number of outstanding shares cannot be determined from the available data.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_425",
+  "ground_truth_answer": "76",
+  "agent_output": "76",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_429",
+  "ground_truth_answer": "8.3%",
+  "agent_output": "Unable to retrieve data due to a system error.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_434",
+  "ground_truth_answer": "2.7%",
+  "agent_output": "0.0%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_437",
+  "ground_truth_answer": "199",
+  "agent_output": "-46455",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_442",
+  "ground_truth_answer": "39.6",
+  "agent_output": "39.6",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_452",
+  "ground_truth_answer": "4",
+  "agent_output": "On December 31, 2017, the estimated unrecognized compensation cost related to non-vested RSUs (with and without performance conditions) that is expected to be recognized as of December 31, 2018, is approximately 2.79 million USD (for RSU_NONVESTED) plus 1.49 million USD (for STOCK_OPTIONS), totaling approximately 4.28 million USD.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_460",
+  "ground_truth_answer": "282076",
+  "agent_output": "282076",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_466",
+  "ground_truth_answer": "6.3%",
+  "agent_output": "The company ticker symbol for The Goldman Sachs Group, Inc. is not available, and no income-statement line items data could be found. Therefore, I cannot determine the growth rate in net revenues in 2017 based on the provided tools and data.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_471",
+  "ground_truth_answer": "-1365",
+  "agent_output": "-1365",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_496",
+  "ground_truth_answer": "275.9%",
+  "agent_output": "275.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_5",
+  "ground_truth_answer": "56.25%%",
+  "agent_output": "56.25%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_513",
+  "ground_truth_answer": "270111",
+  "agent_output": "270.111",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_516",
+  "ground_truth_answer": "41.7%",
+  "agent_output": "20.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_520",
+  "ground_truth_answer": "82%",
+  "agent_output": "The percentage of the number of options that had vested relative to the total number of options outstanding as of December 26, 2015, was 82%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_522",
+  "ground_truth_answer": "67%",
+  "agent_output": "North American consumer-packaging net sales in 2011 were $2.5 billion USD. Total consumer-packaging net sales in 2011 were the sum of sales from all regions: $2.5 billion (North America) + $1.104 billion (Europe) + $0.100 billion (Africa) + $0.006 billion (Asia) = $3.710 billion USD.\n\nThe percentage of North American net sales of total sales in 2011 is (2.5 / 3.710) * 100% \u2248 67.39%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_525",
+  "ground_truth_answer": "41%",
+  "agent_output": "50%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_532",
+  "ground_truth_answer": "8.7%",
+  "agent_output": "The percentage of the total number of shares purchased in the fourth quarter of 2007 that was attested to UPC by employees to pay stock-option exercise prices is calculated as follows: (100,000 / 2,626,154) * 100 = 3.8%. Thus, the answer is 3.8%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_545",
+  "ground_truth_answer": "5.4%",
+  "agent_output": "5.43%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_546",
+  "ground_truth_answer": "9.5",
+  "agent_output": "The yearly interest expense associated with the Certegy merger is 9.5 million USD.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_551",
+  "ground_truth_answer": "24%",
+  "agent_output": "24%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_555",
+  "ground_truth_answer": "73",
+  "agent_output": "73",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_560",
+  "ground_truth_answer": "65%",
+  "agent_output": "We need to calculate the percent change in total intangibles 2014 net from 2007 to 2008.\n\nStep 1: The components related to \u201cintangibles 2014 net\u201d are:  \n- developed_prod_tech_net  \n- goodwill  \n- other_intangibles_net  \n\nStep 2: Retrieve metric values for each component for years 2007 and 2008.\n\nI will get these values now:\n\n- developed_prod_tech_net for 2007 and 2008  \n- goodwill for 2007 and 2008  \n- other_intangibles_net for 2007 and 2008\n\nThen, sum the components for each year to get total intangibles 2014 net for 2007 and 2008.\n\nStep 3: Compute the percent change from 2007 to 2008.\n\n---\n\nCalling tools to get the values:\n\nget_metric_value_for_year('developed_prod_tech_net', 2007)  \nget_metric_value_for_year('developed_prod_tech_net', 2008)  \nget_metric_value_for_year('goodwill', 2007)  \nget_metric_value_for_year('goodwill', 2008)  \nget_metric_value_for_year('other_intangibles_net', 2007)  \nget_metric_value_for_year('other_intangibles_net', 2008)",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_567",
+  "ground_truth_answer": "1.74%",
+  "agent_output": "1.75%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_570",
+  "ground_truth_answer": "357",
+  "agent_output": "357",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_577",
+  "ground_truth_answer": "126.0",
+  "agent_output": "The mathematical range for the rent obligations from 2008 through 2012 is 126.0.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_578",
+  "ground_truth_answer": "-256245",
+  "agent_output": "The change in principal payments due in 2006 versus 2007, expressed in thousands of dollars, is -256,245.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_584",
+  "ground_truth_answer": "8953",
+  "agent_output": "8953",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_588",
+  "ground_truth_answer": "-46.29%",
+  "agent_output": "Accumulated other comprehensive income (AOCI) for 2008 is 240.0 million. The total unrecognized losses/costs are -31.2 + -79.9 = -111.1 million. Without these unrecognized losses/costs, AOCI would be 240.0 - (-111.1) = 351.1 million. The percent increase is ((351.1 - 240.0) / 240.0) * 100 = 46.29%. Answer: 46.29%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_614",
+  "ground_truth_answer": "-38.54%",
+  "agent_output": "The entities NetApp Inc., NASDAQ Composite Index, S&P 500 Index, and S&P 500 Information Technology Index are not available in the given dataset. Therefore, I cannot compute the difference in percentage cumulative total return for the specified period from the data provided.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_617",
+  "ground_truth_answer": "8.5%",
+  "agent_output": "The database tables for rate types, components, and effective rates are not available, so I am unable to provide the specific increase in the effective income tax rate for continuing operations from 2005 to 2006. Therefore, I cannot calculate the requested value.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_626",
+  "ground_truth_answer": "16759.5",
+  "agent_output": "15539.6",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_630",
+  "ground_truth_answer": "1.9%",
+  "agent_output": "1.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_634",
+  "ground_truth_answer": "86.3",
+  "agent_output": "86.33",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_654",
+  "ground_truth_answer": "49%",
+  "agent_output": "49%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_666",
+  "ground_truth_answer": "4.5%",
+  "agent_output": "The estimated percentual increase in the expected volatility observed during 2007 and 2008 was 4.5%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_688",
+  "ground_truth_answer": "15.1%",
+  "agent_output": "15.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_69",
+  "ground_truth_answer": "1008.5",
+  "agent_output": "The intangible asset categories are:\n- Customer Base & Network Location (Amortisable)\n- Deferred Financing Costs (Amortisable but no accumulated amortisation recorded for 2007)\n- Goodwill (Not amortisable)\n- Licenses & Other (Amortisable but no accumulated amortisation recorded for 2007)\n\nSince accumulated amortisation data for certain categories (Licenses & Other, Deferred Financing Costs, Customer Base & Network Location) for 2007 is not available, I will estimate accumulated amortisation at the end of 2007 by summing yearly amortisation expenses for each amortisable category from the earliest year available (2004 or 2005) through 2007.\n\nFrom background information:\n- Total amortisation expense (excluding deferred financing costs) was approx $136.0 million in 2005.\n- Management expects amortisation expense for 2006: $183.6 million; 2007: $178.3 million.\n\nFrom amortisation expenses retrieved:\nCustomer Base & Network Location amortisation expense:\n- 2005: 118.0 million\n- 2006: 160.0 million\n- 2007: 155.0 million\n\nLicenses & Other amortisation expense:\n- 2005: 8.0 million\n- 2006: 11.1 million\n- 2007: 11.3 million\n\nDeferred Financing Costs category is amortisable, but no accumulated amortisation data for 2007 and earlier queries said no such data. Also, the problem states deferred-financing-cost amortisation booked in interest expense, which is excluded from intangible amortisation expense in the background, so skip that.\n\nGoodwill is not amortisable.\n\nThus, accumulated amortisation at the end of 2007 would be roughly sum of amortisation expenses from 2005 through 2007 for the amortisable categories (excluding deferred financing costs and goodwill):\n\nCustomer Base & Network Location total amortisation 2005-2007:\n118.0 + 160.0 + 155.0 = 433.0 million\n\nLicenses & Other total amortisation 2005-2007:\n8.0 + 11.1 + 11.3 = 30.4 million\n\nSum is 433.0 + 30.4 = 463.4 million\n\nPlus amortisation expense for other amortisable intangibles (if any):\n\nCheck other amortisable categories: get_amortisable_intangible_categories() was not called but from initial list, only the three above except goodwill.\n\nDeferred Financing Costs are amortisable but were excluded.\n\nHence the total accumulated amortisation at end of 2007 is approximately 463.4 million.\n\nFinal answer:\n\n463.4",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_690",
+  "ground_truth_answer": "0.0%",
+  "agent_output": "1.3%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_696",
+  "ground_truth_answer": "23.3",
+  "agent_output": "23.3",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_698",
+  "ground_truth_answer": "31%",
+  "agent_output": "17%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_699",
+  "ground_truth_answer": "1.17",
+  "agent_output": "1.17",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_7",
+  "ground_truth_answer": "63.6%",
+  "agent_output": "63.6%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_70",
+  "ground_truth_answer": "538.56%",
+  "agent_output": "The percentage cumulative total shareholder return on DISCA for the five-year period ended December 31 2013 was 538.56%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_701",
+  "ground_truth_answer": "1.88",
+  "agent_output": "1.36",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_708",
+  "ground_truth_answer": "3.21",
+  "agent_output": "3.21",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_709",
+  "ground_truth_answer": "81%",
+  "agent_output": "There is no available data for restricted cash categories or amounts on July 1, 2006 to calculate the percentage for funds deposited in insurance trusts.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_713",
+  "ground_truth_answer": "-10%",
+  "agent_output": "-10%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_719",
+  "ground_truth_answer": "3.884%",
+  "agent_output": "3.884%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_72",
+  "ground_truth_answer": "14.3%",
+  "agent_output": "14.3%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_720",
+  "ground_truth_answer": "151",
+  "agent_output": "151",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_722",
+  "ground_truth_answer": "1.9%",
+  "agent_output": "1.7%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_726",
+  "ground_truth_answer": "-18.3%",
+  "agent_output": "1.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_73",
+  "ground_truth_answer": "7%",
+  "agent_output": "6.57%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_737",
+  "ground_truth_answer": "3.2%",
+  "agent_output": "-29.8%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_739",
+  "ground_truth_answer": "41%",
+  "agent_output": "Unable to retrieve acquisition data due to system error.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_741",
+  "ground_truth_answer": "8%",
+  "agent_output": "I am unable to retrieve specific commitment amounts due to tool errors and missing data columns. Therefore, I cannot calculate the percentage of total commitments for fiscal-year 2015 that were due to operating leases.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_76",
+  "ground_truth_answer": "3.5%",
+  "agent_output": "3.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_762",
+  "ground_truth_answer": "7.1%",
+  "agent_output": "7.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_769",
+  "ground_truth_answer": "2476.50",
+  "agent_output": "2476.5",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_780",
+  "ground_truth_answer": "13.5%",
+  "agent_output": "13.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_79",
+  "ground_truth_answer": "7.7%",
+  "agent_output": "7.7%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_798",
+  "ground_truth_answer": "5805209",
+  "agent_output": "The balance of long-term debt after 1 year, assuming everything is paid as planned and no additional debt is raised, will be 5,805,209 thousand U.S. dollars.\nFinal Answer: 5805209",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_802",
+  "ground_truth_answer": "2439",
+  "agent_output": "2584",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_816",
+  "ground_truth_answer": "-30.56%",
+  "agent_output": "The company's valuation allowance changed by -30.56% from 2012 to 2013.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_825",
+  "ground_truth_answer": "58.98%",
+  "agent_output": "66.17%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_835",
+  "ground_truth_answer": "43.67",
+  "agent_output": "67.57",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_838",
+  "ground_truth_answer": "10.14%",
+  "agent_output": "10.14%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_845",
+  "ground_truth_answer": "-1",
+  "agent_output": "-4.5 / 4.5 = -1",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_88",
+  "ground_truth_answer": "11",
+  "agent_output": "11",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_885",
+  "ground_truth_answer": "16.7%",
+  "agent_output": "Fetching the carrying amount for purchased technology (category_id 1).",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_886",
+  "ground_truth_answer": "77",
+  "agent_output": "77",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_890",
+  "ground_truth_answer": "17.18",
+  "agent_output": "38.93",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_892",
+  "ground_truth_answer": "31.4%",
+  "agent_output": "31.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_90",
+  "ground_truth_answer": "-1579",
+  "agent_output": "-1579",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_903",
+  "ground_truth_answer": "10.8%",
+  "agent_output": "The portion of 2009 operating leases that are current liabilities is 19.4%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_911",
+  "ground_truth_answer": "29.46%",
+  "agent_output": "29.46%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_914",
+  "ground_truth_answer": "2.5%",
+  "agent_output": "2.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_92",
+  "ground_truth_answer": "331.2",
+  "agent_output": "306.6",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_922",
+  "ground_truth_answer": "38.74",
+  "agent_output": "38.74",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_938",
+  "ground_truth_answer": "9.81%",
+  "agent_output": "Unable to retrieve data to compute the percentage increase due to system errors.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_943",
+  "ground_truth_answer": "0.99",
+  "agent_output": "0.9968",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_947",
+  "ground_truth_answer": "36804.76",
+  "agent_output": "36804.76",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_952",
+  "ground_truth_answer": "125",
+  "agent_output": "125",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_953",
+  "ground_truth_answer": "17.8%",
+  "agent_output": "To find the percentage of total assets allocated to undeveloped land, we first sum the total assets acquired for the four acquisitions: 643,962 + 1,070,487 + 867,558 + 1,109,570 = 3,691,577 (in thousands or units consistent across all values). Then we sum the undeveloped land allocation, which is only reported for the 'Houston Land & Storage Bundle' acquisition at 154,300. The percentage allocation to undeveloped land is (154,300 / 3,691,577) * 100 = 4.2%. Thus, the final answer is 4.2%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_961",
+  "ground_truth_answer": "-10%",
+  "agent_output": "The percentage change in net cash provided by operating activities between 2011 and 2012 was -10%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_963",
+  "ground_truth_answer": "350824 thousand",
+  "agent_output": "The annual payments increased by 350824 thousand from 2019 to 2024 and beyond.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_965",
+  "ground_truth_answer": "70.9%",
+  "agent_output": "There are no equity compensation plans approved by security holders available in the data, so it is not possible to determine the portion of securities remaining available for future issuance.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_971",
+  "ground_truth_answer": "20.4",
+  "agent_output": "20.4",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_980",
+  "ground_truth_answer": "9.235%",
+  "agent_output": "Unable to retrieve data due to internal tool errors; cannot compute the increase in interest net of capitalized interest for 2016 and 2017.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_982",
+  "ground_truth_answer": "4.8",
+  "agent_output": "2.3",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_993",
+  "ground_truth_answer": "12%",
+  "agent_output": "12%",
+  "passed": true
+ }
+]

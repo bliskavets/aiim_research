@@ -1,1 +1,1 @@
-The total assets acquired = 1,070,487.0 + 1,109,570.0 + 406,814.0 + 643,962.0 + 867,558.0 = 4,098,391.0. The total allocated to undeveloped land = 58,625.0 + 154,300.0 = 212,925.0. Percentage allocated to undeveloped land = (212,925.0 / 4,098,391.0) * 100 ≈ 5.2%.
+The total assets acquired across all acquisitions is 4,099,391. The total allocated to undeveloped land is 212,925. The percentage is (212,925 / 4,099,391) × 100 ≈ 5.2%.

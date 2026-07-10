@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_c98f84df0e8b4e05aad47e39', 'type': 'function', 'function': {'name': 'get_financial_metric', 'arguments': {'acquisition_id': 1, 'metric': 'net_tangible_assets'}}}]

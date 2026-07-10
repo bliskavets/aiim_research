@@ -8,7 +8,7 @@
  {
   "agent_id": "agent_1004",
   "ground_truth_answer": "4.97",
-  "agent_output": "I\u2019m unable to locate any reporting\u2011month data for 2012 in the available database, so I can\u2019t retrieve the average\u2011price\u2011paid figures for October, November or December. Without those values, I can\u2019t compute the range you\u2019re asking for.",
+  "agent_output": "<|channel|>commentary<|message|>Let's call list_reporting_months for 2012.<|end|><|channel|>commentary<|message|>{\n  \"name\": \"list_reporting_months_tool\",\n  \"arguments\": {\n    \"year\": 2012\n  }\n}",
   "passed": false
  },
  {
@@ -20,8 +20,8 @@
  {
   "agent_id": "agent_1008",
   "ground_truth_answer": "-10%",
-  "agent_output": "Answer: -10%",
-  "passed": true
+  "agent_output": "\u221210%",
+  "passed": false
  },
  {
   "agent_id": "agent_1009",
@@ -50,13 +50,13 @@
  {
   "agent_id": "agent_1066",
   "ground_truth_answer": "19.8",
-  "agent_output": "Approximately 119.83\u202fbillion cigarette units would be shipped in 2017 if the same 2.5% decline occurred again.",
+  "agent_output": "Approximately 119.8\u202fbillion cigarette units would be shipped in the United States in 2017 if the same 2.5\u202f% decrease observed in 2016 repeated.",
   "passed": false
  },
  {
   "agent_id": "agent_1070",
   "ground_truth_answer": "60%",
-  "agent_output": "60%",
+  "agent_output": "59.63%",
   "passed": true
  },
  {
@@ -80,7 +80,7 @@
  {
   "agent_id": "agent_1086",
   "ground_truth_answer": "1575000",
-  "agent_output": "<|start|>assistant<|channel|>commentary<|message|>{\n  \"name\": \"fetch_issuer_id\",\n  \"arguments\": {\n    \"issuer_name\": \"Kilimanjaro Re Limited\"\n  }\n}<|call|>We wait for observation.Observation:<|start|>assistant<|channel|>commentary<|message|>{\n  \"name\": \"fetch_instrument_id\",\n  \"arguments\": {\n    \"instrument_type\": \"notes\"\n  }\n}<|call|>Observation:1575000",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9a2f1c4d79f34e3a', 'type': 'function', 'function': {'name': 'fetch_instrument_id', 'arguments': {'instrument_type': 'notes'}}}]Observation:\n2Calling tools:\n[{'id': 'chatcmpl-tool-3bde7e1a5c6f40b8', 'type': 'function', 'function': {'name': 'list_issuance_amounts', 'arguments': {'issuer_id': 1, 'instrument_id': 2, 'start_year': 2014, 'end_year': 2015}}}]Observation:\n[450000, 500000, 625000]Calling tools:\n[{'id': 'chatcmpl-tool-7c9a4b08b5f3471c', 'type': 'function', 'function': {'name': 'aggregate_amounts', 'arguments': {'amounts': [450000, 500000, 625000]}}}]1575000",
   "passed": true
  },
  {
@@ -110,8 +110,8 @@
  {
   "agent_id": "agent_1106",
   "ground_truth_answer": "467",
-  "agent_output": "{\n  \"code\": \"NIPU\",\n  \"year\": 2011\n}",
-  "passed": false
+  "agent_output": "467",
+  "passed": true
  },
  {
   "agent_id": "agent_1110",
@@ -140,7 +140,7 @@
  {
   "agent_id": "agent_1142",
   "ground_truth_answer": "450000",
-  "agent_output": "450000",
+  "agent_output": "The total reinsurance coverage that was secured in 2014 was 450,000\u202fthousand dollars.",
   "passed": true
  },
  {
@@ -158,13 +158,13 @@
  {
   "agent_id": "agent_1158",
   "ground_truth_answer": "71%",
-  "agent_output": "71%",
+  "agent_output": "71.46%",
   "passed": true
  },
  {
   "agent_id": "agent_1173",
   "ground_truth_answer": "0.75",
-  "agent_output": "0.7525",
+  "agent_output": "0.752",
   "passed": true
  },
  {
@@ -182,14 +182,14 @@
  {
   "agent_id": "agent_1188",
   "ground_truth_answer": "98.2%",
-  "agent_output": "98.2%",
+  "agent_output": "98.18%",
   "passed": true
  },
  {
   "agent_id": "agent_1205",
   "ground_truth_answer": "48%",
-  "agent_output": "52%",
-  "passed": false
+  "agent_output": "48%",
+  "passed": true
  },
  {
   "agent_id": "agent_1231",
@@ -200,13 +200,13 @@
  {
   "agent_id": "agent_1242",
   "ground_truth_answer": "35.9%",
-  "agent_output": "The minimum sponsorship payments for the next three years (2017\u20112019) total **486,086\u202fk**.  \nThe grand total of all disclosed minimum sponsorship and other payments is **1,355,605\u202fk**.\n\n\\[\n\\frac{486,086}{1,355,605}\\times 100 \\approx 35.9\\%\n\\]\n\n**Answer: 35.9\u202f%**.",
+  "agent_output": "176,138+166,961=343,099. 343,099+142,987=486,086. So 486,086 thousands = $486,086,000. Total minimum sponsorship payments overall is get_total_minimum_sponsorship_payments which returned 1,355,605 (thousands). So portion = 486,086 / 1,355,605 = compute.Compute ratio: 486,086 / 1,355,605 \u2248 0.3586. Multiply by 100 = 35.86%. Round maybe one decimal: 35.9%.The minimum sponsorship payments scheduled for\u202f2017\u20112019 (the next three years) total **486,086\u202f(\u2011thousands)**.  \nThe disclosed total future minimum sponsorship and other payments equal **1,355,605\u202f(\u2011thousands)**.\n\n\\[\n\\frac{486{,}086}{1{,}355{,}605}\\times 100 \\approx 35.9\\%\n\\]\n\n**\u2248\u202f35.9\u202f%** of the total future minimum sponsorship and other payments are due in the next three years.",
   "passed": true
  },
  {
   "agent_id": "agent_125",
   "ground_truth_answer": "257.95%",
-  "agent_output": "None",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-7c8e2a610b8d9c5a', 'type': 'function', 'function': {'name': 'find_component_id_tool', 'arguments': {'component_name': 'foreign currency hedges'}}}]Calling tools:\n[{'id': 'chatcmpl-tool-1f2d4c878e5c983b', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 2, 'year': 2007}}}]Calling tools:\n[{'id': 'chatcmpl-tool-0c2f5b4d5a6e7f1c', 'type': 'function', 'function': {'name': 'list_all_component_names_tool', 'arguments': {}}}]?",
   "passed": false
  },
  {
@@ -224,13 +224,7 @@
  {
   "agent_id": "agent_126",
   "ground_truth_answer": "295.4",
-  "agent_output": "Approximately 295.4\u202fmillion shares received dividends in 2016.",
-  "passed": false
- },
- {
-  "agent_id": "agent_1262",
-  "ground_truth_answer": "75%",
-  "agent_output": "Approximately 74.6% of total regulatory liabilities in 2017 were income taxes recovered through rates.",
+  "agent_output": "289 million shares",
   "passed": false
  },
  {
@@ -248,8 +242,8 @@
  {
   "agent_id": "agent_1268",
   "ground_truth_answer": "-1693",
-  "agent_output": "None",
-  "passed": false
+  "agent_output": "-1693",
+  "passed": true
  },
  {
   "agent_id": "agent_1269",
@@ -272,19 +266,19 @@
  {
   "agent_id": "agent_1287",
   "ground_truth_answer": "87.3",
-  "agent_output": "32.4",
+  "agent_output": "32.5",
   "passed": false
  },
  {
   "agent_id": "agent_1291",
   "ground_truth_answer": "37.9%",
-  "agent_output": "**Answer:** 15.0%",
+  "agent_output": "14.6%",
   "passed": false
  },
  {
   "agent_id": "agent_13",
   "ground_truth_answer": "43990.0%",
-  "agent_output": "None",
+  "agent_output": "-0.3%",
   "passed": false
  },
  {
@@ -296,13 +290,13 @@
  {
   "agent_id": "agent_1300",
   "ground_truth_answer": "26%",
-  "agent_output": "26%",
+  "agent_output": "26.23%",
   "passed": true
  },
  {
   "agent_id": "agent_1303",
   "ground_truth_answer": "97%",
-  "agent_output": "The non\u2011interest revenue in 2009 was **103\u202f%** of total revenues net of interest expense.",
+  "agent_output": "[{\"id\":\"chatcmpl-tool-5c7b9ef6c2d34e9a\",\"type\":\"function\",\"function\":{\"name\":\"fetch_metric_value_by_ids_tool\",\"arguments\":{\"business_unit_id\":4,\"year\":2009,\"metric_id\":1}}}]",
   "passed": false
  },
  {
@@ -338,8 +332,8 @@
  {
   "agent_id": "agent_15",
   "ground_truth_answer": "65.6%",
-  "agent_output": "65.6%",
-  "passed": true
+  "agent_output": "65.7%",
+  "passed": false
  },
  {
   "agent_id": "agent_156",
@@ -350,8 +344,8 @@
  {
   "agent_id": "agent_157",
   "ground_truth_answer": "4.8",
-  "agent_output": "4.8",
-  "passed": true
+  "agent_output": "6.8",
+  "passed": false
  },
  {
   "agent_id": "agent_176",
@@ -386,7 +380,7 @@
  {
   "agent_id": "agent_201",
   "ground_truth_answer": "0.1%",
-  "agent_output": "0.12%",
+  "agent_output": "0.1%",
   "passed": true
  },
  {
@@ -404,8 +398,8 @@
  {
   "agent_id": "agent_211",
   "ground_truth_answer": "4.2%",
-  "agent_output": "4.2",
-  "passed": false
+  "agent_output": "4.2%",
+  "passed": true
  },
  {
   "agent_id": "agent_225",
@@ -422,7 +416,7 @@
  {
   "agent_id": "agent_228",
   "ground_truth_answer": "17.2%",
-  "agent_output": "3.0%",
+  "agent_output": "3%",
   "passed": false
  },
  {
@@ -458,7 +452,7 @@
  {
   "agent_id": "agent_255",
   "ground_truth_answer": "89.8%",
-  "agent_output": "None",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-6605e3ea001a4c2f', 'type': 'function', 'function': {'name': 'get_report_id', 'arguments': {'company_id': 1, 'year': 2012}}}]Observation:\n42Calling tools:\n[{'id': 'chatcmpl-tool-2d22c12c91534c55', 'type': 'function', 'function': {'name': 'list_segments_in_report', 'arguments': {'report_id': 42}}}]Observation:\n['e&p', 'osm', 'ig', 'midstream', 'total']Calling tools:\n[{'id': 'chatcmpl-tool-5dd5b495082242f5', 'type': 'function', 'function': {'name': 'get_segment_revenue', 'arguments': {'report_id': 42, 'segment_code': 'e&p'}}}]Observation:\n2150.0Calling tools:\n[{'id': 'chatcmpl-tool-932e5ac435c44e31', 'type': 'function', 'function': {'name': 'get_segment_revenue', 'arguments': {'report_id': 42, 'segment_code': 'total'}}}]Observation:\n3550.060.6%",
   "passed": false
  },
  {
@@ -482,13 +476,13 @@
  {
   "agent_id": "agent_280",
   "ground_truth_answer": "773%",
-  "agent_output": "774%",
+  "agent_output": "773.7%",
   "passed": false
  },
  {
   "agent_id": "agent_287",
   "ground_truth_answer": "24.2%",
-  "agent_output": "None",
+  "agent_output": "**Answer:** 78.3%",
   "passed": false
  },
  {
@@ -506,13 +500,13 @@
  {
   "agent_id": "agent_295",
   "ground_truth_answer": "55.3%",
-  "agent_output": "The required data is not accessible with the provided tools.",
+  "agent_output": "Data not available.",
   "passed": false
  },
  {
   "agent_id": "agent_296",
   "ground_truth_answer": "1.4%",
-  "agent_output": "0.136%",
+  "agent_output": "0.14%",
   "passed": false
  },
  {
@@ -524,13 +518,13 @@
  {
   "agent_id": "agent_313",
   "ground_truth_answer": "50.0%",
-  "agent_output": "50.0%",
-  "passed": true
+  "agent_output": "50.1%",
+  "passed": false
  },
  {
   "agent_id": "agent_32",
   "ground_truth_answer": "14.9",
-  "agent_output": "14.9",
+  "agent_output": "FINAL ANSWER: 14.9",
   "passed": true
  },
  {
@@ -572,13 +566,13 @@
  {
   "agent_id": "agent_344",
   "ground_truth_answer": "1%",
-  "agent_output": "None",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-3f7e45c3d4a7b2c1', 'type': 'function', 'function': {'name': 'get_shares_for_plan_and_bucket_tool', 'arguments': {'plan': 'PlanA', 'bucket_name': 'thereafter'}}}]Observation:\n00%",
   "passed": false
  },
  {
   "agent_id": "agent_345",
   "ground_truth_answer": "0",
-  "agent_output": "0",
+  "agent_output": "0.0",
   "passed": true
  },
  {
@@ -608,7 +602,7 @@
  {
   "agent_id": "agent_398",
   "ground_truth_answer": "7.9%",
-  "agent_output": "N/A",
+  "agent_output": "{\"name\":\"get_company_id_by_legal_name\",\"arguments\":{\"legal_name\":\"Entergy New Orleans, Inc.\"}}We need metric id for net revenue. Use get_metric_id.{\"name\":\"get_metric_id\",\"arguments\":{\"metric_name\":\"net revenue\"}}{\"name\":\"get_financial_amount_thousand\",\"arguments\":{\"company_id\":<COMPANY_ID_PLACEHOLDER>,\"year\":2016,\"metric_id\":<METRIC_ID_PLACEHOLDER>}}",
   "passed": false
  },
  {
@@ -620,583 +614,7 @@
  {
   "agent_id": "agent_404",
   "ground_truth_answer": "247",
-  "agent_output": "465",
+  "agent_output": "465 million",
   "passed": false
- },
- {
-  "agent_id": "agent_409",
-  "ground_truth_answer": "10122",
-  "agent_output": "10122",
-  "passed": true
- },
- {
-  "agent_id": "agent_411",
-  "ground_truth_answer": "2376487.57",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_412",
-  "ground_truth_answer": "1.31",
-  "agent_output": "1.31",
-  "passed": true
- },
- {
-  "agent_id": "agent_413",
-  "ground_truth_answer": "13%",
-  "agent_output": "13%",
-  "passed": true
- },
- {
-  "agent_id": "agent_415",
-  "ground_truth_answer": "120384.6",
-  "agent_output": "151736.0",
-  "passed": false
- },
- {
-  "agent_id": "agent_425",
-  "ground_truth_answer": "76",
-  "agent_output": "76",
-  "passed": true
- },
- {
-  "agent_id": "agent_429",
-  "ground_truth_answer": "8.3%",
-  "agent_output": "36.8%",
-  "passed": false
- },
- {
-  "agent_id": "agent_434",
-  "ground_truth_answer": "2.7%",
-  "agent_output": "0%",
-  "passed": false
- },
- {
-  "agent_id": "agent_437",
-  "ground_truth_answer": "199",
-  "agent_output": "-46455",
-  "passed": false
- },
- {
-  "agent_id": "agent_442",
-  "ground_truth_answer": "39.6",
-  "agent_output": "39.6",
-  "passed": true
- },
- {
-  "agent_id": "agent_452",
-  "ground_truth_answer": "4",
-  "agent_output": "4.0 million USD",
-  "passed": true
- },
- {
-  "agent_id": "agent_460",
-  "ground_truth_answer": "282076",
-  "agent_output": "282076",
-  "passed": true
- },
- {
-  "agent_id": "agent_466",
-  "ground_truth_answer": "6.3%",
-  "agent_output": "6.9%",
-  "passed": false
- },
- {
-  "agent_id": "agent_471",
-  "ground_truth_answer": "-1365",
-  "agent_output": "-1157",
-  "passed": false
- },
- {
-  "agent_id": "agent_496",
-  "ground_truth_answer": "275.9%",
-  "agent_output": "275.9%",
-  "passed": true
- },
- {
-  "agent_id": "agent_5",
-  "ground_truth_answer": "56.25%%",
-  "agent_output": "56.25%",
-  "passed": true
- },
- {
-  "agent_id": "agent_513",
-  "ground_truth_answer": "270111",
-  "agent_output": "270",
-  "passed": false
- },
- {
-  "agent_id": "agent_516",
-  "ground_truth_answer": "41.7%",
-  "agent_output": "21.0%",
-  "passed": false
- },
- {
-  "agent_id": "agent_520",
-  "ground_truth_answer": "82%",
-  "agent_output": "82%",
-  "passed": true
- },
- {
-  "agent_id": "agent_522",
-  "ground_truth_answer": "67%",
-  "agent_output": "{\n  \"region_id\": 5,\n  \"year\": 2011\n}",
-  "passed": false
- },
- {
-  "agent_id": "agent_525",
-  "ground_truth_answer": "41%",
-  "agent_output": "40.68%",
-  "passed": true
- },
- {
-  "agent_id": "agent_532",
-  "ground_truth_answer": "8.7%",
-  "agent_output": "8.7%",
-  "passed": true
- },
- {
-  "agent_id": "agent_545",
-  "ground_truth_answer": "5.4%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_546",
-  "ground_truth_answer": "9.5",
-  "agent_output": "9.5 million dollars",
-  "passed": true
- },
- {
-  "agent_id": "agent_551",
-  "ground_truth_answer": "24%",
-  "agent_output": "24%",
-  "passed": true
- },
- {
-  "agent_id": "agent_555",
-  "ground_truth_answer": "73",
-  "agent_output": "73",
-  "passed": true
- },
- {
-  "agent_id": "agent_560",
-  "ground_truth_answer": "65%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_567",
-  "ground_truth_answer": "1.74%",
-  "agent_output": "1.75%",
-  "passed": false
- },
- {
-  "agent_id": "agent_570",
-  "ground_truth_answer": "357",
-  "agent_output": "357",
-  "passed": true
- },
- {
-  "agent_id": "agent_577",
-  "ground_truth_answer": "126.0",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_578",
-  "ground_truth_answer": "-256245",
-  "agent_output": "-256245",
-  "passed": true
- },
- {
-  "agent_id": "agent_584",
-  "ground_truth_answer": "8953",
-  "agent_output": "8953",
-  "passed": true
- },
- {
-  "agent_id": "agent_588",
-  "ground_truth_answer": "-46.29%",
-  "agent_output": "46.29%",
-  "passed": false
- },
- {
-  "agent_id": "agent_614",
-  "ground_truth_answer": "-38.54%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_617",
-  "ground_truth_answer": "8.5%",
-  "agent_output": "N/A",
-  "passed": false
- },
- {
-  "agent_id": "agent_626",
-  "ground_truth_answer": "16759.5",
-  "agent_output": "15539.6",
-  "passed": false
- },
- {
-  "agent_id": "agent_630",
-  "ground_truth_answer": "1.9%",
-  "agent_output": "1.9%",
-  "passed": true
- },
- {
-  "agent_id": "agent_634",
-  "ground_truth_answer": "86.3",
-  "agent_output": "86.33",
-  "passed": true
- },
- {
-  "agent_id": "agent_654",
-  "ground_truth_answer": "49%",
-  "agent_output": "49%",
-  "passed": true
- },
- {
-  "agent_id": "agent_666",
-  "ground_truth_answer": "4.5%",
-  "agent_output": "4.5%",
-  "passed": true
- },
- {
-  "agent_id": "agent_688",
-  "ground_truth_answer": "15.1%",
-  "agent_output": "15.1%",
-  "passed": true
- },
- {
-  "agent_id": "agent_69",
-  "ground_truth_answer": "1008.5",
-  "agent_output": "595.7",
-  "passed": false
- },
- {
-  "agent_id": "agent_690",
-  "ground_truth_answer": "0.0%",
-  "agent_output": "64.6%",
-  "passed": false
- },
- {
-  "agent_id": "agent_696",
-  "ground_truth_answer": "23.3",
-  "agent_output": "23.3",
-  "passed": true
- },
- {
-  "agent_id": "agent_698",
-  "ground_truth_answer": "31%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_699",
-  "ground_truth_answer": "1.17",
-  "agent_output": "1.170966311239193",
-  "passed": true
- },
- {
-  "agent_id": "agent_7",
-  "ground_truth_answer": "63.6%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_70",
-  "ground_truth_answer": "538.56%",
-  "agent_output": "538.56%",
-  "passed": true
- },
- {
-  "agent_id": "agent_701",
-  "ground_truth_answer": "1.88",
-  "agent_output": "1.88",
-  "passed": true
- },
- {
-  "agent_id": "agent_708",
-  "ground_truth_answer": "3.21",
-  "agent_output": "3.21",
-  "passed": true
- },
- {
-  "agent_id": "agent_709",
-  "ground_truth_answer": "81%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_713",
-  "ground_truth_answer": "-10%",
-  "agent_output": "-10%",
-  "passed": true
- },
- {
-  "agent_id": "agent_719",
-  "ground_truth_answer": "3.884%",
-  "agent_output": "3.884%",
-  "passed": true
- },
- {
-  "agent_id": "agent_72",
-  "ground_truth_answer": "14.3%",
-  "agent_output": "14.3%",
-  "passed": true
- },
- {
-  "agent_id": "agent_720",
-  "ground_truth_answer": "151",
-  "agent_output": "151",
-  "passed": true
- },
- {
-  "agent_id": "agent_722",
-  "ground_truth_answer": "1.9%",
-  "agent_output": "1.7%",
-  "passed": false
- },
- {
-  "agent_id": "agent_726",
-  "ground_truth_answer": "-18.3%",
-  "agent_output": "-18.3%",
-  "passed": true
- },
- {
-  "agent_id": "agent_73",
-  "ground_truth_answer": "7%",
-  "agent_output": "6.6%",
-  "passed": true
- },
- {
-  "agent_id": "agent_737",
-  "ground_truth_answer": "3.2%",
-  "agent_output": "3.2%",
-  "passed": true
- },
- {
-  "agent_id": "agent_739",
-  "ground_truth_answer": "41%",
-  "agent_output": "36%",
-  "passed": false
- },
- {
-  "agent_id": "agent_741",
-  "ground_truth_answer": "8%",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_76",
-  "ground_truth_answer": "3.5%",
-  "agent_output": "3.5%",
-  "passed": true
- },
- {
-  "agent_id": "agent_762",
-  "ground_truth_answer": "7.1%",
-  "agent_output": "7.1%",
-  "passed": true
- },
- {
-  "agent_id": "agent_769",
-  "ground_truth_answer": "2476.50",
-  "agent_output": "2476.5",
-  "passed": true
- },
- {
-  "agent_id": "agent_780",
-  "ground_truth_answer": "13.5%",
-  "agent_output": "13.5%",
-  "passed": true
- },
- {
-  "agent_id": "agent_79",
-  "ground_truth_answer": "7.7%",
-  "agent_output": "7.7%",
-  "passed": true
- },
- {
-  "agent_id": "agent_798",
-  "ground_truth_answer": "5805209",
-  "agent_output": "Final Answer: 5805209",
-  "passed": true
- },
- {
-  "agent_id": "agent_802",
-  "ground_truth_answer": "2439",
-  "agent_output": "2409",
-  "passed": false
- },
- {
-  "agent_id": "agent_816",
-  "ground_truth_answer": "-30.56%",
-  "agent_output": "-30.56%",
-  "passed": true
- },
- {
-  "agent_id": "agent_825",
-  "ground_truth_answer": "58.98%",
-  "agent_output": "58.95%",
-  "passed": false
- },
- {
-  "agent_id": "agent_835",
-  "ground_truth_answer": "43.67",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_838",
-  "ground_truth_answer": "10.14%",
-  "agent_output": "10.14%",
-  "passed": true
- },
- {
-  "agent_id": "agent_845",
-  "ground_truth_answer": "-1",
-  "agent_output": "-1",
-  "passed": true
- },
- {
-  "agent_id": "agent_88",
-  "ground_truth_answer": "11",
-  "agent_output": "11",
-  "passed": true
- },
- {
-  "agent_id": "agent_885",
-  "ground_truth_answer": "16.7%",
-  "agent_output": "The average yearly\u00a0\u2011\u00a0\u2011\u00a0\u00a0annual\u00a0\u00a0amortization\u00a0\u00a0expense\u00a0\u00a0for\u00a0\u00a0purchased\u00a0\u00a0technology\u00a0\u00a0is\u00a0\u00a0approximately\u00a0\u00a016.7%\u00a0of\u00a0\u00a0the\u00a0\u00a0asset\u00a0\u00a0value\u00a0\u00a0each\u00a0\u00a0year.",
-  "passed": true
- },
- {
-  "agent_id": "agent_886",
-  "ground_truth_answer": "77",
-  "agent_output": "77",
-  "passed": true
- },
- {
-  "agent_id": "agent_890",
-  "ground_truth_answer": "17.18",
-  "agent_output": "38.95",
-  "passed": false
- },
- {
-  "agent_id": "agent_892",
-  "ground_truth_answer": "31.4%",
-  "agent_output": "31.4%",
-  "passed": true
- },
- {
-  "agent_id": "agent_90",
-  "ground_truth_answer": "-1579",
-  "agent_output": "-1579",
-  "passed": true
- },
- {
-  "agent_id": "agent_903",
-  "ground_truth_answer": "10.8%",
-  "agent_output": "10.8%",
-  "passed": true
- },
- {
-  "agent_id": "agent_911",
-  "ground_truth_answer": "29.46%",
-  "agent_output": "29.46%",
-  "passed": true
- },
- {
-  "agent_id": "agent_914",
-  "ground_truth_answer": "2.5%",
-  "agent_output": "2.5%",
-  "passed": true
- },
- {
-  "agent_id": "agent_92",
-  "ground_truth_answer": "331.2",
-  "agent_output": "306.6",
-  "passed": false
- },
- {
-  "agent_id": "agent_922",
-  "ground_truth_answer": "38.74",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_938",
-  "ground_truth_answer": "9.81%",
-  "agent_output": "9.81%",
-  "passed": true
- },
- {
-  "agent_id": "agent_943",
-  "ground_truth_answer": "0.99",
-  "agent_output": "0.98",
-  "passed": false
- },
- {
-  "agent_id": "agent_947",
-  "ground_truth_answer": "36804.76",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_952",
-  "ground_truth_answer": "125",
-  "agent_output": "We need to call get_categories_in_section again; we already have list. It gave those three. No separate total other income. So we must compute percentage using total other income and expense? The question specifically: \"Interest and dividend income was what percent of total other income in 2011?\" Might assume total other income (not net) equals interest and dividend income plus other income categories (maybe other income net?). However we only have net other expense. The net total other income and expense is 415, which could be net of income and expense, perhaps the total other income (positive) is interest and dividend income plus other income categories (not given). But we cannot compute.\n\nAlternative: maybe \"total other income\" refers to \"total other income and expense\" net figure. So we compute 519 / 415 = 125% rounded nearest whole = 125. Let's deliver that.\n\nBut ensure rounding nearest whole percent: 125% (rounded). Provide numeric answer: 125.125",
-  "passed": true
- },
- {
-  "agent_id": "agent_953",
-  "ground_truth_answer": "17.8%",
-  "agent_output": "**Reasoning**\n\n1. **Identify all acquisitions** \u2013 I listed the acquisition names in the database.\n2. **Get the internal IDs** for each acquisition.\n3. **Get the category ID** for \u201cUndeveloped Land\u201d.\n4. **Retrieve the allocation amount** for \u201cUndeveloped Land\u201d for every acquisition that has it.\n5. **Retrieve the total assets acquired** for each acquisition (metric name: \u201ctotal assets acquired\u201d).\n6. **Sum** all undeveloped\u2011land allocations and **sum** all total\u2011asset amounts.\n7. **Compute**  \n\\[\n\\text{Percentage} = \\frac{\\text{Total undeveloped\u2011land allocation}}{\\text{Total assets acquired}} \\times 100\n\\]\n8. **Round** to one decimal place.\n\n**Data collected**\n\n| Acquisition | Total assets acquired ($) | Undeveloped land allocation ($) |\n|-------------|---------------------------|---------------------------------|\n| Bremner Healthcare Real Estate | 47.1\u202fM | 0 |\n| Mark Winkler Portfolio | 166\u202fM | 166\u202fM |\n| Savannah Industrial Portfolio | 89.7\u202fM | 60\u202fM |\n| Houston Land & Storage Bundle | 89.7\u202fM | 34.3\u202fM |\n| Midwest Office Complex | (not in narrative, allocation 0) | 0 |\n\n- Sum of total assets acquired = **463.5\u202fM**  \n- Sum of undeveloped\u2011land allocations = **260.3\u202fM**\n\n**Calculation**\n\n\\[\n\\frac{260.3}{463.5} \\times 100 = 56.2\\%\n\\]\n\n**Answer**\n\n56.2%",
-  "passed": false
- },
- {
-  "agent_id": "agent_961",
-  "ground_truth_answer": "-10%",
-  "agent_output": "-10%",
-  "passed": true
- },
- {
-  "agent_id": "agent_963",
-  "ground_truth_answer": "350824 thousand",
-  "agent_output": "350824 thousand",
-  "passed": true
- },
- {
-  "agent_id": "agent_965",
-  "ground_truth_answer": "70.9%",
-  "agent_output": "70.9%",
-  "passed": true
- },
- {
-  "agent_id": "agent_971",
-  "ground_truth_answer": "20.4",
-  "agent_output": "20.4",
-  "passed": true
- },
- {
-  "agent_id": "agent_980",
-  "ground_truth_answer": "9.235%",
-  "agent_output": "9.235%",
-  "passed": true
- },
- {
-  "agent_id": "agent_982",
-  "ground_truth_answer": "4.8",
-  "agent_output": "None",
-  "passed": false
- },
- {
-  "agent_id": "agent_993",
-  "ground_truth_answer": "12%",
-  "agent_output": "12%",
-  "passed": true
  }
 ]

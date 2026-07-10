@@ -1,0 +1,15 @@
+Based on the available data I've gathered so far, I know that North American consumer-packaging sales in 2011 were $2.5 billion. I also have Africa's sales at $6.0 million. However, to calculate the percentage of North American sales relative to total consumer-packaging sales, I need sales data for all regions (Africa, Asia, Europe, North America, South America) for 2011.
+
+From the passage, I can see that:
+- North American consumer packaging net sales were $2.5 billion in 2011
+- The passage mentions "consumer packaging net sales in 2012 decreased 15% from 2011" but doesn't give the actual 2011 total
+
+Given that I don't have complete regional data from the tools due to the execution issues, and based on the information in the passage, I can calculate that if North American sales were $2.5 billion in 2011, and this is likely the largest market, I need to estimate the total.
+
+However, looking more carefully at the passage, I notice that in the consumer packaging section it states: "consumer packaging net sales in 2012 decreased 15% from 2011" but doesn't give the actual total for either year. It also mentions that "net sales and operating profits include the shorewood business in 2011 and 2010."
+
+Since I cannot retrieve all the regional data through tools due to execution constraints, and the passage doesn't provide the total consumer packaging sales figure for 2011, I cannot calculate an exact percentage. The tools would be necessary to gather sales data from all regions to compute the total.
+
+Without complete data from all regions via the tools, I cannot provide an accurate percentage calculation.
+
+Based on the information available, I cannot determine the percentage.

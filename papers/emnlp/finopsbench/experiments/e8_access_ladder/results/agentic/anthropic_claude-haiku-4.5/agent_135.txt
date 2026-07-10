@@ -1,12 +1,14 @@
-Based on the information I've gathered from the tools and the management narrative provided:
+Based on the management narrative provided in the scenario description, I can extract the explicit growth percentages for both segments between 2015 and 2016:
 
 **Engineered Products and Solutions segment:**
-- Third-party sales growth 2015-2016: **7%** (explicitly stated in the narrative)
+- Third-party sales improved **7%** in 2016 compared with 2015
 
 **Transportation and Construction Solutions segment:**
-- Third-party sales growth 2015-2016: **-4%** (explicitly stated in the narrative as "decreased 4%")
+- Third-party sales decreased **4%** in 2016 compared with 2015
 
 **Calculation:**
-Difference = 7% - (-4%) = 7% + 4% = **11.00%**
+Difference = 7% - (-4%) = 7% + 4% = 11%
 
-The Engineered Products and Solutions segment's third-party sales growth is **11.00%** larger than the Transportation and Construction Solutions segment's growth for the 2015-2016 period.
+**Answer: 11.00%**
+
+The Engineered Products and Solutions segment's third-party sales growth was 11.00 percentage points larger than the Transportation and Construction Solutions segment's growth (which was negative) during 2015-2016.

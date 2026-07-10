@@ -1,1 +1,2 @@
-1.18
+Calling tools:
+[{'id': 'call_z03E326XqtlALWeOrEAB5gSk', 'type': 'function', 'function': {'name': 'convert_to_usd', 'arguments': {'value': 185.69, 'currency': 'GBP', 'year': 2008}}}]

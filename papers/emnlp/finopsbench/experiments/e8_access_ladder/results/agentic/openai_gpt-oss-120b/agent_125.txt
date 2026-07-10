@@ -1,1 +1,4 @@
-None
+Calling tools:
+[{'id': 'chatcmpl-tool-7c8e2a610b8d9c5a', 'type': 'function', 'function': {'name': 'find_component_id_tool', 'arguments': {'component_name': 'foreign currency hedges'}}}]Calling tools:
+[{'id': 'chatcmpl-tool-1f2d4c878e5c983b', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 2, 'year': 2007}}}]Calling tools:
+[{'id': 'chatcmpl-tool-0c2f5b4d5a6e7f1c', 'type': 'function', 'function': {'name': 'list_all_component_names_tool', 'arguments': {}}}]?

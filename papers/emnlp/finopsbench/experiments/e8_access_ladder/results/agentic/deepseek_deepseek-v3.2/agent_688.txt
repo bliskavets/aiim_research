@@ -1,1 +1,2 @@
-15.1%
+Calling tools:
+[{'id': 'call_a5c1f999683d44f29e39a4d6', 'type': 'function', 'function': {'name': 'percentage_tool', 'arguments': {'numerator': 1.2999999999999998, 'denominator': 8.6}}}]

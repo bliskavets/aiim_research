@@ -1,0 +1,65 @@
+{
+  "GPT-4.1-mini": {
+    "leaky": 61.5,
+    "clean": 60.0,
+    "clean_n": 200,
+    "finqa_native": 60.5,
+    "agentic_gap_clean": 0.5
+  },
+  "GPT-4.1": {
+    "leaky": 63.5,
+    "clean": 66.0,
+    "clean_n": 200,
+    "finqa_native": 65.5,
+    "agentic_gap_clean": -0.5
+  },
+  "DeepSeek-V3.2": {
+    "leaky": 48.2,
+    "clean": 38.6,
+    "clean_n": 158,
+    "finqa_native": 69.0,
+    "agentic_gap_clean": 30.4
+  },
+  "Claude-Haiku-4.5": {
+    "leaky": 67.5,
+    "clean": 65.5,
+    "clean_n": 200,
+    "finqa_native": 67.0,
+    "agentic_gap_clean": 1.5
+  },
+  "Qwen3-235B-A22B": {
+    "leaky": 65.0,
+    "clean": 65.0,
+    "clean_n": 200,
+    "finqa_native": 65.0,
+    "agentic_gap_clean": 0.0
+  },
+  "Llama-3.3-70B": {
+    "leaky": 29.9,
+    "clean": 19.8,
+    "clean_n": 106,
+    "finqa_native": 57.0,
+    "agentic_gap_clean": 37.2
+  },
+  "gpt-oss-120b": {
+    "leaky": 66.5,
+    "clean": 69.9,
+    "clean_n": 103,
+    "finqa_native": 64.5,
+    "agentic_gap_clean": -5.4
+  },
+  "DeepSeek-V4-Flash": {
+    "leaky": 71.0,
+    "clean": 54.3,
+    "clean_n": 162,
+    "finqa_native": 68.0,
+    "agentic_gap_clean": 13.7
+  },
+  "Claude-Sonnet-4.5": {
+    "leaky": 69.2,
+    "clean": 68.6,
+    "clean_n": 156,
+    "finqa_native": 68.5,
+    "agentic_gap_clean": -0.1
+  }
+}

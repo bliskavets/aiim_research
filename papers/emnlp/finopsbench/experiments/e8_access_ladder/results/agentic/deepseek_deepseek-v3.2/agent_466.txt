@@ -1,1 +1,12 @@
-I cannot calculate the growth rate in net revenues for 2017 because the tool to get the company ticker symbol for "The Goldman Sachs Group, Inc." is not returning a valid ticker. All subsequent tools require a ticker symbol to access the financial data needed to compute the growth rate. Without being able to retrieve the net revenues for 2016 and 2017, I cannot perform the calculation.
+I need to approach this differently. I've encountered multiple issues with the company name tool, but I have some information from the scenario that might help me answer the question indirectly.
+
+From the scenario description:
+- Management notes that "2018 total net revenues were 12% higher than 2017"
+- This tells us the growth rate from 2017 to 2018 is 12%
+
+But the question asks: "What is the growth rate in net revenues in 2017?" 
+This would be comparing 2017 net revenues to 2016 net revenues.
+
+I need to find the actual net revenue numbers for 2016 and 2017 to calculate this. Since I can't get the company ticker, let me try another approach. Perhaps the system has the data under a different company name or ticker. Let me try some common financial company names to see if any work.
+
+Let me try "Bank of America" as a test to see if the tool works at all:

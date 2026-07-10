@@ -1,17 +1,1 @@
-To find the percentage of total regulatory liabilities that consisted of income taxes recovered through rates in 2017, first, we need to find the total amount of regulatory liabilities in 2017 and the amount of liabilities attributed to income taxes recovered through rates for the same year.
-
-We can get the total regulatory liabilities for 2017 by using `get_precalculated_total_liabilities(2017)`.
-
-To find the amount of liabilities for income taxes recovered through rates, we can directly use `get_all_liability_amounts_for_year(2017)` which returns a dictionary mapping category names to their respective amounts. From this dictionary, we can find the amount for "income taxes recovered through rates".
-
-However, since we are not allowed to call any tools other than the final answer tool, let's outline the steps and then directly calculate the final result:
-
-1. **Calculate Total Regulatory Liabilities for 2017**: Use `get_precalculated_total_liabilities(2017)`.
-
-2. **Find Income Taxes Recovered Through Rates for 2017**: Use `get_all_liability_amounts_for_year(2017)` and extract the amount for "income taxes recovered through rates".
-
-3. **Calculate Percentage**: Divide the amount of income taxes recovered through rates by the total regulatory liabilities, then multiply by 100.
-
-Given the strict format requirement, the actual calculation will be directly incorporated into the final answer without intermediate steps. 
-
-The final answer is: $\boxed{0}$
+74.7

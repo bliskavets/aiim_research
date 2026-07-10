@@ -1,1 +1,13 @@
-31904
+I need to calculate the total mainline operating expenses for 2014 correctly. I have:
+- Fuel expense for 2014: 10592.0 million USD
+- Fuel percentage of total: 33.2%
+
+But I noticed I've been using 33 instead of 33.2 in my calculations. Let me calculate this correctly:
+
+Using the formula: total = component_amount_millions / (percent_of_total / 100)
+total = 10592 / (33.2 / 100) = 10592 / 0.332 = 31903.614457831325
+
+However, let me use the tool to get the exact calculation:
+
+Calling tools:
+[{'id': 'call_1a2b3c4d5e6f7g8h9i0j', 'type': 'function', 'function': {'name': 'calculate_total_operating_expenses', 'arguments': {'component_amount_millions': 10592, 'percent_of_total': 33.2}}}]

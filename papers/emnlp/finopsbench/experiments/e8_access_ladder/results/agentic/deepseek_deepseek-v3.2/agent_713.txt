@@ -1,1 +1,2 @@
--10%
+Calling tools:
+[{'id': 'call_fa3ee0b0b75c4dc08a9e9c56', 'type': 'function', 'function': {'name': 'format_percentage_tool', 'arguments': {'value': -9.615384615384617}}}]

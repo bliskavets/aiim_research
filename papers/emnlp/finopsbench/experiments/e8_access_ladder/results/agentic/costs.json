@@ -106,5 +106,77 @@
   "spent_usd": 0.6573,
   "budget_usd": 4.0,
   "stopped_by_budget": false
+ },
+ {
+  "model": "anthropic/claude-haiku-4.5",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 64.5,
+  "spent_usd": 5.4121,
+  "budget_usd": 15.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "openai/gpt-4.1-mini",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 59.0,
+  "spent_usd": 5.7278,
+  "budget_usd": 15.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "openai/gpt-4.1",
+  "items_run_now": 151,
+  "items_scored_total": 200,
+  "accuracy": 65.5,
+  "spent_usd": 10.5797,
+  "budget_usd": 15.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "qwen/qwen3-235b-a22b-2507",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 62.5,
+  "spent_usd": 11.8603,
+  "budget_usd": 15.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "anthropic/claude-sonnet-4.5",
+  "items_run_now": 120,
+  "items_scored_total": 156,
+  "accuracy": 67.3,
+  "spent_usd": 11.8603,
+  "budget_usd": 15.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "deepseek/deepseek-v3.2",
+  "items_run_now": 100,
+  "items_scored_total": 158,
+  "accuracy": 37.3,
+  "spent_usd": 12.6222,
+  "budget_usd": 15.0,
+  "stopped_by_budget": true
+ },
+ {
+  "model": "openai/gpt-oss-120b",
+  "items_run_now": 100,
+  "items_scored_total": 103,
+  "accuracy": 68.9,
+  "spent_usd": 12.6505,
+  "budget_usd": 15.0,
+  "stopped_by_budget": true
+ },
+ {
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "items_run_now": 100,
+  "items_scored_total": 106,
+  "accuracy": 17.0,
+  "spent_usd": 12.7337,
+  "budget_usd": 15.0,
+  "stopped_by_budget": true
  }
 ]

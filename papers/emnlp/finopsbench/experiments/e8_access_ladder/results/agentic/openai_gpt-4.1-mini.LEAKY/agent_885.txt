@@ -1,0 +1,1 @@
+Fetching the carrying amount for purchased technology (category_id 1).

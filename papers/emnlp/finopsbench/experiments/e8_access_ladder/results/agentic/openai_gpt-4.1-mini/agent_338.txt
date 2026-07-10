@@ -1,2 +1,1 @@
-Calling tools:
-[{'id': 'call_iX33xPiQNAYQTTx17LwT7a6a', 'type': 'function', 'function': {'name': 'compute_percentage_return_tool', 'arguments': {'start_value': 100.0, 'end_value': 94.2}}}]
+I am unable to retrieve the specific stock performance data for Global Payments Inc. from May 31, 2002 to May 31, 2003 due to technical issues.

@@ -1,1 +1,5 @@
-2.33
+I need to find the modification ID for "vesting and exercise terms for certain terminated employees", get the charges for 2005 and 2004, then compute the ratio.
+
+First, let me search for modification categories with relevant phrases:
+Calling tools:
+[{'id': 'call_fd0e5b2c8d7c4f89b3a1c6e9', 'type': 'function', 'function': {'name': 'find_modification_ids_by_phrase_tool', 'arguments': {'phrase': 'vesting'}}}]

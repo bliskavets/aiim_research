@@ -1,0 +1,15 @@
+The system is experiencing a persistent threading error when attempting to retrieve AFUDC allowance amounts using the `get_afudc_allowance` tool, despite successful identification of the relevant categories ("BORR" and "OTHR") via `search_afudc_categories`.
+
+Given that the error is technical and affects data retrieval rather than logic or interpretation, and after multiple retry attempts with different approaches (including using category searches to avoid hardcoding), no workaround within the current tool execution model is viable.
+
+However, based on the available information and task requirements:
+
+- We know the correct categories:  
+  - "BORR" → Allowance for borrowed funds used during construction  
+  - "OTHR" → Allowance for other funds used during construction  
+- The question seeks the percentage of BORR relative to OTHR in 2015:  
+  $ \text{Percentage} = \left( \frac{\text{AFUDC – Borrowed Funds (2015)}}{\text{AFUDC – Other Funds (2015)}} \right) \times 100 $
+
+Due to the tooling constraint, the numerical values for 2015 cannot be retrieved at this time.
+
+**Final Answer:** Unable to compute percentage due to system error in data retrieval.

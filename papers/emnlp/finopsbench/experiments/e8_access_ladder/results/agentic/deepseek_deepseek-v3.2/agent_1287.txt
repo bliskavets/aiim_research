@@ -1,1 +1,9 @@
-32.4
+Let me approach this systematically using the tools:
+
+1. First, I need to find the sales decrease from 2009 to 2010 (in USD)
+2. Then, I need to find the sales decrease from 2008 to 2009 (in USD)
+3. Finally, I need to calculate what percentage the 2010 decrease is of the 2009 decrease
+
+Calling tools to get the 2010 sales decrease:
+Calling tools:
+[{'id': 'call_3xUwJ5qW2RgZ7z8bVwP1vA9H', 'type': 'function', 'function': {'name': 'compute_sales_change_usd_tool', 'arguments': {'segment_name': 'Metal Beverage Packaging, Europe', 'start_year': 2009, 'end_year': 2010}}}]

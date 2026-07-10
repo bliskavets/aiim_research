@@ -1,1 +1,5 @@
-[{'type': 'text', 'text': "Calling tools:\n[{'id': 'call_28cf17bd23bb4cd3b5c688e7', 'type': 'function', 'function': {'name': 'get_company_id_tool', 'arguments': {'ticker': 'ACM'}}}]"}]
+Let me use the information provided directly in the narrative and the calculation tool.
+
+From the narrative: "as of february 29, 2008, we had 395748826 outstanding shares of class a common stock and 528 registered holders."
+
+I'll use the calculate_average_shares_per_holder tool with these numbers:

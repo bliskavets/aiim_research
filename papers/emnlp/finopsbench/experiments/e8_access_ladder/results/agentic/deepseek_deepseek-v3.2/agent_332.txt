@@ -1,1 +1,4 @@
-52.8%
+Let me work through this systematically using the tools:
+
+1. First, identify the fraud-loss reserve accrual.
+   I'll use: list_accruals_by_category('fraud')

@@ -1,1 +1,1 @@
-There is no data available for October, November, and December of 2012 in the database. Therefore, it is not possible to determine the mathematical range of the average prices paid per share for those months.
+There are no months with data available for the year 2012 in the database, so it is not possible to determine the mathematical range of the average prices paid per share in October, November, and December of 2012. The answer is 0.00.

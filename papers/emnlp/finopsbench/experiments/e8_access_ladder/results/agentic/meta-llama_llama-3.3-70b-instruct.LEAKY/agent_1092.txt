@@ -1,0 +1,19 @@
+## Step 1: Determine the liability type id for "Asset Retirement Obligations"
+To find the change in asset retirement obligations between 2002 and 2003, we first need to identify the internal identifier for "Asset Retirement Obligations" in the system. This can be done by using the `get_liability_type_id` function with the liability name as "asset retirement obligations".
+
+## Step 2: Fetch the liability balance for 2002 and 2003
+Using the liability type id obtained from Step 1, we can fetch the 31-Dec balance for both 2002 and 2003. The `fetch_liability_balance_million` function provides the balance in millions of U.S. dollars.
+
+## Step 3: Convert the balances from millions to dollars
+Since the balances are given in millions of U.S. dollars, we need to convert them into dollars to find the actual change in asset retirement obligations. This can be achieved by multiplying the balances by 1,000,000 (or using the `multiply_numbers` function with the appropriate multiplier obtained from `get_unit_multiplier` for "million_usd").
+
+## Step 4: Calculate the change in asset retirement obligations
+To find the change, we subtract the 2002 balance from the 2003 balance. This calculation will give us the change in asset retirement obligations between 2002 and 2003 in dollars.
+
+## Step 5: Implement the solution using the provided tools
+- First, find the liability type id: `id = get_liability_type_id("asset retirement obligations")`
+- Then, fetch the balances for 2002 and 2003: `balance_2002 = fetch_liability_balance_million(id, 2002)` and `balance_2003 = fetch_liability_balance_million(id, 2003)`
+- Convert the balances to dollars: `balance_2002_dollars = multiply_numbers(balance_2002, get_unit_multiplier("million_usd"))` and `balance_2003_dollars = multiply_numbers(balance_2003, get_unit_multiplier("million_usd"))`
+- Finally, calculate the change: `change = subtract_numbers(balance_2003_dollars, balance_2002_dollars)`
+
+The final answer is: $\boxed{0}$

@@ -1,14 +1,9 @@
-Looking at the narrative text provided:
+Based on the narrative text provided directly in the scenario description:
 
-1. For Insurance North American in 2008:
-   - Catastrophe losses were $298 million
-   - Net favorable prior period development was $351 million
+- North American net favorable prior period development in 2008: $351 million
+- North American catastrophe losses in 2008: $298 million
 
-The ratio is prior period development to catastrophe losses: $351 million / $298 million
-
-Let me calculate this ratio:
-351 ÷ 298 = 1.17785234899
-
-Rounded to two decimal places: 1.18
+I can calculate the ratio directly from these numbers:
+Ratio = 351 / 298 = 1.177... which rounds to 1.18
 
 1.18

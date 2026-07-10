@@ -19,16 +19,19 @@ as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
 `assemble.py` credit the percent-scaling case consistently across all rungs).
 
 ## Result (percent-robust, n=200)
-| Model | (a) question-only | (c) agentic (tools) | (d) FinQA-native (gold facts) | (b) full-context (whole doc) | tool-use necessity (c−a) | agentic gap (d−c) |
-| GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | +60.0 pt | -1.0 pt |
-| GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | +61.5 pt | 2.0 pt |
-| DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | +44.2 pt | 20.8 pt |
-| Claude-Haiku-4.5 | 0.5% | 67.5% | 67.0% | 69.5% | +67.0 pt | -0.5 pt |
-| Qwen3-235B-A22B | 2.5% | 65.0% | 65.0% | 68.0% | +62.5 pt | 0.0 pt |
-| Llama-3.3-70B | 3.0% | 29.9% | 57.0% | 59.0% | +26.9 pt | 27.1 pt |
-| gpt-oss-120b | 2.5% | 66.5% | 64.5% | 66.5% | +64.0 pt | -2.0 pt |
-| DeepSeek-V4-Flash | 2.5% | 71.0% | 68.0% | 71.0% | +68.5 pt | -3.0 pt |
-| Claude-Sonnet-4.5 | 1.5% | 69.2% | 68.5% | 69.5% | +67.7 pt | -0.7 pt |
+| Model | question-only | agentic (leaky) | **agentic (clean)** | FinQA-native | full-context | **agentic gap (clean)** | n |
+|---|---|---|---|---|---|---|---|
+| gpt-oss-120b | 2.5% | 66.5% | **69.9%** | 64.5% | 66.5% | **-5.4** | 103* |
+| Claude-Sonnet-4.5 | 1.5% | 69.2% | **68.6%** | 68.5% | 69.5% | **-0.1** | 156† |
+| GPT-4.1 | 2.0% | 63.5% | **66.0%** | 65.5% | 65.0% | **-0.5** | 200 |
+| Claude-Haiku-4.5 | 0.5% | 67.5% | **65.5%** | 67.0% | 69.5% | **+1.5** | 200 |
+| Qwen3-235B-A22B | 2.5% | 65.0% | **65.0%** | 65.0% | 68.0% | **+0.0** | 200 |
+| GPT-4.1-mini | 1.5% | 61.5% | **60.0%** | 60.5% | 64.5% | **+0.5** | 200 |
+| DeepSeek-V4-Flash | 2.5% | 71.0% | **54.3%** | 68.0% | 71.0% | **+13.7** | 162* |
+| DeepSeek-V3.2 | 4.0% | 48.2% | **38.6%** | 69.0% | 69.5% | **+30.4** | 158* |
+| Llama-3.3-70B | 3.0% | 29.9% | **19.8%** | 57.0% | 59.0% | **+37.2** | 106* |
+
+_Agentic column re-run on leak-cleaned prompts (see e11_prompt_leak_audit); `agentic (leaky)` shown for reference. Cleaning is model-dependent: strong tool-users unchanged, read-well-act-poorly models (DeepSeek-V3.2/V4-Flash, Llama-3.3-70B) drop sharply → larger agentic gaps._
 
 ## Interpretation
 - **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable

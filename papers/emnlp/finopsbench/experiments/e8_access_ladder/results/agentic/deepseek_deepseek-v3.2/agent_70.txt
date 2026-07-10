@@ -1,1 +1,5 @@
-538.56%
+I need to calculate the percentage cumulative total shareholder return for DISCA from December 31, 2008 to December 31, 2013. Let me approach this systematically.
+
+Step 1: Get the security ID for DISCA.
+Calling tools:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'get_security_id_by_ticker_tool', 'arguments': {'ticker': 'DISCA'}}}]

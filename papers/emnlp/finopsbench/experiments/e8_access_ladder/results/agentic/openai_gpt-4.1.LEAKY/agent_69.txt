@@ -1,0 +1,27 @@
+Let's sum up the accumulated amortisation (amortisation is the equivalent of depreciation for intangible assets) for the relevant amortisable intangible asset categories at the end of 2007.
+
+Available categories (excluding deferred financing costs, as those are booked in interest expense and not included in the main intangible amortisation figure):  
+- Customer Base & Network Location  
+- Licenses & Other
+
+From the database, here is what we have for annual expense per category:  
+**Customer Base & Network Location:**  
+- 2005: $118.0M  
+- 2006: $160.0M  
+- 2007: $155.0M  
+
+**Licenses & Other:**  
+- 2005: $8.0M  
+- 2006: $11.1M  
+- 2007: $11.3M  
+
+Sum the amortisation for these categories over 2005–2007:
+
+- Customer Base & Network Location: 118.0 + 160.0 + 155.0 = 433.0M
+- Licenses & Other: 8.0 + 11.1 + 11.3 = 30.4M
+
+Total accumulated amortisation at the end of 2007:  
+433.0 + 30.4 = 463.4M
+
+**Final answer:**
+463.4

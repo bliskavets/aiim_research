@@ -1,0 +1,18 @@
+Let me work through this step-by-step:
+
+**Step 1: Get the expected benefit payments for each year**
+- 2017 expected benefit payment: $4.5 million
+- 2018 expected benefit payment: $4.0 million
+
+**Step 2: Calculate the percent change**
+Using the formula: ((end_value - start_value) / start_value) × 100
+- Start value (2017): $4.5 million
+- End value (2018): $4.0 million
+- Percent change: -11.11%
+
+**Step 3: Interpret the result**
+The negative sign indicates a decrease in expected benefit payments from 2017 to 2018.
+
+**Final Answer: -11%** (rounded to the nearest whole percent)
+
+The expected benefit payments are projected to decrease by 11% between 2017 and 2018, declining from $4.5 million to $4.0 million.

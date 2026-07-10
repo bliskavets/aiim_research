@@ -1,1 +1,20 @@
-126
+To find the mathematical range for the rent obligations from 2008 through 2012 (inclusive), we first need to find the internal database identifiers for these years. Then, we can use these identifiers to find the rent obligations for the 'office' category. Finally, we can compute the range of these rent obligations.
+
+```python
+# Given the previous results
+year_labels = ['2008', '2009', '2010', '2011', '2012']
+office_category_id = 1
+
+# Map year labels to internal database identifiers
+fiscal_year_ids = [map_year_label_to_id(label) for label in year_labels]
+
+# Get rent obligation amounts for each year and category
+rent_obligations = [get_lease_obligation_amount(fiscal_year_id, office_category_id, 'rent') for fiscal_year_id in fiscal_year_ids]
+
+# Compute the mathematical range of the rent obligations
+range_rent_obligations = compute_range(rent_obligations)
+
+print("The final answer is ", range_rent_obligations)
+```
+
+Let's proceed with finding the internal database identifiers for the years and the rent obligation amounts.

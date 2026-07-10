@@ -1,1 +1,2 @@
--4.2%
+Calling tools:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'get_series_value_on_tool', 'arguments': {'series_id': 3, 'date': '2002-05-31'}}}, {'id': 'call_2', 'type': 'function', 'function': {'name': 'get_series_value_on_tool', 'arguments': {'series_id': 3, 'date': '2003-05-31'}}}]

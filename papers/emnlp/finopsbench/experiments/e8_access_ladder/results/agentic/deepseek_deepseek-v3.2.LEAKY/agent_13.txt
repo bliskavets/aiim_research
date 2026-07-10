@@ -1,0 +1,1 @@
+[{'type': 'text', 'text': "Now I need the 2008 value.\nCalling tools:\n[{'id': 'call_YWc6PULn4or8ojAtbUqtlfwO', 'type': 'function', 'function': {'name': 'get_financial_value_tool', 'arguments': {'company_id': 7, 'metric_id': 1, 'year': 2008}}}]"}]

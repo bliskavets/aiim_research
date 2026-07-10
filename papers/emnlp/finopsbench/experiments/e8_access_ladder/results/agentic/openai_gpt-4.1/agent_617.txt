@@ -1,14 +1,1 @@
-It appears that all attempts to retrieve data from the database failed due to missing tables. As such, I don’t have access to the actual numerical figures for the effective income tax rate for continuing operations for 2005 and 2006.
-
-**Given the information provided:**  
-- The specific percentage increase cannot be calculated without access to the underlying rates for those years.
-- Normally, to answer this, one would:
-  1. Retrieve the effective income tax rate for 2005.
-  2. Retrieve the effective income tax rate for 2006.
-  3. Subtract the 2005 figure from the 2006 figure to determine the increase.
-  4. Express the result as a percentage with the “%” sign.
-
-**But due to database errors, I must conclude:**  
-I am unable to provide the requested percentage increase without the actual rate data for 2005 and 2006.
-
-**If you supply the rates or excerpt from the annual report showing the rates, I can immediately calculate the increase.** Otherwise, please try again after the data issue is resolved.
+Unable to retrieve the necessary data due to persistent database errors—cannot provide the requested tax rate increase.

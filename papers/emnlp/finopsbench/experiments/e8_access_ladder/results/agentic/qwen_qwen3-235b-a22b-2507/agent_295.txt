@@ -1,1 +1,1 @@
-Unable to retrieve data due to persistent database access errors.
+The system is currently unable to retrieve financial data due to a database connection error (no such table: years). Please verify the database availability and retry the query.

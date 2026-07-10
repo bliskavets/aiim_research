@@ -1,1 +1,7 @@
-3%
+The statutory tax rate for 2018 in the "global" jurisdiction is 19.0%.  
+The effective tax rate for international operations in 2018 is 22.0%.  
+
+The difference between the statutory tax rate and the effective tax rate is:  
+19.0% - 22.0% = -3.0%
+
+-3.0%

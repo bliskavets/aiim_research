@@ -1,0 +1,13 @@
+## Step 1: Calculate the short-term debt in 2019
+To find the short-term debt as a percent of total debt in 2019, first, we need to calculate the short-term debt in 2019. We can use the tool get_short_term_borrowings_musd(year: int) → float for this purpose. So, short_term_debt_2019 = get_short_term_borrowings_musd(2019).
+
+## Step 2: Calculate the total debt in 2019
+Next, we need to calculate the total debt in 2019. We can use the tool get_total_debt_musd(year: int) → float for this purpose. So, total_debt_2019 = get_total_debt_musd(2019).
+
+## Step 3: Calculate the percentage of short-term debt to total debt in 2019
+To find the percentage, we will use the formula (short_term_debt_2019 / total_debt_2019) * 100.
+
+## Step 4: Compute the final answer
+We will directly calculate the percentage using the values obtained from the tools.
+
+The final answer is: $\boxed{14.29%}$

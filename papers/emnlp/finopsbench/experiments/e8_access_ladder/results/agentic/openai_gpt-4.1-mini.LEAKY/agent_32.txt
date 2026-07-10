@@ -1,0 +1,9 @@
+Total fees earned in 2016 for management, leasing, and construction and development are calculated as follows:
+
+Management fees: base 3.5 + bonus 1.0 = 4.5 million
+Leasing fees: base 1.8 + bonus 0.6 = 2.4 million
+Construction and development fees: base 5.0 + incentive 3.0 = 8.0 million
+
+Total fees = 4.5 + 2.4 + 8.0 = 14.9 million dollars
+
+FINAL ANSWER: 14.9 million dollars

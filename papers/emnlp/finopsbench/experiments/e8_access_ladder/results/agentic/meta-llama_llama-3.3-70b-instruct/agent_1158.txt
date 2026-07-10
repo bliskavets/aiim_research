@@ -1,1 +1,38 @@
-71%
+To find the percentage of the net assets acquired in the AES acquisition that is attributable to goodwill, I need to follow these steps:
+
+1. Find the acquisition ID for the AES acquisition.
+2. Get the amount of goodwill and net assets acquired for that acquisition.
+3. Calculate the percentage of net assets acquired that is attributable to goodwill.
+
+First, I'll find the acquisition ID for the AES acquisition.
+
+```python
+acquisitions = list_acquisitions_by_acquirer("AES Corporation")
+```
+
+Once I have the acquisition ID, I can get the amount of goodwill and net assets acquired.
+
+```python
+acquisition_id = acquisitions[0]['id']
+goodwill_amount = get_amount_for_item(acquisition_id, "goodwill")
+net_assets_acquired_amount = get_amount_for_item(acquisition_id, "net assets acquired")
+```
+
+Now that I have the amounts, I can calculate the percentage.
+
+```python
+percentage = compute_percentage(goodwill_amount, net_assets_acquired_amount)
+```
+
+Here is the complete code:
+
+```python
+acquisitions = list_acquisitions_by_acquirer("AES Corporation")
+acquisition_id = acquisitions[0]['id']
+goodwill_amount = get_amount_for_item(acquisition_id, "goodwill")
+net_assets_acquired_amount = get_amount_for_item(acquisition_id, "net assets acquired")
+percentage = compute_percentage(goodwill_amount, net_assets_acquired_amount)
+print(percentage)
+```
+
+Let's execute this code to find the final answer.

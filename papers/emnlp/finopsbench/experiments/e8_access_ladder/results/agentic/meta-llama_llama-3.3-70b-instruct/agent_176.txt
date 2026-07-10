@@ -1,1 +1,1 @@
-8.6%
+```calculate_percentage(compute_difference(get_yearly_expense("equipment and other rents", 2012), get_yearly_expense("equipment and other rents", 2011)), compute_difference(get_yearly_expense("total", 2012), get_yearly_expense("total", 2011)))```

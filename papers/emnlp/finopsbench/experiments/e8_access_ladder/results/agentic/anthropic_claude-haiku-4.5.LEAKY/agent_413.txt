@@ -1,0 +1,19 @@
+I have successfully gathered the necessary information to answer the question. Here's my analysis:
+
+**Step-by-step breakdown:**
+
+1. Found NBCUniversal Media, LLC (company_id: 1)
+2. Retrieved the Comprehensive Income statement IDs:
+   - 2014: statement_id = 2
+   - 2015: statement_id = 3
+3. Identified the correct metric: "Comprehensive income attributable to NBCUniversal" (metric_id: 1)
+4. Retrieved the values:
+   - 2014: $2,972.0 million
+   - 2015: $3,361.0 million
+
+**Calculation:**
+Percentage change = ((3,361.0 - 2,972.0) / 2,972.0) × 100
+= (389.0 / 2,972.0) × 100
+= 13.09%
+
+**Final Answer: 13%**

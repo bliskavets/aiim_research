@@ -1,1 +1,6 @@
-36.8%
+I need to approach this systematically. Let me start by calling tools step by step.
+
+First, I need to get the entity ID for "peer group" and year IDs for 2010 and 2011. Then I need to get the return series values for the peer group for these years.
+
+Calling tools:
+[{'id': 'call_2391d7f3d28348d3aec68e76', 'type': 'function', 'function': {'name': 'get_entity_id_tool', 'arguments': {'entity_name': 'peer group'}}}]

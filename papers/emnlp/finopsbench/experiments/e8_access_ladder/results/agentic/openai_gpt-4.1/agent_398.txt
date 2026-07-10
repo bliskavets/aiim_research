@@ -1,6 +1,9 @@
-I'm unable to compute the exact growth rate in net revenue for Entergy New Orleans, Inc. in 2016 because the required numerical values for net revenue in 2015 and 2016 are not provided in the scenario (and database access is not available based on the given errors).
+I'm unable to provide the exact growth rate in net revenue for Entergy New Orleans, Inc. for 2016 because the numerical values for net revenue in 2015 and 2016 were not included in your prompt, and I'm unable to retrieve the necessary company ID from the system to access those historical figures.
 
-**Final answer:**  
-Not determinable from the information provided. 
+To calculate the growth rate in net revenue, you need both the 2015 and 2016 net revenue numbers. The formula is:
 
-If you can provide the net revenue figures for 2015 and 2016, I can immediately calculate the growth rate for you.
+\[
+\text{Growth Rate} = \frac{\text{Net Revenue}_{2016} - \text{Net Revenue}_{2015}}{\text{Net Revenue}_{2015}} \times 100\%
+\]
+
+If you can provide the net revenue figures for those years, I can compute the percentage for you. Otherwise, please refer to the detailed numerical table mentioned in your scenario description to extract the appropriate values for calculation.

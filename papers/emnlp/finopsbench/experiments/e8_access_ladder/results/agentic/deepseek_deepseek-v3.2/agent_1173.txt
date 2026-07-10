@@ -1,6 +1,1 @@
-Let me approach this step by step with proper tool calls.
-
-First, I need to get the Investor Services revenue for 2003. Based on previous observations, I have the business unit IDs.
-
-Calling tools:
-[{'id': 'call_1', 'type': 'function', 'function': {'name': 'compute_annual_revenue_tool', 'arguments': {'business_unit_id': 2, 'fiscal_year': 2003}}}]
+0.751

@@ -1,1 +1,1 @@
-No. A 0.5% decrease in discount rate increases pension expense by $1 million, while a 0.5% decrease in expected long-term return on assets increases pension expense by $10 million. Therefore, the decrease in expected long-term return on assets has a greater impact on pension expense.
+No. A 0.5% decrease in discount rate increases pension expense by $1.0 million, while a 0.5% decrease in expected long-term return on assets increases pension expense by $10.0 million. The decrease in expected return on assets has a significantly greater impact.

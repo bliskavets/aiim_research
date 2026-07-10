@@ -1,0 +1,9 @@
+To find the difference between the growth rates of the two segments, we can directly use the growth percentages mentioned in the scenario description for the years 2015-2016.
+
+For the Engineered Products and Solutions segment, the growth rate in 2016 compared to 2015 is 7%.
+
+For the Transportation and Construction Solutions segment, the growth rate in 2016 compared to 2015 is -4%, indicating a decrease.
+
+Therefore, the difference in growth rates is 7% - (-4%) = 11%.
+
+The final answer is: $\boxed{11.00%}$

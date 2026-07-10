@@ -1,0 +1,12 @@
+Looking at the scenario background, I can directly see the answer in the text provided:
+
+"For the years ended December 31, 2016, 2015 and 2014 we earned management fees of $4.5 million, $6.8 million and $8.5 million, leasing fees of $2.4 million, $3.0 million and $3.4 million and construction and development fees of $8.0 million, $6.1 million and $5.8 million, respectively"
+
+For 2016:
+- Management fees: $4.5 million
+- Leasing fees: $2.4 million  
+- Construction and development fees: $8.0 million
+
+Total = $4.5 + $2.4 + $8.0 = $14.9 million
+
+FINAL ANSWER: 14.9

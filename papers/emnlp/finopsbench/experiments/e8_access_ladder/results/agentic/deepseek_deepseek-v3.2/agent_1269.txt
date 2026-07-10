@@ -1,2 +1,6 @@
+I need to find the average interest income for 2017 and 2018. Let me proceed step by step using the tools.
+
+First, I need to see what metrics are available:
+
 Calling tools:
-[{'id': 'call_f5f3aa706fbb46ee8f5d765a', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'metric_id': 1, 'year': 2018}}}]
+[{'id': 'call_9f7faa0b73b6491f8c7e3b20', 'type': 'function', 'function': {'name': 'list_available_metrics', 'arguments': {}}}]

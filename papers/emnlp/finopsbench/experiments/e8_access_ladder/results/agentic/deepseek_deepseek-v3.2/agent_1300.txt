@@ -1,1 +1,2 @@
-26%
+Calling tools:
+[{'id': 'call_ea48f7acd9fc4367b2e18c8d', 'type': 'function', 'function': {'name': 'calculate_percentage_tool', 'arguments': {'part': 2986, 'whole': 11384}}}]

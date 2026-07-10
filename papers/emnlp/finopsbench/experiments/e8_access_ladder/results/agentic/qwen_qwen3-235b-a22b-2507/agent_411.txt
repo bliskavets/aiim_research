@@ -1,1 +1,2 @@
-2376487.57
+Calling tools:
+[{'id': 'call_c38d4ccd32c2442a9999e00b', 'type': 'function', 'function': {'name': 'aggregate_values_tool', 'arguments': {'values': [773272.75, 772450.92, 830763.9]}}}]

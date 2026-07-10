@@ -1,16 +1,13 @@
-## Step 1: Determine the internal numeric IDs for the valuation methods "fifo" and "lifo"
-To find the IDs, we will use the get_valuation_method_id() tool. We need to call this tool twice, once for "fifo" and once for "lifo", to get their respective IDs.
+## Step 1: Determine the valuation method IDs for LIFO and FIFO.
+To calculate the percentage increase in the inventories balance attributable to using LIFO instead of FIFO, we first need to determine the internal numeric IDs for the LIFO and FIFO valuation methods. We can do this by calling the `get_valuation_method_id` tool with the method names as arguments.
 
-## Step 2: Determine the internal numeric ID for the inventory category "merchandise"
-We will use the get_inventory_category_id() tool to find the ID for the "merchandise" category.
+## Step 2: Determine the inventory category ID for merchandise.
+Next, we need to determine the internal numeric ID for the "merchandise" inventory category, as the problem statement specifies that approximately 95% of inventories were accounted for using LIFO. We can do this by calling the `get_inventory_category_id` tool with "merchandise" as the category name.
 
-## Step 3: Get the net inventory amounts for 2013 using both "fifo" and "lifo" valuation methods
-Using the get_net_inventory_amount() tool, we will retrieve the net inventory amounts for the year 2013, for both "fifo" and "lifo" methods, and for the "merchandise" category.
+## Step 3: Calculate the net inventory amounts for LIFO and FIFO in 2013.
+Using the valuation method IDs and the inventory category ID obtained in the previous steps, we can calculate the net inventory amounts for LIFO and FIFO in 2013 by calling the `get_net_inventory_amount` tool with the year 2013, the respective valuation method IDs, and the inventory category ID.
 
-## Step 4: Calculate the percentage increase in the inventory balance from "fifo" to "lifo"
-With the net inventory amounts obtained, we will use the compute_percentage_change() tool to calculate the percentage increase from the "fifo" amount to the "lifo" amount.
+## Step 4: Compute the percentage increase from FIFO to LIFO.
+Finally, we can compute the percentage increase in the inventories balance attributable to using LIFO instead of FIFO by calling the `compute_percentage_change` tool with the net inventory amount for FIFO as the original value and the net inventory amount for LIFO as the new value.
 
-## Step 5: Output the final numerical answer
-Finally, we will output the calculated percentage increase as the final answer.
-
-The final answer is: $\boxed{23.0%}$
+The final answer is: $\boxed{13.4%}$

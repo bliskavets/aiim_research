@@ -1,8 +1,1 @@
-Based on the information gathered:
-- The RSU grant (ID 1) has 1,416,543 total units
-- The average price per unit across all RSU awards is $17.03
-
-The total deemed proceeds would be: 1,416,543 × 17.03
-
-Calling tools:
-[{'id': 'call_xTvE3d2n1fTzLrLJ0hnyGxLG', 'type': 'function', 'function': {'name': 'compute_total_deemed_proceeds_tool', 'arguments': {'award_id': 1, 'price_type': 'grant_date_fair_value'}}}]
+24123727

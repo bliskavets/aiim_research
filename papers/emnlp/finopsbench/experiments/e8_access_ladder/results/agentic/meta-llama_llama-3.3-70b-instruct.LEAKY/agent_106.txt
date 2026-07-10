@@ -1,0 +1,42 @@
+To find the sales for the Performance Coatings segment in 2008 without the foreign-currency translation gain, we first need to understand the given information and how to apply the provided tools to calculate the answer.
+
+1. Performance Coatings sales increased by $905 million, or 24%, in 2008.
+2. The increase was due to acquisitions (+21%), higher selling prices (+3%), and a positive foreign-currency translation impact (+2%).
+3. Sales volumes declined by 2%.
+
+To calculate the sales without the foreign-currency translation gain, we need to:
+- Find the segment ID for Performance Coatings.
+- Calculate the foreign-currency translation amount.
+- Subtract this amount from the reported 2008 sales.
+
+Here’s how we can do it using the provided tools:
+
+```python
+def calculate_sales_without_fx():
+    segment_id = find_segment_id("Performance Coatings")
+    if segment_id is None:
+        return None  # Segment not found
+    
+    # Get the 2008 sales
+    reported_sales_2008 = get_annual_metric(segment_id, 2008)
+    if reported_sales_2008 is None:
+        return None  # Sales data not available
+    
+    # Calculate the foreign-currency translation amount
+    fx_pct = get_fx_effect_pct(segment_id, 2008)
+    if fx_pct is None:
+        return None  # FX effect data not available
+    
+    prev_year_sales = get_annual_metric(segment_id, 2007)
+    if prev_year_sales is None:
+        return None  # Previous year's sales data not available
+    
+    fx_absolute = calculate_absolute_fx(prev_year_sales, fx_pct)
+    
+    # Subtract the FX contribution from the reported sales
+    sales_without_fx = remove_fx_from_reported(reported_sales_2008, fx_absolute)
+    
+    return round(sales_without_fx)
+
+print(calculate_sales_without_fx())
+```

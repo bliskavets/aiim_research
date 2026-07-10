@@ -1,0 +1,29 @@
+We need to calculate the percent change in total intangibles 2014 net from 2007 to 2008.
+
+Step 1: The components related to “intangibles 2014 net” are:  
+- developed_prod_tech_net  
+- goodwill  
+- other_intangibles_net  
+
+Step 2: Retrieve metric values for each component for years 2007 and 2008.
+
+I will get these values now:
+
+- developed_prod_tech_net for 2007 and 2008  
+- goodwill for 2007 and 2008  
+- other_intangibles_net for 2007 and 2008
+
+Then, sum the components for each year to get total intangibles 2014 net for 2007 and 2008.
+
+Step 3: Compute the percent change from 2007 to 2008.
+
+---
+
+Calling tools to get the values:
+
+get_metric_value_for_year('developed_prod_tech_net', 2007)  
+get_metric_value_for_year('developed_prod_tech_net', 2008)  
+get_metric_value_for_year('goodwill', 2007)  
+get_metric_value_for_year('goodwill', 2008)  
+get_metric_value_for_year('other_intangibles_net', 2007)  
+get_metric_value_for_year('other_intangibles_net', 2008)

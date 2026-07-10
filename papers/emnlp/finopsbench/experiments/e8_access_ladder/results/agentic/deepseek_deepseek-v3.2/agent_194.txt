@@ -1,1 +1,14 @@
-5821000
+I need to use the tools properly to answer this question. Based on my previous work:
+
+1. Found interest rate swaps contract ID: 1
+2. Got 2008 balance: 18,874 THOUSANDS 
+3. Got 2009 balance: 13,053 THOUSANDS
+
+Since both are in the same unit (THOUSANDS), I can compute the net change directly:
+
+Net change = 2009 balance - 2008 balance = 13,053 - 18,874 = -5,821
+
+This is in THOUSANDS of dollars, so the net change is -5,821,000 dollars.
+
+However, I should use the arithmetic tools to compute this properly. Let me use the subtract tool:Calling tools:
+[{'id': 'call_1b7a0c4b4c0c4ca4b0a7e5f3', 'type': 'function', 'function': {'name': 'subtract_tool', 'arguments': {'value_a': 13053, 'value_b': 18874}}}]

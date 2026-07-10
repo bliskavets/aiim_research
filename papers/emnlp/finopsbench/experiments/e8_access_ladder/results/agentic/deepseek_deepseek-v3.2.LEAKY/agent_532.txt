@@ -1,0 +1,19 @@
+I need to calculate the percentage of shares attested by employees for stock-option exercise prices in Q4 2007. From my previous work:
+
+1. I found that total shares repurchased in Q4 2007: 2,626,154 shares
+2. I got the employee attested events for Q4 2007 which showed 3 events:
+   - Alice: 100,000 shares for "stock_option_exercise"
+   - Bob: 80,000 shares for "tax_withholding" 
+   - Charlie: 48,354 shares for "retention_share_vesting"
+
+Now I need to find only the shares attested specifically for "stock-option exercise prices" (which matches Alice's "stock_option_exercise" reason). This is 100,000 shares.
+
+Now I calculate the percentage: (100,000 ÷ 2,626,154) × 100
+
+Let me compute this:
+100,000 ÷ 2,626,154 = 0.03808
+0.03808 × 100 = 3.808%
+
+Rounded to one decimal place: 3.8%
+
+3.8%

@@ -1,7 +1,6 @@
-Based on the narrative excerpt, I can extract the needed information directly:
-
-- Outstanding shares as of February 29, 2008: 395,748,826
-- Registered holders as of February 29, 2008: 528
+Based on the narrative excerpt, as of February 29, 2008, the company had:
+- 395,748,826 outstanding shares of class A common stock
+- 528 registered holders
 
 Using the calculate_average_shares_per_holder tool with these values:
 

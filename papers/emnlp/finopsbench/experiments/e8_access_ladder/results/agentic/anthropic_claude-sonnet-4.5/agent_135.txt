@@ -1,13 +1,12 @@
 Based on the information gathered:
 
-**Engineered Products and Solutions segment:**
-- Growth rate 2015-2016: **7.0%** (directly stated in the narrative)
+1. **Engineered Products and Solutions segment**: The narrative explicitly states that third-party sales "improved 7%" in 2016 compared with 2015. Growth rate = **+7.0%**
 
-**Transportation and Construction Solutions segment:**
-- Growth rate 2015-2016: **-4.0%** (the narrative states "decreased 4%")
+2. **Transportation and Construction Solutions segment**: The narrative explicitly states that third-party sales "decreased 4%" in 2016 compared with 2015. Growth rate = **-4.0%**
 
-**Calculation:**
-Difference = Engineered Products & Solutions growth - Transportation & Construction Solutions growth
-Difference = 7.0% - (-4.0%) = 7.0% + 4.0% = 11.0%
+The difference between the two growth rates is:
+7.0% - (-4.0%) = 7.0% + 4.0% = **11.0%**
+
+Therefore, the growth of third-party sales for the Engineered Products and Solutions segment is bigger than the Transportation and Construction Solutions segment by:
 
 **11.00%**

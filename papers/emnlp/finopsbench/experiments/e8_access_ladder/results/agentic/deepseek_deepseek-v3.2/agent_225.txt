@@ -1,1 +1,12 @@
-9.4%
+Let me systematically work through this problem step by step.
+
+I need to calculate: (accrued interest and penalties) ÷ (gross unrecognized tax benefits) × 100%
+
+I already know:
+1. Gross UTB balance = 691.0 million USD (from earlier get_metric_value call)
+2. Interest gross = 50.0 million USD (from earlier get_interest_gross call)
+
+I still need:
+3. Penalties gross for January 1, 2007
+
+Let me get the penalties gross:

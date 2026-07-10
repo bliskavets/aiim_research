@@ -1,1 +1,13 @@
-4622
+```json
+{
+  "tools": [
+    {
+      "name": "calculate_absolute_fx_tool",
+      "arguments": {
+        "prev_year_sales_mil": 3811.0,
+        "fx_pct": 0.02
+      }
+    }
+  ]
+}
+```

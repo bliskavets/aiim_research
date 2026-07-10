@@ -1,1 +1,7 @@
-98.2%
+Let me calculate the growth rate using the values I have:
+
+Start value (2011): 100.0
+End value (2016): 198.18
+
+Calling tools:
+[{'id': 'call_e9ec0f6b99c94cd9b2cbeacd', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'start_value': 100.0, 'end_value': 198.18}}}]

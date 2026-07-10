@@ -1,1 +1,10 @@
-14166543
+## Step 1: Determine the number of RSUs granted in connection with the IPO.
+The narrative disclosure states that the company granted 1,416,543 RSUs in connection with the IPO.
+
+## Step 2: Determine the average price per unit of the RSUs.
+The weighted-average grant-date fair value of the RSUs is given as $17.03 per unit.
+
+## Step 3: Calculate the total deemed proceeds.
+To find the total deemed proceeds, we multiply the total number of RSUs by the average price per unit. total_deemed_proceeds = total_RSUs * average_price_per_unit = 1,416,543 * 17.03.
+
+The final answer is: $\boxed{24118767}$

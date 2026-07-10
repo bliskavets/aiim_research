@@ -1,0 +1,13 @@
+59.6%
+
+**Step-by-step reasoning:**
+
+1. I identified that the question asks about "doors" (distribution channel points of sale) for fiscal year 2012 (ended March 31, 2012).
+
+2. I retrieved the number of doors in The Americas for fiscal 2012: **6,587 doors**
+
+3. I retrieved the worldwide total number of doors for fiscal 2012: **11,047 doors**
+
+4. I calculated the percentage: 6,587 / 11,047 = **59.6%**
+
+**Final Answer: 59.6% of worldwide distribution-channel doors as of March 31, 2012 were in The Americas.**

@@ -1,1 +1,27 @@
-5.43%
+Calling tools:
+[
+  {
+    "id": "call_fifo_amount",
+    "type": "function",
+    "function": {
+      "name": "get_net_inventory_amount_tool",
+      "arguments": {
+        "year": 2013,
+        "valuation_method_id": 1,
+        "category_id": 1
+      }
+    }
+  },
+  {
+    "id": "call_lifo_amount", 
+    "type": "function",
+    "function": {
+      "name": "get_net_inventory_amount_tool",
+      "arguments": {
+        "year": 2013,
+        "valuation_method_id": 2,
+        "category_id": 1
+      }
+    }
+  }
+]

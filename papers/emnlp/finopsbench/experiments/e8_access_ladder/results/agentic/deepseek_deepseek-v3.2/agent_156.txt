@@ -1,1 +1,6 @@
-44%
+I need to get the 2010 quarterly amounts, aggregate them to get the 2010 total, then get the 2011 quarterly amounts and aggregate to get the 2011 total, then calculate the growth rate.
+
+From the 2010 quarterly amounts I just received: [50.0, 52.0, 50.0, 55.0]. Let me aggregate these using aggregate_annual_total_tool.
+
+Calling tools:
+[{'id': 'call_da32b4e8a94e4768bff3e8c8', 'type': 'function', 'function': {'name': 'aggregate_annual_total_tool', 'arguments': {'quarterly_amounts': [50.0, 52.0, 50.0, 55.0]}}}]

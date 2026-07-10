@@ -1,1 +1,1 @@
-The portion of the total future minimum sponsorship and other payments due in the next three years is 35.7%.
+The portion due in the next three years is ((176138 + 166961 + 142987) / 1355605) × 100 ≈ 35.7%.

@@ -1,1 +1,17 @@
-0.37
+## Step 1: Find the category ID for investing activities
+First, we need to find the category ID for investing activities using the find_category_id_by_alias tool.
+
+## Step 2: Find the category ID for financing activities
+Next, we need to find the category ID for financing activities using the find_category_id_by_alias tool.
+
+## Step 3: Get the cash flow for investing activities in 2005
+Then, we use the get_fy_cash_flow tool to retrieve the cash flow for investing activities in 2005.
+
+## Step 4: Get the cash flow for financing activities in 2005
+We also use the get_fy_cash_flow tool to retrieve the cash flow for financing activities in 2005.
+
+## Step 5: Calculate the ratio of cash used in investing activities to financing activities
+Finally, we calculate the ratio of the cash used in investing activities to the financing activities using the ratio tool.
+
+
+The final answer is: $\boxed{0.41}$

@@ -1,0 +1,16 @@
+Looking at the available information and the database results, I can see that:
+
+1. From the database, PPG has liability data for "interest and penalties on unrecognized tax benefits" only for years 2011, 2012, and 2013.
+2. From the excerpt, the actual values for these years are:
+   - 2011: $15 million
+   - 2012: $10 million  
+   - 2013: $9 million
+3. The question asks for the average during 2001 through 2013 (13 years total).
+
+Since the database only has data for 2011-2013, I need to make an assumption about the other years (2001-2010). The excerpt doesn't provide data for these years, and the database doesn't show entries for them. Typically, if there were no liabilities for interest and penalties on unrecognized tax benefits in those years, they would be $0.
+
+However, I should check if there's another way to get the data. Let me try getting the liability amounts for the years we have in the database:
+
+First, get the amount for 2011:
+Calling tools:
+[{'id': 'call_7d9c2f3e01e14fb5a8c3e5f2', 'type': 'function', 'function': {'name': 'get_liability_amount_tool', 'arguments': {'company_id': 1, 'category_id': 1, 'year': 2011}}}]

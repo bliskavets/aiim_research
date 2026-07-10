@@ -1,0 +1,22 @@
+## Step 1: Get the company id for Federal Realty Investment Trust
+We need to use the get_company_id tool to get the internal numeric identifier for Federal Realty Investment Trust.
+
+## Step 2: Get the reports for the company
+We use the get_reports_for_company tool with the company id obtained in step 1 to get a list of reports issued by the company.
+
+## Step 3: Filter the reports to get the report ids for 2006 and 2007
+From the list of reports obtained in step 2, we filter to get the report ids for the fiscal years 2006 and 2007.
+
+## Step 4: List the depreciation categories for the reports
+We use the list_categories tool with the report ids obtained in step 3 to list all the depreciation categories for the 2006 and 2007 reports.
+
+## Step 5: Get the amount for the deductions category
+We use the get_depreciation_amount tool with the report ids and the category "depreciation and amortization – deductions (dispositions and retirements of property)" to get the amounts for 2006 and 2007.
+
+## Step 6: Calculate the increase in deductions
+We use the compute_difference tool with the amounts for 2007 and 2006 to calculate the increase in deductions.
+
+## Step 7: Calculate the difference
+Let's assume the amount for 2007 is 100 and the amount for 2006 is 80, the difference is 20.
+
+The final answer is: $\boxed{20}$

@@ -1,1 +1,17 @@
-I cannot answer this question with the available information. The company mentioned in the text isn't explicitly named, and the lookup_company_id tool returned None when searching for "Lockheed Martin". Without identifying the specific company and obtaining its ID, I cannot retrieve the dividend per share information needed to calculate the total outstanding shares that received dividends in 2016.
+I need to calculate the total outstanding number of shares that received dividends in 2016. From the text, I have two key pieces of information:
+
+1. "we paid dividends totaling $2.0 billion ($6.77 per share) in 2016"
+2. There's information about shares outstanding at year-end and share repurchases during the year.
+
+The most direct way to calculate the number of shares that received dividends is:
+Number of shares = Total dividends paid ÷ Dividend per share
+
+From the text:
+- Total dividends paid in 2016: $2.0 billion
+- Dividend per share in 2016: $6.77
+
+I need to convert $2.0 billion to dollars and divide by $6.77.
+Let me use the tools:
+
+First, convert $2.0 billion to dollars:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'convert_billions_to_dollars', 'arguments': {'amount_billion': 2.0}}}]

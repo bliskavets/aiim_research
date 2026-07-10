@@ -1,0 +1,25 @@
+Let me think through this step-by-step:
+
+1. From the scenario: The Company purchased a 49.9% economic interest in 521 Fifth Avenue
+2. The transaction valued the consolidated interests at approximately 245.7 million USD
+3. The Company's share of the value based on the transaction cost would be 49.9% of the consolidated valuation
+
+Calculation:
+- 49.9% of 245.7 million USD
+- First convert 49.9% to fraction: 49.9/100 = 0.499
+- Multiply: 0.499 × 245.7 = 122.6043 million USD
+- Convert to dollars: 122.6043 × 1,000,000 = 122,604,300
+
+Since I can't seem to call the tools properly due to the error, I'll complete the calculation based on what I've already learned from the tools:
+- Property ID: 1
+- Latest interest percent: 49.9%
+- Consolidated interest valuation: 245.7 million USD
+- Convert percent to fraction: 0.499 (confirmed)
+
+Now I need to:
+- Multiply 0.499 × 245.7 = 122.6043 million USD
+- Convert to dollars: 122.6043 × 1,000,000 = 122,604,300
+
+Rounded to integer dollars: 122604300
+
+The answer is: 122604300

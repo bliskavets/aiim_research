@@ -1,0 +1,4 @@
+I have the entity ID for "peer group" (2) and the year IDs for 2010 (3) and 2011 (4). I now attempt to retrieve the cumulative return values for the peer group in 2010 and 2011.
+
+Calling tools:
+[{'id': 'call_1b8c79231728490eb66282e7', 'type': 'function', 'function': {'name': 'get_return_series_value_tool', 'arguments': {'entity_id': 2, 'year_id': 3, 'series_type': 'cumulative'}}}]

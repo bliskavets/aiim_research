@@ -1,1 +1,1 @@
-Fetching the carrying amount for purchased technology (category_id 1).
+fetch_metric_value(category_id=1, metric_name='weighted_average_useful_life_years')

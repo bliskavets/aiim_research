@@ -226,7 +226,17 @@ Closed-book accuracy is essentially flat (~13–15%) across model families and c
 
 Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If contamination were driving v2 performance, closed-book accuracy would approach agentic accuracy — instead it collapses to a flat ~14% floor (−39 to −53 points).
 
-Two further points. **First, half the benchmark is contamination-proof by construction:** FinOpsBench-v1 (5,979 examples) is generated end-to-end against freshly created per-example databases and was never published, so it cannot appear in any model's training data — contamination is simply not possible there. **Second, recall would require near-perfect reading, which we do not observe:** in the access-ladder (R2) even when a model is handed FinQA's *own gold facts* (the "FinQA-native" reading setting), the best models reach only ~65–69%, not the ~100% a model regurgitating memorized answers would score; and the agentic re-instantiation adds genuine difficulty *on top of* reading for the models that lean on recall — DeepSeek-V4-Flash drops 68→54, DeepSeek-V3.2 69→39, and Llama-3.3-70B 57→20 from the reading setting to the tool-only setting. In other words, familiarity with the public FinQA items neither lets a model recall the answer (closed-book ≈ 2–14%) nor read it off directly (reading ≈ 65%, not 100%), and the tool environment adds difficulty beyond both.
+Two further points reinforce this. **First, half the benchmark is contamination-proof by construction:** FinOpsBench-v1 (5,979 examples) is generated end-to-end against freshly created per-example databases and was never published, so it cannot appear in any model's training data — contamination there is impossible.
+
+**Second, accuracy depends strongly on the mode of information access, which a memorised answer would not.** If a model had the FinQA answer memorised, it could emit it regardless of access mode — even ignoring the tools when they are available. Instead, the same model's accuracy rises monotonically as we grant it more direct access to the information (closed-book with no data → tools only → FinQA's own gold facts in-context):
+
+| Model | closed-book (question only) | agentic (tools only) | FinQA-native (gold facts in-context) |
+|---|---|---|---|
+| DeepSeek-V4-Flash | 2.5% | 54.3% | 68.0% |
+| DeepSeek-V3.2 | 4.0% | 38.6% | 69.0% |
+| Llama-3.3-70B | 3.0% | 19.8% | 57.0% |
+
+A recall-driven score would be high and flat across all three columns; we observe the opposite — a steep, monotonic dependence on access. The FinQA answer is neither recoverable from memory (closed-book ≈ 2–4%) nor obtained without genuine work even when the gold facts are handed over (≈57–69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top. Familiarity with the public FinQA items therefore does not translate into an answer pathway in v2.
 
 
 

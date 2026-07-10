@@ -168,67 +168,50 @@ We thank the reviewer for these positioning questions, and we address each of th
 
 > While the benchmark targets agentic financial analysis, it remains unclear what fundamental NLP capability it advances beyond a domain-specific evaluation resource.
 
-To address this, FinOpsBench measures capabilities a domain QA resource does not, and we back each with a statistic rather than an assertion. It starts with multi-step planning under partial observability. The model gets no data in context; it has to probe the schema or the tools, plan a retrieval path, and aggregate the result. Difficulty scales with the length of that path: bucketed by required tool-chain depth, agentic accuracy falls monotonically:
+FinOpsBench measures capabilities a domain QA resource does not, and backs each with a statistic. The first is multi-step planning under partial observability: with no data in context, the model must probe the schema, plan a retrieval path, and aggregate the result. Difficulty tracks the length of that path:
 
 | Required tool-chain depth | 1 to 3 | 4 to 5 | 6 to 7 | 8+ |
 |---|---|---|---|---|
 | agentic accuracy, pooled across models | 61.6% | 61.1% | 57.0% | 45.8% |
 
-The same tasks require writing correct database queries in v1, whose reference solutions are real analytic SQL, not single-table lookups:
+It also requires writing real analytic SQL, not single-table lookups:
 
 | v1 SQL surface | share of items |
 |---|---|
 | uses a JOIN | 70% |
 | uses an aggregate | 35% |
-| uses GROUP BY | 31% |
 | uses a subquery | 22% |
 | needs two or more JOINs | 33% |
 
-They also demand turning an open-ended request into an analytical answer through a sequence of tool calls. One v1 item, end to end:
+And it has to turn an open-ended request into an analysis over many tool calls. One v1 item:
 
 ```
 Prompt (Management Accountant):
 Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to
-Q2 2024. Explain key reasons behind volume or price variances and how these
-affect product gross margin.
+Q2 2024, and explain the volume and price variances and their effect on gross margin.
 
 Golden answer:
-From Q2 2023 to Q2 2024 the Raw Materials account fluctuates in both quantity
-and unit cost: stable near 10.0 in Q2 2023, spikes to 12.0 in Q3 2023, eases to
-11.5 in Q4, rises to 12.5 in Q1 2024, then falls to 11.0 in Q2 2024. Rising
-input cost squeezes gross margin on Widget A and Gadget B; falling cost improves
-it. The Finished-Goods ledger rows and the mislinked product_raw_materials row
-are distractors and are irrelevant. Price movement is the main driver of the
-variance, with volume secondary.
+Unit cost is stable near 10.0 in Q2 2023, spikes to 12.0 in Q3, then moves
+between 11.0 and 12.5 through Q2 2024; rising cost squeezes gross margin on
+Widget A and Gadget B, falling cost improves it. The Finished-Goods rows and the
+mislinked product_raw_materials row are distractors.
 
-Model's SQL queries (10 tool calls, middle omitted):
+Model's SQL (10 calls; quarter = a strftime date-bucketing expression):
 1  SELECT id FROM ledger_accounts WHERE name = 'Raw Materials';
-2  SELECT id, name FROM products;
-3  SELECT strftime('%Y', entry_date) || '-Q' ||
-          ((cast(strftime('%m', entry_date) AS integer)+2)/3) AS quarter,
-          SUM(quantity), AVG(unit_cost), SUM(amount)
-     FROM ledger_entries
-     WHERE account_id = 1 AND entry_date BETWEEN '2023-04-01' AND '2024-06-30'
-     GROUP BY quarter ORDER BY quarter;
-5  SELECT quarter, p.name, SUM(s.quantity), AVG(s.unit_price),
-          SUM(s.quantity * s.unit_price)
-     FROM sales s JOIN products p ON s.product_id = p.id
-     WHERE s.sale_date BETWEEN '2023-04-01' AND '2024-06-30'
-     GROUP BY quarter, p.name;
-   ... queries 4, 6-10: quarterly consumption, revenue, cost and quantity
-   totals in the same per-quarter style ...
+3  SELECT quarter, SUM(quantity), AVG(unit_cost), SUM(amount) FROM ledger_entries
+     WHERE account_id = 1 AND entry_date BETWEEN '2023-04-01' AND '2024-06-30' GROUP BY quarter;
+5  SELECT quarter, p.name, SUM(s.quantity), AVG(s.unit_price), SUM(s.quantity*s.unit_price)
+     FROM sales s JOIN products p ON s.product_id = p.id GROUP BY quarter, p.name;
+   ... 2, 4, 6-10: id lookups and per-quarter revenue, cost and quantity totals ...
 
 Model's response (abridged):
-Raw Materials ledger by quarter: Q2 2023 3,150 units @ $10.00 = $31,500;
-Q3 2023 3,830 @ $12.00 = $45,960; Q4 2023 3,150 @ $11.50; Q1 2024 3,600 @ $12.50;
-Q2 2024 3,750 @ $11.00. [per-quarter consumption, per-product sales and revenue
-tables] Price variance peaks in Q1 2024; stable selling prices cushion gross
-margin while raw-material cost inflation compresses margin percentages.
+Per-quarter ledger, consumption and per-product sales tables, concluding that the
+Q1 2024 cost peak compresses margin while stable selling prices cushion it.
 ```
 
-No single call answers this: the model has to find the right account, filter out the seeded Finished-Goods distractor rows, and chain ten queries into one grounded analysis.
+No single call answers this: the model must pick the right account, drop the seeded Finished-Goods distractor rows, and chain ten queries into one analysis.
 
-None of this is finance-specific. Parsing an ambiguous instruction, planning, writing correct queries, calling tools with the right arguments, ignoring distractors, and composing the results into a grounded answer are the core loop of any tool-using agent and carry over to other domains. Finance only supplies the hard, verifiable semantics and an executable ground truth, so FinOpsBench measures general agentic and reasoning competence as much as financial knowledge.
+None of this is finance-specific. Parsing an ambiguous instruction, planning, writing queries, calling tools with the right arguments, ignoring distractors, and composing the results into a grounded answer are the core loop of any tool-using agent. Finance only supplies verifiable semantics and an executable ground truth, so FinOpsBench measures general agentic competence as much as financial knowledge.
 
 ---
 

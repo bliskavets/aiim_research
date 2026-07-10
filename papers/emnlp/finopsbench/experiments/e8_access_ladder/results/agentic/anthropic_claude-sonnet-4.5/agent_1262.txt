@@ -1,0 +1,5 @@
+74.6% (or 74.64%)
+
+Calculation: Income taxes recovered through rates in 2017 = $1,242.0 million
+Total regulatory liabilities in 2017 = $1,664.0 million
+Percentage = (1,242.0 / 1,664.0) × 100 = 74.64%

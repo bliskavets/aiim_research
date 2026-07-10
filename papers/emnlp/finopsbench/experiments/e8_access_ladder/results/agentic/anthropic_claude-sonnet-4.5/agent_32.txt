@@ -1,0 +1,28 @@
+FINAL ANSWER: 14.9
+
+**Scratchpad/Reasoning:**
+
+From the scenario background, the company earned the following fees in 2016:
+- Management fees: $4.5 million
+- Leasing fees: $2.4 million  
+- Construction and development fees: $8.0 million
+
+I verified these amounts using the database tools:
+
+**Management fees (2016):**
+- Base: $3.5 million
+- Bonus: $1.0 million
+- Total: $4.5 million ✓
+
+**Leasing fees (2016):**
+- Base: $1.8 million
+- Bonus: $0.6 million
+- Total: $2.4 million ✓
+
+**Construction and development fees (2016):**
+- Base: $5.0 million
+- Incentive: $3.0 million
+- Total: $8.0 million ✓
+
+**Total fees earned in 2016:**
+$4.5 + $2.4 + $8.0 = **$14.9 million**

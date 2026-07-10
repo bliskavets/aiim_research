@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'toolu_bdrk_01DVAMbbGxvs5QxoRhGabM4b', 'type': 'function', 'function': {'name': 'get_breakdown_components_tool', 'arguments': {'header_id': 1}}}, {'id': 'toolu_bdrk_01MaYonjKzHxW9PnMmCbUjre', 'type': 'function', 'function': {'name': 'get_breakdown_components_tool', 'arguments': {'header_id': 5}}}]

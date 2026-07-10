@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'toolu_bdrk_01HgbMXmrANRqSRqD2zFbcLj', 'type': 'function', 'function': {'name': 'get_annual_closing_value_tool', 'arguments': {'index_id': 1, 'year': 2016}}}]

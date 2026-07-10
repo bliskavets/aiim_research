@@ -1,0 +1,9 @@
+I apologize, but I'm unable to complete this calculation due to a technical error with the database connection. The system is experiencing threading issues that prevent me from retrieving the AFUDC allowance data for 2015.
+
+To answer your question, I would need to:
+1. Retrieve the allowance for borrowed funds (BORR) for 2015
+2. Retrieve the allowance for other funds (OTHR) for 2015
+3. Calculate (BORR / OTHR) × 100
+4. Format the result as a percentage
+
+However, the get_afudc_allowance_tool is currently not accessible due to a SQLite threading error. Please contact technical support to resolve this database connectivity issue, or try again later.

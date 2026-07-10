@@ -1,0 +1,13 @@
+Based on the information gathered:
+
+**Engineered Products and Solutions segment:**
+- Growth rate 2015-2016: **7.0%** (directly stated in the narrative)
+
+**Transportation and Construction Solutions segment:**
+- Growth rate 2015-2016: **-4.0%** (the narrative states "decreased 4%")
+
+**Calculation:**
+Difference = Engineered Products & Solutions growth - Transportation & Construction Solutions growth
+Difference = 7.0% - (-4.0%) = 7.0% + 4.0% = 11.0%
+
+**11.00%**

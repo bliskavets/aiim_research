@@ -78,5 +78,15 @@
     "tool_use_necessity_c_minus_a": 68.5,
     "agentic_gap_vs_finqa": -3.0,
     "agentic_gap_vs_fullctx": 0.0
+  },
+  "Claude-Sonnet-4.5": {
+    "n": 120,
+    "a_question_only": 1.5,
+    "c_agentic": 69.2,
+    "d_finqa_canonical": 68.5,
+    "b_full_context": 69.5,
+    "tool_use_necessity_c_minus_a": 67.7,
+    "agentic_gap_vs_finqa": -0.7,
+    "agentic_gap_vs_fullctx": 0.3
   }
 }

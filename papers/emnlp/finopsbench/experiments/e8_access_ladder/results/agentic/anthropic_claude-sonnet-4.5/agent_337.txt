@@ -1,0 +1,21 @@
+Let me analyze the five-year cumulative total shareholder return for PMI versus the S&P 500 index.
+
+**Step 1: Identify the relevant period**
+The five-year period ended December 31, 2017 spans from December 31, 2012 (baseline) to December 31, 2017 (end point).
+
+**Step 2: Retrieve cumulative returns**
+From the database:
+- PMI on December 31, 2012: 100.0 (baseline)
+- PMI on December 31, 2017: 156.8
+- S&P 500 on December 31, 2012: 100.0 (baseline)
+- S&P 500 on December 31, 2017: 208.1
+
+**Step 3: Calculate percentage returns**
+Both started at 100.0 (representing the initial $100 investment):
+- PMI cumulative return: 156.8 - 100.0 = 56.8%
+- S&P 500 cumulative return: 208.1 - 100.0 = 108.1%
+
+**Step 4: Calculate the difference**
+PMI return - S&P 500 return = 56.8% - 108.1% = -51.3%
+
+**Answer: -51.3%**

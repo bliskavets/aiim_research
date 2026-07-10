@@ -28,6 +28,7 @@ as /100; a CoT model that prints "52.32" for gold "52.32%" is correct but scored
 | Llama-3.3-70B | 3.0% | 29.9% | 57.0% | 59.0% | +26.9 pt | 27.1 pt |
 | gpt-oss-120b | 2.5% | 66.5% | 64.5% | 66.5% | +64.0 pt | -2.0 pt |
 | DeepSeek-V4-Flash | 2.5% | 71.0% | 68.0% | 71.0% | +68.5 pt | -3.0 pt |
+| Claude-Sonnet-4.5 | 1.5% | 69.2% | 68.5% | 69.5% | +67.7 pt | -0.7 pt |
 
 ## Interpretation
 - **Tool-use necessity ≈ 60 pt (c−a).** The questions are essentially unanswerable

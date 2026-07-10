@@ -1,0 +1,9 @@
+119.8 billion units
+
+Here's the calculation:
+- 2016 cigarette shipment volume: 122.9 billion units
+- 2016 year-over-year change: -2.5%
+- If the same -2.5% decline occurs again in 2017:
+  2017 volume = 122.9 - (2.5% × 122.9) = 122.9 - 3.0725 = 119.8275 billion units
+  
+Rounded to one decimal place: **119.8 billion units**

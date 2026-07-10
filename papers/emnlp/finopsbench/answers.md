@@ -209,7 +209,7 @@ Both frontier/open additions land where the size–accuracy trend predicts (a se
 **Draft answer:**
 We believe this is a misunderstanding. (a) smolagents is a current, actively maintained Hugging Face library (we use ≥1.22, released 2025); it is a minimal harness, which is precisely why we chose it — less scaffolding means less framework noise, not more. (b) FinOpsBench-v1 does not use smolagents at all: it runs a minimal native tool-calling loop (and a ReAct variant) implemented directly over the model API. (c) Framework noise is addressed **empirically**: we evaluate under two protocols (native tool calling and ReAct) and two independent stacks, and the model ranking is consistent across all of them, with per-model accuracies agreeing across the two benchmark versions (mean abs. diff 2.6pp). If harness artifacts were driving results, this cross-harness agreement would not hold.
 
-### 6. Data contamination risk for v2 🟡 [E1]
+### 6. Data contamination risk for v2 ✅ [E1 + E8]
 
 > High risk of data contamination for v2, as core questions come from widely publicized FinQA training corpus.
 
@@ -225,6 +225,8 @@ We tested this directly with a **closed-book baseline**: every v2 environment pr
 Closed-book accuracy is essentially flat (~13–15%) across model families and capability levels, while agentic accuracy varies by 15 points — consistent with the residual closed-book score reflecting scenario narratives that legitimately contain the needed figure, not memorization (which would scale with training exposure).
 
 Memorization of FinQA thus does not provide an answer pathway: the system prompt contains neither the source table nor its values, the backing store is a re-instantiated database with distractor rows, and the required multi-hop tool plan does not exist in any training corpus. If contamination were driving v2 performance, closed-book accuracy would approach agentic accuracy — instead it collapses to a flat ~14% floor (−39 to −53 points).
+
+Two further points. **First, half the benchmark is contamination-proof by construction:** FinOpsBench-v1 (5,979 examples) is generated end-to-end against freshly created per-example databases and was never published, so it cannot appear in any model's training data — contamination is simply not possible there. **Second, recall would require near-perfect reading, which we do not observe:** in the access-ladder (R2) even when a model is handed FinQA's *own gold facts* (the "FinQA-native" reading setting), the best models reach only ~65–69%, not the ~100% a model regurgitating memorized answers would score; and the agentic re-instantiation adds genuine difficulty *on top of* reading for the models that lean on recall — DeepSeek-V4-Flash drops 68→54, DeepSeek-V3.2 69→39, and Llama-3.3-70B 57→20 from the reading setting to the tool-only setting. In other words, familiarity with the public FinQA items neither lets a model recall the answer (closed-book ≈ 2–14%) nor read it off directly (reading ≈ 65%, not 100%), and the tool environment adds difficulty beyond both.
 
 
 

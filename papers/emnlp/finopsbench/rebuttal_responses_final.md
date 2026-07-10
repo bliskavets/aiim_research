@@ -7,7 +7,7 @@
 ---
 
 =================================================================================
-# Response to Reviewer PVoW
+# Reviewer PVoW
 
 We would like to thank the reviewer for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we will fix in the camera ready version of our paper.
 
@@ -157,7 +157,7 @@ A non-OpenAI model sits at the very top, above the generator's own family (GPT-4
 
 ---
 
-# Response to Reviewer 6zfv
+# Reviewer 6zfv
 =================================================================================
 
 We thank the reviewer for these positioning questions, and we address each of them below with concrete measurements.

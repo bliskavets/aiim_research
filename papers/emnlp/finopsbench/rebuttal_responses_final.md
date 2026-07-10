@@ -284,6 +284,13 @@ On v1 the failures are semantic, not syntactic: SQL errors are near zero, while 
 
 We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 89% do so.
 
+The released set is also what survives the validation and judging funnel, not raw generation. About 40% of v1 candidates and 11% of v2 candidates are discarded by execution checks, the answer-consistency filter, and the panel:
+
+| Version | generated | released |
+|---|---|---|
+| v1 | 10000 | 5979 |
+| v2 | 1247 | 1108 |
+
 Where judgements are used, they are aligned with human perception, which we measured rather than assumed:
 
 | Half | check | agreement |

@@ -25,6 +25,16 @@ posting on OpenReview.
   a small loader each before they can be added to the table.
   DONE alongside this: judge-corroboration (offline, no key) computed in
   `experiments/e2_judge_agreement/panel_agreement.py` and folded into 6zfv point 4.
+  DONE: FinQA static reading run (gpt-4.1-mini, n=200) = 67.0%; Q2 table now has real
+  numbers (TAT-QA 89, FinQA 67, v2 closed-book 1.5, v2 agentic 61.5).
+- **Agentic-benchmark head-to-head (author request): investigated, NOT quick.** Checked
+  FinAgentBench (arXiv 2508.14052, agentic retrieval / ranking metric, partial data),
+  FinGAIA (arXiv 2507.17186, 407 tasks, Chinese, live browser/file/Python tools), Herculean
+  (arXiv 2605.14355, MCP live-tool skill workflows). None is a downloadable static QA split
+  scored by answer accuracy, so a same-model head-to-head needs a multi-day integration per
+  benchmark and the metrics are not comparable (ranking vs accuracy, live vs hermetic,
+  Chinese). Used a qualitative positioning table in 6zfv Q2 instead. If a real run is wanted,
+  Herculean (MCP) is the most tractable to integrate; budget ~1-2 days plus its tool stack.
 - **Inter-annotator κ, second annotator (point 4 and PVoW).** Have a second domain-literate
   annotator label the same E3 sample so we can report human-human κ, not only human vs
   scorer. No API cost, annotator time only. Text placeholder in 6zfv point 4.

@@ -223,7 +223,18 @@ The clearest way to see what FinOpsBench adds is to run the same model on open f
 | FinOpsBench-v2, no tools (data withheld) | 1.5% |
 | FinOpsBench-v2, agentic (retrieves via tools) | 61.5% |
 
-Reading a static finance benchmark and operating in FinOpsBench are different skills: the model reads FinQA at 67% but scores 1.5% on our questions until it uses tools, then reaches 61.5%. Static finance benchmarks measure reading over provided context; FinOpsBench measures the retrieval-planning and tool-use capability they cannot reach. [PLACEHOLDER: extend the comparison to recent agentic finance benchmarks (FinAgentBench, FinGAIA, and one more if a runnable harness is available), running the same model on each and on ours, to position FinOpsBench directly against the agentic benchmarks the reviewer mentions.]
+Reading a static finance benchmark and operating in FinOpsBench are different skills: the model reads FinQA at 67% but scores 1.5% on our questions until it uses tools, then reaches 61.5%. Static finance benchmarks measure reading over provided context; FinOpsBench measures the retrieval-planning and tool-use capability they cannot reach.
+
+The reviewer rightly points to recent agentic finance benchmarks, so we position FinOpsBench against them on the axes that matter for a diagnostic resource:
+
+| Benchmark | task | environment | ground truth | difficulty control |
+|---|---|---|---|---|
+| FinOpsBench (ours) | tool-use QA and analysis | synthetic, hermetic, reproducible | executable per item (v2), panel plus human (v1) | tunable, construction code released |
+| FinAgentBench | agentic retrieval, document and chunk ranking | real filings | relevance labels, ranking metric | no |
+| FinGAIA | end-to-end agent with browser, file and Python tools | live tools, Chinese | expert answer keys, 407 tasks | no |
+| Herculean | MCP skill workflows | live MCP tool servers | workflow success criteria | no |
+
+FinOpsBench is the only one of these that is fully reproducible and hermetic, scores answers against executable ground truth, and ships a difficulty knob, meaning released code that regenerates harder environments. The others buy realism through live tools, which is valuable but neither reproducible nor controllable, and one of them measures retrieval ranking rather than answer correctness. [INTERNAL, not for posting: a same-model head-to-head run on these three is not quick or metric-comparable (live browser/MCP stacks, a Chinese task set, and a ranking-only metric); can integrate one on request.]
 
 ---
 

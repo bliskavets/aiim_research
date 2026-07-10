@@ -223,16 +223,7 @@ The clearest way to see what FinOpsBench adds is to run the same model on open f
 
 Reading a static finance benchmark and operating in FinOpsBench are different skills: the model reads FinQA at 67% but scores 1.5% on our questions until it uses tools, then reaches 61.5%. Static finance benchmarks measure reading over provided context; FinOpsBench measures the retrieval-planning and tool-use capability they cannot reach.
 
-The reviewer rightly points to recent agentic finance benchmarks, so we position FinOpsBench against them on the axes that matter for a diagnostic resource:
-
-| Benchmark | task | environment | ground truth | difficulty control |
-|---|---|---|---|---|
-| FinOpsBench (ours) | tool-use QA and analysis | synthetic, hermetic, reproducible | executable per item (v2), panel plus human (v1) | tunable, construction code released |
-| FinAgentBench | agentic retrieval, document and chunk ranking | real filings | relevance labels, ranking metric | no |
-| FinGAIA | end-to-end agent with browser, file and Python tools | live tools, Chinese | expert answer keys, 407 tasks | no |
-| Herculean | MCP skill workflows | live MCP tool servers | workflow success criteria | no |
-
-FinOpsBench is the only one of these that is fully reproducible and hermetic, scores answers against executable ground truth, and ships a difficulty knob, meaning released code that regenerates harder environments. The others buy realism through live tools, which is valuable but neither reproducible nor controllable, and one of them measures retrieval ranking rather than answer correctness.
+The reviewer rightly points to recent agentic finance benchmarks, and the contrast is where FinOpsBench earns its place. FinAgentBench ranks documents and chunks, so it scores retrieval rather than whether the agent reaches the right answer. FinGAIA and Herculean do test full agent behaviour, but they run on live browsers, file parsers and MCP servers, so no item can be reproduced exactly and difficulty cannot be tuned, and FinGAIA is Chinese-only. That realism is genuinely useful, yet it is paid for with reproducibility and control. FinOpsBench keeps both: hermetic synthetic environments that rerun identically, answers checked against an executable ground truth rather than a ranking or a rubric, and difficulty exposed as a knob through released construction code. A reproducible and controllable agentic benchmark with executable answers is precisely what the others cannot offer.
 
 ---
 

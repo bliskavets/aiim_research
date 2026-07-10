@@ -1,11 +1,3 @@
-# FinOpsBench (Submission 5243) — Author Responses
-
-> Formatting notes for posting on OpenReview: each reviewer block below is a self-contained
-> comment. Reviewer quotes are kept as `>` blockquotes; our answers follow. The benchmark
-> code, data, and prompts ship with the public release; the paper link now points to it.
-
----
-
 =================================================================================
 # Reviewer PVoW
 

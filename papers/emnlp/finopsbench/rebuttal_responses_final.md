@@ -9,7 +9,7 @@
 =================================================================================
 # Response to Reviewer PVoW
 
-We are grateful for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we will fix in the camera ready version of our paper.
+We would like to thank the reviewer for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we will fix in the camera ready version of our paper.
 
 ---
 
@@ -153,7 +153,7 @@ There is also direct empirical evidence against a generator-family advantage. If
 | GPT-4.1 | OpenAI (generator family) | 66.0% |
 | GPT-4.1-mini | OpenAI (generator) | 60.0% |
 
-A non-OpenAI model sits at the very top, above the generator's own family. A pipeline biased toward its generator would show the opposite ordering.
+A non-OpenAI model sits at the very top, above the generator's own family (GPT-4.1 is used for generation by default settings). A pipeline biased toward its generator would show the opposite ordering.
 
 ---
 

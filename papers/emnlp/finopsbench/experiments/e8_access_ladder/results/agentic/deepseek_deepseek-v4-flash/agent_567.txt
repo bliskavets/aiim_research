@@ -1,1 +1,1 @@
-1.75%
+{"answer": "1.75%"}, "id": "chatcmpl-tool-9c352b6886314ae8", "type": "function"

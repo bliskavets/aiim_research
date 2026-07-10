@@ -1,1 +1,4 @@
-10.8%
+Let me first list all year labels available for operating leases to find the correct labels.
+
+Calling tools:
+[{'id': 'call_1', 'type': 'function', 'function': {'name': 'get_lease_type_id_tool', 'arguments': {'lease_type_name': 'operating'}}}]

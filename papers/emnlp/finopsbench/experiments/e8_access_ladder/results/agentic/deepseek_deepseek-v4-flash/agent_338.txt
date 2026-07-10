@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-9e8f7c1b2a3d54e6', 'type': 'function', 'function': {'name': 'get_series_value_on_tool', 'arguments': {'series_id': 3, 'date': '2002-05-31'}}}]

@@ -1,0 +1,4 @@
+Let me try to use the ACME company ID to fetch the data.
+
+Calling tools:
+[{'id': 'call_00_1a2b3c4d5e', 'type': 'function', 'function': {'name': 'fetch_dividend_total_billion', 'arguments': {'company_id': 1, 'fiscal_year': 2016}}}, {'id': 'call_00_6f7g8h9i0j', 'type': 'function', 'function': {'name': 'fetch_dividend_per_share_usd', 'arguments': {'company_id': 1, 'fiscal_year': 2016}}}]

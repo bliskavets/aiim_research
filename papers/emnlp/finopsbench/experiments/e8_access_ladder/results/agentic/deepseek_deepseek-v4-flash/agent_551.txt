@@ -1,0 +1,1 @@
+{"answer": "24.00%"}, "type": "function"

@@ -1,0 +1,1554 @@
+{
+  "scanned": 1174,
+  "prompts_redacted": 305,
+  "residual_gold_present_after_redaction": 25,
+  "residual_examples": [
+    "agent_1012",
+    "agent_1077",
+    "agent_1078",
+    "agent_1136",
+    "agent_1156",
+    "agent_1190",
+    "agent_1310",
+    "agent_138",
+    "agent_175",
+    "agent_187",
+    "agent_246",
+    "agent_263",
+    "agent_288",
+    "agent_330",
+    "agent_43",
+    "agent_47",
+    "agent_537",
+    "agent_539",
+    "agent_551",
+    "agent_599"
+  ],
+  "detail": [
+    {
+      "agent_id": "agent_1001",
+      "gold": "-21.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1002",
+      "gold": "11.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1003",
+      "gold": "39.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1009",
+      "gold": "0.913",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1010",
+      "gold": "17%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1011",
+      "gold": "44.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1012",
+      "gold": "74.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1016",
+      "gold": "-1.0%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1017",
+      "gold": "17.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1019",
+      "gold": "92.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1020",
+      "gold": "36%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_103",
+      "gold": "59.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1035",
+      "gold": "97.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1036",
+      "gold": "41.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1057",
+      "gold": "42%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1065",
+      "gold": "4.62%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1067",
+      "gold": "87%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1073",
+      "gold": "4.58%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1076",
+      "gold": "0%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1077",
+      "gold": "-17.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1078",
+      "gold": "61%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1079",
+      "gold": "3.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1091",
+      "gold": "-36.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1093",
+      "gold": "24.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1098",
+      "gold": "14.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1102",
+      "gold": "-2.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1110",
+      "gold": "1.5",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1115",
+      "gold": "-7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1119",
+      "gold": "-20.3",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1121",
+      "gold": "214%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1122",
+      "gold": "-11%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1123",
+      "gold": "20.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_113",
+      "gold": "-7.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1130",
+      "gold": "21.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1136",
+      "gold": "yes",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_114",
+      "gold": "11.3",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1145",
+      "gold": "7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1146",
+      "gold": "11%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1150",
+      "gold": "39.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1154",
+      "gold": "77.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1156",
+      "gold": "36%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1158",
+      "gold": "71%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1160",
+      "gold": "0.98",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1164",
+      "gold": "-83.6%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_117",
+      "gold": "12",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1172",
+      "gold": "35.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1173",
+      "gold": "0.75",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1174",
+      "gold": "7.97%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1176",
+      "gold": "2.0",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1183",
+      "gold": "3.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1186",
+      "gold": "-10.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1188",
+      "gold": "98.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1190",
+      "gold": "2.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_120",
+      "gold": "8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1205",
+      "gold": "48%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1208",
+      "gold": "59.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1212",
+      "gold": "87%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1213",
+      "gold": "72.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1221",
+      "gold": "49.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1222",
+      "gold": "71.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1227",
+      "gold": "76.6",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1237",
+      "gold": "1.2",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1239",
+      "gold": "8.1%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1241",
+      "gold": "-25%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1248",
+      "gold": "2.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1255",
+      "gold": "-.1",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1260",
+      "gold": "-2.86%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1264",
+      "gold": "8.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1271",
+      "gold": "-21.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1274",
+      "gold": "64.75%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1289",
+      "gold": "4.5",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1295",
+      "gold": "1.47%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_130",
+      "gold": "-44.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1300",
+      "gold": "26%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1303",
+      "gold": "97%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1304",
+      "gold": "-.25%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_1308",
+      "gold": "14.0%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1309",
+      "gold": "15.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1310",
+      "gold": "-5.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1311",
+      "gold": "8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1316",
+      "gold": "2.63",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_1317",
+      "gold": "37.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_133",
+      "gold": "3.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_138",
+      "gold": "-1.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_140",
+      "gold": "11%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_145",
+      "gold": "59%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_150",
+      "gold": "-1510",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_158",
+      "gold": "0.18",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_161",
+      "gold": "7.5%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_165",
+      "gold": "15.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_166",
+      "gold": "6.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_173",
+      "gold": "-3.5%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_175",
+      "gold": "46%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_177",
+      "gold": "-1.8",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_179",
+      "gold": "19.6",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_18",
+      "gold": "3.61%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_183",
+      "gold": "56%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_184",
+      "gold": "8.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_185",
+      "gold": "73%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_187",
+      "gold": "2.3%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_189",
+      "gold": "71.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_19",
+      "gold": "93.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_20",
+      "gold": "4.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_202",
+      "gold": "32.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_203",
+      "gold": "21.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_205",
+      "gold": "69%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_212",
+      "gold": "12.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_214",
+      "gold": "35%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_216",
+      "gold": "86.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_221",
+      "gold": "-4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_223",
+      "gold": "31.6",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_224",
+      "gold": "2.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_225",
+      "gold": "19.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_241",
+      "gold": "78.72%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_242",
+      "gold": "61.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_245",
+      "gold": "51.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_246",
+      "gold": "28%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_250",
+      "gold": "-1.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_255",
+      "gold": "89.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_257",
+      "gold": "95.04%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_259",
+      "gold": "23.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_260",
+      "gold": "37.81%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_263",
+      "gold": "3.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_265",
+      "gold": "41.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_270",
+      "gold": "25.0%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_279",
+      "gold": "yes , 38.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_280",
+      "gold": "773%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_282",
+      "gold": "80%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_284",
+      "gold": "-19%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_286",
+      "gold": "0.71%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_288",
+      "gold": "6.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_289",
+      "gold": "no",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_299",
+      "gold": "99.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_3",
+      "gold": "53%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_302",
+      "gold": "56%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_304",
+      "gold": "1.23",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_305",
+      "gold": "63.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_311",
+      "gold": "1.3",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_33",
+      "gold": "2.44",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_330",
+      "gold": "-5.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_338",
+      "gold": "-5.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_341",
+      "gold": "0.32",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_342",
+      "gold": "14%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_343",
+      "gold": "27.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_348",
+      "gold": "15.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_35",
+      "gold": "56%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_358",
+      "gold": "75%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_36",
+      "gold": "-11.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_363",
+      "gold": "71%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_367",
+      "gold": "42.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_371",
+      "gold": "48.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_381",
+      "gold": "14.3%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_389",
+      "gold": "7.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_394",
+      "gold": "1.9",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_398",
+      "gold": "7.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_406",
+      "gold": "-5.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_408",
+      "gold": "4.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_413",
+      "gold": "13%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_418",
+      "gold": "4.7",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_422",
+      "gold": "57.48",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_424",
+      "gold": "431.7",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_426",
+      "gold": "105%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_429",
+      "gold": "8.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_43",
+      "gold": "3.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_431",
+      "gold": "18%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_435",
+      "gold": "23.0",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_44",
+      "gold": "57%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_450",
+      "gold": "no",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_459",
+      "gold": "-48.49%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_463",
+      "gold": "171%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_466",
+      "gold": "6.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_467",
+      "gold": "21%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_468",
+      "gold": "-21",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_469",
+      "gold": "242%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_47",
+      "gold": "yes",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_479",
+      "gold": "4.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_481",
+      "gold": "23.1",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_482",
+      "gold": "3.3%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_492",
+      "gold": "98.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_498",
+      "gold": "-5.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_500",
+      "gold": "17%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_501",
+      "gold": "5.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_503",
+      "gold": "53%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_504",
+      "gold": "87.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_509",
+      "gold": "78.%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_520",
+      "gold": "82%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_523",
+      "gold": "-12.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_525",
+      "gold": "41%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_529",
+      "gold": ".185",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_53",
+      "gold": "34.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_530",
+      "gold": "13.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_531",
+      "gold": "16.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_532",
+      "gold": "8.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_537",
+      "gold": "yes",
+      "redactions": 3
+    },
+    {
+      "agent_id": "agent_538",
+      "gold": "-21%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_539",
+      "gold": "43.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_54",
+      "gold": "5.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_540",
+      "gold": "9%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_551",
+      "gold": "24%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_560",
+      "gold": "65%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_565",
+      "gold": "65%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_569",
+      "gold": "-2.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_573",
+      "gold": "13.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_582",
+      "gold": "47%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_583",
+      "gold": "27000000",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_599",
+      "gold": "13.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_6",
+      "gold": "7.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_60",
+      "gold": "-6.25%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_600",
+      "gold": "85%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_603",
+      "gold": "29.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_617",
+      "gold": "8.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_626",
+      "gold": "16759.5",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_629",
+      "gold": "154%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_630",
+      "gold": "1.9%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_631",
+      "gold": "18.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_644",
+      "gold": "87.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_649",
+      "gold": ".6%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_650",
+      "gold": "158%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_652",
+      "gold": "-4.4",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_656",
+      "gold": "32.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_658",
+      "gold": "-9.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_66",
+      "gold": "39%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_665",
+      "gold": "41.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_687",
+      "gold": "-8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_688",
+      "gold": "15.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_689",
+      "gold": "37%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_691",
+      "gold": "-9.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_708",
+      "gold": "3.21",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_713",
+      "gold": "-10%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_718",
+      "gold": "5.8",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_719",
+      "gold": "3.884%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_722",
+      "gold": "1.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_726",
+      "gold": "-18.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_731",
+      "gold": "23.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_733",
+      "gold": "10%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_734",
+      "gold": "31%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_737",
+      "gold": "3.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_740",
+      "gold": "16%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_747",
+      "gold": "101%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_748",
+      "gold": "23.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_751",
+      "gold": "-11.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_757",
+      "gold": "12.5",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_759",
+      "gold": "60%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_76",
+      "gold": "3.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_761",
+      "gold": "45%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_762",
+      "gold": "7.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_766",
+      "gold": "27.7",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_77",
+      "gold": "6.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_780",
+      "gold": "13.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_787",
+      "gold": "34%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_79",
+      "gold": "7.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_790",
+      "gold": "56.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_791",
+      "gold": "18%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_794",
+      "gold": "21.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_795",
+      "gold": "33.%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_80",
+      "gold": "5.1%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_801",
+      "gold": "2.39",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_81",
+      "gold": "-23.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_814",
+      "gold": "-19.0%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_821",
+      "gold": "3.67",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_823",
+      "gold": "0.75",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_824",
+      "gold": "2.3%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_827",
+      "gold": "113%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_833",
+      "gold": "9.9%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_836",
+      "gold": "0.08%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_838",
+      "gold": "10.14%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_839",
+      "gold": "yes",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_849",
+      "gold": "no",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_852",
+      "gold": "yes",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_856",
+      "gold": "82.6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_86",
+      "gold": "yes",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_860",
+      "gold": "-23%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_863",
+      "gold": "13.25%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_865",
+      "gold": "48%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_868",
+      "gold": "22.2%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_874",
+      "gold": "18%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_876",
+      "gold": "73%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_881",
+      "gold": "-36.4%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_894",
+      "gold": "23.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_899",
+      "gold": "9.3%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_908",
+      "gold": "49%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_912",
+      "gold": "63%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_919",
+      "gold": "17.8",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_922",
+      "gold": "38.74",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_926",
+      "gold": "82.8%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_928",
+      "gold": "13.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_933",
+      "gold": "30%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_939",
+      "gold": "-34.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_942",
+      "gold": "-34.5%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_943",
+      "gold": "0.99",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_950",
+      "gold": "16.65",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_954",
+      "gold": "560000",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_96",
+      "gold": "19.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_962",
+      "gold": "-9.3",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_964",
+      "gold": "34.4%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_965",
+      "gold": "70.9%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_967",
+      "gold": "42%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_970",
+      "gold": "32%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_972",
+      "gold": "-6%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_976",
+      "gold": "47.1%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_979",
+      "gold": "10%",
+      "redactions": 2
+    },
+    {
+      "agent_id": "agent_980",
+      "gold": "9.235%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_982",
+      "gold": "4.8",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_986",
+      "gold": "44.7%",
+      "redactions": 1
+    },
+    {
+      "agent_id": "agent_991",
+      "gold": "6.6%",
+      "redactions": 2
+    }
+  ]
+}

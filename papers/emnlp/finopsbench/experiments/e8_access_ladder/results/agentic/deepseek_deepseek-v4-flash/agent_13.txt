@@ -1,1 +1,2 @@
-0.3%
+Calling tools:
+[{'id': 'chatcmpl-tool-9f98ab952fd955c7', 'type': 'function', 'function': {'name': 'list_years_with_data_tool', 'arguments': {'company_id': 7, 'metric_id': 1}}}]

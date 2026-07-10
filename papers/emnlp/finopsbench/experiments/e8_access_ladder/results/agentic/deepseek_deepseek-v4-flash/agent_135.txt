@@ -1,0 +1,9 @@
+The narrative explicitly states that third-party sales for the engineered products and solutions segment increased 7% from 2015 to 2016, while third-party sales for the transportation and construction solutions segment decreased 4% over the same period. The difference between these growth rates is:
+
+7% − (−4%) = 11.00%
+
+```json
+{
+  "difference_in_growth": "11.00%"
+}
+```

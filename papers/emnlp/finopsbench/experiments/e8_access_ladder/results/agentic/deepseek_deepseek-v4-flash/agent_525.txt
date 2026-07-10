@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_8a7f3b2c1d4e5f6a7b8c9d0e', 'type': 'function', 'function': {'name': 'sum_amounts_tool', 'arguments': {'amounts': [48, 11]}}}, {'id': 'call_9b0c1d2e3f4a5b6c7d8e9f0a', 'type': 'function', 'function': {'name': 'sum_amounts_tool', 'arguments': {'amounts': [72, 11]}}}, {'id': 'call_a1b2c3d4e5f6a7b8c9d0e1f2', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'previous_amount': 59, 'new_amount': 83}}}]

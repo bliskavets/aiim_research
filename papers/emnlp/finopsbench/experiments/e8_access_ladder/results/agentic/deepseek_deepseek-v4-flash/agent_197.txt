@@ -1,0 +1,4 @@
+The question asks for the length of the lease for Pilgrim in years. Based on the context, "lease" appears to refer to the operating licence term. The current operating licence for Pilgrim started in 1972 and expired in 2012. I will compute the difference in calendar years.
+
+Calling tools:
+[{'id': 'call_00_Tsnye9T7vmXBcV1TytnNe9Fb', 'type': 'function', 'function': {'name': 'extract_year', 'arguments': {'date_string': '1972-12-01'}}}, {'id': 'call_00_4DqyCTDacOFafyDsPqVrCexR', 'type': 'function', 'function': {'name': 'extract_year', 'arguments': {'date_string': '2012-06-30'}}}, {'id': 'call_00_2NnFn5QtfBGhuF3t5vjBysI5', 'type': 'function', 'function': {'name': 'years_between', 'arguments': {'start_year': 1972, 'end_year': 2012}}}]

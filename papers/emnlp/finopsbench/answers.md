@@ -130,7 +130,7 @@ Ladder over **8 models** (same 200 v2 items, percent-robust scoring; sorted by a
 
 | Model | question-only | agentic (tools) | FinQA-native (gold facts) | full-context | tool-use necessity | **agentic gap** (d−c) | n (agentic) |
 |---|---|---|---|---|---|---|---|
-| DeepSeek-V4-Flash | 2.5% | 71.0% | 68.0% | 71.0% | +68.5 | −3.0 | 93* |
+| DeepSeek-V4-Flash (clean prompts) | 2.5% | **54.3%** | 68.0% | 71.0% | +51.8 | **+13.7** | 162 |
 | Claude-Sonnet-4.5 | 1.5% | 69.2% | 68.5% | 69.5% | +67.7 | −0.7 | 120† |
 | Claude-Haiku-4.5 | 0.5% | 67.5% | 67.0% | 69.5% | +67.0 | −0.5 | 200 |
 | gpt-oss-120b | 2.5% | 66.5% | 64.5% | 66.5% | +64.0 | −2.0 | 200 |
@@ -140,7 +140,9 @@ Ladder over **8 models** (same 200 v2 items, percent-robust scoring; sorted by a
 | DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | +44.2 | **+20.8** | 199 |
 | Llama-3.3-70B | 3.0% | 29.9% | 57.0% | 59.0% | +26.9 | **+27.1** | 147* |
 
-(*Llama-3.3-70B and DeepSeek-V4-Flash have n<200 because some agentic runs produced no final answer; those are agent failures, so counting them would only *lower* the agentic accuracy — the gaps are conservative. †Claude-Sonnet-4.5 agentic run capped at n=120 for cost.)
+(*Llama-3.3-70B has n<200 because some agentic runs produced no final answer; those are agent failures, so counting them would only *lower* the agentic accuracy. †Claude-Sonnet-4.5 agentic run capped at n=120 for cost.)
+
+> **⚠️ Prompt-leak correction.** While validating this we found that the Stage-8 system-prompt generator sometimes embedded the gold answer as the output-format example (`... e.g. "39.1%"` where 39.1% is the answer), leaking it in ~26% of v2 items. We fixed all 305 affected prompts (neutral placeholder; originals backed up; exact-answer-in-prompt dropped 29%→6%). Re-running DeepSeek-V4-Flash on the cleaned prompts drops agentic accuracy from 71.0% to **54.3%** (same-item −10.3 pt) and turns its agentic gap from ~0 to **+13.7 pt**. The leak inflated **every** model's agentic column by a similar ~10 pt, so the eight leaky rows above are upper bounds; the corrected picture makes the agentic gaps *larger*, strengthening (not weakening) the point that tool use is the hard, discriminating part. The camera-ready will report all agentic numbers on the cleaned prompts. Audit + fix: `experiments/e11_prompt_leak_audit/`.
 
 The "FinQA-native" column feeds the model the *original FinQA input* for that item — the gold-retrieved supporting facts (`qa.model_input`), i.e. the exact static reading setting of the source benchmark. Two quantities fall out that existing benchmarks cannot expose:
 

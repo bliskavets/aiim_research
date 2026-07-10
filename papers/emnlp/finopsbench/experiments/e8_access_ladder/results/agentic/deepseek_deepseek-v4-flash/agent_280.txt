@@ -1,1 +1,10 @@
-774%
+The additions during 2009 amount to 103,698 thousand USD, and the deductions amount to 11,869 thousand USD.  
+To find how much bigger the additions are in comparison with the deductions, we calculate the percentage difference:  
+
+\[
+\frac{\text{additions} - \text{deductions}}{\text{deductions}} \times 100\% = \frac{103,698 - 11,869}{11,869} \times 100\% = \frac{91,829}{11,869} \times 100\% \approx 773.7\%
+\]
+
+Thus, the additions are 773.7% larger than the deductions.
+
+773.7%

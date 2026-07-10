@@ -1,20 +1,20 @@
 [
  {
-  "agent_id": "agent_1008",
-  "ground_truth_answer": "-10%",
-  "agent_output": "Answer: -10%",
+  "agent_id": "agent_1002",
+  "ground_truth_answer": "11.1%",
+  "agent_output": "11.1%",
   "passed": true
  },
  {
-  "agent_id": "agent_1009",
-  "ground_truth_answer": "0.913",
-  "agent_output": "0.913",
+  "agent_id": "agent_1008",
+  "ground_truth_answer": "-10%",
+  "agent_output": "-10%",
   "passed": true
  },
  {
   "agent_id": "agent_1025",
   "ground_truth_answer": "2%",
-  "agent_output": "2%",
+  "agent_output": "{\"answer\": \"2%\"}, \"type\": \"function\"",
   "passed": true
  },
  {
@@ -26,19 +26,25 @@
  {
   "agent_id": "agent_1066",
   "ground_truth_answer": "19.8",
-  "agent_output": "25.97",
+  "agent_output": "Let me analyze this carefully.\n\nFrom the data:\n- 2016 cigarette volume = 122.9 billion units\n- 2016 YoY change = -2.5% (a decrease from 2015)\n\nThe question asks: if the same change that occurred in 2016 happened again, what would 2017 volume be?\n\nUsing the domain-specific tools as instructed:\n\n1. **Excess above baseline**: 122.9 - 100 = 22.9 billion\n2. **Apply the same percentage change**: Using the formula `result = excess - (percent_change / 100) * reference_volume` with reference_volume = the baseline (100):\n   - result = 22.9 - (-2.5/100) \u00d7 100 = 22.9 - (-2.5) = 22.9 + 2.5 = 25.4\n3. **New total volume**: baseline + result = 100 + 25.4 = **125.4 billion**\n\nWait \u2014 this gives an increase, which contradicts applying a -2.5% decrease. Let me reconsider.\n\nThe formula `excess - (percent_change / 100) * reference_volume` with a negative percent_change of -2.5% actually **adds** to the excess because subtracting a negative equals adding. This is the expected behavior of the domain-specific tool when applying a negative percent change to an excess above baseline.\n\nSo the result is:\n\n**2017 cigarette shipment volume = 100 + 25.4 = 125.4 billion units**",
   "passed": false
+ },
+ {
+  "agent_id": "agent_1078",
+  "ground_truth_answer": "61%",
+  "agent_output": "61%",
+  "passed": true
  },
  {
   "agent_id": "agent_1085",
   "ground_truth_answer": "31904",
-  "agent_output": "31904",
+  "agent_output": "{\n    \"answer\": \"31904\"\n  },\"arguments\": {\"answer\": \"31904\"}",
   "passed": true
  },
  {
-  "agent_id": "agent_1086",
-  "ground_truth_answer": "1575000",
-  "agent_output": "1575000",
+  "agent_id": "agent_1087",
+  "ground_truth_answer": "$ 1928.88",
+  "agent_output": "$ 1928.88",
   "passed": true
  },
  {
@@ -54,16 +60,34 @@
   "passed": true
  },
  {
+  "agent_id": "agent_1110",
+  "ground_truth_answer": "1.5",
+  "agent_output": "{\"answer\": \"1.5\"}, \"id\": \"call_123\"",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1124",
+  "ground_truth_answer": "1224",
+  "agent_output": "1224",
+  "passed": true
+ },
+ {
   "agent_id": "agent_1139",
   "ground_truth_answer": "8.1",
-  "agent_output": "8.1",
+  "agent_output": "Calling tools:\n[{'id': 'call_tool_1', 'function': {'name': 'fetch_one_day_var_tool', 'arguments': {'instrument_id': 1, 'fiscal_year_id': 2}}},\n {'id': 'call_tool_2', 'function': {'name': 'fetch_one_day_var_tool', 'arguments': {'instrument_id': 1, 'fiscal_year_id': 3}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_114",
+  "ground_truth_answer": "11.3",
+  "agent_output": "11.3",
   "passed": true
  },
  {
   "agent_id": "agent_1142",
   "ground_truth_answer": "450000",
-  "agent_output": "450000",
-  "passed": true
+  "agent_output": "950000",
+  "passed": false
  },
  {
   "agent_id": "agent_1143",
@@ -72,9 +96,15 @@
   "passed": false
  },
  {
-  "agent_id": "agent_1158",
-  "ground_truth_answer": "71%",
-  "agent_output": "71.5%",
+  "agent_id": "agent_115",
+  "ground_truth_answer": "2.33",
+  "agent_output": "2.33",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1173",
+  "ground_truth_answer": "0.75",
+  "agent_output": "0.75",
   "passed": true
  },
  {
@@ -84,22 +114,82 @@
   "passed": true
  },
  {
+  "agent_id": "agent_1182",
+  "ground_truth_answer": "8.36",
+  "agent_output": "8.36",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1188",
+  "ground_truth_answer": "98.2%",
+  "agent_output": "Based on the retrieved data, the S&P 500 rebased closing value was 100.0 at the end of 2011 and 198.18 at the end of 2016.\n\nLet me calculate the percentage change:\n- Start value (2011): 100.0\n- End value (2016): 198.18\n- Change: (198.18 - 100.0) / 100.0 = 0.9818\n\nCalling tools:\n[{'id': 'chatcmpl-tool-c6070c3c9c84d805', 'type': 'function', 'function': {'name': 'format_percentage_tool', 'arguments': {'value': 0.9818, 'decimals': 1}}}]",
+  "passed": false
+ },
+ {
   "agent_id": "agent_1205",
   "ground_truth_answer": "48%",
-  "agent_output": "52%",
-  "passed": false
+  "agent_output": "48%",
+  "passed": true
  },
  {
   "agent_id": "agent_1231",
   "ground_truth_answer": "24123727",
-  "agent_output": "24123727",
+  "agent_output": "24124331",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_125",
+  "ground_truth_answer": "257.95%",
+  "agent_output": "Calling tools:\n[{'id': 'call_e8f8c33e4338410f9b1bb7b4', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 7, 'year': 2007}}}, {'id': 'call_13795390c5be4fad9538bb56', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 4, 'year': 2007}}}, {'id': 'call_5f859a854d3c41b48dbebea4', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 1, 'year': 2007}}}, {'id': 'call_5836d1ab14a14cbb9fe4fc61', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 6, 'year': 2007}}}, {'id': 'call_ab906d6f63c445469193a4cc', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 3, 'year': 2007}}}, {'id': 'call_e947aa1b7a344ed387152199', 'type': 'function', 'function': {'name': 'get_oci_change_tool', 'arguments': {'component_id': 2, 'year': 2007}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1258",
+  "ground_truth_answer": "7341",
+  "agent_output": "7341",
   "passed": true
  },
  {
   "agent_id": "agent_1259",
   "ground_truth_answer": "67.9%",
-  "agent_output": "33.9%",
+  "agent_output": "67.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_126",
+  "ground_truth_answer": "295.4",
+  "agent_output": "Let me try to use the ACME company ID to fetch the data.\n\nCalling tools:\n[{'id': 'call_00_1a2b3c4d5e', 'type': 'function', 'function': {'name': 'fetch_dividend_total_billion', 'arguments': {'company_id': 1, 'fiscal_year': 2016}}}, {'id': 'call_00_6f7g8h9i0j', 'type': 'function', 'function': {'name': 'fetch_dividend_per_share_usd', 'arguments': {'company_id': 1, 'fiscal_year': 2016}}}]",
   "passed": false
+ },
+ {
+  "agent_id": "agent_1264",
+  "ground_truth_answer": "8.4",
+  "agent_output": "4.58",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1267",
+  "ground_truth_answer": "10%",
+  "agent_output": "10%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1268",
+  "ground_truth_answer": "-1693",
+  "agent_output": "-1693",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1269",
+  "ground_truth_answer": "20.5",
+  "agent_output": "20.6",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1277",
+  "ground_truth_answer": "67451",
+  "agent_output": "67451",
+  "passed": true
  },
  {
   "agent_id": "agent_1282",
@@ -108,16 +198,40 @@
   "passed": true
  },
  {
+  "agent_id": "agent_1287",
+  "ground_truth_answer": "87.3",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-907e0e0b293dbc5f', 'type': 'function', 'function': {'name': 'compute_sales_change_usd_tool', 'arguments': {'segment_name': 'Metal Beverage Packaging, Europe', 'start_year': 2008, 'end_year': 2009}}}, {'id': 'chatcmpl-tool-a43af8e74b4e49ce', 'type': 'function', 'function': {'name': 'compute_sales_change_usd_tool', 'arguments': {'segment_name': 'Metal Beverage Packaging, Europe', 'start_year': 2009, 'end_year': 2010}}}]",
+  "passed": false
+ },
+ {
   "agent_id": "agent_1291",
   "ground_truth_answer": "37.9%",
-  "agent_output": "17.9%",
+  "agent_output": "Now I have the company ID = 1. Let me get the years and cumulative values.\n\nCalling tools:\n[{'id': 'chatcmpl-tool-035f8a5f2f9a4a79', 'type': 'function', 'function': {'name': 'list_years_for_company', 'arguments': {'company_id': 1}}}]",
   "passed": false
  },
  {
   "agent_id": "agent_13",
   "ground_truth_answer": "43990.0%",
-  "agent_output": "0.3%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9f98ab952fd955c7', 'type': 'function', 'function': {'name': 'list_years_with_data_tool', 'arguments': {'company_id': 7, 'metric_id': 1}}}]",
   "passed": false
+ },
+ {
+  "agent_id": "agent_130",
+  "ground_truth_answer": "-44.9%",
+  "agent_output": "-44.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1300",
+  "ground_truth_answer": "26%",
+  "agent_output": "26.2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1318",
+  "ground_truth_answer": "13.4%",
+  "agent_output": "13.4%",
+  "passed": true
  },
  {
   "agent_id": "agent_134",
@@ -126,22 +240,34 @@
   "passed": true
  },
  {
+  "agent_id": "agent_135",
+  "ground_truth_answer": "11.25%",
+  "agent_output": "The narrative explicitly states that third-party sales for the engineered products and solutions segment increased 7% from 2015 to 2016, while third-party sales for the transportation and construction solutions segment decreased 4% over the same period. The difference between these growth rates is:\n\n7% \u2212 (\u22124%) = 11.00%\n\n```json\n{\n  \"difference_in_growth\": \"11.00%\"\n}\n```",
+  "passed": false
+ },
+ {
   "agent_id": "agent_140",
   "ground_truth_answer": "11%",
   "agent_output": "11%",
   "passed": true
  },
  {
+  "agent_id": "agent_15",
+  "ground_truth_answer": "65.6%",
+  "agent_output": "65.6%",
+  "passed": true
+ },
+ {
   "agent_id": "agent_156",
   "ground_truth_answer": "44%",
-  "agent_output": "44%",
+  "agent_output": "{\"answer\": \"44%\"}, \"type\": \"tool_call\"",
   "passed": true
  },
  {
   "agent_id": "agent_157",
   "ground_truth_answer": "4.8",
-  "agent_output": "6.8",
-  "passed": false
+  "agent_output": "4.8",
+  "passed": true
  },
  {
   "agent_id": "agent_176",
@@ -150,33 +276,69 @@
   "passed": true
  },
  {
-  "agent_id": "agent_226",
-  "ground_truth_answer": "13.0%",
-  "agent_output": "13.0%",
+  "agent_id": "agent_182",
+  "ground_truth_answer": "1.32%",
+  "agent_output": "Calling tools:\n[{'id': 'call_3c0c7c67a8b442a494560d3d5dd21baf', 'type': 'function', 'function': {'name': 'get_total_nol_for_jurisdiction_tool', 'arguments': {'jurisdiction': 'federal'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_188",
+  "ground_truth_answer": "66.6%",
+  "agent_output": "66.6%",
   "passed": true
+ },
+ {
+  "agent_id": "agent_194",
+  "ground_truth_answer": "-5821",
+  "agent_output": "-5821000",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_197",
+  "ground_truth_answer": "13",
+  "agent_output": "The question asks for the length of the lease for Pilgrim in years. Based on the context, \"lease\" appears to refer to the operating licence term. The current operating licence for Pilgrim started in 1972 and expired in 2012. I will compute the difference in calendar years.\n\nCalling tools:\n[{'id': 'call_00_Tsnye9T7vmXBcV1TytnNe9Fb', 'type': 'function', 'function': {'name': 'extract_year', 'arguments': {'date_string': '1972-12-01'}}}, {'id': 'call_00_4DqyCTDacOFafyDsPqVrCexR', 'type': 'function', 'function': {'name': 'extract_year', 'arguments': {'date_string': '2012-06-30'}}}, {'id': 'call_00_2NnFn5QtfBGhuF3t5vjBysI5', 'type': 'function', 'function': {'name': 'years_between', 'arguments': {'start_year': 1972, 'end_year': 2012}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_201",
+  "ground_truth_answer": "0.1%",
+  "agent_output": "0.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_211",
+  "ground_truth_answer": "4.2%",
+  "agent_output": "4.2",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_225",
+  "ground_truth_answer": "19.4%",
+  "agent_output": "9.4%",
+  "passed": false
  },
  {
   "agent_id": "agent_228",
   "ground_truth_answer": "17.2%",
-  "agent_output": "The statutory tax rate in 2018 is 19.0% and the effective tax rate for international operations is 22.0%. The difference is 22.0% - 19.0% = 3.0%.",
+  "agent_output": "-3.0%",
   "passed": false
  },
  {
-  "agent_id": "agent_234",
-  "ground_truth_answer": "no",
-  "agent_output": "No, a 0.5% decrease in discount rate has an estimated impact of $1 million, which is less than the $10 million impact of a 0.5% decrease in expected long-term return on assets.",
+  "agent_id": "agent_242",
+  "ground_truth_answer": "61.5%",
+  "agent_output": "I now have the data I need. The allowance for borrowed funds (BORR) in 2015 is 8.0 million, and the allowance for other funds (OTHR) in 2015 is 13.0 million.\n\nLet me compute the percentage.\n\nCalling tools:\n[{'id': 'call_XX', 'type': 'function', 'function': {'name': 'compute_percentage_tool', 'arguments': {'numerator': 8.0, 'denominator': 13.0}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_246",
+  "ground_truth_answer": "28%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9e5b3e7a2c1f4d0b', 'type': 'function', 'function': {'name': 'calculate_percentage', 'arguments': {'part': 3189.0, 'whole': 11500.0}}}]",
   "passed": false
  },
  {
   "agent_id": "agent_247",
   "ground_truth_answer": "52.32%",
   "agent_output": "52.32%",
-  "passed": true
- },
- {
-  "agent_id": "agent_249",
-  "ground_truth_answer": "1016",
-  "agent_output": "1016",
   "passed": true
  },
  {
@@ -194,7 +356,25 @@
  {
   "agent_id": "agent_280",
   "ground_truth_answer": "773%",
-  "agent_output": "774%",
+  "agent_output": "The additions during 2009 amount to 103,698 thousand USD, and the deductions amount to 11,869 thousand USD.  \nTo find how much bigger the additions are in comparison with the deductions, we calculate the percentage difference:  \n\n\\[\n\\frac{\\text{additions} - \\text{deductions}}{\\text{deductions}} \\times 100\\% = \\frac{103,698 - 11,869}{11,869} \\times 100\\% = \\frac{91,829}{11,869} \\times 100\\% \\approx 773.7\\%\n\\]\n\nThus, the additions are 773.7% larger than the deductions.\n\n773.7%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_287",
+  "ground_truth_answer": "24.2%",
+  "agent_output": "28.6%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_29",
+  "ground_truth_answer": "0.96",
+  "agent_output": "0.96",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_295",
+  "ground_truth_answer": "55.3%",
+  "agent_output": "I cannot provide the answer because the database tools are unavailable due to a missing table error, preventing retrieval of the required free cash flow data for 2013 and the prior year.",
   "passed": false
  },
  {
@@ -204,9 +384,21 @@
   "passed": false
  },
  {
+  "agent_id": "agent_306",
+  "ground_truth_answer": "27.2%",
+  "agent_output": "27.2%",
+  "passed": true
+ },
+ {
   "agent_id": "agent_313",
   "ground_truth_answer": "50.0%",
-  "agent_output": "50.0%",
+  "agent_output": "Calling tools:\n[{'id': 'call_C45jRuQqnKNvLBiY7XdlzAs7', 'type': 'function', 'function': {'name': 'fetch_lease_payment_amount', 'arguments': {'contract_id': 1, 'year_label': '2022'}}}, {'id': 'call_rW9z4BSmwlfQmQNvqbnD5xvL', 'type': 'function', 'function': {'name': 'fetch_present_value_for_contract', 'arguments': {'contract_id': 1}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_32",
+  "ground_truth_answer": "14.9",
+  "agent_output": "14.9",
   "passed": true
  },
  {
@@ -216,21 +408,51 @@
   "passed": true
  },
  {
+  "agent_id": "agent_324",
+  "ground_truth_answer": "749524",
+  "agent_output": "749524",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_332",
+  "ground_truth_answer": "52.9%",
+  "agent_output": "52.9%",
+  "passed": true
+ },
+ {
   "agent_id": "agent_337",
   "ground_truth_answer": "-51.3%",
-  "agent_output": "The cumulative total shareholder return for PMI over the five years ended December 31, 2017 was 56.8% (from 100 to 156.8), while for the S&P 500 it was 108.1% (from 100 to 208.1). The difference (PMI minus S&P 500) is -51.3%.",
-  "passed": true
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-a6e8b1d71fdd481f', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'entity_name': 'S&P 500', 'date_text': 'december 31 2017', 'metric_code': 'cumulative_return'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_338",
+  "ground_truth_answer": "-5.8%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9e8f7c1b2a3d54e6', 'type': 'function', 'function': {'name': 'get_series_value_on_tool', 'arguments': {'series_id': 3, 'date': '2002-05-31'}}}]",
+  "passed": false
  },
  {
   "agent_id": "agent_343",
   "ground_truth_answer": "27.4",
-  "agent_output": "27.4",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9e8a15a24a8d3e0c', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2007, 'revision': 2}}}, {'id': 'chatcmpl-tool-a0dee0e9e8a7e399', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2008, 'revision': 2}}}, {'id': 'chatcmpl-tool-9e5ffb843a0f6220', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2009, 'revision': 2}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_344",
+  "ground_truth_answer": "1%",
+  "agent_output": "1%",
   "passed": true
  },
  {
   "agent_id": "agent_345",
   "ground_truth_answer": "0",
   "agent_output": "0",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_347",
+  "ground_truth_answer": "60%",
+  "agent_output": "60%",
   "passed": true
  },
  {
@@ -242,20 +464,38 @@
  {
   "agent_id": "agent_371",
   "ground_truth_answer": "48.1%",
-  "agent_output": "43.5%",
+  "agent_output": "39.5%",
   "passed": false
  },
  {
   "agent_id": "agent_381",
   "ground_truth_answer": "14.3%",
-  "agent_output": "14.3%",
+  "agent_output": "1/7 = 14.3%\n\n14.3%",
   "passed": true
  },
  {
   "agent_id": "agent_398",
   "ground_truth_answer": "7.9%",
-  "agent_output": "3.9%",
+  "agent_output": "The agent encountered repeated errors trying to look up the company ID, so it could not retrieve the net revenue values for 2015 and 2016 needed to calculate the growth rate. Without the actual numerical values, it is impossible to compute the growth rate.\n\nGiven the available information, I cannot provide a specific percentage. The correct response is that the data is unavailable.\n\nError",
   "passed": false
+ },
+ {
+  "agent_id": "agent_401",
+  "ground_truth_answer": "1.18",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-a3e3fad0c59e6fba', 'type': 'function', 'function': {'name': 'fetch_financial_fact_tool', 'arguments': {'business_unit_id': 1, 'metric_id': 1, 'year': 2008}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_404",
+  "ground_truth_answer": "247",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9eacb4a9f899b0f0', 'type': 'function', 'function': {'name': 'compute_absolute_difference_tool', 'arguments': {'val1': 375.0, 'val2': 128.0}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_409",
+  "ground_truth_answer": "10122",
+  "agent_output": "10122",
+  "passed": true
  },
  {
   "agent_id": "agent_411",
@@ -270,16 +510,64 @@
   "passed": true
  },
  {
+  "agent_id": "agent_413",
+  "ground_truth_answer": "13%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-7e694321bf724d0d', 'type': 'function', 'function': {'name': 'search_metric_tool', 'arguments': {'keyword': 'comprehensive income attributable'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_415",
+  "ground_truth_answer": "120384.6",
+  "agent_output": "I already have the necessary data: net income = 62,600 (thousand_usd) and EPS basic = 0.52 (usd_per_share). The conversion gives absolute net income = 62,600,000 USD.\n\nNumber of shares = Net Income / EPS = 62,600,000 / 0.52 = 120,384,615.3846... shares.\n\nExpressed in thousands of shares: 120,384.6.\n\nLet me verify by using the top companies tool to see if it provides any cross-check.\n\nCalling tools:\n[{'id': 'call_b3256e2c351b4498aaacb6bb', 'type': 'function', 'function': {'name': 'get_top_companies_by_net_income_tool', 'arguments': {'year': 2007, 'n': 5}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_425",
+  "ground_truth_answer": "76",
+  "agent_output": "76",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_429",
+  "ground_truth_answer": "8.3%",
+  "agent_output": "I'm sorry, but due to persistent threading errors, I am unable to execute the database tools to retrieve the actual return values for the peer group. Without the numerical data from the chart (which is not provided in the scenario), I cannot compute the exact percentage change in the 5-year annual performance from 2010 to 2011.\n\nBased on the available information and tool failures, I cannot provide a data-driven answer. Could you please clarify or provide the specific cumulative return values for the peer group for the years 2010 and 2011? Alternatively, if you have the chart data, I can compute the percentage change.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_434",
+  "ground_truth_answer": "2.7%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9e5f6c1a3b2d4c8e', 'type': 'function', 'function': {'name': 'list_acquisitions', 'arguments': {}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_437",
+  "ground_truth_answer": "199",
+  "agent_output": "{\"answer\": \"-46455\"}, \"type\": \"function\"",
+  "passed": false
+ },
+ {
   "agent_id": "agent_442",
   "ground_truth_answer": "39.6",
-  "agent_output": "39.6",
-  "passed": true
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-f2e3e75e3b277c8b', 'type': 'function', 'function': {'name': 'get_obligation_header_id_tool', 'arguments': {'year_id': 3, 'obligation_type_name': 'Financing Obligation'}}}]",
+  "passed": false
  },
  {
   "agent_id": "agent_452",
   "ground_truth_answer": "4",
-  "agent_output": "4.0",
+  "agent_output": "The estimated unrecognized compensation cost expected to be recognized by December 31, 2018 is **$4.0 million**.",
   "passed": true
+ },
+ {
+  "agent_id": "agent_460",
+  "ground_truth_answer": "282076",
+  "agent_output": "{\"answer\":  \"282076\"}, \"type\": \"function\"",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_466",
+  "ground_truth_answer": "6.3%",
+  "agent_output": "I see the agent encountered repeated errors trying to look up the ticker and then fetch data. However, I can try a different approach: use the ticker \"GS\" directly, which is the well-known ticker for Goldman Sachs, and then list available line items to find the correct name for net revenues. Then retrieve amounts for 2016 and 2017 to calculate the growth rate. Let me proceed.\n\nFirst, list available line items for \"GS\" to see if the system accepts that ticker.Error:\nError executing tool 'get_company_ticker_from_name_tool' with arguments {'company_name': 'The Goldman Sachs Group, Inc.'}: ValueError: Unknown company name: 'The Goldman Sachs Group, Inc.'\nPlease try again or use another tool\nNow let's retry: take care not to repeat previous errors! If you have retried several times, try a completely different approach.\n\nThe agent's memory shows repeated failures, but I am now responding as the assistant. I need to use the tools directly. Since the ticker tool fails, I'll attempt to use the ticker \"GS\" directly in the list_available_line_items tool. The error in the agent's memory shows that get_financial_item_amount for GS-2017-Total net revenues failed, so the item name might be different. Let me try to list line items for GS.Error:\nError executing tool 'get_company_ticker_from_name_tool' with arguments {'company_name': 'The Goldman Sachs Group, Inc.'}: ValueError: Unknown company name: 'The Goldman Sachs Group, Inc.'\nPlease try again or use another tool\n\nI need to bypass the ticker lookup and directly use \"GS\". Let me call list_available_line_items with ticker \"GSError:\nError executing tool 'list_available_line_items_tool' with arguments {'ticker': 'GS'}: ValueError: Invalid ticker 'GS'\nPlease try again or use another tool\n\nThe system does not recognize \"GS\". Perhaps the company name format is different. Looking at the scenario, it mentions \"The Goldman Sachs Group, Inc.\" but the tool fails. Maybe the correct company name is \"Goldman Sachs\" without the full legal name? Let me try \"Goldman Sachs\".Error:\nError executing tool 'get_company_ticker_from_name_tool' with arguments {'company_name': 'Goldman Sachs'}: ValueError: Unknown company name: 'Goldman Sachs'\nPlease try again or use another tool\n\nHmm. Perhaps the tool expects a specific string from a predefined set. Alternatively, I can try \"Goldman Sachs Group\" or \"Goldman Sachs Group Inc.\" Let me try \"Goldman Sachs Group Inc.\" (without \"The\" and with a period).Error:\nError executing tool 'get_company_ticker_from_name_tool' with arguments {'company_name': 'Goldman Sachs Group Inc.'}: ValueError: Unknown company name: 'Goldman Sachs Group Inc.'\nPlease try again or use another tool\n\nThis is frustrating. Since the agent has already attempted many variations, maybe the company is not in the tool's database. However, the scenario explicitly mentions Goldman Sachs. Possibly the ticker is \"GS\" but the list_available_line_items tool rejected it because the system might require a valid ticker from a different source. Another idea: the tool might be case-sensitive? \"GS\" is uppercase. It gave invalid ticker. Perhaps I need to use the full name exactly as in the filing? The filing says \"The Goldman Sachs Group, Inc.\" That was the first attempt. \n\nGiven the repeated failures, maybe the data is not available through these tools for this company. However, the user question is about growth rate in net revenues in 2017. The scenario says that 2018 total net revenues were 12% higher than 2017, but we need 2017 growth rate (i.e., from 2016 to 2017). We could compute it if we had the numbers. The narrative also mentions that 2018 total net revenues were 12% higher than 2017, but that's a different growth rate.\n\nSince I can't get the data via tools, perhaps I can infer from the scenario? The scenario does not provide the actual revenue figures for 2016 and 2017. However, the question explicitly asks for the growth rate in net revenues in 2017. Without data, I cannot answer. \n\nMaybe there is an alternative: I could try to use the get_financial_item_amount tool with the exact item name as in the table. The scenario lists \"total net revenues\". The agent tried \"Total net revenues\" and got error. Perhaps it's \"Net revenues\" or \"Total net revenue\". Let me try a few variations, but first I need to know the ticker. \n\nConsidering the many attempts, perhaps the correct ticker is \"GS\" but the list_available_line_items tool needs a different input? The error said \"Invalid ticker 'GS'\". Could be that the tool expects a ticker like \"GS\" but the system hasn't loaded data for it. \n\nGiven the repeated errors, I think it's safe to conclude that the necessary data is not accessible through the provided tools. However, the user expects an answer. Perhaps I can use external knowledge? I recall that Goldman Sachs' total net revenues for 2016 were about $33.6 billion and for 2017 about $32.7 billion? Actually, let me think: In 2017, Goldman Sachs reported net revenues of $32.7 billion, down from 2016's $35.5 billion? Wait, I need accurate figures. I shouldn't guess.\n\nAlternatively, the scenario says \"Management notes that 2018 total net revenues were 12% higher than 2017\", so 2018 > 2017 by 12%. But that doesn't give 2017 growth. \n\nGiven the constraints, I'll have to state that the data is unavailable. But the instruction is to provide an answer. Perhaps I can try one more time with a different company name: \"Goldman Sachs Group, Inc.\" without \"The\"? Already tried. \n\nI'll make one final attempt: use get_company_ticker_from_name with \"Goldman Sachs Group Inc\" (no comma, no period).Error:\nError executing tool 'get_company_ticker_from_name_tool' with arguments {'company_name': 'Goldman Sachs Group Inc'}: ValueError: Unknown company name: 'Goldman Sachs Group Inc'\nPlease try again or use another tool\n\nNo success. I'll now respond to the user that due to tool limitations, I cannot retrieve the data and thus cannot compute the growth rate. But the user expects a numeric answer. Maybe I can compute using the information from the scenario? The scenario says 2018 total net revenues were 12% higher than 2017. That implies a growth rate for 2018 over 2017, not for 2017. The question is for 2017 growth rate. The only way to get that is to have the 2016 and 2017 numbers. Without them, I cannot answer.\n\nI'll state that the required data is not available in the system. However, since this is a simulated environment, perhaps the correct answer is something like \"4.5%\" or whatever. But I cannot guess.\n\nGiven the agent's memory shows a long chain of errors, I think I should provide a final answer based on the scenario: Perhaps the growth rate in net revenues in 2017 can be derived from the narrative? The narrative does not mention it. \n\nWait: The scenario says \"Management notes that 2018 total net revenues were 12 % higher than 2017, driven by...\" It doesn't mention 2017 vs 2016. So there is no info.\n\nI'll respond that the tool could not find the company data, thus unable to compute. But the instruction says \"Please figure out the answer using the tools if needed\". Since tools are not working, I'll provide a best-effort answer: \"Unable to determine due to data retrieval errors.\" But the final answer should be a percentage. \n\nGiven the context, I'll assume that the growth rate in net revenues in 2017 is actually the growth from 2016 to 2017. I do not have that. \n\nPerhaps the user expects me to calculate from the line items? The scenario mentions line items, but not their amounts.\n\nI'll try one more creative approach: Use the get_operating_expenses tool? That might not help.\n\nI'll try to get the ticker by using a common synonym: \"GS\" might be accepted in get_financial_item_amount even if list_available_line_items fails? The agent tried get_financial_item_amount with ticker 'GS' and got \"Data not found\". So that path is closed.\n\nThus, I must conclude that I cannot answer. I'll provide a response stating the difficulty.\n\nGiven the repeated errors in the agent's memory, I'll output a final answer: \"The growth rate in net revenues in 2017 cannot be determined because the required data could not be retrieved from the available tools.\" But the user wants a percentage. \n\nAlternatively, maybe the answer is simply \"12%\" because the scenario mentions that 2018 was 12% higher than 2017, but that's not the growth rate in 2017. \n\nI'll check the original task: \"What is the growth rate in net revenues in 2017?\" That is ambiguous: It could mean the growth rate from 2016 to 2017, or the growth rate that occurred during 2017? Typically, growth rate in a year means the percentage change from previous year. So I need 2016 and 2017 revenues.\n\nI have no data. I'll state that I cannot compute.\n\nGiven the constraints of this conversation, I'll provide a final answer: \"Data unavailable.\" But the user might be expecting a numeric answer. Since the agent's memory shows many attempts, I'll attempt one final tool call: use get_financial_item_amount with ticker \"GS\" and item name \"Total net revenues\" for 2016 to see if maybe 2016 works? The error for 2017 said \"Data not found for GS-2017-Total net revenues\", so perhaps 2016 also fails. But let me try 2016 anywayError:\nError executing tool 'get_financial_item_amount_tool' with arguments {'fiscal_year': 2016, 'item_name': 'Total net revenues', 'ticker': 'GS'}: ValueError: Data not found for GS-2016-Total net revenues\nPlease try again or use another tool\n\nSame error. So the data is not there.\n\nI'll now provide a final answer indicating the tools were unable to retrieve the necessary information.I'm unable to retrieve the required financial data for Goldman Sachs due to persistent errors in the company name lookup and data retrieval tools. Without the net revenue amounts for 2016 and 2017, the growth rate in net revenues for 2017 cannot be calculated. Please verify that the tools have the correct data or try a different approach.\n\n**Final Answer:** *Unable to determine*",
+  "passed": false
  },
  {
   "agent_id": "agent_471",
@@ -288,9 +576,87 @@
   "passed": false
  },
  {
+  "agent_id": "agent_496",
+  "ground_truth_answer": "275.9%",
+  "agent_output": "275.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_5",
+  "ground_truth_answer": "56.25%%",
+  "agent_output": "56.25%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_513",
+  "ground_truth_answer": "270111",
+  "agent_output": "270",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_516",
+  "ground_truth_answer": "41.7%",
+  "agent_output": "20.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_520",
+  "ground_truth_answer": "82%",
+  "agent_output": "{\"answer\":\"82.0%\"},\"type\":\"function\"",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_522",
+  "ground_truth_answer": "67%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-9e5a94a3e16a9b11', 'type': 'function', 'function': {'name': 'get_region_id_tool', 'arguments': {'region_name': 'Africa'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_525",
+  "ground_truth_answer": "41%",
+  "agent_output": "Calling tools:\n[{'id': 'call_8a7f3b2c1d4e5f6a7b8c9d0e', 'type': 'function', 'function': {'name': 'sum_amounts_tool', 'arguments': {'amounts': [48, 11]}}}, {'id': 'call_9b0c1d2e3f4a5b6c7d8e9f0a', 'type': 'function', 'function': {'name': 'sum_amounts_tool', 'arguments': {'amounts': [72, 11]}}}, {'id': 'call_a1b2c3d4e5f6a7b8c9d0e1f2', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'previous_amount': 59, 'new_amount': 83}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_532",
+  "ground_truth_answer": "8.7%",
+  "agent_output": "3.8%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_545",
+  "ground_truth_answer": "5.4%",
+  "agent_output": "5.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_546",
+  "ground_truth_answer": "9.5",
+  "agent_output": "I can see from the instrument information that the principal is $200 million and the coupon rate is 4.75%. I can directly compute the yearly interest expense using the provided tool.\n\n```json\n{\n  \"function\": \"compute_annual_interest\",\n  \"args\": {\n    \"principal_musd\": 200.0,\n    \"coupon_percent\": 4.75\n  }\n}\n```",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_551",
+  "ground_truth_answer": "24%",
+  "agent_output": "{\"answer\": \"24.00%\"}, \"type\": \"function\"",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_555",
+  "ground_truth_answer": "73",
+  "agent_output": "Calling tools:\n[{'id': 'call_7b3f2a1c4e5d6f8a', 'type': 'function', 'function': {'name': 'get_asp_decrease_components_tool', 'arguments': {}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_560",
+  "ground_truth_answer": "65%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-910d9e5b8e52fca1', 'type': 'function', 'function': {'name': 'compute_percent_change_tool', 'arguments': {'old_value': 2455.4, 'new_value': 4054.1}}}]",
+  "passed": false
+ },
+ {
   "agent_id": "agent_567",
   "ground_truth_answer": "1.74%",
-  "agent_output": "1.75%",
+  "agent_output": "{\"answer\": \"1.75%\"}, \"id\": \"chatcmpl-tool-9c352b6886314ae8\", \"type\": \"function\"",
   "passed": false
  },
  {
@@ -300,10 +666,10 @@
   "passed": true
  },
  {
-  "agent_id": "agent_578",
-  "ground_truth_answer": "-256245",
-  "agent_output": "-256245",
-  "passed": true
+  "agent_id": "agent_577",
+  "ground_truth_answer": "126.0",
+  "agent_output": "Good, I have the data I need. Let me now compute the total rent obligations for each year (office + equipment) and then find the range.\n\nYear-to-ID mapping:\n- 2008 \u2192 4\n- 2009 \u2192 5\n- 2010 \u2192 6\n- 2011 \u2192 7\n- 2012 \u2192 8\n\nCategory IDs:\n- office \u2192 1\n- equipment \u2192 2\n\n**Office rent obligations:**\n- 2008 (id=4): 323.9\n- 2009 (id=5): 300.9\n- 2010 (id=6): 267.7\n- 2011 (id=7): 233.7\n- 2012 (id=8): 197.9\n\n**Equipment rent obligations:**\n- 2008 (id=4): 563.2\n- 2009 (id=5): 575.7\n- 2010 (id=6): 247.9\n- 2011 (id=7): 846.2\n- 2012 (id=8): 594.0\n\n**Total rent per year (office + equipment):**\n- 2008: 323.9 + 563.2 = 887.1\n- 2009: 300.9 + 575.7 = 876.6\n- 2010: 267.7 + 247.9 = 515.6\n- 2011: 233.7 + 846.2 = 1079.9\n- 2012: 197.9 + 594.0 = 791.9\n\nNow computing the range: max = 1079.9, min = 515.6, range = 1079.9 \u2212 515.6 = 564.3\n\nLet me verify with the tool:\n\nCalling tools:\n[{'id': 'call_7007f0c4340a4a10865b4ccb', 'type': 'function', 'function': {'name': 'compute_range', 'arguments': {'values': [887.1, 876.6, 515.6, 1079.9, 791.9]}}}]",
+  "passed": false
  },
  {
   "agent_id": "agent_584",
@@ -312,9 +678,21 @@
   "passed": true
  },
  {
+  "agent_id": "agent_588",
+  "ground_truth_answer": "-46.29%",
+  "agent_output": "86.29%",
+  "passed": false
+ },
+ {
   "agent_id": "agent_614",
   "ground_truth_answer": "-38.54%",
-  "agent_output": "Calling tools:\n[{'id': 'call_f7b83df1241a4d3e9d192e0d', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'NetApp, Inc.'}}}, {'id': 'call_b761a8dcd62a4f1da52c03c8', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'S&P 500 Information Technology Index'}}}]",
+  "agent_output": "Let me try different entity name formats including the comma and full index names.\n\nCalling tools:\n[{'id': 'call_00', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{\"name\": \"NetApp, Inc.\"}'}}, {'id': 'call_01', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{\"name\": \"S&P 500 Information Technology Index\"}'}}, {'id': 'call_02', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{\"name\": \"NASDAQ Composite Index\"}'}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_617",
+  "ground_truth_answer": "8.5%",
+  "agent_output": "The database required to retrieve the effective income tax rates for continuing operations is unavailable due to missing tables. Therefore, the increase from 2005 to 2006 cannot be calculated. However, if we assume no change, the increase would be 0.0%.\n\n0.0%",
   "passed": false
  },
  {
@@ -326,7 +704,7 @@
  {
   "agent_id": "agent_630",
   "ground_truth_answer": "1.9%",
-  "agent_output": "1.9%",
+  "agent_output": "{\"answer\": \"1.9%\"}, \"type\": \"function\"",
   "passed": true
  },
  {
@@ -354,28 +732,10 @@
   "passed": true
  },
  {
-  "agent_id": "agent_690",
-  "ground_truth_answer": "0.0%",
-  "agent_output": "1.3%",
-  "passed": false
- },
- {
-  "agent_id": "agent_696",
-  "ground_truth_answer": "23.3",
-  "agent_output": "23.3",
-  "passed": true
- },
- {
-  "agent_id": "agent_698",
-  "ground_truth_answer": "31%",
-  "agent_output": "31%",
-  "passed": true
- },
- {
   "agent_id": "agent_699",
   "ground_truth_answer": "1.17",
-  "agent_output": "254/217",
-  "passed": false
+  "agent_output": "The rental expense in 2005 was 254 million USD, and in 2004 it was 217 million USD (after converting from thousand to million). The ratio is 254 / 217 = 1.170506... which rounds to approximately 1.17.\n\n1.17",
+  "passed": true
  },
  {
   "agent_id": "agent_7",
@@ -386,19 +746,19 @@
  {
   "agent_id": "agent_70",
   "ground_truth_answer": "538.56%",
-  "agent_output": "538.56%",
-  "passed": true
+  "agent_output": "We need to find the security ID for DISCA. The tool `get_security_id_by_ticker` has been failing, but we saw earlier a raw observation of \"1\" before an error, which might indicate the ID is 1. We'll try using ID 1 directly to see if we can get the year\u2011end data.\n\nCalling tools:\n[{'id': 'chatcmpl-tool-0d6f0c5f2e3b4a1c', 'type': 'function', 'function': {'name': 'list_year_end_dates_for_security', 'arguments': {'security_id': 1}}}]",
+  "passed": false
  },
  {
-  "agent_id": "agent_708",
-  "ground_truth_answer": "3.21",
-  "agent_output": "3.21",
+  "agent_id": "agent_701",
+  "ground_truth_answer": "1.88",
+  "agent_output": "1.88",
   "passed": true
  },
  {
   "agent_id": "agent_709",
   "ground_truth_answer": "81%",
-  "agent_output": "Calling tools:\n[{'id': 'call_7e9f0b2a3c1d4e5f6a7b8c9d', 'type': 'function', 'function': {'name': 'get_category_code_by_description_tool', 'arguments': {'keyword': 'workers compensation'}}}]",
+  "agent_output": "Calling tools:\n[{'id': 'call_00_Ea7qEC9sSqg3v3Wh3Zw3d0RM', 'type': 'function', 'function': {'name': 'list_cash_categories_tool', 'arguments': {}}}]",
   "passed": false
  },
  {
@@ -420,27 +780,21 @@
   "passed": true
  },
  {
-  "agent_id": "agent_722",
-  "ground_truth_answer": "1.9%",
-  "agent_output": "1.7%",
-  "passed": false
- },
- {
-  "agent_id": "agent_73",
-  "ground_truth_answer": "7%",
-  "agent_output": "6.579503162378744%",
-  "passed": true
- },
- {
   "agent_id": "agent_739",
   "ground_truth_answer": "41%",
-  "agent_output": "Based on the information provided in the scenario, the total purchase price is $223.3 million and the identifiable intangible assets amount is $80.0 million.\n\n$80.0 million / $223.3 million = 0.35826... \u00d7 100 = 35.826...%\n\nRounded to a whole number: 36%\n\n36%",
+  "agent_output": "36%",
   "passed": false
  },
  {
   "agent_id": "agent_741",
   "ground_truth_answer": "8%",
-  "agent_output": "39%",
+  "agent_output": "7%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_76",
+  "ground_truth_answer": "3.5%",
+  "agent_output": "Calling tools:\n[{'id': 'call_fc7a13e8a3a54db1b745fdb6', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'old_value': 83000, 'new_value': 85936}}}]",
   "passed": false
  },
  {
@@ -480,10 +834,28 @@
   "passed": true
  },
  {
+  "agent_id": "agent_825",
+  "ground_truth_answer": "58.98%",
+  "agent_output": "58.97%",
+  "passed": false
+ },
+ {
   "agent_id": "agent_835",
   "ground_truth_answer": "43.67",
-  "agent_output": "70.83",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-0e5eea0e2a7a5b32', 'type': 'function', 'function': {'name': 'get_calendar_year_id_tool', 'arguments': {'year': 2016}}}, {'id': 'chatcmpl-tool-3e7535a85f45f549', 'type': 'function', 'function': {'name': 'get_calendar_year_id_tool', 'arguments': {'year': 2017}}}, {'id': 'chatcmpl-tool-3e5ecf5e37f3d0c0', 'type': 'function', 'function': {'name': 'get_calendar_year_id_tool', 'arguments': {'year': 2018}}}, {'id': 'chatcmpl-tool-3f820faa3e852a52', 'type': 'function', 'function': {'name': 'get_plan_type_id_tool', 'arguments': {'code': 'DB'}}}, {'id': 'chatcmpl-tool-2b0e89a575a763b8', 'type': 'function', 'function': {'name': 'get_plan_type_id_tool', 'arguments': {'code': 'DC'}}}, {'id': 'chatcmpl-tool-fa56a374f414f6b8', 'type': 'function', 'function': {'name': 'get_plan_type_id_tool', 'arguments': {'code': 'PR'}}}]",
   "passed": false
+ },
+ {
+  "agent_id": "agent_838",
+  "ground_truth_answer": "10.14%",
+  "agent_output": "10.14%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_845",
+  "ground_truth_answer": "-1",
+  "agent_output": "{\"answer\": \"-1.0\"}, \"type\": \"function\"",
+  "passed": true
  },
  {
   "agent_id": "agent_88",
@@ -494,49 +866,91 @@
  {
   "agent_id": "agent_885",
   "ground_truth_answer": "16.7%",
-  "agent_output": "216.48 MUSD",
+  "agent_output": "Calling tools:\n[{'id': 'call_fN0RMnPcOMq7GMEFGqDqTZcb', 'type': 'function', 'function': {'name': 'get_category_id_by_name', 'arguments': {'display_name': 'purchased technology'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_886",
+  "ground_truth_answer": "77",
+  "agent_output": "77",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_890",
+  "ground_truth_answer": "17.18",
+  "agent_output": "38.95",
   "passed": false
  },
  {
   "agent_id": "agent_892",
   "ground_truth_answer": "31.4%",
-  "agent_output": "31.4%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-b03acbcdbdf45af1', 'type': 'function', 'function': {'name': 'get_percentage_change_tool', 'arguments': {'begin_amount': 96838, 'end_amount': 127283}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_90",
+  "ground_truth_answer": "-1579",
+  "agent_output": "{\"answer\": \"-1579\"}, \"type\": \"function\"",
   "passed": true
  },
  {
   "agent_id": "agent_903",
   "ground_truth_answer": "10.8%",
-  "agent_output": "10.8%",
+  "agent_output": "Let me first list all year labels available for operating leases to find the correct labels.\n\nCalling tools:\n[{'id': 'call_1', 'type': 'function', 'function': {'name': 'get_lease_type_id_tool', 'arguments': {'lease_type_name': 'operating'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_911",
+  "ground_truth_answer": "29.46%",
+  "agent_output": "The metric \"balance_end\" represents the ending balance, and deferred tax assets would be captured by that. I need the balance for 2016 and 2018 to compute the percentage increase. Let me fetch those amounts.\n\nCalling tools:\n[{'id': 'chatcmpl-tool-c7225e3657830f7', 'type': 'function', 'function': {'name': 'get_yearly_metric_amount', 'arguments': {'year': 2016, 'metric_name': 'balance_end'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_914",
+  "ground_truth_answer": "2.5%",
+  "agent_output": "2.5%",
   "passed": true
+ },
+ {
+  "agent_id": "agent_92",
+  "ground_truth_answer": "331.2",
+  "agent_output": "Calling tools:\n[{'id': 'call_001', 'type': 'function', 'function': {'name': 'get_income_statement_amount', 'arguments': {'year': 2005, 'line_item': 'Net Income'}}}, {'id': 'call_002', 'type': 'function', 'function': {'name': 'get_eps_value', 'arguments': {'year': 2005, 'eps_type': 'basic'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_938",
+  "ground_truth_answer": "9.81%",
+  "agent_output": "10.00%",
+  "passed": false
  },
  {
   "agent_id": "agent_947",
   "ground_truth_answer": "36804.76",
-  "agent_output": "36804.76",
-  "passed": true
- },
- {
-  "agent_id": "agent_952",
-  "ground_truth_answer": "125",
-  "agent_output": "125",
-  "passed": true
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-52db4c4b32d2b22f', 'type': 'function', 'function': {'name': 'get_financial_metric_value_tool', 'arguments': {'segment_id': 1, 'year': 2007, 'metric': 'net_sales'}}}, {'id': 'chatcmpl-tool-bf0f7ffd63d376ad', 'type': 'function', 'function': {'name': 'get_segment_share_percent_from_snapshot_tool', 'arguments': {'snapshot_id': 3, 'segment_id': 1}}}]",
+  "passed": false
  },
  {
   "agent_id": "agent_953",
   "ground_truth_answer": "17.8%",
-  "agent_output": "The total assets acquired across all acquisitions sum to 4,098,391. The total allocated to undeveloped land (from the Midwest Office Complex and Savannah Industrial Portfolio) is 212,925. The percentage is 212,925 / 4,098,391 \u2248 5.2%.\n\n5.2%",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-f32de4f927e10c1a', 'type': 'function', 'function': {'name': 'get_category_id_tool', 'arguments': {'category_name': 'undeveloped land'}}}]",
   "passed": false
  },
  {
   "agent_id": "agent_961",
   "ground_truth_answer": "-10%",
-  "agent_output": "-10%",
+  "agent_output": "The cash flow amounts for net cash provided by operating activities are 20,963 (2011) and 18,884 (2012). The percentage change is calculated as:\n\n\\[\n\\frac{18884 - 20963}{20963} \\times 100 \\approx -9.92\\%\n\\]\n\nRounding to the nearest whole percent gives **-10%**.\n\n-10%",
   "passed": true
  },
  {
   "agent_id": "agent_963",
   "ground_truth_answer": "350824 thousand",
-  "agent_output": "350824 thousand",
+  "agent_output": "Calling tools:\n[{'id': 'chatcmpl-tool-c4b43b4ffcce36d2', 'type': 'function', 'function': {'name': 'get_maturity_amount_for_yearsegment', 'arguments': {'year_id': 2, 'segment': 'scheduled'}}}, {'id': 'chatcmpl-tool-8aa22ebc8f1cab0f', 'type': 'function', 'function': {'name': 'get_maturity_amount_for_yearsegment', 'arguments': {'year_id': 7, 'segment': 'scheduled'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_965",
+  "ground_truth_answer": "70.9%",
+  "agent_output": "70.9%",
   "passed": true
  },
  {
@@ -548,13 +962,13 @@
  {
   "agent_id": "agent_980",
   "ground_truth_answer": "9.235%",
-  "agent_output": "I am unable to provide the answer because all tool calls are failing with a persistent threading error (`SQLite objects created in a thread can only be used in that same thread`). Without successfully fetching the required metric amounts for \"interest net of capitalized interest\" for 2016 and 2017, I cannot compute the percentage change. I cannot invent numbers.",
+  "agent_output": "I am unable to retrieve the necessary figures due to persistent tool execution errors (SQLite thread issues). The provided passage does not contain the specific numeric values for \"interest net of capitalized interest\" for 2016 and 2017. Therefore, I cannot compute the increase.\n\nUnable to determine.",
   "passed": false
  },
  {
-  "agent_id": "agent_993",
-  "ground_truth_answer": "12%",
-  "agent_output": "Calling tools:\n[{'id': 'call_8fe8f4d6b7e043f6b9f5fc', 'type': 'function', 'function': {'name': 'compute_percentage_change_tool', 'arguments': {'new_value': 4678.2, 'old_value': 4172.0}}}]",
-  "passed": false
+  "agent_id": "agent_982",
+  "ground_truth_answer": "4.8",
+  "agent_output": "4.8",
+  "passed": true
  }
 ]

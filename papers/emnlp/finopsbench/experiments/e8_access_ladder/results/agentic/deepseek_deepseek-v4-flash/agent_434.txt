@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-9e5f6c1a3b2d4c8e', 'type': 'function', 'function': {'name': 'list_acquisitions', 'arguments': {}}}]

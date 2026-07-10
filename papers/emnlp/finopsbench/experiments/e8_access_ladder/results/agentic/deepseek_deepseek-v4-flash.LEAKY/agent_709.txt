@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_7e9f0b2a3c1d4e5f6a7b8c9d', 'type': 'function', 'function': {'name': 'get_category_code_by_description_tool', 'arguments': {'keyword': 'workers compensation'}}}]

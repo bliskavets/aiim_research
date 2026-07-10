@@ -1,1 +1,2 @@
-36804.76
+Calling tools:
+[{'id': 'chatcmpl-tool-52db4c4b32d2b22f', 'type': 'function', 'function': {'name': 'get_financial_metric_value_tool', 'arguments': {'segment_id': 1, 'year': 2007, 'metric': 'net_sales'}}}, {'id': 'chatcmpl-tool-bf0f7ffd63d376ad', 'type': 'function', 'function': {'name': 'get_segment_share_percent_from_snapshot_tool', 'arguments': {'snapshot_id': 3, 'segment_id': 1}}}]

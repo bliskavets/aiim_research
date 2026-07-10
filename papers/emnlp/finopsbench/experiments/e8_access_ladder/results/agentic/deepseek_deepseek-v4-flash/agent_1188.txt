@@ -1,0 +1,9 @@
+Based on the retrieved data, the S&P 500 rebased closing value was 100.0 at the end of 2011 and 198.18 at the end of 2016.
+
+Let me calculate the percentage change:
+- Start value (2011): 100.0
+- End value (2016): 198.18
+- Change: (198.18 - 100.0) / 100.0 = 0.9818
+
+Calling tools:
+[{'id': 'chatcmpl-tool-c6070c3c9c84d805', 'type': 'function', 'function': {'name': 'format_percentage_tool', 'arguments': {'value': 0.9818, 'decimals': 1}}}]

@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-7e694321bf724d0d', 'type': 'function', 'function': {'name': 'search_metric_tool', 'arguments': {'keyword': 'comprehensive income attributable'}}}]

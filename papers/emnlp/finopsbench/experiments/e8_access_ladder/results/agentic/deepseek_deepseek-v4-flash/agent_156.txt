@@ -1,1 +1,1 @@
-44%
+{"answer": "44%"}, "type": "tool_call"

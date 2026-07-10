@@ -1,1 +1,2 @@
-216.48 MUSD
+Calling tools:
+[{'id': 'call_fN0RMnPcOMq7GMEFGqDqTZcb', 'type': 'function', 'function': {'name': 'get_category_id_by_name', 'arguments': {'display_name': 'purchased technology'}}}]

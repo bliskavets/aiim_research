@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-907e0e0b293dbc5f', 'type': 'function', 'function': {'name': 'compute_sales_change_usd_tool', 'arguments': {'segment_name': 'Metal Beverage Packaging, Europe', 'start_year': 2008, 'end_year': 2009}}}, {'id': 'chatcmpl-tool-a43af8e74b4e49ce', 'type': 'function', 'function': {'name': 'compute_sales_change_usd_tool', 'arguments': {'segment_name': 'Metal Beverage Packaging, Europe', 'start_year': 2009, 'end_year': 2010}}}]

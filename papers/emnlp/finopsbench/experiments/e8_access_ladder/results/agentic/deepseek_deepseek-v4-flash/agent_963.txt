@@ -1,1 +1,2 @@
-350824 thousand
+Calling tools:
+[{'id': 'chatcmpl-tool-c4b43b4ffcce36d2', 'type': 'function', 'function': {'name': 'get_maturity_amount_for_yearsegment', 'arguments': {'year_id': 2, 'segment': 'scheduled'}}}, {'id': 'chatcmpl-tool-8aa22ebc8f1cab0f', 'type': 'function', 'function': {'name': 'get_maturity_amount_for_yearsegment', 'arguments': {'year_id': 7, 'segment': 'scheduled'}}}]

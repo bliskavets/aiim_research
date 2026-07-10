@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-910d9e5b8e52fca1', 'type': 'function', 'function': {'name': 'compute_percent_change_tool', 'arguments': {'old_value': 2455.4, 'new_value': 4054.1}}}]

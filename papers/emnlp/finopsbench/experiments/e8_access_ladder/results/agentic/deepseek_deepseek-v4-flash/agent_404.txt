@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-9eacb4a9f899b0f0', 'type': 'function', 'function': {'name': 'compute_absolute_difference_tool', 'arguments': {'val1': 375.0, 'val2': 128.0}}}]

@@ -1,1 +1,2 @@
-31.4%
+Calling tools:
+[{'id': 'chatcmpl-tool-b03acbcdbdf45af1', 'type': 'function', 'function': {'name': 'get_percentage_change_tool', 'arguments': {'begin_amount': 96838, 'end_amount': 127283}}}]

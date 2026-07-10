@@ -1,1 +1,2 @@
-27.4
+Calling tools:
+[{'id': 'chatcmpl-tool-9e8a15a24a8d3e0c', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2007, 'revision': 2}}}, {'id': 'chatcmpl-tool-a0dee0e9e8a7e399', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2008, 'revision': 2}}}, {'id': 'chatcmpl-tool-9e5ffb843a0f6220', 'type': 'function', 'function': {'name': 'get_parameter_value_for_year_revision', 'arguments': {'parameter_name': 'expected volatility', 'year': 2009, 'revision': 2}}}]

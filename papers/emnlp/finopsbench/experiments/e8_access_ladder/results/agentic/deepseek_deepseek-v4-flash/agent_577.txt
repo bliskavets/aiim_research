@@ -1,0 +1,40 @@
+Good, I have the data I need. Let me now compute the total rent obligations for each year (office + equipment) and then find the range.
+
+Year-to-ID mapping:
+- 2008 → 4
+- 2009 → 5
+- 2010 → 6
+- 2011 → 7
+- 2012 → 8
+
+Category IDs:
+- office → 1
+- equipment → 2
+
+**Office rent obligations:**
+- 2008 (id=4): 323.9
+- 2009 (id=5): 300.9
+- 2010 (id=6): 267.7
+- 2011 (id=7): 233.7
+- 2012 (id=8): 197.9
+
+**Equipment rent obligations:**
+- 2008 (id=4): 563.2
+- 2009 (id=5): 575.7
+- 2010 (id=6): 247.9
+- 2011 (id=7): 846.2
+- 2012 (id=8): 594.0
+
+**Total rent per year (office + equipment):**
+- 2008: 323.9 + 563.2 = 887.1
+- 2009: 300.9 + 575.7 = 876.6
+- 2010: 267.7 + 247.9 = 515.6
+- 2011: 233.7 + 846.2 = 1079.9
+- 2012: 197.9 + 594.0 = 791.9
+
+Now computing the range: max = 1079.9, min = 515.6, range = 1079.9 − 515.6 = 564.3
+
+Let me verify with the tool:
+
+Calling tools:
+[{'id': 'call_7007f0c4340a4a10865b4ccb', 'type': 'function', 'function': {'name': 'compute_range', 'arguments': {'values': [887.1, 876.6, 515.6, 1079.9, 791.9]}}}]

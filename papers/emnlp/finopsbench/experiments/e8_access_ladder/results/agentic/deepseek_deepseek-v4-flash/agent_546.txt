@@ -1,0 +1,11 @@
+I can see from the instrument information that the principal is $200 million and the coupon rate is 4.75%. I can directly compute the yearly interest expense using the provided tool.
+
+```json
+{
+  "function": "compute_annual_interest",
+  "args": {
+    "principal_musd": 200.0,
+    "coupon_percent": 4.75
+  }
+}
+```

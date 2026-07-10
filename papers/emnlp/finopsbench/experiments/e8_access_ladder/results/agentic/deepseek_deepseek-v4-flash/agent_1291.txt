@@ -1,1 +1,4 @@
-17.9%
+Now I have the company ID = 1. Let me get the years and cumulative values.
+
+Calling tools:
+[{'id': 'chatcmpl-tool-035f8a5f2f9a4a79', 'type': 'function', 'function': {'name': 'list_years_for_company', 'arguments': {'company_id': 1}}}]

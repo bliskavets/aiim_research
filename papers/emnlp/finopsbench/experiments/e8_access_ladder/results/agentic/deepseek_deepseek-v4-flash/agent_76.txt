@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_fc7a13e8a3a54db1b745fdb6', 'type': 'function', 'function': {'name': 'calculate_percentage_change_tool', 'arguments': {'old_value': 83000, 'new_value': 85936}}}]

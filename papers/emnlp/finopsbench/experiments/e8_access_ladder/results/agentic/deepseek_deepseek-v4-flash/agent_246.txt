@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-9e5b3e7a2c1f4d0b', 'type': 'function', 'function': {'name': 'calculate_percentage', 'arguments': {'part': 3189.0, 'whole': 11500.0}}}]

@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-a3e3fad0c59e6fba', 'type': 'function', 'function': {'name': 'fetch_financial_fact_tool', 'arguments': {'business_unit_id': 1, 'metric_id': 1, 'year': 2008}}}]

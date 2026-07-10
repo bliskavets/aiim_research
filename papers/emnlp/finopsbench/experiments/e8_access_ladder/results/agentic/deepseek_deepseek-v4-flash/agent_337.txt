@@ -1,1 +1,2 @@
-The cumulative total shareholder return for PMI over the five years ended December 31, 2017 was 56.8% (from 100 to 156.8), while for the S&P 500 it was 108.1% (from 100 to 208.1). The difference (PMI minus S&P 500) is -51.3%.
+Calling tools:
+[{'id': 'chatcmpl-tool-a6e8b1d71fdd481f', 'type': 'function', 'function': {'name': 'get_metric_value_tool', 'arguments': {'entity_name': 'S&P 500', 'date_text': 'december 31 2017', 'metric_code': 'cumulative_return'}}}]

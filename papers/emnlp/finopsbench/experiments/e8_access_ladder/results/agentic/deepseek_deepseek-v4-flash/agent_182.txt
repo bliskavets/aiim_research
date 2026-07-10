@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_3c0c7c67a8b442a494560d3d5dd21baf', 'type': 'function', 'function': {'name': 'get_total_nol_for_jurisdiction_tool', 'arguments': {'jurisdiction': 'federal'}}}]

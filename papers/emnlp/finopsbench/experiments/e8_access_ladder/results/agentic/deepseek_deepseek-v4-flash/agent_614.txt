@@ -1,2 +1,4 @@
+Let me try different entity name formats including the comma and full index names.
+
 Calling tools:
-[{'id': 'call_f7b83df1241a4d3e9d192e0d', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'NetApp, Inc.'}}}, {'id': 'call_b761a8dcd62a4f1da52c03c8', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'S&P 500 Information Technology Index'}}}]
+[{'id': 'call_00', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{"name": "NetApp, Inc."}'}}, {'id': 'call_01', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{"name": "S&P 500 Information Technology Index"}'}}, {'id': 'call_02', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': '{"name": "NASDAQ Composite Index"}'}}]

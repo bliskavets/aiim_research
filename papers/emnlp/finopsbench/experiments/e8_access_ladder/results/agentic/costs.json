@@ -97,5 +97,14 @@
   "spent_usd": 9.7572,
   "budget_usd": 10.0,
   "stopped_by_budget": false
+ },
+ {
+  "model": "deepseek/deepseek-v4-flash",
+  "items_run_now": 200,
+  "items_scored_total": 162,
+  "accuracy": 53.1,
+  "spent_usd": 0.6573,
+  "budget_usd": 4.0,
+  "stopped_by_budget": false
  }
 ]

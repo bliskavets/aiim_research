@@ -1,1 +1,9 @@
+The cash flow amounts for net cash provided by operating activities are 20,963 (2011) and 18,884 (2012). The percentage change is calculated as:
+
+\[
+\frac{18884 - 20963}{20963} \times 100 \approx -9.92\%
+\]
+
+Rounding to the nearest whole percent gives **-10%**.
+
 -10%

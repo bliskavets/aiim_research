@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-9e5a94a3e16a9b11', 'type': 'function', 'function': {'name': 'get_region_id_tool', 'arguments': {'region_name': 'Africa'}}}]

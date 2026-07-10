@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_001', 'type': 'function', 'function': {'name': 'get_income_statement_amount', 'arguments': {'year': 2005, 'line_item': 'Net Income'}}}, {'id': 'call_002', 'type': 'function', 'function': {'name': 'get_eps_value', 'arguments': {'year': 2005, 'eps_type': 'basic'}}}]

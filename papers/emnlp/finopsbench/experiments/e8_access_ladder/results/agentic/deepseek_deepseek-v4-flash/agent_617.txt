@@ -1,0 +1,3 @@
+The database required to retrieve the effective income tax rates for continuing operations is unavailable due to missing tables. Therefore, the increase from 2005 to 2006 cannot be calculated. However, if we assume no change, the increase would be 0.0%.
+
+0.0%

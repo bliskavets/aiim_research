@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'call_7b3f2a1c4e5d6f8a', 'type': 'function', 'function': {'name': 'get_asp_decrease_components_tool', 'arguments': {}}}]

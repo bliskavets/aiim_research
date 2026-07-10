@@ -1,0 +1,560 @@
+[
+ {
+  "agent_id": "agent_1008",
+  "ground_truth_answer": "-10%",
+  "agent_output": "Answer: -10%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1009",
+  "ground_truth_answer": "0.913",
+  "agent_output": "0.913",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1025",
+  "ground_truth_answer": "2%",
+  "agent_output": "2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_106",
+  "ground_truth_answer": "4640",
+  "agent_output": "4640",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1066",
+  "ground_truth_answer": "19.8",
+  "agent_output": "25.97",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1085",
+  "ground_truth_answer": "31904",
+  "agent_output": "31904",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1086",
+  "ground_truth_answer": "1575000",
+  "agent_output": "1575000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1095",
+  "ground_truth_answer": "1.9",
+  "agent_output": "1.9",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1099",
+  "ground_truth_answer": "17.4%",
+  "agent_output": "17.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1139",
+  "ground_truth_answer": "8.1",
+  "agent_output": "8.1",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1142",
+  "ground_truth_answer": "450000",
+  "agent_output": "450000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1143",
+  "ground_truth_answer": "0",
+  "agent_output": "0.9",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1158",
+  "ground_truth_answer": "71%",
+  "agent_output": "71.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1177",
+  "ground_truth_answer": "no",
+  "agent_output": "no",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1205",
+  "ground_truth_answer": "48%",
+  "agent_output": "52%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1231",
+  "ground_truth_answer": "24123727",
+  "agent_output": "24123727",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1259",
+  "ground_truth_answer": "67.9%",
+  "agent_output": "33.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_1282",
+  "ground_truth_answer": "32%",
+  "agent_output": "32%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_1291",
+  "ground_truth_answer": "37.9%",
+  "agent_output": "17.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_13",
+  "ground_truth_answer": "43990.0%",
+  "agent_output": "0.3%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_134",
+  "ground_truth_answer": "2825000",
+  "agent_output": "2825000",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_140",
+  "ground_truth_answer": "11%",
+  "agent_output": "11%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_156",
+  "ground_truth_answer": "44%",
+  "agent_output": "44%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_157",
+  "ground_truth_answer": "4.8",
+  "agent_output": "6.8",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_176",
+  "ground_truth_answer": "8.6%",
+  "agent_output": "8.6%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_226",
+  "ground_truth_answer": "13.0%",
+  "agent_output": "13.0%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_228",
+  "ground_truth_answer": "17.2%",
+  "agent_output": "The statutory tax rate in 2018 is 19.0% and the effective tax rate for international operations is 22.0%. The difference is 22.0% - 19.0% = 3.0%.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_234",
+  "ground_truth_answer": "no",
+  "agent_output": "No, a 0.5% decrease in discount rate has an estimated impact of $1 million, which is less than the $10 million impact of a 0.5% decrease in expected long-term return on assets.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_247",
+  "ground_truth_answer": "52.32%",
+  "agent_output": "52.32%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_249",
+  "ground_truth_answer": "1016",
+  "agent_output": "1016",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_268",
+  "ground_truth_answer": "8%",
+  "agent_output": "8%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_269",
+  "ground_truth_answer": "0.8%",
+  "agent_output": "0.8%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_280",
+  "ground_truth_answer": "773%",
+  "agent_output": "774%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_296",
+  "ground_truth_answer": "1.4%",
+  "agent_output": "0.1%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_313",
+  "ground_truth_answer": "50.0%",
+  "agent_output": "50.0%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_323",
+  "ground_truth_answer": "9.2%",
+  "agent_output": "9.2%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_337",
+  "ground_truth_answer": "-51.3%",
+  "agent_output": "The cumulative total shareholder return for PMI over the five years ended December 31, 2017 was 56.8% (from 100 to 156.8), while for the S&P 500 it was 108.1% (from 100 to 208.1). The difference (PMI minus S&P 500) is -51.3%.",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_343",
+  "ground_truth_answer": "27.4",
+  "agent_output": "27.4",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_345",
+  "ground_truth_answer": "0",
+  "agent_output": "0",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_356",
+  "ground_truth_answer": "966",
+  "agent_output": "1016",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_371",
+  "ground_truth_answer": "48.1%",
+  "agent_output": "43.5%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_381",
+  "ground_truth_answer": "14.3%",
+  "agent_output": "14.3%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_398",
+  "ground_truth_answer": "7.9%",
+  "agent_output": "3.9%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_411",
+  "ground_truth_answer": "2376487.57",
+  "agent_output": "2376487.57",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_412",
+  "ground_truth_answer": "1.31",
+  "agent_output": "1.31",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_442",
+  "ground_truth_answer": "39.6",
+  "agent_output": "39.6",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_452",
+  "ground_truth_answer": "4",
+  "agent_output": "4.0",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_471",
+  "ground_truth_answer": "-1365",
+  "agent_output": "-1157",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_567",
+  "ground_truth_answer": "1.74%",
+  "agent_output": "1.75%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_570",
+  "ground_truth_answer": "357",
+  "agent_output": "357",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_578",
+  "ground_truth_answer": "-256245",
+  "agent_output": "-256245",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_584",
+  "ground_truth_answer": "8953",
+  "agent_output": "8953",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_614",
+  "ground_truth_answer": "-38.54%",
+  "agent_output": "Calling tools:\n[{'id': 'call_f7b83df1241a4d3e9d192e0d', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'NetApp, Inc.'}}}, {'id': 'call_b761a8dcd62a4f1da52c03c8', 'type': 'function', 'function': {'name': 'resolve_entity_tool', 'arguments': {'name': 'S&P 500 Information Technology Index'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_626",
+  "ground_truth_answer": "16759.5",
+  "agent_output": "15539.6",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_630",
+  "ground_truth_answer": "1.9%",
+  "agent_output": "1.9%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_634",
+  "ground_truth_answer": "86.3",
+  "agent_output": "86.3",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_654",
+  "ground_truth_answer": "49%",
+  "agent_output": "49%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_666",
+  "ground_truth_answer": "4.5%",
+  "agent_output": "4.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_688",
+  "ground_truth_answer": "15.1%",
+  "agent_output": "15.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_690",
+  "ground_truth_answer": "0.0%",
+  "agent_output": "1.3%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_696",
+  "ground_truth_answer": "23.3",
+  "agent_output": "23.3",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_698",
+  "ground_truth_answer": "31%",
+  "agent_output": "31%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_699",
+  "ground_truth_answer": "1.17",
+  "agent_output": "254/217",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_7",
+  "ground_truth_answer": "63.6%",
+  "agent_output": "63.6%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_70",
+  "ground_truth_answer": "538.56%",
+  "agent_output": "538.56%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_708",
+  "ground_truth_answer": "3.21",
+  "agent_output": "3.21",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_709",
+  "ground_truth_answer": "81%",
+  "agent_output": "Calling tools:\n[{'id': 'call_7e9f0b2a3c1d4e5f6a7b8c9d', 'type': 'function', 'function': {'name': 'get_category_code_by_description_tool', 'arguments': {'keyword': 'workers compensation'}}}]",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_719",
+  "ground_truth_answer": "3.884%",
+  "agent_output": "3.884%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_72",
+  "ground_truth_answer": "14.3%",
+  "agent_output": "14.3%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_720",
+  "ground_truth_answer": "151",
+  "agent_output": "151",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_722",
+  "ground_truth_answer": "1.9%",
+  "agent_output": "1.7%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_73",
+  "ground_truth_answer": "7%",
+  "agent_output": "6.579503162378744%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_739",
+  "ground_truth_answer": "41%",
+  "agent_output": "Based on the information provided in the scenario, the total purchase price is $223.3 million and the identifiable intangible assets amount is $80.0 million.\n\n$80.0 million / $223.3 million = 0.35826... \u00d7 100 = 35.826...%\n\nRounded to a whole number: 36%\n\n36%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_741",
+  "ground_truth_answer": "8%",
+  "agent_output": "39%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_762",
+  "ground_truth_answer": "7.1%",
+  "agent_output": "7.1%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_769",
+  "ground_truth_answer": "2476.50",
+  "agent_output": "2476.5",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_780",
+  "ground_truth_answer": "13.5%",
+  "agent_output": "13.5%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_79",
+  "ground_truth_answer": "7.7%",
+  "agent_output": "7.7%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_798",
+  "ground_truth_answer": "5805209",
+  "agent_output": "5805209",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_816",
+  "ground_truth_answer": "-30.56%",
+  "agent_output": "-30.56%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_835",
+  "ground_truth_answer": "43.67",
+  "agent_output": "70.83",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_88",
+  "ground_truth_answer": "11",
+  "agent_output": "11",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_885",
+  "ground_truth_answer": "16.7%",
+  "agent_output": "216.48 MUSD",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_892",
+  "ground_truth_answer": "31.4%",
+  "agent_output": "31.4%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_903",
+  "ground_truth_answer": "10.8%",
+  "agent_output": "10.8%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_947",
+  "ground_truth_answer": "36804.76",
+  "agent_output": "36804.76",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_952",
+  "ground_truth_answer": "125",
+  "agent_output": "125",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_953",
+  "ground_truth_answer": "17.8%",
+  "agent_output": "The total assets acquired across all acquisitions sum to 4,098,391. The total allocated to undeveloped land (from the Midwest Office Complex and Savannah Industrial Portfolio) is 212,925. The percentage is 212,925 / 4,098,391 \u2248 5.2%.\n\n5.2%",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_961",
+  "ground_truth_answer": "-10%",
+  "agent_output": "-10%",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_963",
+  "ground_truth_answer": "350824 thousand",
+  "agent_output": "350824 thousand",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_971",
+  "ground_truth_answer": "20.4",
+  "agent_output": "20.4",
+  "passed": true
+ },
+ {
+  "agent_id": "agent_980",
+  "ground_truth_answer": "9.235%",
+  "agent_output": "I am unable to provide the answer because all tool calls are failing with a persistent threading error (`SQLite objects created in a thread can only be used in that same thread`). Without successfully fetching the required metric amounts for \"interest net of capitalized interest\" for 2016 and 2017, I cannot compute the percentage change. I cannot invent numbers.",
+  "passed": false
+ },
+ {
+  "agent_id": "agent_993",
+  "ground_truth_answer": "12%",
+  "agent_output": "Calling tools:\n[{'id': 'call_8fe8f4d6b7e043f6b9f5fc', 'type': 'function', 'function': {'name': 'compute_percentage_change_tool', 'arguments': {'new_value': 4678.2, 'old_value': 4172.0}}}]",
+  "passed": false
+ }
+]

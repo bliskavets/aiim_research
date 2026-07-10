@@ -1,1 +1,2 @@
-50.0%
+Calling tools:
+[{'id': 'call_C45jRuQqnKNvLBiY7XdlzAs7', 'type': 'function', 'function': {'name': 'fetch_lease_payment_amount', 'arguments': {'contract_id': 1, 'year_label': '2022'}}}, {'id': 'call_rW9z4BSmwlfQmQNvqbnD5xvL', 'type': 'function', 'function': {'name': 'fetch_present_value_for_contract', 'arguments': {'contract_id': 1}}}]

@@ -1,1 +1,2 @@
-39.6
+Calling tools:
+[{'id': 'chatcmpl-tool-f2e3e75e3b277c8b', 'type': 'function', 'function': {'name': 'get_obligation_header_id_tool', 'arguments': {'year_id': 3, 'obligation_type_name': 'Financing Obligation'}}}]

@@ -1,0 +1,6 @@
+I now have the data I need. The allowance for borrowed funds (BORR) in 2015 is 8.0 million, and the allowance for other funds (OTHR) in 2015 is 13.0 million.
+
+Let me compute the percentage.
+
+Calling tools:
+[{'id': 'call_XX', 'type': 'function', 'function': {'name': 'compute_percentage_tool', 'arguments': {'numerator': 8.0, 'denominator': 13.0}}}]

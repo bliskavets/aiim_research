@@ -1,0 +1,1 @@
+I am unable to provide the answer because all tool calls are failing with a persistent threading error (`SQLite objects created in a thread can only be used in that same thread`). Without successfully fetching the required metric amounts for "interest net of capitalized interest" for 2016 and 2017, I cannot compute the percentage change. I cannot invent numbers.

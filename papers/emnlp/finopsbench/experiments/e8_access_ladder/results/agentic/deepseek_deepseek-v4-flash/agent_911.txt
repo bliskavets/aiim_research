@@ -1,0 +1,4 @@
+The metric "balance_end" represents the ending balance, and deferred tax assets would be captured by that. I need the balance for 2016 and 2018 to compute the percentage increase. Let me fetch those amounts.
+
+Calling tools:
+[{'id': 'chatcmpl-tool-c7225e3657830f7', 'type': 'function', 'function': {'name': 'get_yearly_metric_amount', 'arguments': {'year': 2016, 'metric_name': 'balance_end'}}}]

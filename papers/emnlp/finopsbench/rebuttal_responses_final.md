@@ -57,7 +57,7 @@ The link to the code repository in the paper now points to the actual code versi
 
 We thank the reviewer for this request and we would like to emphasize that some of the statistical information about the benchmark is already located in the Appendix. Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
 
-To address the reviewer's question we ran additional ablational analysis on the diversity of the reference solutions and questions:
+To further address the reviewer's question we ran additional ablational analysis on the diversity of the reference solutions and questions:
 
 | Aspect | v1 (8,233-item pool) | v2 |
 |---|---|---|

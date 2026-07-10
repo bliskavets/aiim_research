@@ -7,6 +7,26 @@ posting on OpenReview.
 
 ---
 
+## Reviewer 6zfv — experiments to run for the second response (placeholders left in text)
+
+- **E12: extended cross-benchmark comparison (point 2, flagged IMPORTANT by author).**
+  Run the same model(s) on several OPEN static finance-QA benchmarks (FinQA, ConvFinQA,
+  TAT-QA, and one multi-table set such as MultiHiertt) in pure reading mode, and contrast
+  with FinOpsBench-v2 closed-book vs agentic. Expected story: static benchmarks are near
+  ceiling by reading (~85-90%), while v2 needs tool use (closed-book ~1-15%, agentic
+  ~40-70%). Produces the cross-benchmark table; a one-benchmark version (TAT-QA) already
+  exists in E10 and is used now as a placeholder-backed partial result. Cost ~$10-20 API.
+  Text placeholder: `[PLACEHOLDER E12 ...]` in 6zfv point 2.
+- **Inter-annotator κ, second annotator (point 4 and PVoW).** Have a second domain-literate
+  annotator label the same E3 sample so we can report human-human κ, not only human vs
+  scorer. No API cost, annotator time only. Text placeholder in 6zfv point 4.
+- **Judge-corroboration measurement (point 4, optional, offline).** On v2, quantify what
+  fraction of LLM-panel-accepted environments also pass execution validation, to show the
+  panel's judgement is corroborated by execution rather than trusted blindly. Offline over
+  released data, no API cost.
+
+---
+
 ## P0 — release hygiene that must happen before/at posting (protects the benchmark)
 
 1. **Ship the v2 prompt-format-hint fix silently in the release, without `.orig` backups.**

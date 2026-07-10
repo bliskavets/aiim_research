@@ -17,6 +17,14 @@ posting on OpenReview.
   ~40-70%). Produces the cross-benchmark table; a one-benchmark version (TAT-QA) already
   exists in E10 and is used now as a placeholder-backed partial result. Cost ~$10-20 API.
   Text placeholder: `[PLACEHOLDER E12 ...]` in 6zfv point 2.
+  STATUS: harness staged. `experiments/e10_cross_benchmark/run_finqa.py` is written and its
+  loader is offline-verified against `/tmp/finqa_train.json`; `run_tatqa.py` already exists.
+  BLOCKED on `OPENROUTER_API_KEY` (not set in the environment). To run:
+  `export OPENROUTER_API_KEY=... && python run_finqa.py --model openai/gpt-4.1-mini --n 200`
+  and the matching `run_tatqa.py`. ConvFinQA and MultiHiertt still need dataset download plus
+  a small loader each before they can be added to the table.
+  DONE alongside this: judge-corroboration (offline, no key) computed in
+  `experiments/e2_judge_agreement/panel_agreement.py` and folded into 6zfv point 4.
 - **Inter-annotator κ, second annotator (point 4 and PVoW).** Have a second domain-literate
   annotator label the same E3 sample so we can report human-human κ, not only human vs
   scorer. No API cost, annotator time only. Text placeholder in 6zfv point 4.

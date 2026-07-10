@@ -270,6 +270,18 @@ Second, the LLM judgements are aligned with human perception, which we measured 
 
 So the judgement tracks a knowledgeable reader rather than adding noise. [PLACEHOLDER: inter-annotator κ from a second independent annotator, to report human-human agreement next to the human vs judge number above.]
 
+Acceptance also does not rest on one model's opinion. The construction panel is three independent judges from two vendors, and on the released items they agree as follows:
+
+| Panel criterion | judges unanimous |
+|---|---|
+| data is natural | 97% |
+| reasoning is grounded | 90% |
+| trace is reasonable | 90% |
+| trace is sound | 83% |
+| answer is sound | 62% |
+
+The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call.
+
 Third, the two halves act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
 ---

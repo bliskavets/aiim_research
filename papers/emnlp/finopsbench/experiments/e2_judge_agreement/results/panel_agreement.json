@@ -1,0 +1,16 @@
+{
+  "n_items": 8233,
+  "judges": [
+    "claude-sonnet-4-0",
+    "o4-mini",
+    "o3-mini"
+  ],
+  "unanimous_on_all_criteria_pct": 58.9,
+  "per_criterion_unanimity_pct": {
+    "data_is_natural": 97.2,
+    "trace_is_reasonable": 90.4,
+    "trace_is_sound": 82.6,
+    "reasoning_is_grounded": 89.9,
+    "answer_is_sound": 62.0
+  }
+}

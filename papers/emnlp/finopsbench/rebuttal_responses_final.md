@@ -9,19 +9,17 @@
 =================================================================================
 # Response to Reviewer PVoW
 
-We are grateful for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we have corrected throughout (the "FinOpsBenchis" spacing bug, "As Figure 1 shows that" and the inconsistent v1/v2 spacing).
+We are grateful for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we will fix in the camera ready version of our paper.
 
 ---
-
-### Human validation of both versions, judge reliability, and the evaluation methodology
 
 > Heavy dependence on LLM-generated data without human validation ... No human evaluation is conducted to verify whether generated financial scenarios are realistic, whether reasoning traces are correct, or whether the LLM judges make reliable decisions.
 >
 > LLM-as-judge validation is insufficiently justified ... there is no measurement of agreement with human annotators or any estimate of judge accuracy.
->
+
 > Evaluation methodology is relatively weak. FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
-We treat these together, because our answer to all three is the same study. We ran the human evaluation the reviewer asked for, covering both halves of the benchmark, and used it to measure how far our automatic scoring departs from the judgement of a real person. The annotation was done by a human judge with knowledge of the domain, on random samples in the reviewer's suggested 200 to 300 range.
+To address the reviewers oncern we ran the human evaluation the reviewer asked for, covering both halves of the benchmark, and used it to measure how far our automatic scoring departs from the judgement of a real person. The annotation was done by a human judge with knowledge of the domain, on random samples in the reviewer's suggested 200 to 300 range.
 
 | Half | What the human checked | Sample | Human vs automatic scoring |
 |---|---|---|---|
@@ -47,23 +45,19 @@ There is no single string a deterministic rule could match here, which is exactl
 
 ---
 
-### Release of the pipeline prompts
-
 > Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction.
 
-We have made every prompt easy to locate. The repository now has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. The link in the paper now points directly to this implementation, so a reader can go from a stage in the text to its prompt in one step.
+The link to the code repository in the paper now points to the actual code version where have made every prompt easy to locate. The repository now has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. The link in the paper now points directly to this implementation, so a reader can go from a stage in the text to its prompt in one step.
 
 ---
 
-### Benchmark diversity and qualitative failure analysis
-
 > Analyze benchmark diversity more quantitatively. Statistics on reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, and template diversity ...
->
+
 > Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
 
-We answer these together. Part of this is already in the paper: Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
+We thank the reviewer for this request and we would like to emphasize that some of the statistical information about the benchmark is already located in the Appendix. Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
 
-Diversity of the reference solutions and questions:
+To address the reviewer's question we ran additional ablational analysis on the diversity of the reference solutions and questions:
 
 | Aspect | v1 (8,233-item pool) | v2 |
 |---|---|---|
@@ -88,8 +82,6 @@ Two findings stand out. On v1 the failures are semantic rather than syntactic: r
 
 ---
 
-### Construction cost, compute, and runtime
-
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
 
 Construction uses no paid human annotation, since it is fully automated; the cost is LLM API usage, which we measured directly by replaying each stage with the models the paper used.
@@ -104,11 +96,9 @@ The three-judge panel dominates v1 cost at about 81%, roughly 13,500 judgements 
 
 ---
 
-### Potential bias from proprietary models
-
 > Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
 
-Thank you for raising this; it is a fair concern for any pipeline built with proprietary models, and we will expand the Discussion around it. Several design choices already reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance. Generation and judging use different models. The v2 ground truth is execution-based and independent of any model's opinion. And we kept a human in the loop while designing and tuning the generation and validation stages. The human study above supports this as well: our automatic scoring agrees with a human judge with knowledge of the domain 85.1% of the time (κ = 0.67), so acceptance is not an artefact of one model's preferences.
+We would like to thank the reviewer for a fair concern for any pipeline built with proprietary models, and we will expand the Discussion around it. Several design choices already reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance. Generation and judging use different models. The v2 ground truth is execution-based and independent of any model's opinion. And we kept a human in the loop while designing and tuning the generation and validation stages. The human study above supports this as well: our automatic scoring agrees with a human judge with knowledge of the domain 85.1% of the time (κ = 0.67), so acceptance is not an artefact of one model's preferences.
 
 There is also direct empirical evidence against a generator-family advantage. If the benchmark favoured its generator's family, since the v1 generator is GPT-4.1-mini from OpenAI, that family should top the leaderboard. It does not:
 

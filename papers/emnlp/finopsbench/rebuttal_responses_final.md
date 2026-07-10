@@ -214,15 +214,16 @@ We ran the models on a uniformly-sampled subset and observed that even the stron
 
 The headroom is real and the difficulty is controllable, since accuracy drops from 61.6% at shallow depth to 45.8% at eight or more tool calls.
 
-The clearest way to see what FinOpsBench adds is to compare it against an open static finance benchmark on the same model. GPT-4.1-mini answers TAT-QA, an external reading benchmark, at 89%, yet the same model scores 1.5% on FinOpsBench-v2 without tools and recovers to about 60% only once it uses them:
+The clearest way to see what FinOpsBench adds is to run the same model on open finance benchmarks and on ours. Static finance QA benchmarks hand the model the relevant table and text in the prompt, so reading them scores well. FinOpsBench withholds the data, so without tools the same model collapses, and it has to retrieve the data through tool calls to recover:
 
 | Same model, GPT-4.1-mini | accuracy |
 |---|---|
-| TAT-QA, reading (external static finance QA) | 89% |
-| FinOpsBench-v2, no tools | 1.5% |
-| FinOpsBench-v2, agentic | ~60% |
+| TAT-QA, reading (data in prompt) | 89% |
+| FinQA, reading (data in prompt) | 67% |
+| FinOpsBench-v2, no tools (data withheld) | 1.5% |
+| FinOpsBench-v2, agentic (retrieves via tools) | 61.5% |
 
-Static finance benchmarks measure reading over provided context; FinOpsBench measures the retrieval-planning and tool-use capability they cannot reach. [PLACEHOLDER E12: extend this comparison to FinQA, ConvFinQA and MultiHiertt in reading mode against FinOpsBench-v2 agentic, to show the reading-to-tool-use gap holds across the open finance-QA landscape and not only against TAT-QA.]
+Reading a static finance benchmark and operating in FinOpsBench are different skills: the model reads FinQA at 67% but scores 1.5% on our questions until it uses tools, then reaches 61.5%. Static finance benchmarks measure reading over provided context; FinOpsBench measures the retrieval-planning and tool-use capability they cannot reach. [PLACEHOLDER: extend the comparison to recent agentic finance benchmarks (FinAgentBench, FinGAIA, and one more if a runnable harness is available), running the same model on each and on ours, to position FinOpsBench directly against the agentic benchmarks the reviewer mentions.]
 
 ---
 

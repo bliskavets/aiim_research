@@ -1,0 +1,9 @@
+To solve this problem, I'll need to follow these steps:
+
+1. Get the company ID using `get_company_id(company_name)`.
+2. List all line items to find the correct name for non-controlling interests.
+3. Get the line item ID for non-controlling interests using `get_line_item_id(line_item_name)`.
+4. Get the financial amounts for non-controlling interests in 2010 and 2011 using `get_financial_amount(company_id, line_item_id, year)`.
+5. Calculate the percentage change using `calculate_percentage_change(old_value, new_value)`.
+
+First, I'll list all line items to find the correct name for non-controlling interests.

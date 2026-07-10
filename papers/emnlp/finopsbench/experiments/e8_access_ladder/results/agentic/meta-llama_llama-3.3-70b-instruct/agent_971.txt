@@ -1,0 +1,1 @@
+compute_ratio(get_financing_amount(2008, "securities borrowed"), get_financing_amount(2008, "securities loaned"), 1)

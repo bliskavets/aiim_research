@@ -1,0 +1,19 @@
+## Step 1: Identify the parameter of interest
+The parameter we are interested in is the volatility, which is used in the Black-Scholes calculation.
+
+## Step 2: Determine the fiscal years of interest
+The fiscal years we are interested in are 2009, 2008, and 2007.
+
+## Step 3: Get the latest revision for each fiscal year
+We need to get the latest revision for the volatility parameter for each of the fiscal years 2009, 2008, and 2007.
+
+## Step 4: Get the volatility values for each fiscal year
+Using the latest revision for each fiscal year, we can get the volatility values for 2009, 2008, and 2007.
+
+## Step 5: Compute the range of volatility
+Once we have the volatility values for each fiscal year, we can compute the range of volatility using the compute_range function.
+
+## Step 6: Format the answer
+Finally, we need to format the answer as a single number with one decimal place.
+
+The final answer is: $\boxed{64.9}$

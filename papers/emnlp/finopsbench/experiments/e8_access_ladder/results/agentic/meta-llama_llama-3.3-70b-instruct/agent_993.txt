@@ -1,0 +1,19 @@
+## Step 1: Identify the relevant years and liability category for the task.
+The task requires analyzing the percentage change in U.S. pharmaceutical sales return, rebate, and discount liability balances between 2017 and 2018. Thus, the relevant years are 2017 and 2018, and the liability category of interest is "sales return, rebate, and discount" including managed care, Medicare, and Medicaid.
+
+## Step 2: Determine the appropriate metric for the analysis.
+For analyzing the change in liability balances over time, the most relevant metric would be the "end_of_year" metric, as it reflects the final balance of liabilities for each year.
+
+## Step 3: Calculate the liability amount for 2017.
+To find the percentage change, we first need to determine the liability amount for the "sales return, rebate, and discount" category for 2017. This involves calling the `get_liability_amount` tool with the year 2017, the category "sales return, rebate, and discount", and the metric "end_of_year".
+
+## Step 4: Calculate the liability amount for 2018.
+Similarly, we need to find the liability amount for the same category for 2018 by calling the `get_liability_amount` tool with the year 2018, the category "sales return, rebate, and discount", and the metric "end_of_year".
+
+## Step 5: Compute the percentage change between 2017 and 2018.
+Using the `compute_percentage_change` tool, we calculate the percentage change from the 2017 liability amount to the 2018 liability amount.
+
+## Step 6: Round the percentage change to the nearest whole percent.
+Finally, we use the `round_to_whole_percent` tool to round the calculated percentage change to the nearest whole percent.
+
+The final answer is: $\boxed{15%}$

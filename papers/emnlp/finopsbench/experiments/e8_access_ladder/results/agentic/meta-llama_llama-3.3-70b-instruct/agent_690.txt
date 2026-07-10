@@ -1,0 +1,19 @@
+## Step 1: Determine the total amount spent on share repurchases as of December 31, 2012.
+The total amount spent is given as $4.2 billion.
+
+## Step 2: Determine the total amount authorized for share repurchases.
+The total amount authorized is given as $6.5 billion.
+
+## Step 3: Calculate the percentage of the share repurchase under the programme for $4.2 billion.
+To find the percentage, we need to divide the total amount spent ($4.2 billion) by the total amount authorized ($6.5 billion) and then multiply by 100.
+
+## Step 4: Convert the calculation into a percentage string with the requested number of decimal places.
+We will use the ratio_to_percentage function to format the result as a percentage string.
+
+## Step 5: Calculate the ratio of the total amount spent to the total amount authorized.
+ratio = (4.2 / 6.5)
+
+## Step 6: Convert the ratio to a percentage string.
+percentage = ratio_to_percentage(ratio, 1)
+
+The final answer is: $\boxed{64.6%}$

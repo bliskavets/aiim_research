@@ -1,0 +1,1 @@
+<|python_tag|>get_company_id("Entergy New Orleans, Inc."); get_metric_id("net revenue"); subtract_numbers(get_financial_fact(get_company_id("Entergy New Orleans, Inc."), 2016, get_metric_id("net revenue")), get_financial_fact(get_company_id("Entergy New Orleans, Inc."), 2015, get_metric_id("net revenue")))

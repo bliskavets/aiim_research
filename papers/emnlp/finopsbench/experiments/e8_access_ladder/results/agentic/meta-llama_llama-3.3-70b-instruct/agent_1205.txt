@@ -1,0 +1,36 @@
+To find the answer, I need to follow these steps:
+
+
+## Step 1: Get the year ID for 2013
+I will use the get_year_id tool to find the internal database identifier for the year 2013.
+year_id_2013 = get_year_id(2013)
+
+
+## Step 2: Get the category IDs
+I will use the get_category_id tool to find the internal identifiers for the hedge categories "hedges of loans and lending-related commitments" and "CVA and hedges of CVA".
+category_id_loans = get_category_id("hedges of loans and lending-related commitments")
+category_id_cva = get_category_id("CVA and hedges of CVA")
+
+
+## Step 3: Get the hedge values for 2013
+I will use the get_hedge_value_millions tool to find the hedge values in millions for each category in 2013.
+hedge_value_loans_2013 = get_hedge_value_millions(year_id_2013, category_id_loans)
+hedge_value_cva_2013 = get_hedge_value_millions(year_id_2013, category_id_cva)
+
+
+## Step 4: Calculate the total hedge value
+I will calculate the total hedge value by summing the hedge values of the two categories.
+total_hedge_value_2013 = hedge_value_loans_2013 + hedge_value_cva_2013
+
+
+## Step 5: Express the CVA figure as a percentage of the total
+I will use the percentage tool to express the CVA figure as a percentage of the total hedge value, ignoring negative signs.
+cva_percentage = percentage(hedge_value_cva_2013, total_hedge_value_2013)
+
+
+## Step 6: Round the percentage to the nearest whole percent
+I will round the percentage to the nearest whole percent.
+final_answer = round(cva_percentage)
+
+
+The final answer is: $\boxed{28%}$

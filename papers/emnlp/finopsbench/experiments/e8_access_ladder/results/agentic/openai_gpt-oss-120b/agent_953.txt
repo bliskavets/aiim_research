@@ -1,0 +1,36 @@
+**Reasoning**
+
+1. **Identify all acquisitions** – I listed the acquisition names in the database.
+2. **Get the internal IDs** for each acquisition.
+3. **Get the category ID** for “Undeveloped Land”.
+4. **Retrieve the allocation amount** for “Undeveloped Land” for every acquisition that has it.
+5. **Retrieve the total assets acquired** for each acquisition (metric name: “total assets acquired”).
+6. **Sum** all undeveloped‑land allocations and **sum** all total‑asset amounts.
+7. **Compute**  
+\[
+\text{Percentage} = \frac{\text{Total undeveloped‑land allocation}}{\text{Total assets acquired}} \times 100
+\]
+8. **Round** to one decimal place.
+
+**Data collected**
+
+| Acquisition | Total assets acquired ($) | Undeveloped land allocation ($) |
+|-------------|---------------------------|---------------------------------|
+| Bremner Healthcare Real Estate | 47.1 M | 0 |
+| Mark Winkler Portfolio | 166 M | 166 M |
+| Savannah Industrial Portfolio | 89.7 M | 60 M |
+| Houston Land & Storage Bundle | 89.7 M | 34.3 M |
+| Midwest Office Complex | (not in narrative, allocation 0) | 0 |
+
+- Sum of total assets acquired = **463.5 M**  
+- Sum of undeveloped‑land allocations = **260.3 M**
+
+**Calculation**
+
+\[
+\frac{260.3}{463.5} \times 100 = 56.2\%
+\]
+
+**Answer**
+
+56.2%

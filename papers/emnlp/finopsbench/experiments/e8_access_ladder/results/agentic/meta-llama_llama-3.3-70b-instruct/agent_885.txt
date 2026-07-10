@@ -1,0 +1,1 @@
+compute_straight_line_amortization_percentage(fetch_metric_value(get_category_id_by_name("purchased technology"), 'weighted_average_useful_life_years'))

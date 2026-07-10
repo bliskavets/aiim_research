@@ -126,14 +126,25 @@ The capability FinOpsBench isolates is **planning under partial observability wi
 **Draft answer:**
 The new capability is not "agentic financial tool use" per se but a **controllable, hermetic decomposition of agentic competence** that realism-oriented benchmarks cannot offer. Concretely, because our environments are synthetic and executable we can hold the *item* fixed and vary the *information-access mode* — a measurement no static (no tool requirement) or live/web benchmark (cannot reproduce or hold items fixed) can produce. We ran this **access ladder** on 200 v2 items (same model, percent-robust scoring):
 
-| Model | question-only (memorised) | agentic (tools) | FinQA-native (gold facts) | full-context (whole doc) | tool-use necessity | agentic gap (vs FinQA) |
-|---|---|---|---|---|---|---|
-| GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | **+60.0 pt** | −1.0 pt |
-| GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | **+61.5 pt** | +2.0 pt |
-| DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | **+44.2 pt** | **+20.8 pt** |
-| Claude-Haiku-4.5 | 0.5% | 67.5% | 67.0% | 69.5% | **+67.0 pt** | −0.5 pt |
+Ladder over **8 models** (same 200 v2 items, percent-robust scoring; sorted by agentic accuracy):
 
-The "FinQA-native" column feeds the model the *original FinQA input* for that item — the gold-retrieved supporting facts (`qa.model_input`) — i.e. the exact static reading setting of the source benchmark. Two quantities fall out that existing benchmarks do not expose: (i) a **tool-use necessity of 44–67 pts** — the questions are essentially unanswerable from parametric memory (0.5–4%) and only become answerable once tools retrieve the data (this also refutes contamination); (ii) a **model-discriminating agentic gap** — the accuracy a model loses moving from FinQA's own gold facts to having to retrieve them through tools. The gap is ~0 for the GPT-4.1 family and for Claude-Haiku-4.5, but **+20.8 pt for DeepSeek-V3.2**, which *reads* FinQA better than every other model (69%) yet *acts* on it worst (48%). Crucially this gap does **not** track model size: small Claude-Haiku-4.5 closes it (agentic 67.5% ≈ reading 67%) while the much larger DeepSeek-V3.2 does not — so the benchmark isolates tool-use *training quality*, not scale. This distinction — comparable reading ability, very different agentic competence — is exactly what static finance benchmarks cannot see and what FinOpsBench is built to measure. Where the gap is ~0 the tool wrapper faithfully preserves FinQA's reasoning difficulty; where it is large it exposes a genuine tool-use/planning deficit (see the failure taxonomy). Beyond this decomposition, FinOpsBench is the only finance benchmark combining hermetic/reproducible environments, controlled data- and tool-level distractors, ~6k+1.1k scale, and full reference traces; our Appendix cross-benchmark analysis further shows FinAgentBench's *inverse* size–accuracy trend, the validity failure our controlled design avoids.
+| Model | question-only | agentic (tools) | FinQA-native (gold facts) | full-context | tool-use necessity | **agentic gap** (d−c) | n (agentic) |
+|---|---|---|---|---|---|---|---|
+| DeepSeek-V4-Flash | 2.5% | 71.0% | 68.0% | 71.0% | +68.5 | −3.0 | 93* |
+| Claude-Haiku-4.5 | 0.5% | 67.5% | 67.0% | 69.5% | +67.0 | −0.5 | 200 |
+| gpt-oss-120b | 2.5% | 66.5% | 64.5% | 66.5% | +64.0 | −2.0 | 200 |
+| Qwen3-235B-A22B | 2.5% | 65.0% | 65.0% | 68.0% | +62.5 | 0.0 | 200 |
+| GPT-4.1 | 2.0% | 63.5% | 65.5% | 65.0% | +61.5 | +2.0 | 200 |
+| GPT-4.1-mini | 1.5% | 61.5% | 60.5% | 64.5% | +60.0 | −1.0 | 200 |
+| DeepSeek-V3.2 | 4.0% | 48.2% | 69.0% | 69.5% | +44.2 | **+20.8** | 199 |
+| Llama-3.3-70B | 3.0% | 29.9% | 57.0% | 59.0% | +26.9 | **+27.1** | 147* |
+
+(*Llama-3.3-70B and DeepSeek-V4-Flash have n<200 because some agentic runs produced no final answer; those are agent failures, so counting them would only *lower* the agentic accuracy — the gaps below are conservative.)
+
+The "FinQA-native" column feeds the model the *original FinQA input* for that item — the gold-retrieved supporting facts (`qa.model_input`), i.e. the exact static reading setting of the source benchmark. Two quantities fall out that existing benchmarks cannot expose:
+
+1. **Tool-use necessity of +27 to +69 pts for every model** — the questions are essentially unanswerable from parametric memory (0.5–4%) and only become answerable once tools retrieve the data (this also refutes contamination).
+2. **A model-discriminating agentic gap** (reading minus agentic). It cleanly splits the 8 models into two groups: **six are faithful tool users** (|gap| ≤ 3 pt — they act on the data about as well as they read it), while **DeepSeek-V3.2 (+20.8) and Llama-3.3-70B (+27.1) read well but act poorly**. Llama-3.3-70B reads at 57% yet reaches only 30% with tools; DeepSeek-V3.2 reads best-tier (69%) yet manages 48%. This gap does **not** track model size (small Claude-Haiku-4.5 ≈ 0; large Llama-3.3-70B +27) — it isolates tool-use *training quality*. It is even visible *within a family across generations*: DeepSeek-V3.2's +20.8 gap closes to −3.0 in the newer DeepSeek-V4-Flash. Static finance benchmarks would rank DeepSeek-V3.2 and Llama-3.3-70B by their strong reading and completely miss their agentic deficit; FinOpsBench is built to measure exactly that. Beyond this decomposition, FinOpsBench is the only finance benchmark combining hermetic/reproducible environments, controlled data- and tool-level distractors, ~6k+1.1k scale, and full reference traces; our Appendix cross-benchmark analysis further shows FinAgentBench's *inverse* size–accuracy trend, the validity failure our controlled design avoids.
 
 We also verified this against a real competitor: the same model (GPT-4.1-mini) answers **TAT-QA** — an external, open static finance-QA benchmark — at **89%** (pure reading), but **collapses to 1.5%** on FinOpsBench-v2 without tools, recovering to ~62% only once it uses tools. Static finance benchmarks measure reading over provided context; FinOpsBench measures the tool-use/retrieval-planning capability they structurally cannot test. Difficulty is also tunable: accuracy scales monotonically with required tool-chain depth (pooled 62%→46% from shallow to 8+-hop chains). Full harnesses: `experiments/e8_access_ladder/`, `experiments/e9_difficulty_control/`, `experiments/e10_cross_benchmark/`.
 

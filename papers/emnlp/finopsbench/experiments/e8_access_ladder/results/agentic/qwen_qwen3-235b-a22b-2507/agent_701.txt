@@ -1,0 +1,5 @@
+The cash received from the exercise of stock options in 2013 was $827 million, and in 2012 it was $440 million. Using the compute_ratio tool:
+
+compute_ratio(827, 440) = 1.88
+
+The ratio is 1.88.

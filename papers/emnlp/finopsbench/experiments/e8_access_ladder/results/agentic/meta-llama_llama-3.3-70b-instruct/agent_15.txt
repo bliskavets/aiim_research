@@ -1,0 +1,13 @@
+## Step 1: Determine the total of the "reorganization items, net" for 2013.
+To find the percentage of the 2013 "reorganization items, net" total that was attributable to the labor-related deemed claim, we first need to know the total amount of "reorganization items, net" for 2013. This can be achieved by using the get_reorganization_total_millions(2013) function.
+
+## Step 2: Determine the amount of the labor-related deemed claim for 2013.
+Next, we need to find the amount attributed to the labor-related deemed claim. This involves using the get_component_amount_millions(2013, "reorganization items, net", "labor-related deemed claim") function to get the dollar amount in millions for the labor-related deemed claim component within the "reorganization items, net" statement for the year 2013.
+
+## Step 3: Calculate the percentage of the total attributable to the labor-related deemed claim.
+After obtaining both the total of "reorganization items, net" and the amount of the labor-related deemed claim, we can calculate the percentage by dividing the amount of the labor-related deemed claim by the total of "reorganization items, net" and then multiplying by 100.
+
+## Step 4: Compute the percentage to one decimal place followed by the "%" sign.
+The percentage should be rounded to one decimal place and followed by the "%" sign to match the requested format.
+
+The final answer is: $\boxed{23.8%}$

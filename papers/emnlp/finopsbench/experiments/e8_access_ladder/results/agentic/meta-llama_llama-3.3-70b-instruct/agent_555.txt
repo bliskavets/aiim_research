@@ -1,0 +1,1 @@
+<|python_tag|>get_metric_percentage(metric_name="consolidated_net_sales_2006_to_2008")

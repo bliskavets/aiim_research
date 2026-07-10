@@ -1,0 +1,10 @@
+## Step 1: Identify the relevant information for calculating the net change in equity investments.
+The problem mentions that the Company holds certain minority cost-method equity investments in non-publicly traded securities aggregating $7,585 and $9,278 at September 26 2009 and September 27 2008, respectively.
+
+## Step 2: Determine the net change in the equity investments from 2008 to 2009.
+To find the net change, we subtract the amount in 2008 from the amount in 2009. This calculation is $7,585 - $9,278.
+
+## Step 3: Perform the calculation to find the net change.
+$7,585 - $9,278 = -$1,693.
+
+The final answer is: $\boxed{-1693}$

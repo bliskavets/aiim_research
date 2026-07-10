@@ -38,5 +38,45 @@
     "tool_use_necessity_c_minus_a": 67.0,
     "agentic_gap_vs_finqa": -0.5,
     "agentic_gap_vs_fullctx": 2.0
+  },
+  "Qwen3-235B-A22B": {
+    "n": 200,
+    "a_question_only": 2.5,
+    "c_agentic": 65.0,
+    "d_finqa_canonical": 65.0,
+    "b_full_context": 68.0,
+    "tool_use_necessity_c_minus_a": 62.5,
+    "agentic_gap_vs_finqa": 0.0,
+    "agentic_gap_vs_fullctx": 3.0
+  },
+  "Llama-3.3-70B": {
+    "n": 147,
+    "a_question_only": 3.0,
+    "c_agentic": 29.9,
+    "d_finqa_canonical": 57.0,
+    "b_full_context": 59.0,
+    "tool_use_necessity_c_minus_a": 26.9,
+    "agentic_gap_vs_finqa": 27.1,
+    "agentic_gap_vs_fullctx": 29.1
+  },
+  "gpt-oss-120b": {
+    "n": 200,
+    "a_question_only": 2.5,
+    "c_agentic": 66.5,
+    "d_finqa_canonical": 64.5,
+    "b_full_context": 66.5,
+    "tool_use_necessity_c_minus_a": 64.0,
+    "agentic_gap_vs_finqa": -2.0,
+    "agentic_gap_vs_fullctx": 0.0
+  },
+  "DeepSeek-V4-Flash": {
+    "n": 93,
+    "a_question_only": 2.5,
+    "c_agentic": 71.0,
+    "d_finqa_canonical": 68.0,
+    "b_full_context": 71.0,
+    "tool_use_necessity_c_minus_a": 68.5,
+    "agentic_gap_vs_finqa": -3.0,
+    "agentic_gap_vs_fullctx": 0.0
   }
 }

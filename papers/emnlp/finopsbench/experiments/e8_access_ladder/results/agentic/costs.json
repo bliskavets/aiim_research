@@ -43,5 +43,50 @@
   "spent_usd": 4.7431,
   "budget_usd": 5.0,
   "stopped_by_budget": false
+ },
+ {
+  "model": "qwen/qwen3-235b-a22b-2507",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 63.0,
+  "spent_usd": 0.7726,
+  "budget_usd": 4.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "items_run_now": 200,
+  "items_scored_total": 22,
+  "accuracy": 31.8,
+  "spent_usd": 0.6359,
+  "budget_usd": 4.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "openai/gpt-oss-120b",
+  "items_run_now": 200,
+  "items_scored_total": 200,
+  "accuracy": 65.5,
+  "spent_usd": 0.6364,
+  "budget_usd": 4.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "meta-llama/llama-3.3-70b-instruct",
+  "items_run_now": 178,
+  "items_scored_total": 147,
+  "accuracy": 29.9,
+  "spent_usd": 0.6765,
+  "budget_usd": 5.0,
+  "stopped_by_budget": false
+ },
+ {
+  "model": "deepseek/deepseek-v4-flash",
+  "items_run_now": 200,
+  "items_scored_total": 93,
+  "accuracy": 68.8,
+  "spent_usd": 1.1115,
+  "budget_usd": 4.0,
+  "stopped_by_budget": false
  }
 ]

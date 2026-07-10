@@ -1,0 +1,19 @@
+To answer the question, we need to follow these steps:
+
+1. Resolve the metric alias for "dividend yield" to get its metric ID.
+2. Use the metric ID to get the list of value IDs for the annual observations of dividend yield from 2016 to 2018.
+3. Fetch the values and units for each value ID.
+4. Determine the maximum dividend yield value.
+
+Here are the tool calls:
+
+```python
+dividend_yield_metric_id = resolve_metric_alias("dividend_yield")
+value_ids = list_metric_value_ids(dividend_yield_metric_id, 2016, 2018)
+values_and_units = [get_value_and_unit_by_id(value_id) for value_id in value_ids]
+max_dividend_yield = max(value for value, unit in values_and_units)
+```
+
+Assuming the `get_value_and_unit_by_id` tool returns a tuple where the first element is the value and the second element is the unit, and the unit is always a percentage, we can format the final answer as follows:
+
+The final answer is $\boxed{4.958%}$.

@@ -1,0 +1,8 @@
+The minimum sponsorship payments for the next three years (2017‑2019) total **486,086 k**.  
+The grand total of all disclosed minimum sponsorship and other payments is **1,355,605 k**.
+
+\[
+\frac{486,086}{1,355,605}\times 100 \approx 35.9\%
+\]
+
+**Answer: 35.9 %**.

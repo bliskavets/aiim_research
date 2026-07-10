@@ -1,0 +1,48 @@
+To find the percent change in total recurring capital expenditures from 2006 to 2007, we first need to determine the total recurring expenditures for each of those years. 
+
+1. **List Recurring Categories**: We start by listing all recurring category names using `list_recurring_category_names()`. This step is necessary to identify all categories for which we will gather expenditure data.
+
+2. **Gather Expenditure Data**: For each category identified, we will use `get_category_expenditure(category_name, year)` to find the expenditures for 2006 and 2007. Given the errors experienced, it's clear we must avoid categories without records for these years.
+
+3. **Sum Expenditures**: We'll sum the expenditures for all relevant categories in 2006 and 2007 using `sum_amounts(amounts)` to get the total recurring expenditures for each year.
+
+4. **Calculate Percentage Change**: Finally, with the total expenditures for 2006 and 2007, we can calculate the percentage change using `calculate_percentage_change(old_value, new_value)`.
+
+However, given the iterative errors and the lack of direct numerical data in the question, let's approach this theoretically based on the information given and the tools available.
+
+First, we should list all recurring categories:
+```python
+recurring_categories = list_recurring_category_names()
+```
+
+Next, for each category, we would ideally get the expenditure for 2006 and 2007. However, due to the nature of the errors, let's assume we have a way to filter out categories without data for these years. We then sum these expenditures:
+```python
+total_2006 = sum(get_category_expenditure(category, 2006) for category in recurring_categories if get_category_expenditure(category, 2006) is not None)
+total_2007 = sum(get_category_expenditure(category, 2007) for category in recurring_categories if get_category_expenditure(category, 2007) is not None)
+```
+Note: This step assumes `get_category_expenditure` returns `None` for categories without data, which is not explicitly stated but is a common convention.
+
+Finally, calculate the percentage change:
+```python
+percentage_change = calculate_percentage_change(total_2006, total_2007)
+```
+
+Given the direct calculation is not provided due to errors in executing tools, let's hypothetically say we found the totals for 2006 and 2007 to be $100,000 and $120,000, respectively, after successful execution of the above steps (note: these figures are fictional and for demonstration purposes only). 
+
+Then,
+```python
+percentage_change = calculate_percentage_change(100, 120)
+```
+Would give us the percent change.
+
+Assuming `total_2006 = 100` and `total_2007 = 120` for demonstration purposes:
+```python
+percentage_change = calculate_percentage_change(100, 120)
+print(percentage_change)
+```
+
+This process outlines how to approach the problem with the given tools, acknowledging the need to adapt based on actual tool outputs and data availability. 
+
+To directly answer based on a corrected understanding and avoiding previous errors, without actual numerical data or successful tool execution, one must recognize the importance of accurately identifying recurring categories, obtaining their expenditures, summing these, and then calculating the percentage change—steps which are outlined but not directly calculable without resolving the initial errors or having explicit expenditure data. 
+
+Therefore, the direct answer to the percent change question, given the constraints and without explicit numerical data, requires a hypothetical or an assumption of successful data retrieval and calculation, which isn't directly provided here. The process for finding the answer involves critical steps of data identification, retrieval, summation, and calculation, emphasizing the need for robust and reliable data to compute an accurate percentage change.

@@ -1,0 +1,16 @@
+## Step 1: Get the merger ID for Certegy
+To find the yearly interest expense associated with the Certegy merger, we first need to identify the unique database ID for this merger. We can use the `get_merger_id` tool for this purpose.
+
+## Step 2: List instruments linked to the Certegy merger
+Once we have the merger ID, we can list all the instruments linked to the Certegy merger using the `list_instruments_for_merger` tool.
+
+## Step 3: Get instrument information
+We then need to fetch the principal amount, maturity, payment frequency, and description of the instruments linked to the Certegy merger. The `get_instrument_info` tool will provide this information.
+
+## Step 4: Calculate yearly interest expense
+Given that the notes are fixed-rate and we know the principal amount and the coupon rate, we can calculate the yearly interest expense using the `compute_annual_interest` tool.
+
+## Step 5: Combine the tools to find the answer
+Since we know the principal amount ($200 million) and the coupon rate (4.75%) from the scenario description, we can directly use the `compute_annual_interest` tool to find the yearly interest expense without needing to call other tools for this specific question.
+
+The final answer is: $\boxed{9.5}$

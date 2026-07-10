@@ -1,0 +1,2 @@
+Calling tools:
+[{'id': 'chatcmpl-tool-418fe5365d844ebe', 'type': 'function', 'function': {'name': 'cfo_effect_from_inventory_change_tool', 'arguments': {'change_thousands': 151100}}}]

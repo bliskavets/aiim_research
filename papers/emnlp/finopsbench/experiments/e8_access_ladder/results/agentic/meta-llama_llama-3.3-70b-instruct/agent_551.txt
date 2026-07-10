@@ -1,0 +1,1 @@
+<|python_tag|>format_as_percentage(compute_percentage_change(get_cumulative_value(resolve_company_identifier("Teleflex Incorporated"), 2013), get_cumulative_value(resolve_company_identifier("Teleflex Incorporated"), 2014)), decimals=2)

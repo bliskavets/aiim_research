@@ -1,0 +1,22 @@
+## Step 1: Find the company ID of Entergy Arkansas
+First, we need to find the company ID of Entergy Arkansas. We can use the find_companies_by_keyword tool to search for the company name.
+
+## Step 2: Get the accounts for Entergy Arkansas
+Once we have the company ID, we can use the get_accounts_for_company tool to get a list of all accounts maintained by Entergy Arkansas.
+
+## Step 3: Filter the accounts to find the money-pool account
+We then use the filter_accounts_by_type tool to filter the accounts and find the one related to the money-pool.
+
+## Step 4: Get the balances for the money-pool account
+With the account ID of the money-pool account, we can use the get_balances_for_account tool to retrieve the yearly balances from 2015 to 2017.
+
+## Step 5: Filter the balances to find the payables
+We use the filter_payables tool to keep only the negative amounts (payables) from the balances.
+
+## Step 6: Sum the payables
+Finally, we use the sum_amounts tool to calculate the sum of the payables.
+
+## Step 7: Convert the sum to millions
+Since the balances are in thousands, we need to divide the sum by 1000 to convert it to millions.
+
+The final answer is: $\boxed{0}$

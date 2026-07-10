@@ -1,0 +1,28 @@
+To solve the problem, we need to follow these steps:
+
+1. Find the company_id for Entergy New Orleans.
+2. List the money pool account_ids for Entergy New Orleans.
+3. Get the yearly balances for the money pool account in 2015 and 2016.
+4. Calculate the net change in receivables.
+
+```python
+# Import necessary modules and define variables before they are used
+import numpy as np
+
+# Step 1: Find the company_id for Entergy New Orleans
+companies = search_companies("entergy new orleans")
+company_id = companies[0]['company_id']
+
+# Step 2: List the money pool account_ids for Entergy New Orleans
+money_pool_account_ids = list_money_pool_account_ids(company_id)
+
+# Step 3: Get the yearly balances for the money pool account in 2015 and 2016
+account_id = money_pool_account_ids[0]  # Assuming there's only one money pool account
+balance_2015 = get_account_yearly_balance(account_id, 2015)
+balance_2016 = get_account_yearly_balance(account_id, 2016)
+
+# Step 4: Calculate the net change in receivables
+net_change = balance_2016 - balance_2015
+
+print(net_change)
+```

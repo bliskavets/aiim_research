@@ -1,0 +1,1 @@
+compute_percentage_change(get_quarter_metric(get_reporting_period_id(find_security_id(share_class="Class A"), 2007, 4), metric="high"), get_daily_close(find_security_id(share_class="Class A"), 2008-02-29), dec_places=1)

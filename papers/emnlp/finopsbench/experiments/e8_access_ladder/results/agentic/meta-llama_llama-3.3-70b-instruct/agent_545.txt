@@ -1,0 +1,16 @@
+## Step 1: Determine the internal numeric IDs for the valuation methods "fifo" and "lifo"
+To find the IDs, we will use the get_valuation_method_id() tool. We need to call this tool twice, once for "fifo" and once for "lifo", to get their respective IDs.
+
+## Step 2: Determine the internal numeric ID for the inventory category "merchandise"
+We will use the get_inventory_category_id() tool to find the ID for the "merchandise" category.
+
+## Step 3: Get the net inventory amounts for 2013 using both "fifo" and "lifo" valuation methods
+Using the get_net_inventory_amount() tool, we will retrieve the net inventory amounts for the year 2013, for both "fifo" and "lifo" methods, and for the "merchandise" category.
+
+## Step 4: Calculate the percentage increase in the inventory balance from "fifo" to "lifo"
+With the net inventory amounts obtained, we will use the compute_percentage_change() tool to calculate the percentage increase from the "fifo" amount to the "lifo" amount.
+
+## Step 5: Output the final numerical answer
+Finally, we will output the calculated percentage increase as the final answer.
+
+The final answer is: $\boxed{23.0%}$

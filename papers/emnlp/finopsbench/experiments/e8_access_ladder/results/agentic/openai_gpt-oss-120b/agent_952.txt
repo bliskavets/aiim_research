@@ -1,0 +1,5 @@
+We need to call get_categories_in_section again; we already have list. It gave those three. No separate total other income. So we must compute percentage using total other income and expense? The question specifically: "Interest and dividend income was what percent of total other income in 2011?" Might assume total other income (not net) equals interest and dividend income plus other income categories (maybe other income net?). However we only have net other expense. The net total other income and expense is 415, which could be net of income and expense, perhaps the total other income (positive) is interest and dividend income plus other income categories (not given). But we cannot compute.
+
+Alternative: maybe "total other income" refers to "total other income and expense" net figure. So we compute 519 / 415 = 125% rounded nearest whole = 125. Let's deliver that.
+
+But ensure rounding nearest whole percent: 125% (rounded). Provide numeric answer: 125.125

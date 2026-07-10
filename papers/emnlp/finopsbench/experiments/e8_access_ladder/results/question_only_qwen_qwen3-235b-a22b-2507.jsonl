@@ -1,0 +1,200 @@
+{"agent_id": "agent_1300", "gold": "26%", "prediction": "65", "passed": false, "cost": 1.1063e-05}
+{"agent_id": "agent_247", "gold": "52.32%", "prediction": "2", "passed": false, "cost": 1.2e-05}
+{"agent_id": "agent_411", "gold": "2376487.57", "prediction": "2001931.99", "passed": false, "cost": 2.846e-05}
+{"agent_id": "agent_1267", "gold": "10%", "prediction": "30", "passed": false, "cost": 6.51e-06}
+{"agent_id": "agent_280", "gold": "773%", "prediction": "No data provided; unable to estimate.", "passed": false, "cost": 1.04e-05}
+{"agent_id": "agent_194", "gold": "-5821", "prediction": "No data is provided to determine the net change in accumulated other comprehensive loss from 2008 to 2009.", "passed": false, "cost": 2.223e-05}
+{"agent_id": "agent_701", "gold": "1.88", "prediction": "1.25", "passed": false, "cost": 1.134e-05}
+{"agent_id": "agent_404", "gold": "247", "prediction": "0", "passed": false, "cost": 6.16e-06}
+{"agent_id": "agent_197", "gold": "13", "prediction": "I do not have enough information to determine the lease length for Pilgrim.", "passed": false, "cost": 2.667e-05}
+{"agent_id": "agent_371", "gold": "48.1%", "prediction": "60", "passed": false, "cost": 1.44e-05}
+{"agent_id": "agent_1143", "gold": "0", "prediction": "I cannot provide a specific number without data. The change in remarketing programs between those dates is not known to me.  \n\n0", "passed": true, "cost": 3.948e-05}
+{"agent_id": "agent_269", "gold": "0.8%", "prediction": "No data is provided to calculate or estimate the variation of the adjusted effective tax rate for 2018-2019.", "passed": false, "cost": 2.263e-05}
+{"agent_id": "agent_911", "gold": "29.46%", "prediction": "I cannot provide an estimate without specific financial data. The question requires information on deferred tax assets for 2016 and 2018, which is not available. \n\nno", "passed": false, "cost": 4.114e-05}
+{"agent_id": "agent_741", "gold": "8%", "prediction": "35", "passed": false, "cost": 8.62e-06}
+{"agent_id": "agent_1259", "gold": "67.9%", "prediction": "65", "passed": false, "cost": 7.28e-06}
+{"agent_id": "agent_344", "gold": "1%", "prediction": "50", "passed": false, "cost": 1.122e-05}
+{"agent_id": "agent_338", "gold": "-5.8%", "prediction": "I cannot determine the rate of return for Global Payments from 2002 to 2003 without specific financial data.", "passed": false, "cost": 3.822e-05}
+{"agent_id": "agent_332", "gold": "52.9%", "prediction": "0.5", "passed": false, "cost": 1.1362e-05}
+{"agent_id": "agent_1173", "gold": "0.75", "prediction": "No data provided; unable to estimate.", "passed": false, "cost": 1.049e-05}
+{"agent_id": "agent_545", "gold": "5.4%", "prediction": "0", "passed": false, "cost": 1.638e-05}
+{"agent_id": "agent_816", "gold": "-30.56%", "prediction": "No", "passed": false, "cost": 6.88e-06}
+{"agent_id": "agent_106", "gold": "4640", "prediction": "I cannot determine the exact sales figure for the performance coatings segment in 2008 without foreign currency translation gain, as no data was provided.", "passed": false, "cost": 9.85e-06}
+{"agent_id": "agent_287", "gold": "24.2%", "prediction": "0.5", "passed": false, "cost": 6.96e-06}
+{"agent_id": "agent_130", "gold": "-44.9%", "prediction": "Insufficient information to determine the growth rate in weighted average fair value of options granted in 2009.", "passed": false, "cost": 2.805e-05}
+{"agent_id": "agent_7", "gold": "63.6%", "prediction": "50", "passed": false, "cost": 6.51e-06}
+{"agent_id": "agent_560", "gold": "65%", "prediction": "-5", "passed": false, "cost": 2.002e-05}
+{"agent_id": "agent_1025", "gold": "2%", "prediction": "I cannot provide the percentage change in net cash from operating activities from 2011 to 2012 without specific financial data.", "passed": false, "cost": 3.315e-05}
+{"agent_id": "agent_522", "gold": "67%", "prediction": "35", "passed": false, "cost": 6.42e-06}
+{"agent_id": "agent_713", "gold": "-10%", "prediction": "I don't have the necessary data to calculate the percentage change in the allowance for doubtful accounts from 2006 to 2007.", "passed": false, "cost": 2.437e-05}
+{"agent_id": "agent_72", "gold": "14.3%", "prediction": "Unknown", "passed": false, "cost": 1.42e-05}
+{"agent_id": "agent_952", "gold": "125", "prediction": "65", "passed": false, "cost": 1.476e-05}
+{"agent_id": "agent_1242", "gold": "35.9%", "prediction": "60%", "passed": false, "cost": 7.77e-06}
+{"agent_id": "agent_980", "gold": "9.235%", "prediction": "Unable to determine without specific financial data.", "passed": false, "cost": 2.268e-05}
+{"agent_id": "agent_345", "gold": "0", "prediction": "0", "passed": true, "cost": 6.7e-06}
+{"agent_id": "agent_699", "gold": "1.17", "prediction": "I do not have the specific data on rental expense net of sublease income for 2004 and 2005 to calculate the ratio. Therefore, I cannot provide a reliable estimate.\n\nno", "passed": false, "cost": 3.102e-05}
+{"agent_id": "agent_452", "gold": "4", "prediction": "0", "passed": false, "cost": 2.048e-05}
+{"agent_id": "agent_922", "gold": "38.74", "prediction": "45", "passed": false, "cost": 1.11e-05}
+{"agent_id": "agent_1287", "gold": "87.3", "prediction": "I cannot determine the segment sales decrease percentages for 2009 and 2010 without specific data. Therefore, I cannot calculate the percentage relationship between the two.  \n\nAnswer: cannot be determined", "passed": false, "cost": 4.275e-05}
+{"agent_id": "agent_961", "gold": "-10%", "prediction": "I cannot provide an estimate without specific data on net cash provided by operating activities for 2011 and 2012.  \nAnswer: no", "passed": false, "cost": 4.08e-05}
+{"agent_id": "agent_737", "gold": "3.2%", "prediction": "I cannot determine the percentage change in the balance of non-controlling interests from 2010 to 2011 without specific financial data.", "passed": false, "cost": 4.221e-05}
+{"agent_id": "agent_176", "gold": "8.6%", "prediction": "No data is provided to calculate the percentage change or total expense increase.  \n\nAnswer: no", "passed": false, "cost": 2.2724e-05}
+{"agent_id": "agent_409", "gold": "10122", "prediction": "-150", "passed": false, "cost": 1.911e-05}
+{"agent_id": "agent_546", "gold": "9.5", "prediction": "0", "passed": false, "cost": 1.0465e-05}
+{"agent_id": "agent_892", "gold": "31.4%", "prediction": "No data is provided to calculate the percentage change in the balance valuation allowance rollforward during 2017.\n\nAnswer: no", "passed": false, "cost": 2.5415e-05}
+{"agent_id": "agent_343", "gold": "27.4", "prediction": "20", "passed": false, "cost": 1.335e-05}
+{"agent_id": "agent_381", "gold": "14.3%", "prediction": "0", "passed": false, "cost": 9.4185e-06}
+{"agent_id": "agent_630", "gold": "1.9%", "prediction": "5%", "passed": false, "cost": 2.2e-05}
+{"agent_id": "agent_225", "gold": "19.4%", "prediction": "0.25", "passed": false, "cost": 1.792e-05}
+{"agent_id": "agent_1268", "gold": "-1693", "prediction": "I cannot determine the net change in equity investments in non-publicly traded securities from 2008 to 2009 without specific data.", "passed": false, "cost": 3.42e-05}
+{"agent_id": "agent_577", "gold": "126.0", "prediction": "0", "passed": false, "cost": 1.488e-05}
+{"agent_id": "agent_323", "gold": "9.2%", "prediction": "60", "passed": false, "cost": 1.536e-05}
+{"agent_id": "agent_29", "gold": "0.96", "prediction": "0", "passed": false, "cost": 8.66e-06}
+{"agent_id": "agent_982", "gold": "4.8", "prediction": "0", "passed": false, "cost": 2.12e-05}
+{"agent_id": "agent_953", "gold": "17.8%", "prediction": "30", "passed": false, "cost": 1.48e-05}
+{"agent_id": "agent_825", "gold": "58.98%", "prediction": "0", "passed": false, "cost": 1.0166e-05}
+{"agent_id": "agent_21", "gold": "16.7%", "prediction": "-50", "passed": false, "cost": 1.124e-05}
+{"agent_id": "agent_182", "gold": "1.32%", "prediction": "I cannot provide a reliable estimate for this specific financial detail without data. The question involves highly specific historical financial information about a company's net operating loss carryforwards and their expiration timeline, which cannot be accurately recalled or estimated without context or source data.\n\nAnswer: no", "passed": false, "cost": 6.14e-05}
+{"agent_id": "agent_1002", "gold": "11.1%", "prediction": "60", "passed": false, "cost": 6.78e-06}
+{"agent_id": "agent_1269", "gold": "20.5", "prediction": "No data is provided to determine the average interest income for 2017 and 2018.", "passed": false, "cost": 2.4219e-05}
+{"agent_id": "agent_769", "gold": "2476.50", "prediction": "150000", "passed": false, "cost": 9.69e-06}
+{"agent_id": "agent_115", "gold": "2.33", "prediction": "No", "passed": false, "cost": 7.96e-06}
+{"agent_id": "agent_688", "gold": "15.1%", "prediction": "30", "passed": false, "cost": 1.701e-05}
+{"agent_id": "agent_838", "gold": "10.14%", "prediction": "50", "passed": false, "cost": 1.87e-05}
+{"agent_id": "agent_1291", "gold": "37.9%", "prediction": "7%", "passed": false, "cost": 8.76e-06}
+{"agent_id": "agent_1086", "gold": "1575000", "prediction": "0", "passed": false, "cost": 1.548e-05}
+{"agent_id": "agent_73", "gold": "7%", "prediction": "100", "passed": false, "cost": 1.41e-05}
+{"agent_id": "agent_567", "gold": "1.74%", "prediction": "30", "passed": false, "cost": 1.23e-05}
+{"agent_id": "agent_268", "gold": "8%", "prediction": "15", "passed": false, "cost": 1.61e-05}
+{"agent_id": "agent_140", "gold": "11%", "prediction": "5.2", "passed": false, "cost": 1.365e-05}
+{"agent_id": "agent_70", "gold": "538.56%", "prediction": "I do not have sufficient information to determine the cumulative total shareholder return for DISCA for the five-year period ending December 21, 2013.", "passed": false, "cost": 3.675e-05}
+{"agent_id": "agent_532", "gold": "8.7%", "prediction": "0", "passed": false, "cost": 7.58e-06}
+{"agent_id": "agent_76", "gold": "3.5%", "prediction": "Unable to determine percent change without specific data on recurring capital expenditures for 2006 and 2007.", "passed": false, "cost": 6.006e-05}
+{"agent_id": "agent_324", "gold": "749524", "prediction": "No", "passed": false, "cost": 6.97e-06}
+{"agent_id": "agent_226", "gold": "13.0%", "prediction": "0.25", "passed": false, "cost": 8.53e-06}
+{"agent_id": "agent_1282", "gold": "32%", "prediction": "18.5", "passed": false, "cost": 1.9e-05}
+{"agent_id": "agent_32", "gold": "14.9", "prediction": "450000000", "passed": false, "cost": 1.755e-05}
+{"agent_id": "agent_666", "gold": "4.5%", "prediction": "50", "passed": false, "cost": 1.305e-05}
+{"agent_id": "agent_886", "gold": "77", "prediction": "I cannot provide an estimate without specific company or industry context.", "passed": false, "cost": 2.44e-05}
+{"agent_id": "agent_242", "gold": "61.5%", "prediction": "50", "passed": false, "cost": 2.3e-05}
+{"agent_id": "agent_1078", "gold": "61%", "prediction": "60", "passed": false, "cost": 1.804e-05}
+{"agent_id": "agent_294", "gold": "-151100", "prediction": "No", "passed": false, "cost": 6.97e-06}
+{"agent_id": "agent_835", "gold": "43.67", "prediction": "No data provided; unable to estimate.", "passed": false, "cost": 1.59965e-05}
+{"agent_id": "agent_551", "gold": "24%", "prediction": "-5%", "passed": false, "cost": 8.13e-06}
+{"agent_id": "agent_15", "gold": "65.6%", "prediction": "35", "passed": false, "cost": 1.554e-05}
+{"agent_id": "agent_207", "gold": "15.1%", "prediction": "60", "passed": false, "cost": 6.83e-06}
+{"agent_id": "agent_412", "gold": "1.31", "prediction": "No data is provided, so a specific ratio cannot be determined.  \n\nAnswer: No", "passed": false, "cost": 2.1528e-05}
+{"agent_id": "agent_1085", "gold": "31904", "prediction": "I cannot provide a specific number for total mainline operating expenses for 2014 without data. My knowledge does not include exact financial figures for that year.", "passed": false, "cost": 2.88535e-05}
+{"agent_id": "agent_1231", "gold": "24123727", "prediction": "0", "passed": false, "cost": 2.288e-05}
+{"agent_id": "agent_114", "gold": "11.3", "prediction": "150", "passed": false, "cost": 1.082e-05}
+{"agent_id": "agent_698", "gold": "31%", "prediction": "I cannot provide an estimate without specific data on rent expenses for 2015 and 2016.", "passed": false, "cost": 3.872e-05}
+{"agent_id": "agent_1277", "gold": "67451", "prediction": "0", "passed": false, "cost": 7.06e-06}
+{"agent_id": "agent_513", "gold": "270111", "prediction": "I cannot provide a specific number for Entergy Arkansas's payables from 2015 to 2017 because the requested data is not available in my knowledge base and cannot be accurately estimated without access to financial statements.  \nAnswer: 0", "passed": false, "cost": 6.111e-05}
+{"agent_id": "agent_157", "gold": "4.8", "prediction": "0", "passed": false, "cost": 6.16e-06}
+{"agent_id": "agent_993", "gold": "12%", "prediction": "12", "passed": false, "cost": 1.976e-05}
+{"agent_id": "agent_965", "gold": "70.9%", "prediction": "0.25", "passed": false, "cost": 8.08e-06}
+{"agent_id": "agent_719", "gold": "3.884%", "prediction": "3.5", "passed": false, "cost": 1.782e-05}
+{"agent_id": "agent_963", "gold": "350824 thousand", "prediction": "5000", "passed": false, "cost": 1.41e-05}
+{"agent_id": "agent_516", "gold": "41.7%", "prediction": "30", "passed": false, "cost": 6.06e-06}
+{"agent_id": "agent_938", "gold": "9.81%", "prediction": "Insufficient information to determine the increase in net capitalized costs for 2017 and 2018.", "passed": false, "cost": 2.734e-05}
+{"agent_id": "agent_584", "gold": "8953", "prediction": "I cannot provide an estimate for the average net sales for MST from 2013 to 2015 as there is no widely recognized company or financial entity commonly known as \"MST\" with publicly available data in my training. Without additional context or clarification, any number would be speculative. \n\nAnswer: unknown  \n\nFinal answer: unknown", "passed": false, "cost": 1.34e-05}
+{"agent_id": "agent_1188", "gold": "98.2%", "prediction": "8.5", "passed": false, "cost": 1.054e-05}
+{"agent_id": "agent_188", "gold": "66.6%", "prediction": "I cannot determine the percentage change in revenues from 2009 to 2010 without specific revenue figures for those years.", "passed": false, "cost": 3.18e-05}
+{"agent_id": "agent_726", "gold": "-18.3%", "prediction": "I cannot provide an accurate estimate without specific data on research and development expenses for 2012 and 2013.", "passed": false, "cost": 5.166e-05}
+{"agent_id": "agent_442", "gold": "39.6", "prediction": "0", "passed": false, "cost": 1.0465e-05}
+{"agent_id": "agent_1158", "gold": "71%", "prediction": "20", "passed": false, "cost": 1.4e-05}
+{"agent_id": "agent_356", "gold": "966", "prediction": "0", "passed": false, "cost": 1.09e-05}
+{"agent_id": "agent_425", "gold": "76", "prediction": "350", "passed": false, "cost": 2.32e-05}
+{"agent_id": "agent_126", "gold": "295.4", "prediction": "1,500", "passed": false, "cost": 1.5e-05}
+{"agent_id": "agent_654", "gold": "49%", "prediction": "65", "passed": false, "cost": 1.24085e-05}
+{"agent_id": "agent_1004", "gold": "4.97", "prediction": "I cannot determine the mathematical range of stock prices for October, November, and December without specific data.  \nAnswer: no", "passed": false, "cost": 2.594e-05}
+{"agent_id": "agent_1318", "gold": "13.4%", "prediction": "50", "passed": false, "cost": 1.56e-05}
+{"agent_id": "agent_780", "gold": "13.5%", "prediction": "No", "passed": false, "cost": 7.06e-06}
+{"agent_id": "agent_1009", "gold": "0.913", "prediction": "1.15", "passed": false, "cost": 1.395e-05}
+{"agent_id": "agent_5", "gold": "56.25%%", "prediction": "No", "passed": false, "cost": 1.18105e-05}
+{"agent_id": "agent_914", "gold": "2.5%", "prediction": "Unknown", "passed": false, "cost": 5.69e-06}
+{"agent_id": "agent_466", "gold": "6.3%", "prediction": "I cannot provide a specific growth rate for net revenues in 2017 without data or context about the company or economy in question.", "passed": false, "cost": 2.98e-05}
+{"agent_id": "agent_1070", "gold": "60%", "prediction": "65", "passed": false, "cost": 7.64e-06}
+{"agent_id": "agent_234", "gold": "no", "prediction": "yes", "passed": false, "cost": 1.86e-05}
+{"agent_id": "agent_1063", "gold": "10.7%", "prediction": "3.5", "passed": false, "cost": 6.52e-06}
+{"agent_id": "agent_88", "gold": "11", "prediction": "1", "passed": false, "cost": 5.71e-06}
+{"agent_id": "agent_890", "gold": "17.18", "prediction": "I cannot answer this question as it refers to \"line 1\" and \"hep common unit,\" which are undefined and lack context.", "passed": false, "cost": 8.57e-06}
+{"agent_id": "agent_125", "gold": "257.95%", "prediction": "No data is provided to determine the percentage of total accumulated other comprehensive income from 2007. Therefore, an estimate cannot be made with any reliability.\n\n0", "passed": false, "cost": 3.495e-05}
+{"agent_id": "agent_617", "gold": "8.5%", "prediction": "I cannot provide a specific number without data. The effective income tax rate change from 2005 to 2006 cannot be determined from the information given.", "passed": false, "cost": 3.614e-05}
+{"agent_id": "agent_337", "gold": "-51.3%", "prediction": "20", "passed": false, "cost": 8.22e-06}
+{"agent_id": "agent_845", "gold": "-1", "prediction": "1.5", "passed": false, "cost": 1.848e-05}
+{"agent_id": "agent_79", "gold": "7.7%", "prediction": "No data provided; unable to estimate.", "passed": false, "cost": 1.166e-05}
+{"agent_id": "agent_415", "gold": "120384.6", "prediction": "Insufficient information to determine the number of outstanding shares based solely on EPS.", "passed": false, "cost": 7.09e-06}
+{"agent_id": "agent_69", "gold": "1008.5", "prediction": "0", "passed": false, "cost": 7.04e-06}
+{"agent_id": "agent_90", "gold": "-1579", "prediction": "No data is provided, and I cannot retrieve specific financial figures for Entergy New Orleans' receivables from the money pool for 2015 to 2016. My knowledge is limited to what is publicly available up to 2024, and without explicit documentation or access to Entergy\u2019s financial statements from that period, I cannot determine the net change.\n\nAnswer: no", "passed": false, "cost": 5.454e-05}
+{"agent_id": "agent_264", "gold": "-54%", "prediction": "I do not have the specific financial data for investments accounted for using the equity method between 2001 and 2002. Therefore, I cannot calculate the percentage change in revenues.\n\nAnswer: Unknown", "passed": false, "cost": 3.9169e-05}
+{"agent_id": "agent_690", "gold": "0.0%", "prediction": "50", "passed": false, "cost": 1.142e-05}
+{"agent_id": "agent_135", "gold": "11.25%", "prediction": "No data provided to determine the growth comparison.", "passed": false, "cost": 1.314e-05}
+{"agent_id": "agent_588", "gold": "-46.29%", "prediction": "No data is provided to calculate or estimate the percentage difference in accumulated other comprehensive income without unrecognized losses/costs.\n\nCannot determine.\n\nno", "passed": false, "cost": 2.133e-05}
+{"agent_id": "agent_971", "gold": "20.4", "prediction": "No data available to determine the exact ratio of securities borrowed to securities loaned in 2008. The question cannot be answered accurately without specific figures.", "passed": false, "cost": 2.45e-05}
+{"agent_id": "agent_13", "gold": "43990.0%", "prediction": "I cannot determine the percent change in net revenue between 2007 and 2008 without specific financial data.  \nno", "passed": false, "cost": 2.984e-05}
+{"agent_id": "agent_306", "gold": "27.2%", "prediction": "No data provided; unable to calculate percentage change.", "passed": false, "cost": 2.4e-05}
+{"agent_id": "agent_228", "gold": "17.2%", "prediction": "10", "passed": false, "cost": 6.69e-06}
+{"agent_id": "agent_634", "gold": "86.3", "prediction": "450", "passed": false, "cost": 6.43e-06}
+{"agent_id": "agent_1077", "gold": "-17.4%", "prediction": "No", "passed": false, "cost": 1.4352e-05}
+{"agent_id": "agent_249", "gold": "1016", "prediction": "1,200", "passed": false, "cost": 6.36e-06}
+{"agent_id": "agent_434", "gold": "2.7%", "prediction": "60", "passed": false, "cost": 5.79e-06}
+{"agent_id": "agent_762", "gold": "7.1%", "prediction": "No data provided", "passed": false, "cost": 1.09135e-05}
+{"agent_id": "agent_1177", "gold": "no", "prediction": "No", "passed": true, "cost": 6.25e-06}
+{"agent_id": "agent_1092", "gold": "14000000", "prediction": "I cannot provide a specific number for the change in asset retirement obligations between 2002 and 2003 without data. The information required to answer this question is not available in my knowledge base.", "passed": false, "cost": 4.04e-05}
+{"agent_id": "agent_739", "gold": "41%", "prediction": "15", "passed": false, "cost": 5.79e-06}
+{"agent_id": "agent_460", "gold": "282076", "prediction": "I cannot provide a specific number for the total depreciation and amortization expense in 2005 without data.", "passed": false, "cost": 4.4e-05}
+{"agent_id": "agent_496", "gold": "275.9%", "prediction": "25", "passed": false, "cost": 6.51e-06}
+{"agent_id": "agent_1006", "gold": "2.72", "prediction": "3.2", "passed": false, "cost": 1.32e-05}
+{"agent_id": "agent_696", "gold": "23.3", "prediction": "I cannot provide the net change in net revenue for Entergy New Orleans, Inc. in 2016 without access to financial data or reports. My knowledge is based on general understanding and I do not have specific financial figures for this company in that year.", "passed": false, "cost": 5.012e-05}
+{"agent_id": "agent_709", "gold": "81%", "prediction": "60", "passed": false, "cost": 6.78e-06}
+{"agent_id": "agent_1303", "gold": "97%", "prediction": "85", "passed": false, "cost": 6.51e-06}
+{"agent_id": "agent_401", "gold": "1.18", "prediction": "0.25", "passed": false, "cost": 1.092e-05}
+{"agent_id": "agent_802", "gold": "2439", "prediction": "No", "passed": false, "cost": 8.68e-06}
+{"agent_id": "agent_1106", "gold": "467", "prediction": "-1.5 million", "passed": false, "cost": 1.66e-05}
+{"agent_id": "agent_201", "gold": "0.1%", "prediction": "I do not have the specific financial data for Entergy Corporation's net revenue growth rate in 2003.", "passed": false, "cost": 1.986e-05}
+{"agent_id": "agent_437", "gold": "199", "prediction": "-100", "passed": false, "cost": 7.16e-06}
+{"agent_id": "agent_1066", "gold": "19.8", "prediction": "305", "passed": false, "cost": 1.86e-05}
+{"agent_id": "agent_1124", "gold": "1224", "prediction": "No", "passed": false, "cost": 7.06e-06}
+{"agent_id": "agent_255", "gold": "89.8%", "prediction": "65", "passed": false, "cost": 1.54e-05}
+{"agent_id": "agent_1262", "gold": "75%", "prediction": "45", "passed": false, "cost": 1.58e-05}
+{"agent_id": "agent_429", "gold": "8.3%", "prediction": "No data provided \u2014 unable to calculate percentage change. \n\nno", "passed": false, "cost": 1.8538e-05}
+{"agent_id": "agent_1205", "gold": "48%", "prediction": "15", "passed": false, "cost": 1.82e-05}
+{"agent_id": "agent_614", "gold": "-38.54%", "prediction": "I cannot provide an accurate estimate without data.  \nNo", "passed": false, "cost": 2.64e-05}
+{"agent_id": "agent_903", "gold": "10.8%", "prediction": "0.25", "passed": false, "cost": 1.572e-05}
+{"agent_id": "agent_708", "gold": "3.21", "prediction": "Not enough information provided to determine the ratio.", "passed": false, "cost": 8.47e-06}
+{"agent_id": "agent_413", "gold": "13%", "prediction": "-10", "passed": false, "cost": 6.97e-06}
+{"agent_id": "agent_570", "gold": "357", "prediction": "I cannot provide a numerical answer or estimate without specific data on net revenue for 2009 and 2010.  \nno", "passed": false, "cost": 3.8e-05}
+{"agent_id": "agent_398", "gold": "7.9%", "prediction": "I cannot provide a specific growth rate for Entergy New Orleans, Inc.'s net revenue in 2016 without access to financial data. My knowledge does not include proprietary or specific historical financial figures for subsidiaries like Entergy New Orleans, Inc. for that year.\n\nno", "passed": false, "cost": 1.2e-05}
+{"agent_id": "agent_1087", "gold": "$ 1928.88", "prediction": "No", "passed": false, "cost": 6.7e-06}
+{"agent_id": "agent_92", "gold": "331.2", "prediction": "No answer can be provided because EPS alone is insufficient to determine the number of outstanding shares without additional information such as net income.", "passed": false, "cost": 2.4518e-05}
+{"agent_id": "agent_722", "gold": "1.9%", "prediction": "I do not have the specific data on the balance of gross liability for unrecognized tax benefits for 2015 and 2016. Therefore, I cannot calculate the percentage change.\n\nAnswer: unknown", "passed": false, "cost": 3.111e-05}
+{"agent_id": "agent_1264", "gold": "8.4", "prediction": "1.2", "passed": false, "cost": 8.13e-06}
+{"agent_id": "agent_156", "gold": "44%", "prediction": "The growth rate of Schlumberger's interest expense from 2010 to 2011 was approximately 12%.  \n\nAnswer: 12", "passed": false, "cost": 3.52e-05}
+{"agent_id": "agent_134", "gold": "2825000", "prediction": "I cannot provide an accurate estimate as there is no publicly available data on notes issued by Kilimanjaro during that period, and no such entity is known for issuing currency notes. Central banks or monetary authorities typically issue notes, not geographical or non-financial entities like Mount Kilimanjaro.\n\n0", "passed": false, "cost": 1.294e-05}
+{"agent_id": "agent_525", "gold": "41%", "prediction": "I do not have specific financial data for rent expense within selling, general and administrative expenses for 2014 and 2015. Therefore, I cannot calculate the percent change.\n\nunable to determine", "passed": false, "cost": 5.236e-05}
+{"agent_id": "agent_1258", "gold": "7341", "prediction": "No", "passed": false, "cost": 7.33e-06}
+{"agent_id": "agent_555", "gold": "73", "prediction": "I cannot provide a specific percentage change in consolidated net sales from 2006 to 2008 without data.", "passed": false, "cost": 9e-06}
+{"agent_id": "agent_943", "gold": "0.99", "prediction": "1.15", "passed": false, "cost": 6.8e-06}
+{"agent_id": "agent_1008", "gold": "-10%", "prediction": "I do not have the specific data on share-based compensation expenses for 2011 and 2012 to calculate the percentage change.", "passed": false, "cost": 2.8405e-05}
+{"agent_id": "agent_1139", "gold": "8.1", "prediction": "I cannot provide a specific number without access to financial data. The net change in interest rate instruments from 2017 to 2018 depends on various entities (e.g., central banks, financial institutions) and instruments (e.g., swaps, bonds, futures), which I cannot quantify accurately from memory.  \n\nAnswer: unknown", "passed": false, "cost": 1.321e-05}
+{"agent_id": "agent_578", "gold": "-256245", "prediction": "Unknown", "passed": false, "cost": 1.2e-05}
+{"agent_id": "agent_520", "gold": "82%", "prediction": "50", "passed": false, "cost": 6.87e-06}
+{"agent_id": "agent_246", "gold": "28%", "prediction": "65", "passed": false, "cost": 1.56e-05}
+{"agent_id": "agent_1099", "gold": "17.4%", "prediction": "I cannot provide a specific estimate for the operating income return for 2005 in the performance and applied coatings segment without data. The answer cannot be determined from the information given.", "passed": false, "cost": 9.83e-06}
+{"agent_id": "agent_347", "gold": "60%", "prediction": "15", "passed": false, "cost": 1.584e-05}
+{"agent_id": "agent_296", "gold": "1.4%", "prediction": "3%", "passed": false, "cost": 1.52e-05}
+{"agent_id": "agent_1182", "gold": "8.36", "prediction": "I cannot provide a numerical estimate or answer without any data or context regarding the specific financial estimates for 2009 and 2008.", "passed": false, "cost": 2.41e-05}
+{"agent_id": "agent_295", "gold": "55.3%", "prediction": "-15", "passed": false, "cost": 5.98e-06}
+{"agent_id": "agent_1307", "gold": "122604300", "prediction": "I cannot provide an answer without specific information about the transaction cost or the company's ownership stake. There is insufficient data to estimate the share of value.", "passed": false, "cost": 4.095e-05}
+{"agent_id": "agent_1142", "gold": "450000", "prediction": "150000", "passed": false, "cost": 9.15e-06}
+{"agent_id": "agent_720", "gold": "151", "prediction": "45", "passed": false, "cost": 7.23e-06}
+{"agent_id": "agent_798", "gold": "5805209", "prediction": "I cannot determine the balance of long-term debt without knowing the initial amount, interest rate, payment schedule, or other relevant details.\n\n0", "passed": false, "cost": 9.46e-06}
+{"agent_id": "agent_313", "gold": "50.0%", "prediction": "85", "passed": false, "cost": 1.764e-05}
+{"agent_id": "agent_211", "gold": "4.2%", "prediction": "No", "passed": false, "cost": 8.86e-06}
+{"agent_id": "agent_1110", "gold": "1.5", "prediction": "0.85", "passed": false, "cost": 1.2259e-05}
+{"agent_id": "agent_885", "gold": "16.7%", "prediction": "150000", "passed": false, "cost": 1.2558e-05}
+{"agent_id": "agent_1095", "gold": "1.9", "prediction": "0", "passed": false, "cost": 1.468e-05}
+{"agent_id": "agent_471", "gold": "-1365", "prediction": "I cannot provide a specific numerical estimate for the total derivatives-net change for level 3 derivative assets and liabilities at fair value for the year 2013 without access to financial reports or data. This information is typically found in the financial statements of specific institutions, such as large banks or financial firms, and varies by entity. Since the question does not specify a particular company or institution, and I cannot look up or recall exact figures, I cannot give a reliable estimate.\n\nTherefore, the answer is:\n\nno", "passed": false, "cost": 1.84e-05}
+{"agent_id": "agent_947", "gold": "36804.76", "prediction": "I cannot provide an estimate for the 2019 consolidated net sales of a company in 2007, as this would involve knowing future financial data from 2019 at a time when it had not yet occurred. The question is logically inconsistent. \n\nAnswer: no", "passed": false, "cost": 1.212e-05}
+{"agent_id": "agent_626", "gold": "16759.5", "prediction": "I cannot provide a specific numerical estimate for the average value of operating leases during 2010\u20132014 without access to financial data or studies from that period. Operating lease values vary significantly across industries and companies, and no reliable global or aggregate figure can be accurately recalled from memory. Therefore, I cannot give a credible estimate.\n\nNA", "passed": false, "cost": 1.313e-05}

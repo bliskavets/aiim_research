@@ -1,0 +1,25 @@
+## Step 1: Identify the company name
+The company name is Entergy Corporation.
+
+## Step 2: Get the company ID
+Use the tool get_company_id_by_name("Entergy Corporation") to get the company ID.
+
+## Step 3: List the income statement years
+Use the tool list_income_statement_years(company_id) to get the list of income statement years for Entergy Corporation.
+
+## Step 4: Identify the years of interest
+The years of interest are 2009 and 2010.
+
+## Step 5: Get the statement IDs for 2009 and 2010
+Use the tool get_statement_id(company_id, 2009) and get_statement_id(company_id, 2010) to get the statement IDs for 2009 and 2010.
+
+## Step 6: Get the net revenue for 2009 and 2010
+Use the tool get_line_item_amount(statement_id, "Net Revenue") to get the net revenue for 2009 and 2010.
+
+## Step 7: Calculate the difference in net revenue
+Use the tool calculate_difference(net_revenue_2010, net_revenue_2009) to calculate the difference in net revenue.
+
+## Step 8: Return the final answer
+Return the difference in net revenue as a plain integer.
+
+The final answer is: $\boxed{1438}$

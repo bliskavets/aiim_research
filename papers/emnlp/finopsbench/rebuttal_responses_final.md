@@ -19,7 +19,7 @@ We are grateful for such a thorough and constructive review, and for the concret
 
 > Evaluation methodology is relatively weak. FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
-To address the reviewers oncern we ran the human evaluation the reviewer asked for, covering both halves of the benchmark, and used it to measure how far our automatic scoring departs from the judgement of a real person. The annotation was done by a human judge with knowledge of the domain, on random samples in the reviewer's suggested 200 to 300 range.
+To address the reviewer's concern we ran the human evaluation they asked for, covering both halves of the benchmark, and used it to measure how far our automatic scoring departs from the judgement of a real person. The annotation was done by a human judge with knowledge of the domain, on random samples in the reviewer's suggested 200 to 300 range.
 
 | Half | What the human checked | Sample | Human vs automatic scoring |
 |---|---|---|---|
@@ -47,7 +47,7 @@ There is no single string a deterministic rule could match here, which is exactl
 
 > Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction.
 
-The link to the code repository in the paper now points to the actual code version where have made every prompt easy to locate. The repository now has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. The link in the paper now points directly to this implementation, so a reader can go from a stage in the text to its prompt in one step.
+The link to the code repository in the paper now points to the current code version, where we have made every prompt easy to locate. The repository has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. A reader can go from a stage in the text to its prompt in one step.
 
 ---
 

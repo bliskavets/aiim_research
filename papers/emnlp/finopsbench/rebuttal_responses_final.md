@@ -296,6 +296,8 @@ The judges converge on the objective criteria and split most on the subjective o
 
 Third, the two halves act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
+Finally, the dependence is not locked in: we release the full construction and extension code, so the community can swap the generator or judge models, adjust any stage, and regenerate or extend the benchmark for their own needs rather than relying on our specific model choices.
+
 ---
 
 =================================================================================

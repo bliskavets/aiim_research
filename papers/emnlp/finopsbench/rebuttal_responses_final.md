@@ -164,8 +164,6 @@ We thank the reviewer for these positioning questions, and we address each of th
 
 ---
 
-### What fundamental NLP capability does it advance?
-
 > While the benchmark targets agentic financial analysis, it remains unclear what fundamental NLP capability it advances beyond a domain-specific evaluation resource.
 
 FinOpsBench measures capabilities a domain QA resource does not, and backs each with a statistic. The first is multi-step planning under partial observability: with no data in context, the model must probe the schema, plan a retrieval path, and aggregate the result. Difficulty tracks the length of that path:
@@ -215,8 +213,6 @@ None of this is finance-specific. Parsing an ambiguous instruction, planning, wr
 
 ---
 
-### What is fundamentally new vs. recent agentic-finance benchmarks?
-
 > multiple recent benchmarks have already moved in this direction. It remains somewhat unclear what fundamentally new evaluation capability FinOpsBench provides.
 
 What is new is not agentic financial tool use itself, but a controllable, hermetic decomposition of agentic competence that realism-oriented benchmarks cannot offer. The environments are synthetic and executable, so every item is reproducible and difficulty is tunable, and the benchmark is built through several generation stages followed by explicit difficulty-raising stages. We also release the construction code, so the community can regenerate harder environments instead of consuming a fixed set.
@@ -252,8 +248,6 @@ The reviewer rightly points to recent agentic finance benchmarks, so for compari
 
 ---
 
-### Fine-grained diagnostics beyond final-answer accuracy
-
 > the reported analyses are primarily based on final-answer accuracy. More fine-grained diagnostic metrics or failure analyses ...
 
 We thank the reviewer for pushing on this. The benchmark already reports more than a single accuracy number, and to go further we add a human-grounded check and two diagnostic layers that build on it.
@@ -285,8 +279,6 @@ Per-model process metrics separate models that land on the same accuracy but beh
 On v1 the failures are semantic, not syntactic: SQL errors are near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. On v2 the profile moves to tool use under distractors. One trace makes the diagnostic value concrete: Qwen3-235B on a Citigroup contractual-obligations ratio first emitted a malformed percentage call, got a nonsense 0.0%, then self-corrected and computed compute_percentage(88472, 260754) = 33.9%, the gold answer. The taxonomy records both the slip and the recovery, which a final-answer metric would collapse into a single "correct".
 
 ---
-
-### Dependence on LLM-generated queries, schemas, data, and judgments
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 

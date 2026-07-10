@@ -59,7 +59,7 @@ We thank the reviewer for this request and we would like to emphasize that some 
 
 To further address the reviewer's question we ran additional ablational analysis on the diversity of the reference solutions and questions:
 
-| Aspect | v1 (8,233-item pool) | v2 |
+| Aspect | v1 | v2 |
 |---|---|---|
 | distinct user roles | 742 | n/a |
 | duplicate queries | 0 | 0 |

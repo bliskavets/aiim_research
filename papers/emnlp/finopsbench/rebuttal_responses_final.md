@@ -70,16 +70,42 @@ For v1, measured over the 8,233-item pool:
 | tool calls per example | mean 1.4, median 1, p90 3, max 10 |
 | SQL surface of reference solutions | JOIN 70%, ORDER BY 42%, aggregate 35%, GROUP BY 31%, subquery 22%, date function 19%, CASE 9%, HAVING 7% |
 
+Looking deeper at the SQL structure of the reference solutions, over the 11,782 reference queries:
+
+| v1 SQL structural depth | value |
+|---|---|
+| JOINs per query, 0 / 1 / 2 / 3+ | 44% / 31% / 17% / 8% |
+| queries with a nested subquery | 17%, of which 10% nest two or more levels |
+| clauses per query | mean 4.1, max 8 |
+| items requiring two or more JOINs | 33% |
+
 For v2, measured over the released environments:
 
 | v2 diversity | value |
 |---|---|
 | reference-plan tool calls per environment | mean 4.9, median 5, p90 7, max 15 |
 | tools available per environment | mean 8.9, median 9, p90 11, max 14 |
-| tool composition | core plan tools, partial-information tools, and distractor tools |
+| off-path tools per environment (distractor and partial-information) | mean 3.2, median 3, at least two in 92% of environments |
 | numerical-operation mix | aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% |
 
-Diversity also connects to measured difficulty. Building the augmented environment raises the tool count from 3.9 to 8.9 on average, and when we bucket already-collected agentic accuracy by the required tool-chain depth, accuracy falls monotonically, so the depth we report is a real difficulty axis and not a cosmetic one:
+The v2 environments are drawn from 124 distinct source companies across more than 1,000 FinQA filings, so the question base is not a single narrow slice of finance.
+
+The two halves cover complementary financial concepts, which answers the concern that the benchmark might sit on one topic:
+
+| Financial concept, share of examples | v1 | v2 |
+|---|---|---|
+| accounts payable, invoices, vendors | 52% | 0% |
+| approval, authorization, controls | 18% | 2% |
+| overdue, aging, late payment | 16% | 11% |
+| variance, budget vs actual | 13% | 1% |
+| reconciliation, discrepancy | 6% | 0% |
+| financial-statement ratios | 7% | 77% |
+
+The reasoning operations the tasks demand also vary. In v1 the analyst intent splits into enumeration (list or retrieve) 22%, anomaly search (detect or identify) 16%, relative reasoning (compare) 4%, and quantification (compute) 2%, and by task category v1 spans Accounts Payable analysis 52%, financial reporting 25%, variance analysis 13%, and revenue recognition 8%. The v2 numerical operations are in the table above.
+
+On template diversity, the v1 pool comes from 12 seed queries expanded to 8,233 examples, a 686x expansion filtered for near-duplicates at cosine 0.9. The result is 100% distinct queries, a distinct-3-gram ratio of 0.52 and a distinct-4-gram ratio of 0.74, and a 0.0% high-overlap pair rate. v2 keeps the human-authored FinQA questions verbatim, so its question phrasing is inherited from a public human dataset rather than templated.
+
+Finally, diversity connects to measured difficulty. Building the augmented environment raises the tool count from 3.9 to 8.9 on average, and when we bucket already-collected agentic accuracy by the required tool-chain depth, accuracy falls monotonically, so the depth we report is a real difficulty axis and not a cosmetic one:
 
 | Required tool-chain depth | 1 to 3 | 4 to 5 | 6 to 7 | 8+ |
 |---|---|---|---|---|

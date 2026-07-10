@@ -168,15 +168,13 @@ We thank the reviewer for these positioning questions, and we address each of th
 
 > While the benchmark targets agentic financial analysis, it remains unclear what fundamental NLP capability it advances beyond a domain-specific evaluation resource.
 
-To address this, FinOpsBench measures three capabilities that a domain QA resource does not, and we back each with a statistic rather than an assertion.
-
-First, multi-step planning under partial observability. The model gets no data in context; it has to probe the schema or the tools, plan a retrieval path, and aggregate the result. Difficulty scales with the length of that path. Bucketing collected agentic accuracy by the required tool-chain depth, accuracy falls monotonically:
+To address this, FinOpsBench measures capabilities a domain QA resource does not, and we back each with a statistic rather than an assertion. It starts with multi-step planning under partial observability. The model gets no data in context; it has to probe the schema or the tools, plan a retrieval path, and aggregate the result. Difficulty scales with the length of that path: bucketed by required tool-chain depth, agentic accuracy falls monotonically:
 
 | Required tool-chain depth | 1 to 3 | 4 to 5 | 6 to 7 | 8+ |
 |---|---|---|---|---|
 | agentic accuracy, pooled across models | 61.6% | 61.1% | 57.0% | 45.8% |
 
-Second, writing correct database queries in v1. The reference solutions are real analytic SQL, not single-table lookups:
+The same tasks require writing correct database queries in v1, whose reference solutions are real analytic SQL, not single-table lookups:
 
 | v1 SQL surface | share of items |
 |---|---|
@@ -186,9 +184,9 @@ Second, writing correct database queries in v1. The reference solutions are real
 | uses a subquery | 22% |
 | needs two or more JOINs | 33% |
 
-Third, turning an open-ended request into an analytical answer through a sequence of tool calls. For example, a Management Accountant asks "Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to Q2 2024, and explain the volume and price variances and their effect on gross margin." The gold answer is a written variance analysis. The reference solution reaches it in 10 SQL calls: resolve the account id, list the products, compute quarterly quantity, average unit cost and amount, join consumption to products, then compute quarterly revenue and cost, all while ignoring seeded distractor rows from a Finished-Goods account. No single call answers this, so the model has to plan the whole chain.
+They also demand turning an open-ended request into an analytical answer through a sequence of tool calls. For example, a Management Accountant asks "Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to Q2 2024, and explain the volume and price variances and their effect on gross margin." The gold answer is a written variance analysis. The reference solution reaches it in 10 SQL calls: resolve the account id, list the products, compute quarterly quantity, average unit cost and amount, join consumption to products, then compute quarterly revenue and cost, all while ignoring seeded distractor rows from a Finished-Goods account. No single call answers this, so the model has to plan the whole chain.
 
-These are generic model capabilities, not finance-specific ones. Reading an ambiguous instruction, breaking it into a plan, writing correct structured queries, calling tools with the right arguments, ignoring distractors, and composing intermediate results into a grounded answer make up the core loop of any tool-using agent, and they carry over to non-financial domains unchanged. Finance is the substrate that gives us hard, verifiable semantics and an executable ground truth, not the skill under test. In that sense FinOpsBench evaluates a model's general agentic and reasoning competence as much as its financial knowledge, and the financial setting only makes the measurement precise and checkable.
+None of this is finance-specific. Parsing an ambiguous instruction, planning, writing correct queries, calling tools with the right arguments, ignoring distractors, and composing the results into a grounded answer are the core loop of any tool-using agent and carry over to other domains. Finance only supplies the hard, verifiable semantics and an executable ground truth, so FinOpsBench measures general agentic and reasoning competence as much as financial knowledge.
 
 ---
 
@@ -244,7 +242,7 @@ FinOpsBench is the only one of these that is fully reproducible and hermetic, sc
 
 We thank the reviewer, and we agree the benchmark should yield more than a single accuracy number. The scoring it rests on is validated first: our automatic scoring matches a human judge with knowledge of the domain 85.1% of the time on v1 (κ = 0.67), and v2 is scored by execution, so the diagnostics below sit on calibrated ground. On top of that we add two diagnostic layers.
 
-First, a failure-mode taxonomy over 779 failing traces in eight categories. Each cell is the share of that model's failing traces, and the profile shifts clearly from v1 to v2:
+One layer is a failure-mode taxonomy over 779 failing traces in eight categories. Each cell is the share of that model's failing traces, and the profile shifts clearly from v1 to v2:
 
 | Model | half | malformed args | incomplete retrieval | wrong-tool selection | calc error | round-limit |
 |---|---|---|---|---|---|---|
@@ -253,7 +251,7 @@ First, a failure-mode taxonomy over 779 failing traces in eight categories. Each
 | Claude-Sonnet-4.5 | v2 | 12% | 15% | 20% | 17% | 7% |
 | DeepSeek-V3 | v2 | 7% | 16% | 23% | 14% | 25% |
 
-Second, per-model process metrics, which separate models that land on the same accuracy:
+The other is a set of per-model process metrics, which separate models that land on the same accuracy:
 
 | Model | avg tool calls per task |
 |---|---|
@@ -269,11 +267,9 @@ On v1 the failures are semantic, not syntactic: SQL errors are near zero, while 
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 
-We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. Three points address it directly.
+We appreciate this concern and share the goal of keeping benchmark quality independent of any single model's behaviour. To begin with, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 178 of 200 do so.
 
-First, the dependence is asymmetric across the two halves. The v2 questions are human-authored, taken from FinQA, and v2 is validated by execution rather than by judgement: only the environment scaffolding is generated, and it is accepted only if running the reference plan reproduces the gold answer. In a 200-item sample, 178 of 200 do so.
-
-Second, the LLM judgements are aligned with human perception, which we measured rather than assumed:
+Where judgements are used, they are aligned with human perception, which we measured rather than assumed:
 
 | Half | check | agreement |
 |---|---|---|
@@ -294,9 +290,9 @@ Acceptance also does not rest on one model's opinion. The construction panel is 
 
 The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call. The same robustness holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% of them (Cohen's κ = 0.64), so even where automatic scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
-Third, the two halves act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
+The two halves also act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
-Finally, the dependence is not locked in: we release the full construction and extension code, so the community can swap the generator or judge models, adjust any stage, and regenerate or extend the benchmark for their own needs rather than relying on our specific model choices.
+Nor is the dependence locked in: we release the full construction and extension code, so the community can swap the generator or judge models, adjust any stage, and regenerate or extend the benchmark for their own needs rather than relying on our specific model choices.
 
 ---
 

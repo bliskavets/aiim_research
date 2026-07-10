@@ -57,17 +57,34 @@ The link to the code repository in the paper now points to the actual code versi
 
 We thank the reviewer for this request and we would like to emphasize that some of the statistical information about the benchmark is already located in the Appendix. Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
 
-To further address the reviewer's question we ran additional ablational analysis on the diversity of the reference solutions and questions:
+To further address the reviewer's question we ran additional quantitative analysis of the diversity of the reference solutions and questions.
 
-| Aspect | v1 | v2 |
-|---|---|---|
-| distinct user roles | 742 | n/a |
-| duplicate queries | 0 | 0 |
-| distinct-3-gram ratio | 0.52 | n/a |
-| SQL complexity of solutions | 70% JOIN, 42% ORDER BY, 35% aggregate, 31% GROUP BY, 22% subquery, 19% date arithmetic | n/a |
-| tool calls in reference plan | n/a | median 5, p90 7, max 15 |
-| tools available per environment | n/a | median 9 (core + partial-info + distractor) |
-| numerical-operation mix | n/a | aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% |
+For v1, measured over the 8,233-item pool:
+
+| v1 diversity | value |
+|---|---|
+| examples in pool | 8,233 |
+| distinct user roles | 742 |
+| distinct queries | 100%, no duplicates |
+| lexical diversity | distinct-3-gram ratio 0.52 |
+| tool calls per example | mean 1.4, median 1, p90 3, max 10 |
+| SQL surface of reference solutions | JOIN 70%, ORDER BY 42%, aggregate 35%, GROUP BY 31%, subquery 22%, date function 19%, CASE 9%, HAVING 7% |
+
+For v2, measured over the released environments:
+
+| v2 diversity | value |
+|---|---|
+| reference-plan tool calls per environment | mean 4.9, median 5, p90 7, max 15 |
+| tools available per environment | mean 8.9, median 9, p90 11, max 14 |
+| tool composition | core plan tools, partial-information tools, and distractor tools |
+| numerical-operation mix | aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% |
+
+Diversity also connects to measured difficulty. Building the augmented environment raises the tool count from 3.9 to 8.9 on average, and when we bucket already-collected agentic accuracy by the required tool-chain depth, accuracy falls monotonically, so the depth we report is a real difficulty axis and not a cosmetic one:
+
+| Required tool-chain depth | 1 to 3 | 4 to 5 | 6 to 7 | 8+ |
+|---|---|---|---|---|
+| pooled agentic accuracy | 61.6% | 61.1% | 57.0% | 45.8% |
+| DeepSeek-V3 | 61.9% | 58.6% | 54.6% | 43.4% |
 
 We also ran a failure analysis over 779 failing traces, classified into eight categories, with per-model process metrics. The distribution shows a clear shift from v1 to v2:
 

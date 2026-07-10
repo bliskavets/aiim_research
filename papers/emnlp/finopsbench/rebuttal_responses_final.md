@@ -234,7 +234,7 @@ The reviewer rightly points to recent agentic finance benchmarks, so we position
 | FinGAIA | end-to-end agent with browser, file and Python tools | live tools, Chinese | expert answer keys, 407 tasks | no |
 | Herculean | MCP skill workflows | live MCP tool servers | workflow success criteria | no |
 
-FinOpsBench is the only one of these that is fully reproducible and hermetic, scores answers against executable ground truth, and ships a difficulty knob, meaning released code that regenerates harder environments. The others buy realism through live tools, which is valuable but neither reproducible nor controllable, and one of them measures retrieval ranking rather than answer correctness. [INTERNAL, not for posting: a same-model head-to-head run on these three is not quick or metric-comparable (live browser/MCP stacks, a Chinese task set, and a ranking-only metric); can integrate one on request.]
+FinOpsBench is the only one of these that is fully reproducible and hermetic, scores answers against executable ground truth, and ships a difficulty knob, meaning released code that regenerates harder environments. The others buy realism through live tools, which is valuable but neither reproducible nor controllable, and one of them measures retrieval ranking rather than answer correctness.
 
 ---
 

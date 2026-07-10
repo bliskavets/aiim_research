@@ -188,7 +188,7 @@ Second, writing correct database queries in v1. The reference solutions are real
 
 Third, turning an open-ended request into an analytical answer through a sequence of tool calls. For example, a Management Accountant asks "Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to Q2 2024, and explain the volume and price variances and their effect on gross margin." The gold answer is a written variance analysis. The reference solution reaches it in 10 SQL calls: resolve the account id, list the products, compute quarterly quantity, average unit cost and amount, join consumption to products, then compute quarterly revenue and cost, all while ignoring seeded distractor rows from a Finished-Goods account. No single call answers this, so the model has to plan the whole chain.
 
-Together these are the core loop of any tool-using agent: read the intent, synthesize a plan, reject distractors, aggregate grounded evidence. FinOpsBench measures that loop in a controlled and verifiable financial setting.
+These are generic model capabilities, not finance-specific ones. Reading an ambiguous instruction, breaking it into a plan, writing correct structured queries, calling tools with the right arguments, ignoring distractors, and composing intermediate results into a grounded answer make up the core loop of any tool-using agent, and they carry over to non-financial domains unchanged. Finance is the substrate that gives us hard, verifiable semantics and an executable ground truth, not the skill under test. In that sense FinOpsBench evaluates a model's general agentic and reasoning competence as much as its financial knowledge, and the financial setting only makes the measurement precise and checkable.
 
 ---
 

@@ -184,7 +184,49 @@ The same tasks require writing correct database queries in v1, whose reference s
 | uses a subquery | 22% |
 | needs two or more JOINs | 33% |
 
-They also demand turning an open-ended request into an analytical answer through a sequence of tool calls. For example, a Management Accountant asks "Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to Q2 2024, and explain the volume and price variances and their effect on gross margin." The gold answer is a written variance analysis. The reference solution reaches it in 10 SQL calls: resolve the account id, list the products, compute quarterly quantity, average unit cost and amount, join consumption to products, then compute quarterly revenue and cost, all while ignoring seeded distractor rows from a Finished-Goods account. No single call answers this, so the model has to plan the whole chain.
+They also demand turning an open-ended request into an analytical answer through a sequence of tool calls. One v1 item, end to end:
+
+```
+Prompt (Management Accountant):
+Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to
+Q2 2024. Explain key reasons behind volume or price variances and how these
+affect product gross margin.
+
+Golden answer:
+From Q2 2023 to Q2 2024 the Raw Materials account fluctuates in both quantity
+and unit cost: stable near 10.0 in Q2 2023, spikes to 12.0 in Q3 2023, eases to
+11.5 in Q4, rises to 12.5 in Q1 2024, then falls to 11.0 in Q2 2024. Rising
+input cost squeezes gross margin on Widget A and Gadget B; falling cost improves
+it. The Finished-Goods ledger rows and the mislinked product_raw_materials row
+are distractors and are irrelevant. Price movement is the main driver of the
+variance, with volume secondary.
+
+Model's SQL queries (10 tool calls, middle omitted):
+1  SELECT id FROM ledger_accounts WHERE name = 'Raw Materials';
+2  SELECT id, name FROM products;
+3  SELECT strftime('%Y', entry_date) || '-Q' ||
+          ((cast(strftime('%m', entry_date) AS integer)+2)/3) AS quarter,
+          SUM(quantity), AVG(unit_cost), SUM(amount)
+     FROM ledger_entries
+     WHERE account_id = 1 AND entry_date BETWEEN '2023-04-01' AND '2024-06-30'
+     GROUP BY quarter ORDER BY quarter;
+5  SELECT quarter, p.name, SUM(s.quantity), AVG(s.unit_price),
+          SUM(s.quantity * s.unit_price)
+     FROM sales s JOIN products p ON s.product_id = p.id
+     WHERE s.sale_date BETWEEN '2023-04-01' AND '2024-06-30'
+     GROUP BY quarter, p.name;
+   ... queries 4, 6-10: quarterly consumption, revenue, cost and quantity
+   totals in the same per-quarter style ...
+
+Model's response (abridged):
+Raw Materials ledger by quarter: Q2 2023 3,150 units @ $10.00 = $31,500;
+Q3 2023 3,830 @ $12.00 = $45,960; Q4 2023 3,150 @ $11.50; Q1 2024 3,600 @ $12.50;
+Q2 2024 3,750 @ $11.00. [per-quarter consumption, per-product sales and revenue
+tables] Price variance peaks in Q1 2024; stable selling prices cushion gross
+margin while raw-material cost inflation compresses margin percentages.
+```
+
+No single call answers this: the model has to find the right account, filter out the seeded Finished-Goods distractor rows, and chain ten queries into one grounded analysis.
 
 None of this is finance-specific. Parsing an ambiguous instruction, planning, writing correct queries, calling tools with the right arguments, ignoring distractors, and composing the results into a grounded answer are the core loop of any tool-using agent and carry over to other domains. Finance only supplies the hard, verifiable semantics and an executable ground truth, so FinOpsBench measures general agentic and reasoning competence as much as financial knowledge.
 

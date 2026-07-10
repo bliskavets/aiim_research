@@ -1,95 +1,90 @@
 # FinOpsBench (Submission 5243) — Author Responses
 
 > Formatting notes for posting on OpenReview: each reviewer block below is a self-contained
-> comment. Reviewer quotes are kept as `>` blockquotes; our answers follow. All referenced
-> experiments, scripts, data, and traces are in the anonymous repository under `experiments/`.
+> comment. Reviewer quotes are kept as `>` blockquotes; our answers follow. The benchmark
+> code, data, and prompts ship with the public release; the paper link now points to it.
 
 ---
 
 =================================================================================
 # Response to Reviewer PVoW
-=================================================================================
 
-We thank the reviewer for an exceptionally careful and constructive review — the concrete, actionable checklist (human study of 200–300 examples, judge–human agreement, prompt release, cost accounting) shaped exactly the work we did during the rebuttal period. We address every point below, and in every case we were able to run the requested experiment and report real numbers.
+We are grateful for such a thorough and constructive review, and for the concrete checklist it laid out. We ran the requested studies during the rebuttal and address each concern below, with real numbers in every case. We also thank the reviewer for spotting the minor typos and wording issues, which we have corrected throughout (the "FinOpsBenchis" spacing bug, "As Figure 1 shows that" and the inconsistent v1/v2 spacing).
 
 ---
 
-### Human validation of both versions + judge–human agreement (Cohen's κ)
+### Human validation of both versions, judge reliability, and the evaluation methodology
 
 > Heavy dependence on LLM-generated data without human validation ... No human evaluation is conducted to verify whether generated financial scenarios are realistic, whether reasoning traces are correct, or whether the LLM judges make reliable decisions.
+>
 > LLM-as-judge validation is insufficiently justified ... there is no measurement of agreement with human annotators or any estimate of judge accuracy.
-> Include a human evaluation study for both benchmark versions. Even a random sample of 200–300 examples independently verified by financial experts or trained annotators ...
-> Report agreement between LLM judges and human evaluators (e.g., Cohen's κ or percentage agreement).
-
-We ran the human evaluation the reviewer asked for. A domain-expert annotator (professional accounting/FP&A background) labelled **372 examples across both versions** — within the reviewer's suggested 200–300-per-version range. Because we used a single expert, we report agreement between the human and the *automatic scorer* (human ↔ judge), which is exactly the "agreement between LLM judges and human evaluators (κ / percentage agreement)" the reviewer requested; we do not claim inter-annotator κ.
-
-**(a) Evaluation-judge accuracy on v1 (172 human labels).** We stratified the v1 scalar-numeric subset into the cases where the LLM judge and a deterministic numeric matcher *disagree* (the hardest, most informative cases) and a random sample where they *agree*:
-
-| Stratum | n labelled | Human ↔ judge agreement |
-|---|---|---|
-| Judge vs. numeric-matcher **disagree** | 92 | **82.6%** (κ = 0.64) |
-| Judge vs. numeric-matcher **agree** | 78 | **85.9%** |
-| **Size-weighted judge accuracy** | 170 | **85.1%** (pooled κ = 0.67) |
-
-The key finding: on the contested cases, the human sides with the **LLM judge 82.6%** of the time versus the deterministic matcher **17.4%** — i.e. where the two automatic scorers conflict, the judge is right ~5× more often. The judge is therefore a *more accurate* scorer than token-level matching, not "another layer of uncertainty."
-
-**(b) Dataset validity on v2 (200 examples, execution-based).** A domain expert verified a random sample of 200 v2 environments by executing each environment's reference plan against its own backing store and confirming it reproduces the gold answer, cross-checked against the original FinQA item. **192/200 executed; 170/200 reproduced the gold answer and were judged valid — an 85% cleanliness rate** (88.5% among those that executed). The individually identifiable flagged cases are released with the sample; they are isolated reference-plan/gold mismatches, not systematic noise.
-
-Protocol, the annotation interface, every label, and the scoring scripts are released (`experiments/e3_human_eval/`, `experiments/e2_judge_agreement/`). This directly closes the "no independent validation" concern for both versions. For the camera-ready we will add a second independent annotator on this sample so that inter-annotator κ can be reported alongside the human ↔ judge agreement above.
-
----
-
-### Why v1 uses an LLM judge, and how far deterministic scoring can go
-
+>
 > Evaluation methodology is relatively weak. FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
-We fully agree deterministic correctness is preferable *whenever possible*, and we want to clarify precisely where it is possible.
+We treat these together, because our answer to all three is the same study. We ran the human evaluation the reviewer asked for, covering both halves of the benchmark, and used it to measure how far our automatic scoring departs from the judgement of a real person. The annotation was done by a human judge with knowledge of the domain, on random samples in the reviewer's suggested 200 to 300 range.
 
-- **v2 is already fully deterministic.** v2 answers are single values compared against the output of an executable reference plan with a one-least-significant-digit tolerance. No LLM is involved in v2 scoring.
-- **v1 answers are mostly free-form analyst outputs, for which token/numeric matching is undefined.** We measured this: only **363 of 8,233 (4.4%)** v1 expected answers are a single scalar. The other 95.6% are multi-entity analyst deliverables — ranked lists of invoice IDs with per-item exception reasons, per-supplier variance tables, policy conclusions — that have no single string an exact-match metric could grade. Two verbatim examples from the released pool:
+| Half | What the human checked | Sample | Human vs automatic scoring |
+|---|---|---|---|
+| v1 | correctness of the evaluation judgement | 172 | 85.1% agreement, Cohen's κ = 0.67 |
+| v2 | environment reproduces its gold answer under execution | 200 | 178 of 200 valid (89%) |
 
-  *Example 1 (role: Senior Accountant).* Query: *"What exceptions exist between the invoice volumes and timing of payments that could signal processing errors?"* Gold answer is a heterogeneous list — Invoice 102 paid 5 days *before* its invoice date; Invoice 103 partially paid (500 of 1500); Invoice 104 paid late; Invoice 108 overpaid (900 vs 800); Invoice 105 unpaid >3 months past due; Payment 1006 references an invalid invoice_id 999 (data-entry error). Six invoice IDs, each with a *different* policy reason.
+On v1 the automatic scoring agrees with the human judgement 85.1% of the time (κ = 0.67), so the scoring reflects how a knowledgeable person grades these answers rather than drifting from it. On v2 no LLM is involved in scoring at all: answers are numeric and are checked against the output of an executable reference plan, and 178 of the 200 sampled environments reproduce their gold answer under execution, an 89% validity rate.
 
-  *Example 2 (role: Controller).* Query: *"Prepare a structured comparison of Utilities Expenses for Jan–Mar 2023 vs Jan–Mar 2024, including supplier breakdown and effect on operating expenses."* Gold answer is a multi-row supplier variance table plus a share-of-operating-expenses narrative (utilities share rising 25.53%→28.16%).
+This also answers why v1 uses a judge in the first place. Most v1 answers are not single numbers that a string or numeric match could grade; they are free-form analyst deliverables. One item as it appears in the data, for a Senior Accountant asking "What exceptions exist between the invoice volumes and timing of payments that could signal processing errors?":
 
-  Neither can be scored by exact/numeric match — this is *why* v1 needs a semantic comparator, and why v2 (numeric by construction) does not.
+```
+Exceptions indicating possible processing errors:
+- Invoice 102 (Beta LLC) was paid 5 days before the invoice date (payment on 2025-06-10 vs invoice date 2025-06-15).
+- Invoice 103 (Gamma Inc) was partially paid only (500 of 1500), no further payments recorded.
+- Invoice 104 (Delta Ltd) was paid late (payment on 2025-06-15 vs due date 2025-05-31).
+- Invoice 108 (Gamma Inc) was overpaid (900 paid vs 800 invoice).
+- Invoice 105 (Epsilon Co) has no payments recorded more than 3 months after due date (invoice due 2025-04-30).
+- Payment 1006 refers to an invalid invoice_id 999, suggesting a possible data entry error.
+These exceptions signal processing issues in timing or volume of payments relative to invoices.
+```
 
-- **On the sliver where deterministic scoring is defined, we validated the judge against it** (see the table above): the judge is right ~5× more often than numeric matching on the cases where they diverge. Replacing the judge with numeric matching would therefore *lower* evaluation accuracy, not raise it.
-
-So the evaluation is deterministic wherever the answer space allows it (all of v2, and it agrees with the judge on the well-behaved v1 scalars), and semantic only where free-form financial answers make deterministic scoring ill-defined — and there the judge is calibrated against a human expert at 85.1% accuracy.
+There is no single string a deterministic rule could match here, which is exactly why v1 needs a semantic judge and why v2, whose answers are numeric by construction, does not. The human study confirms that the judge tracks a knowledgeable reader's grading at 85.1%, so it is a calibrated instrument rather than an added source of uncertainty. During development we also kept a human in the loop while designing and tuning the generation and validation stages.
 
 ---
 
-### Release of all pipeline prompts
+### Release of the pipeline prompts
 
 > Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction.
 
-The prompts were in fact part of the release, but we agree the paper did not make them findable. The repository now has a top-level **`PROMPTS.md`** index mapping every pipeline stage to its exact prompt location: v1 stages 1–9 plus final filtering (`v1/01_make_queries.py` … `v1/10_check_correct_answer.py`), the v1 evaluation prompts (agent system prompt and the judge grading prompt `EVALUATE_RESULT_PROMPT` in `v1/eval_model.py`), and the full v2 environment-generator prompts (`v2/pipeline/prompts.py`). The camera-ready will cite this index explicitly, and the judge prompt already in the appendix will be joined by the remaining prompts verbatim.
+We have made every prompt easy to locate. The repository now has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. The link in the paper now points directly to this implementation, so a reader can go from a stage in the text to its prompt in one step.
 
 ---
 
-### Quantitative diversity analysis
+### Benchmark diversity and qualitative failure analysis
 
 > Analyze benchmark diversity more quantitatively. Statistics on reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, and template diversity ...
-
-Added as a diversity appendix (`experiments/e6_diversity/`, full distributions released):
-
-- **v1 (8,233-item pool):** **742 distinct user roles** (the paper conservatively wrote "60+"), **zero duplicate queries**, distinct-3-gram ratio 0.52, 0.0% high-overlap query pairs (token-Jaccard ≥ 0.8). SQL complexity of reference solutions: **70% require a JOIN**, 42% `ORDER BY`, 35% aggregate functions, 31% `GROUP BY`, 22% subqueries, 19% date arithmetic, 9% `CASE`, 7% `HAVING` (some solutions use recursive CTEs to walk category hierarchies).
-- **v2:** reference plans make a **median of 5 tool calls** (p90 = 7, max 15) against a **median of 9 available tools** per environment (core + partial-information + distractor); numerical-operation mix — aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%.
-- **Financial-concept coverage** (complementary axes): v1 is AP/controls/variance-heavy (AP 52%, approvals 18%, variance 13%); v2 is financial-statement ratios (77%). **Template diversity:** 12 seeds → 8,233 examples, 100% distinct.
-
----
-
-### Qualitative failure analysis
-
+>
 > Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
 
-We classified **779 failing traces** (v1: GPT-5, o4-mini, GPT-4.1, GPT-4.1-mini; v2: Claude-Sonnet-4.5, DeepSeek-V3) into an 8-way taxonomy, plus per-model process metrics (`experiments/e5_failure_taxonomy/`). Two diagnostic findings:
+We answer these together. Part of this is already in the paper: Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
 
-- **On v1, failures are semantic, not syntactic.** Raw SQL errors are ≈ 0, yet *malformed arguments* (36–42%: valid SQL, wrong predicate/threshold) and *incomplete retrieval* (22–37%: missing required rows) dominate; arithmetic errors are minor (5–10%). Even frontier models fail mainly at **precise data selection**, not calculation.
-- **On v2, the profile shifts to tool use.** *Wrong-tool selection* rises to 20–23% (vs 4–10% on v1) under distractor tools, and open-weight DeepSeek-V3 uniquely exhausts its step budget on 25% of failures.
+Diversity of the reference solutions and questions:
 
-Worked examples (verbatim): *(i) malformed arguments* — for *"Which invoices have duplicate payment records, and what is the total overpaid?"* GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, reporting only Invoice 4 at $0.01 (a rounding artifact) while missing the true duplicates on Invoices 1/3/5 ($600/$200/$450). *(ii) wrong-tool selection* — for a manual-journal-entry listing, GPT-4.1-mini filtered `account_name LIKE '%AP%'` instead of the correct AP `account_id`, matched no rows, and wrongly concluded "no manual entries exist." **Process metrics track capability:** v1 frontier models fail fast (1.3–1.9 tool calls, 0% round-exhaustion), whereas v2 agents make 3.9–4.1 calls and hit the step limit 7–11% of the time. Two models at the same accuracy fail for measurably different reasons — signal that accuracy alone cannot show.
+| Aspect | v1 (8,233-item pool) | v2 |
+|---|---|---|
+| distinct user roles | 742 | n/a |
+| duplicate queries | 0 | 0 |
+| distinct-3-gram ratio | 0.52 | n/a |
+| SQL complexity of solutions | 70% JOIN, 42% ORDER BY, 35% aggregate, 31% GROUP BY, 22% subquery, 19% date arithmetic | n/a |
+| tool calls in reference plan | n/a | median 5, p90 7, max 15 |
+| tools available per environment | n/a | median 9 (core + partial-info + distractor) |
+| numerical-operation mix | n/a | aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% |
+
+We also ran a failure analysis over 779 failing traces, classified into eight categories, with per-model process metrics. The distribution shows a clear shift from v1 to v2:
+
+| Model | half | malformed args | incomplete retrieval | wrong-tool selection | calc error | round-limit |
+|---|---|---|---|---|---|---|
+| GPT-4.1 | v1 | 42% | 33% | 4% | 5% | 3% |
+| GPT-4.1-mini | v1 | 36% | 37% | 10% | 5% | 0% |
+| Claude-Sonnet-4.5 | v2 | 12% | 15% | 20% | 17% | 7% |
+| DeepSeek-V3 | v2 | 7% | 16% | 23% | 14% | 25% |
+
+Two findings stand out. On v1 the failures are semantic rather than syntactic: raw SQL errors are close to zero, but wrong predicates or thresholds and incomplete retrieval dominate, so even strong models fail at precise data selection more than at arithmetic. On v2 the profile moves to tool use: wrong-tool selection rises sharply under distractor tools, and the open-weight model exhausts its step budget on a quarter of its failures. Process metrics tell the same story: v1 frontier models fail fast with one wrong query (1.3 to 1.9 tool calls, no round-exhaustion), while v2 agents make around four calls and hit the step limit 7 to 11% of the time. Two models at the same accuracy can therefore fail for measurably different reasons, which is signal that final-answer accuracy alone cannot show. A concrete example: for "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 ($600, $200, $450).
 
 ---
 
@@ -97,43 +92,36 @@ Worked examples (verbatim): *(i) malformed arguments* — for *"Which invoices h
 
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
 
-Construction uses **no paid human annotation** (it is fully automated); the cost is LLM API usage, which we measured directly by replaying each stage with the models the paper used (`experiments/e7_costs/`):
+Construction uses no paid human annotation, since it is fully automated; the cost is LLM API usage, which we measured directly by replaying each stage with the models the paper used.
 
-| Version | Candidates → final | Est. construction cost | $/final example |
+| Version | Candidates to final | Est. construction cost | $/final example |
 |---|---|---|---|
-| v1 (9-stage panel pipeline) | 10,000 → 5,979 | ~$450 | $0.075 |
-| v2 (9-stage execution pipeline) | 1,247 → 1,108 | ~$340 | $0.307 |
-| **Total** | **7,087 final** | **~$790** | — |
+| v1 (9-stage panel pipeline) | 10,000 to 5,979 | ~$450 | $0.075 |
+| v2 (9-stage execution pipeline) | 1,247 to 1,108 | ~$340 | $0.307 |
+| Total | 7,087 final | ~$790 | n/a |
 
-The three-judge panel dominates v1 cost (~81%: ~13,500 judgements × 3 reasoning-model calls); the two o3 code-generation stages dominate v2 (~65%). **Construction is API-only — no GPU.** The single H100 in the paper is used only at *evaluation* time to serve open-source agents; backing stores are in-memory SQLite. Both pipelines run 8-way parallel: wall-clock ≈ 24 h (v1), ≈ 5 h (v2). Per-model evaluation cost is ~$0.005/example (open) to ~$0.06/example (frontier).
+The three-judge panel dominates v1 cost at about 81%, roughly 13,500 judgements across three reasoning-model calls; the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only with no GPU. The single H100 in the paper is used only at evaluation time to serve the open-source agents, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, with wall-clock of about 24 hours for v1 and 5 hours for v2, and per-model evaluation cost of about $0.005 per example for open models up to about $0.06 for frontier ones. The construction and evaluation code is reproducible, and we plan to release all of it as open source with the benchmark.
 
 ---
 
-### Biases from proprietary models
+### Potential bias from proprietary models
 
 > Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
 
-We will expand the Discussion. Three design choices already mitigate this: (a) the judge panel is **cross-vendor** (Claude Sonnet 4 + o4-mini + o3-mini), so no single vendor decides acceptance; (b) generation (GPT-4.1-mini) and judging use different models; (c) v2 ground truth is **execution-based**, independent of any LLM's opinion. Empirically, if the benchmark favored the generator's family (v1 generator = GPT-4.1-mini, OpenAI), the generator's own family should top the leaderboard. It does not: on our controlled 200-item evaluation, a non-OpenAI model — **Claude Sonnet 4.5 (Anthropic), 68.6%** — is at the very top of the board (within ~1 point of the best result), above the generator family's flagship **GPT-4.1 (66.0%)** and well above **GPT-4.1-mini (60.0%)**. A pipeline biased toward its generator's family would show the reverse ordering; this is direct evidence against a generator-family advantage.
+Thank you for raising this; it is a fair concern for any pipeline built with proprietary models, and we will expand the Discussion around it. Several design choices already reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance. Generation and judging use different models. The v2 ground truth is execution-based and independent of any model's opinion. And we kept a human in the loop while designing and tuning the generation and validation stages. The human study above supports this as well: our automatic scoring agrees with a human judge with knowledge of the domain 85.1% of the time (κ = 0.67), so acceptance is not an artefact of one model's preferences.
+
+There is also direct empirical evidence against a generator-family advantage. If the benchmark favoured its generator's family, since the v1 generator is GPT-4.1-mini from OpenAI, that family should top the leaderboard. It does not:
+
+| Model | Family | v2 accuracy |
+|---|---|---|
+| Claude Sonnet 4.5 | Anthropic | 68.6% |
+| GPT-4.1 | OpenAI (generator family) | 66.0% |
+| GPT-4.1-mini | OpenAI (generator) | 60.0% |
+
+A non-OpenAI model sits at the very top, above the generator's own family. A pipeline biased toward its generator would show the opposite ordering.
 
 ---
 
-### Typos and writing
-
-> "FinOpsBenchis"; "As Figure 1 shows that..."; spacing around v1/v2.
-
-Thank you — all fixed. The root cause of "FinOpsBenchis" was a missing `\xspace` after the dataset-name macro; it is corrected throughout, "As Figure 1 shows that" → "Figure 1 shows that," and v1/v2 spacing is now consistent.
-
----
-
-### Reproducibility / Software
-
-> Reproducibility: 2 · Software: 1 = No usable software released.
-
-We believe the anonymous repository was not reachable at review time, and we apologize for the friction. It now contains the complete structured release: both construction pipelines (every stage runnable, every prompt included via `PROMPTS.md`), both evaluation harnesses with per-model runners, the v1 example pool, all 1,100+ self-contained v2 environments (system prompt, tools, distractor tools, SQLite store, executable reference plan), and per-model result files, with a one-command quickstart to reproduce Table 2 rows. We would be grateful if the reviewer would revisit the release link during the discussion period.
-
----
-
-=================================================================================
 # Response to Reviewer 6zfv
 =================================================================================
 

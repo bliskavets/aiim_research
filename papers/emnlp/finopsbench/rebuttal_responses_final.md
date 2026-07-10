@@ -55,22 +55,20 @@ The link to the code repository in the paper now points to the current code vers
 
 > Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
 
-We thank the reviewer for this request and we would like to emphasize that some of the statistical information about the benchmark is already located in the Appendix. Appendix C reports per-item statistics (query lengths, number of tables, total data rows per example, assistant turns and tool calls per item, system-prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the category distribution of v1. Building on those, we add the following.
+Part of this is already in the paper: Appendix C gives per-item statistics (query lengths, table counts, data rows per example, assistant turns and tool calls per item, prompt lengths and tool counts), Appendix D gives example queries, and Appendix G gives the v1 category distribution. To address the request directly, we add one measurement per axis the reviewer named.
 
-To further address the reviewer's question we ran additional quantitative analysis of the diversity of the reference solutions and questions.
-
-For v1, measured over the 8,233-item pool:
+v1 lexical diversity and SQL surface, over the 8233-task pool:
 
 | v1 diversity | value |
 |---|---|
-| examples in pool | 8,233 |
+| tasks in pool | 8233 |
 | distinct user roles | 742 |
 | distinct queries | 100%, no duplicates |
 | lexical diversity | distinct-3-gram ratio 0.52 |
-| tool calls per example | mean 1.4, median 1, p90 3, max 10 |
+| tool calls per task | mean 1.4, median 1, p90 3, max 10 |
 | SQL surface of reference solutions | JOIN 70%, ORDER BY 42%, aggregate 35%, GROUP BY 31%, subquery 22%, date function 19%, CASE 9%, HAVING 7% |
 
-Looking deeper at the SQL structure of the reference solutions, over the 11,782 reference queries:
+The reference solutions are not shallow lookups. Over the 11782 reference queries:
 
 | v1 SQL structural depth | value |
 |---|---|
@@ -79,7 +77,9 @@ Looking deeper at the SQL structure of the reference solutions, over the 11,782 
 | clauses per query | mean 4.1, max 8 |
 | items requiring two or more JOINs | 33% |
 
-For v2, measured over the released environments:
+A JOIN appears in 70% of items, a third need two or more, and 17% use a nested subquery, so v1 measures multi-table analytic reasoning, not single-table reads.
+
+v2 tool-use structure, over the released environments:
 
 | v2 diversity | value |
 |---|---|
@@ -88,9 +88,9 @@ For v2, measured over the released environments:
 | off-path tools per environment (distractor and partial-information) | mean 3.2, median 3, at least two in 92% of environments |
 | numerical-operation mix | aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11% |
 
-The v2 environments are drawn from 124 distinct source companies across more than 1,000 FinQA filings, so the question base is not a single narrow slice of finance.
+Every environment ships distractor and partial-information tools, at least two in 92% of cases, and the questions come from 124 companies across more than 1000 FinQA filings.
 
-The two halves cover complementary financial concepts, which answers the concern that the benchmark might sit on one topic:
+To address the concern that the benchmark sits on one topic, the two halves cover complementary concepts:
 
 | Financial concept, share of examples | v1 | v2 |
 |---|---|---|
@@ -101,18 +101,20 @@ The two halves cover complementary financial concepts, which answers the concern
 | reconciliation, discrepancy | 6% | 0% |
 | financial-statement ratios | 7% | 77% |
 
-The reasoning operations the tasks demand also vary. In v1 the analyst intent splits into enumeration (list or retrieve) 22%, anomaly search (detect or identify) 16%, relative reasoning (compare) 4%, and quantification (compute) 2%, and by task category v1 spans Accounts Payable analysis 52%, financial reporting 25%, variance analysis 13%, and revenue recognition 8%. The v2 numerical operations are in the table above.
+v1 concentrates on accounts payable, controls and variance; v2 on financial-statement ratios. The concepts barely overlap, so the two halves together span a wide slice of finance.
 
-On template diversity, the v1 pool comes from 12 seed queries expanded to 8,233 examples, a 686x expansion filtered for near-duplicates at cosine 0.9. The result is 100% distinct queries, a distinct-3-gram ratio of 0.52 and a distinct-4-gram ratio of 0.74, and a 0.0% high-overlap pair rate. v2 keeps the human-authored FinQA questions verbatim, so its question phrasing is inherited from a public human dataset rather than templated.
+Reasoning operations differ as well. In v1 the analyst intent is enumeration 22%, anomaly search 16%, comparison 4%, quantification 2%, and by task category v1 covers Accounts Payable 52%, financial reporting 25%, variance 13%, revenue recognition 8%. The v2 numerical operations are in the table above.
 
-Finally, diversity connects to measured difficulty. Building the augmented environment raises the tool count from 3.9 to 8.9 on average, and when we bucket already-collected agentic accuracy by the required tool-chain depth, accuracy falls monotonically, so the depth we report is a real difficulty axis and not a cosmetic one:
+On template diversity, 12 seed queries expand to 8233 examples, a 686x expansion filtered at cosine 0.9. The queries are 100% distinct, with distinct-3-gram ratio 0.52 and distinct-4-gram 0.74 and a 0.0% high-overlap pair rate. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
+
+Difficulty is a real axis, not a cosmetic one. Bucketing collected accuracy by required tool-chain depth, it falls monotonically:
 
 | Required tool-chain depth | 1 to 3 | 4 to 5 | 6 to 7 | 8+ |
 |---|---|---|---|---|
 | pooled agentic accuracy | 61.6% | 61.1% | 57.0% | 45.8% |
 | DeepSeek-V3 | 61.9% | 58.6% | 54.6% | 43.4% |
 
-We also ran a failure analysis over 779 failing traces, classified into eight categories, with per-model process metrics. The distribution shows a clear shift from v1 to v2:
+For the failure ask, we classified 779 failing traces into eight categories with process metrics. The profile shifts from v1 to v2:
 
 | Model | half | malformed args | incomplete retrieval | wrong-tool selection | calc error | round-limit |
 |---|---|---|---|---|---|---|
@@ -121,7 +123,7 @@ We also ran a failure analysis over 779 failing traces, classified into eight ca
 | Claude-Sonnet-4.5 | v2 | 12% | 15% | 20% | 17% | 7% |
 | DeepSeek-V3 | v2 | 7% | 16% | 23% | 14% | 25% |
 
-Two findings stand out. On v1 the failures are semantic rather than syntactic: raw SQL errors are close to zero, but wrong predicates or thresholds and incomplete retrieval dominate, so even strong models fail at precise data selection more than at arithmetic. On v2 the profile moves to tool use: wrong-tool selection rises sharply under distractor tools, and the open-weight model exhausts its step budget on a quarter of its failures. Process metrics tell the same story: v1 frontier models fail fast with one wrong query (1.3 to 1.9 tool calls, no round-exhaustion), while v2 agents make around four calls and hit the step limit 7 to 11% of the time. Two models at the same accuracy can therefore fail for measurably different reasons, which is signal that final-answer accuracy alone cannot show. A concrete example: for "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 ($600, $200, $450).
+v1 failures are semantic, not syntactic: SQL errors are near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. v2 moves to tool use: wrong-tool selection rises under distractors, and the open model exhausts its step budget on a quarter of its failures. Process metrics match this. v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time. Two models at the same accuracy fail for different reasons, which accuracy alone hides. For "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
 
 ---
 
@@ -131,11 +133,11 @@ Construction uses no paid human annotation, since it is fully automated; the cos
 
 | Version | Candidates to final | Est. construction cost | $/final example |
 |---|---|---|---|
-| v1 (9-stage panel pipeline) | 10,000 to 5,979 | ~$450 | $0.075 |
-| v2 (9-stage execution pipeline) | 1,247 to 1,108 | ~$340 | $0.307 |
-| Total | 7,087 final | ~$790 | n/a |
+| v1 (9-stage panel pipeline) | 10000 to 5979 | ~$450 | $0.075 |
+| v2 (9-stage execution pipeline) | 1247 to 1108 | ~$340 | $0.307 |
+| Total | 7087 final | ~$790 | n/a |
 
-The three-judge panel dominates v1 cost at about 81%, roughly 13,500 judgements across three reasoning-model calls; the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only with no GPU. The single H100 in the paper is used only at evaluation time to serve the open-source agents, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, with wall-clock of about 24 hours for v1 and 5 hours for v2, and per-model evaluation cost of about $0.005 per example for open models up to about $0.06 for frontier ones. The construction and evaluation code is reproducible, and we plan to release all of it as open source with the benchmark.
+The three-judge panel dominates v1 cost at about 81%, roughly 13500 judgements across three reasoning-model calls; the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only with no GPU. The single H100 in the paper is used only at evaluation time to serve the open-source agents, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, with wall-clock of about 24 hours for v1 and 5 hours for v2, and per-model evaluation cost of about $0.005 per example for open models up to about $0.06 for frontier ones. The construction and evaluation code is reproducible, and we plan to release all of it as open source with the benchmark.
 
 ---
 
@@ -246,7 +248,7 @@ Two clarifications. **(a) Every v1 example does carry a hard expected answer** (
 The two benchmark halves are designed to be read together, and deriving v2 from FinQA is a deliberate methodological choice, not a shortcut.
 
 - **The FinQA derivation is a controlled intervention that enables causal attribution.** We hold the *question content* fixed (human-authored, community-familiar, with known static-setting numbers) and change only the *access mode* from reading to tool use. This lets us attribute any performance drop specifically to the agentic component: state-of-the-art systems reach roughly 80–85% on static FinQA, yet the best agent reaches only ~69% on the *same questions* in our environments. The "artificially added multi-hop logic" is precisely the measurement instrument — it converts a reading task into a planning-and-tool-use task on identical content, which is what isolates the agentic skill. Our access ladder (see Reviewer 6zfv) quantifies exactly this: the same model that reads FinQA at 57–69% acts at 20–54% with tools, and the gap is model-discriminating.
-- **"Native business-driven agent tasks" are exactly what v1 provides — at scale.** v1 is 5,979 analyst-authored tasks spanning AP aging, reconciliation, variance analysis, and revenue recognition (see the Controller/Management-Accountant examples above), each against a freshly generated database. The breadth-and-realism axis is carried by v1; the controlled-verifiability axis by v2. Neither half alone would make the argument; together they cover both.
+- **"Native business-driven agent tasks" are exactly what v1 provides — at scale.** v1 is 5979 analyst-authored tasks spanning AP aging, reconciliation, variance analysis, and revenue recognition (see the Controller/Management-Accountant examples above), each against a freshly generated database. The breadth-and-realism axis is carried by v1; the controlled-verifiability axis by v2. Neither half alone would make the argument; together they cover both.
 - **On "monotonous":** we now report v2's operation-type distribution (aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%; median 5 tool calls over 9 available tools, `experiments/e6_diversity/`), and v1's 742 distinct roles / zero duplicate queries provide the lexical and structural breadth.
 
 ---
@@ -296,9 +298,9 @@ This is an important concern and we tested it directly, three ways; all three po
 
 | Model | closed-book | agentic | Δ |
 |---|---|---|---|
-| GPT-5-mini (n=1,174) | **14.7%** | 67.5% | −52.8 pp |
+| GPT-5-mini (n=1174) | **14.7%** | 67.5% | −52.8 pp |
 | GPT-4.1 (n=300) | **13.3%** | 60.6% | −47.3 pp |
-| Qwen3-30B-A3B (n=1,174) | **13.8%** | 53.0% | −39.2 pp |
+| Qwen3-30B-A3B (n=1174) | **13.8%** | 53.0% | −39.2 pp |
 
 Closed-book accuracy is **flat at ~14%** across model families and capability levels, while agentic accuracy varies by 15 points. Memorization would *scale* with capability and training exposure; a flat floor is the signature of the residual scenario-text figures, not recall.
 
@@ -312,7 +314,7 @@ Closed-book accuracy is **flat at ~14%** across model families and capability le
 
 A recall-driven score would be high and flat across all three columns; we observe the opposite — a steep, monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2–4%) nor free even when the gold facts are handed over (~57–69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
 
-**(3) Half the benchmark is contamination-proof by construction.** FinOpsBench-v1 (5,979 examples) is generated end-to-end against freshly created per-example databases and was never published — it cannot appear in any training corpus, so contamination there is impossible. Since v1 and v2 produce **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty we measure on v2 is corroborated by a half that cannot be contaminated.
+**(3) Half the benchmark is contamination-proof by construction.** FinOpsBench-v1 (5979 examples) is generated end-to-end against freshly created per-example databases and was never published — it cannot appear in any training corpus, so contamination there is impossible. Since v1 and v2 produce **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty we measure on v2 is corroborated by a half that cannot be contaminated.
 
 Familiarity with the public FinQA items therefore does not translate into an answer pathway in v2: the system prompt contains neither the source table nor its values, the backing store is re-instantiated with distractor rows, and the required multi-hop tool plan exists in no training corpus.
 

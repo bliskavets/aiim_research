@@ -4,8 +4,6 @@
 We would like to thank the reviewer for their thorough and constructive review.
 We conducted additional analyses during the rebuttal period and address each concern below with new experimental evidence and clarifications. We also thank the reviewer for spotting the minor typos and wording issues, which we will fix in the camera-ready version of our paper.
 
----
-
 ### Human validation and LLM-judge reliability
 
 > Heavy dependence on LLM-generated data without human validation ... No human evaluation is conducted to verify whether generated financial scenarios are realistic, whether reasoning traces are correct, or whether the LLM judges make reliable decisions.
@@ -38,15 +36,11 @@ These signal processing issues in the timing or volume of payments relative to i
 
 Since there is no unique deterministic target string for such answers, semantic evaluation is necessary for v1, and the human study above shows the automatic judge tracks a domain-knowledgeable human closely. We also kept a human in the loop while designing and validating the generation pipeline.
 
----
-
 ### Releasing the pipeline prompts
 
 > Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction.
 
 The link to the code repository in the paper now points to the current code version, where we have made every prompt easy to locate. The repository has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. Each stage described in the paper is directly linked to its corresponding prompt.
-
----
 
 ### Benchmark diversity and failure analysis
 
@@ -126,8 +120,6 @@ These results suggest that v1 failures are primarily semantic rather than syntac
 DeepSeek-V3 reaches the step limit in 25% of its analyzed failures. Process metrics match this. v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time.
 These analyses distinguish models with similar final-answer accuracy but different failure profiles. For "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, so it reported only Invoice 4 at $0.01 and missed the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
 
----
-
 ### Construction cost, compute, and runtime
 
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
@@ -141,8 +133,6 @@ Construction uses no paid human annotation, since it is fully automated; the cos
 | Total | 7087 final | ~$790 | n/a |
 
 The three-judge panel dominates v1 cost at about 81%, roughly 13500 judgements across three reasoning-model calls; the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only with no GPU. The single H100 in the paper is used only at evaluation time to serve the open-source agents, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, with wall-clock of about 24 hours for v1 and 5 hours for v2, and per-model evaluation cost of about $0.005 per example for open models up to about $0.06 for frontier ones. The construction and evaluation code is reproducible, and we plan to release all of it as open source with the benchmark.
-
----
 
 ### Potential bias from proprietary models
 

@@ -355,11 +355,11 @@ In addition, the scoring verdict does not depend on which model does the judging
 | Judge model | agreement with human | Cohen's κ vs human |
 |---|---|---|
 | o4-mini (paper's judge) | 84% | 0.67 |
-| Claude-Sonnet-4.5 | 78% | 0.51 |
-| Gemini-2.5-Flash | 81% | 0.58 |
+| Claude-Sonnet-4.5 | 79% | 0.57 |
+| Gemini-2.5-Flash | 82% | 0.61 |
 | DeepSeek-V3 | 80% | 0.55 |
 
-All four judges agree with the human evaluator within a few points (78 to 84%) and with one another at Fleiss κ = 0.69, indicating that the verdict reflects the answer rather than the choice of judge model.
+All four judges agree with the human evaluator within a few points (79 to 84%) and with one another at Fleiss κ = 0.69, indicating that the verdict reflects the answer rather than the choice of judge model.
 
 The two halves also act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 

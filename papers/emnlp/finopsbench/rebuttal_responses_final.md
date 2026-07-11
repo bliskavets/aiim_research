@@ -302,6 +302,17 @@ Furthermore, we analyze the level of consensus among the judgement models at dif
 
 The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call. The same robustness holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% of them (Cohen's κ = 0.64), so even where automatic scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
+The verdict also does not depend on which model does the judging. We re-scored the same 170 human-labelled items with three more judges from different vendors, using the identical prompt:
+
+| Judge model | agreement with human | κ vs human |
+|---|---|---|
+| o4-mini (paper's judge) | 84% | 0.67 |
+| Claude-Sonnet-4.5 | 78% | 0.51 |
+| Gemini-2.5-Flash | 81% | 0.58 |
+| DeepSeek-V3 | 80% | 0.55 |
+
+All four land within a few points of the human and agree with one another at Fleiss κ = 0.69, so the score is a property of the answer, not of the judge model.
+
 The two halves also act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
 Nor is the dependence locked in: we release the full construction and extension code, so the community can swap the generator or judge models, adjust any stage, and regenerate or extend the benchmark for their own needs rather than relying on our specific model choices.

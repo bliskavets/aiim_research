@@ -1,0 +1,23 @@
+{
+  "n": 170,
+  "cost": 0.778,
+  "per_judge": {
+    "o4-mini": {
+      "agreement_with_human_pct": 84.1,
+      "cohen_kappa_vs_human": 0.665
+    },
+    "anthropic/claude-sonnet-4.5": {
+      "agreement_with_human_pct": 78.2,
+      "cohen_kappa_vs_human": 0.507
+    },
+    "google/gemini-2.5-flash": {
+      "agreement_with_human_pct": 81.2,
+      "cohen_kappa_vs_human": 0.58
+    },
+    "deepseek/deepseek-chat": {
+      "agreement_with_human_pct": 80.0,
+      "cohen_kappa_vs_human": 0.548
+    }
+  },
+  "inter_judge_fleiss": 0.687
+}

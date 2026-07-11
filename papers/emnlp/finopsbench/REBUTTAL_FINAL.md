@@ -11,7 +11,7 @@ We thank the reviewer for the thorough review. We ran additional analyses during
 
 > Evaluation methodology is relatively weak. FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
-We ran the requested human evaluation on both halves, measuring how far our automatic scoring departs from a human's. A human judge with domain knowledge annotated random samples in the reviewer's suggested 200 to 300 range.
+We ran the human evaluation the reviewer asked for on both halves, measuring how far our automatic scoring departs from a human's. A human judge with domain knowledge annotated random samples, in the reviewer's suggested 200 to 300 range.
 
 |Part|assessment criteria|n|human vs auto scoring|
 |-|-|-|-|
@@ -30,7 +30,7 @@ Exceptions indicating possible processing errors:
 These signal processing issues in the timing or volume of payments relative to invoices.
 ```
 
-With no unique target string, semantic evaluation is necessary for v1, and the study above shows the judge tracks a domain-knowledgeable human closely. A human was also in the loop while designing and validating the pipeline.
+With no unique target string for such answers, semantic evaluation is necessary for v1, and the study above shows the judge tracks a domain-knowledgeable human closely. We also kept a human in the loop while designing and validating the pipeline.
 
 ### Releasing the pipeline prompts
 
@@ -93,7 +93,7 @@ v1 concentrates on accounts payable, controls and variance; v2 on financial-stat
 
 Reasoning operations differ too. v1 analyst intent: enumeration 22%, anomaly search 16%, comparison 4%, quantification 2%; by task category: Accounts Payable 52%, financial reporting 25%, variance 13%, revenue recognition 8%. v2 numerical operations are in the table above.
 
-On template diversity, 12 seed queries expand to 8233 examples (686x, filtered at cosine 0.9), all distinct: distinct-3-gram ratio 0.52, distinct-4-gram 0.74, 0.0% high-overlap pairs. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
+On template diversity, 12 seed queries expand to 8233 examples, a 686x expansion filtered at cosine 0.9. Queries are 100% distinct: distinct-3-gram ratio 0.52, distinct-4-gram 0.74, 0.0% high-overlap pairs. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
 
 Difficulty also rises with required tool-chain depth: bucketed by depth, accuracy falls monotonically:
 
@@ -111,7 +111,7 @@ For the failure ask, we classified 779 failing traces into eight categories with
 |Claude-Sonnet-4.5|v2|12%|15%|20%|17%|7%|
 |DeepSeek-V3|v2|7%|16%|23%|14%|25%|
 
-v1 failures are semantic, not syntactic: SQL errors near zero, wrong predicates and incomplete retrieval dominant, so models fail at data selection, not arithmetic. v2 shifts to tool use: wrong-tool selection rises under distractors, and DeepSeek-V3 hits the step limit in a quarter of its failures. Process metrics match: v1 frontier models fail fast (1.3 to 1.9 calls, no round-exhaustion), v2 agents make about four calls and hit the limit 7 to 11% of the time. This separates models at similar final-answer accuracy but different failure profiles: on "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, reporting only Invoice 4 at $0.01 and missing the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
+v1 failures are primarily semantic, not syntactic: SQL errors near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. v2 shifts to tool use: wrong-tool selection rises under distractors, and DeepSeek-V3 hits the step limit in a quarter of its failures. Process metrics match: v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time. This separates models with similar final-answer accuracy but different failure profiles. On "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, reporting only Invoice 4 at $0.01 and missing the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
 
 ### Construction cost, compute, and runtime
 
@@ -125,7 +125,7 @@ Construction is fully automated, with no paid human annotation; the cost is LLM 
 |v2 (9-stage execution pipeline)|1247 to 1108|~$340|$0.307|
 |Total|7087 final|~$790|n/a|
 
-The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements across three reasoning-model calls); the two o3 code-generation stages dominate v2 (about 65%). Construction is API-only, no GPU: the paper's single H100 serves the open-source agents only at evaluation time, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, wall-clock about 24 hours for v1 and 5 hours for v2; per-model evaluation costs about $0.005 per example for open models, up to $0.06 for frontier ones. We release all construction and evaluation code with the benchmark, so these measurements are reproducible.
+The three-judge panel dominates v1 cost at about 81% (roughly 13500 judgements across three reasoning-model calls); the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only, no GPU. The paper's single H100 serves the open-source agents only at evaluation time, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, wall-clock about 24 hours for v1 and 5 hours for v2; per-model evaluation costs about $0.005 per example for open models, up to about $0.06 for frontier ones. We will release all construction and evaluation code with the benchmark, so these measurements are reproducible.
 
 ### Potential bias from proprietary models
 
@@ -133,7 +133,7 @@ The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements acr
 
 Several design choices reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance; generation and judging use different models; the v2 ground truth is execution-based, independent of any model's opinion; and we kept a human in the loop while designing and tuning the stages. The study above supports this: acceptance tracks a domain-knowledgeable human, not one model's preferences.
 
-Direct evidence against a generator advantage is best read off v1, the half the generator (GPT-4.1-mini) produced: if the pipeline rewarded its generator, GPT-4.1-mini should top v1; instead it is the lowest frontier model on v1 (Table 2):
+There is also direct evidence against a generator advantage, best read off v1, the half the generator (GPT-4.1-mini) produced. If the pipeline rewarded its generator, GPT-4.1-mini should score unusually high on v1; instead it is the lowest frontier model on v1 (Table 2):
 
 |Model (v1 frontier tier)|v1 acc.|
 |-|-|
@@ -197,7 +197,7 @@ selling prices cushion it.
 
 No single call answers this: the model must pick the right account, drop the seeded Finished-Goods distractors, and chain ten queries into one analysis.
 
-None of this is finance-specific: parsing an ambiguous instruction, planning, writing queries, calling tools with the right arguments, ignoring distractors, and composing a grounded answer are the core loop of any tool-using agent. Finance just supplies executable semantics; those abilities are broadly applicable, so FinOpsBench evaluates planning, retrieval, and tool use on top of finance-specific knowledge.
+None of this is finance-specific. Parsing an ambiguous instruction, planning, writing queries, calling tools with the right arguments, ignoring distractors, and composing a grounded answer are the core loop of any tool-using agent. Finance just supplies executable semantics; the planning and tool-use abilities are broadly applicable, so FinOpsBench evaluates planning, retrieval, and tool use on top of finance-specific knowledge.
 
 ---
 
@@ -233,7 +233,7 @@ Another comparison runs one model across both settings. Static finance QA hands 
 
 Reading a static benchmark and operating in FinOpsBench are different skills: static benchmarks measure reading over provided context; FinOpsBench also measures retrieval planning and tool use, unneeded when the evidence is given directly.
 
-For comparison, three of the newest, FinAgentBench, FinGAIA, and Herculean, emphasize different goals: FinAgentBench retrieval and ranking, FinGAIA and Herculean realistic interactions with external systems. That realism is useful but costs reproducibility and control. FinOpsBench keeps both: hermetic synthetic environments that rerun identically, answers scored against an executable ground truth rather than a ranking or rubric, and difficulty exposed as a knob via released construction code. The two are complementary: realism-oriented benchmarks test deployment-like behavior, FinOpsBench enables controlled, reproducible diagnosis.
+For comparison we looked at three of the newest, FinAgentBench, FinGAIA, and Herculean, which emphasize different goals: FinAgentBench retrieval and ranking, FinGAIA and Herculean realistic interactions with external systems. That realism is useful but costs reproducibility and control. FinOpsBench keeps both: hermetic synthetic environments that rerun identically, answers scored against an executable ground truth rather than a ranking or rubric, and difficulty exposed as a knob through released construction code. The two are complementary: realism-oriented benchmarks evaluate deployment-like behavior, FinOpsBench enables controlled, reproducible diagnosis.
 
 ---
 
@@ -299,7 +299,7 @@ Acceptance also does not rely on one model's opinion. The construction panel is 
 |trace is sound|83%|
 |answer is sound|62%|
 
-The judges converge on the objective criteria and split most on the subjective one, answer soundness, hence acceptance is a majority vote of three models, not a single call. The scoring judge is similarly robust on hard cases: on the 92 items where it and a strict exact-match check disagree, a human sides with the judge on 82.6% (Cohen's κ = 0.64), so even where scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
+The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is why acceptance is a majority vote of three models, not a single call. The same holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% (Cohen's κ = 0.64), so even where scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
 The two halves also act as mutual controls: per-model accuracies agree within 2.6 points on average, unlikely if v1's synthetic construction were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
@@ -337,7 +337,7 @@ This supports semantic evaluation for v1, where most expected outputs cannot be 
 
 The two halves are designed to be read together, and deriving v2 from FinQA is a deliberate choice, not a shortcut.
 
-- **The FinQA derivation enables a controlled comparison between reading and tool-mediated access.** Holding the *question content* fixed and varying only the access mode isolates the difficulty from planning, retrieval, and tool use and attributes any drop to the agentic component: state-of-the-art systems reach roughly 80-85% on static FinQA, yet the best agent reaches only ~69% on the *same questions* here. The "artificially added multi-hop logic" is the measurement instrument: it turns a reading task into a planning-and-tool-use task on identical content. The access ladder (see Reviewer 6zfv) quantifies this: a model that reads FinQA at 57-69% acts at 20-54% with tools, and the gap is model-discriminating.
+- **The FinQA derivation enables a controlled comparison between reading-based and tool-mediated access.** We hold the *question content* fixed and vary only the access mode from in-context reading to tool-based retrieval, isolating the difficulty from planning, retrieval, and tool use and letting us attribute any drop to the agentic component: state-of-the-art systems reach roughly 80-85% on static FinQA, yet the best agent reaches only ~69% on the *same questions* here. The "artificially added multi-hop logic" is the measurement instrument: it converts a reading task into a planning-and-tool-use task on identical content. The access ladder (see Reviewer 6zfv) quantifies this: a model that reads FinQA at 57-69% acts at 20-54% with tools, and the gap is model-discriminating.
 - **"Native business-driven agent tasks" are what v1 provides at scale.** v1 has 5979 analyst-style tasks spanning AP aging, reconciliation, variance analysis, and revenue recognition (see the Controller/Management-Accountant examples above), each against a freshly generated database. v1 carries the breadth-and-realism axis, v2 the controlled-verifiability axis; neither half alone makes the argument, together they cover both.
 - **On "monotonous":** we report v2's operation-type distribution (aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%; median 5 tool calls over 9 tools), while v1's 742 distinct roles and zero duplicate queries provide lexical and structural breadth.
 
@@ -349,9 +349,9 @@ The two halves are designed to be read together, and deriving v2 from FinQA is a
 
 Two parts to this.
 
-**(1) Claude Code, Codex and OpenCode are agent products, not base models, and the base models they run on are already in our evaluation.** Claude Code runs on Claude, Codex on OpenAI models, and we evaluate exactly those under our fixed harness (Claude Sonnet 4.5, GPT-5, GPT-4.1, and others). These products add scaffolding: their own system prompts, retry logic, file and shell tooling, plus a bespoke protocol to expose our tools. A score through them measures that product engineering, not the model, and is not reproducible as the products update. The paper already shows the harness alone moves the number: on v1, switching only the tool-calling protocol from native to ReAct shifts accuracy up to 6.4 pp and can flip its sign, helping non-thinking models and hurting thinking ones; a full product harness adds far more. Evaluating base models under one fixed, open harness is standard for agentic benchmarks (AgentBench, τ-bench) and keeps the comparison controlled and reproducible.
+**(1) Claude Code, Codex and OpenCode are agent products, not base models, and the base models they run on are already in our evaluation.** Claude Code runs on Claude, Codex on OpenAI models, and we evaluate exactly those under our fixed harness: Claude Sonnet 4.5, GPT-5, GPT-4.1, and others. These products add scaffolding: their own system prompts, retry logic, file and shell tooling, plus a bespoke protocol to expose our tools. A score through them would measure that product engineering, not the model, and would not be reproducible as the products update. The paper already shows the harness alone moves the number: on v1, switching only the tool-calling protocol from native to ReAct shifts accuracy by up to 6.4 pp and can flip its sign, helping non-thinking models and hurting thinking ones. A full product harness adds far more than a protocol swap. Evaluating base models under one fixed, open harness is standard for agentic benchmarks (AgentBench, τ-bench) and keeps the comparison controlled and reproducible.
 
-**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage.** GPT-5, o4-mini and GPT-4.1 are in Table 2 alongside the open-source models. Across the paper and this rebuttal we now report more than a dozen models across five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness and scoring, our controlled 200-item evaluation spans five families; the additions below land where the size-accuracy trend predicts: a second frontier vendor (Anthropic) tops the leaderboard, a large open-weight MoE sits mid-table, and a small model shows tool-use quality is training-bound, not size-bound:
+**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage.** GPT-5, o4-mini and GPT-4.1 are in Table 2 alongside the open-source models. Across the paper and this rebuttal we now report more than a dozen models across five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness and scoring, our controlled 200-item evaluation spans five families; the additions below land where the size-accuracy trend predicts, with a second frontier vendor (Anthropic) topping the leaderboard, a large open-weight MoE mid-table, and a small model showing tool-use quality is training-bound, not size-bound:
 
 |Model|Family|agentic acc.|note|
 |-|-|-|-|

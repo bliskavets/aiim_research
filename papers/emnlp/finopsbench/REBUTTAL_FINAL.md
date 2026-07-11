@@ -30,7 +30,7 @@ Exceptions indicating possible processing errors:
 These signal processing issues in the timing or volume of payments relative to invoices.
 ```
 
-With no unique target string for such answers, semantic evaluation is necessary for v1, and the study above shows the judge tracks a domain-knowledgeable human closely. We also kept a human in the loop while designing and validating the pipeline.
+With no unique target string for such answers, semantic evaluation is necessary for v1, and the study above shows the judge tracks a domain-knowledgeable human closely. A human was also in the loop during pipeline design and validation.
 
 ### Releasing the pipeline prompts
 
@@ -93,7 +93,7 @@ v1 concentrates on accounts payable, controls and variance; v2 on financial-stat
 
 Reasoning operations differ too. v1 analyst intent: enumeration 22%, anomaly search 16%, comparison 4%, quantification 2%; by task category: Accounts Payable 52%, financial reporting 25%, variance 13%, revenue recognition 8%. v2 numerical operations are in the table above.
 
-On template diversity, 12 seed queries expand to 8233 examples, a 686x expansion filtered at cosine 0.9. Queries are 100% distinct: distinct-3-gram ratio 0.52, distinct-4-gram 0.74, 0.0% high-overlap pairs. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
+On template diversity, 12 seed queries expand to 8233 examples (686x, filtered at cosine 0.9), 100% distinct: distinct-3-gram ratio 0.52, distinct-4-gram 0.74, 0.0% high-overlap pairs. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
 
 Difficulty also rises with required tool-chain depth: bucketed by depth, accuracy falls monotonically:
 
@@ -197,7 +197,7 @@ selling prices cushion it.
 
 No single call answers this: the model must pick the right account, drop the seeded Finished-Goods distractors, and chain ten queries into one analysis.
 
-None of this is finance-specific. Parsing an ambiguous instruction, planning, writing queries, calling tools with the right arguments, ignoring distractors, and composing a grounded answer are the core loop of any tool-using agent. Finance just supplies executable semantics; those abilities are broadly applicable, so FinOpsBench evaluates planning, retrieval, and tool use on top of finance-specific knowledge.
+None of this is finance-specific. Parsing an ambiguous instruction, planning, writing queries, calling tools correctly, ignoring distractors, and composing a grounded answer are the core loop of any tool-using agent. Finance just supplies executable semantics; those abilities are broadly applicable, so FinOpsBench evaluates planning, retrieval, and tool use on top of finance-specific knowledge.
 
 ---
 
@@ -250,7 +250,7 @@ Following the reviewer's request, we ran a human annotation study with a human j
 |v1|scoring vs a human judge w/ domain knowl.|85.1%, Cohen's κ = 0.67|
 |v2|ref. plan reproduces gold under execution|89%|
 
-Anchored this way, the diagnostics built on them are meaningful, not circular. A failure-mode taxonomy over 779 failing traces in eight categories shows the profile shifting from v1 to v2; each cell is the share of that model's failing traces:
+Anchored this way, the diagnostics are meaningful, not circular. A failure-mode taxonomy over 779 failing traces in eight categories shows the profile shifting from v1 to v2; each cell is the share of that model's failing traces:
 
 |Model|half|malformed args|incomplete retrieval|wrong-tool selection|calc error|round-limit|
 |-|-|-|-|-|-|-|
@@ -299,7 +299,7 @@ Acceptance also does not rely on one model's opinion. The construction panel is 
 |trace is sound|83%|
 |answer is sound|62%|
 
-The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is why acceptance is a majority vote of three models, not a single call. The same holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% (Cohen's κ = 0.64), so even where scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
+The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is why acceptance is a majority vote of three models, not a single call. The scoring judge is similarly robust on hard cases: on the 92 items where it and a strict exact-match check disagree, a human sides with the judge on 82.6% (Cohen's κ = 0.64), so even where scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
 The two halves also act as mutual controls: per-model accuracies agree within 2.6 points on average, unlikely if v1's synthetic construction were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 
@@ -319,7 +319,7 @@ We thank the reviewer for the detailed review. Several concerns are about design
 
 > v1 lacks machine-verifiable hard ground truth; fully relies on LLM panel judges, leading to subjective, biased evaluation results.
 
-Two clarifications. **(a) Every v1 example does carry a hard expected answer** `expected_output`, created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter. The panel is a quality gate *on top of* this ground truth, not a replacement. **(b) We measured how far machine-verifiable scoring can go**: deterministic numeric matching is well-defined for only **4.4%** of v1 expected answers; the other 95.6% are multi-entity analyst deliverables (ranked invoice-exception lists, per-supplier variance tables, policy conclusions; examples in our response to Reviewer PVoW) for which token/numeric matching is undefined. On the scalar subset where it *is* defined, the judge agrees with numeric matching on 74.3% of items; on the 92 disagreements, a **human judge with knowledge of the domain sides with the judge in 82.6% (κ = 0.64)** and with numeric matching in only 17.4%. We also compared the judge against the same human on a stratified v1 sample:
+Two clarifications. **(a) Every v1 example does carry a hard expected answer** `expected_output`, created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter. The panel is a quality gate *on top of* this ground truth, not a replacement. **(b) We measured how far machine-verifiable scoring can go**: deterministic numeric matching is well-defined for only **4.4%** of v1 expected answers; the other 95.6% are multi-entity analyst deliverables (ranked invoice-exception lists, per-supplier variance tables, policy conclusions; examples in our PVoW response) for which token/numeric matching is undefined. On the scalar subset where it *is* defined, the judge agrees with numeric matching on 74.3% of items; on the 92 disagreements, a **human judge with knowledge of the domain sides with the judge in 82.6% (κ = 0.64)** and with numeric matching in only 17.4%. We also compared the judge against the same human on a stratified v1 sample:
 
 |v1 evaluation check|agreement with the human|
 |-|-|
@@ -403,7 +403,7 @@ If memorization were the primary driver, question-only performance would be much
 |DeepSeek-V3.2|4.0%|38.6%|69.0%|
 |Llama-3.3-70B|3.0%|19.8%|57.0%|
 
-A recall-driven score would be high and flat across all three columns; we see the opposite, a steep monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2-4%) nor free even when the gold facts are handed over (~57-69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
+A recall-driven score would be high and flat across all three columns; instead we see a steep monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2-4%) nor free even when the gold facts are handed over (~57-69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
 
 **(3) Half the benchmark is substantially less exposed to contamination by construction.**
 FinOpsBench-v1 (5979 examples) is generated end-to-end against freshly created per-example databases and was never published, so direct instance-level contamination is unlikely. Since v1 and v2 give **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty we measure on v2 is corroborated by a half far less exposed to contamination.

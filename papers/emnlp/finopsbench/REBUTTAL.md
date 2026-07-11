@@ -80,16 +80,15 @@ v1 lexical diversity and SQL surface, over the 8233-task pool:
 
 <!-- The reference solutions are not shallow lookups.  -->
 The reference solutions require substantially more than simple table lookups. 
-Over the 11782 reference queries:
+Looking deeper at their structure:
 
 | v1 SQL structural depth | value |
 |---|---|
-| JOINs per query, 0 / 1 / 2 / 3+ | 44% / 31% / 17% / 8% |
 | queries with a nested subquery | 17%, of which 10% nest two or more levels |
 | clauses per query | mean 4.1, max 8 |
 | items requiring two or more JOINs | 33% |
 
-A JOIN appears in 70% of items, a third need two or more, and 17% use a nested subquery. 
+A JOIN appears in 70% of items, a third of them use two or more, and 17% of queries use a nested subquery. 
 <!-- so v1 measures multi-table analytic reasoning, not single-table reads. -->
 These statistics show that a substantial portion of v1 requires multi-table analytical reasoning rather than simple single-table retrieval.
 

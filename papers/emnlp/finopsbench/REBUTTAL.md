@@ -260,7 +260,6 @@ We ran the models on a uniformly-sampled subset and observed that even the stron
 |---|---|
 | gpt-oss-120b | 69.9% |
 | Claude-Sonnet-4.5 | 68.6% |
-| GPT-4.1 | 66.0% |
 | Claude-Haiku-4.5 | 65.5% |
 | Qwen3-235B-A22B | 65.0% |
 | GPT-4.1-mini | 60.0% |
@@ -428,7 +427,7 @@ Two parts to this.
 
 **(1) Claude Code, Codex and OpenCode are agent products, not base models, and the base models they run on are already in our evaluation.** Claude Code is built on Claude and Codex on OpenAI models, and we evaluate exactly those base models under our fixed harness: Claude Sonnet 4.5, GPT-5, GPT-4.1, and others. What these products add on top is scaffolding, meaning their own system prompts, retry logic, and file and shell tooling, plus a bespoke protocol to expose our benchmark's tools. A score obtained through them would measure that product engineering rather than the model, and would not be reproducible as the products update. That the harness alone moves the number is something the paper already measures: on v1, switching only the tool-calling protocol from native to ReAct shifts accuracy by up to 6.4 pp and even flips its sign, helping non-thinking models and hurting thinking ones. A full product harness adds far more than a protocol swap. Evaluating base models under one fixed, open harness is the standard for agentic benchmarks (AgentBench, τ-bench) and is what keeps the comparison controlled and reproducible.
 
-**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage further.** GPT-5, o4-mini and GPT-4.1 are evaluated in Table 2 alongside the open-source models. Across the paper and this rebuttal we now report more than a dozen models spanning five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness and scoring, our controlled 200-item evaluation spans nine of these models across five families; the six representative additions below land where the size-accuracy trend predicts, with a second frontier vendor (Anthropic) topping the leaderboard, a large open-weight MoE mid-table, and a small model showing that tool-use quality is training-bound, not size-bound:
+**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage further.** GPT-5, o4-mini and GPT-4.1 are evaluated in Table 2 alongside the open-source models. Across the paper and this rebuttal we now report more than a dozen models spanning five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness and scoring, our controlled 200-item evaluation covers models across five families; the additions below land where the size-accuracy trend predicts, with a second frontier vendor (Anthropic) topping the leaderboard, a large open-weight MoE mid-table, and a small model showing that tool-use quality is training-bound, not size-bound:
 
 | Model | Family | agentic accuracy | note |
 |---|---|---|---|

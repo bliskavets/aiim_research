@@ -8,6 +8,8 @@ We conducted additional analyses during the rebuttal period and address each con
 
 ---
 
+### Human validation and LLM-judge reliability
+
 > Heavy dependence on LLM-generated data without human validation ... No human evaluation is conducted to verify whether generated financial scenarios are realistic, whether reasoning traces are correct, or whether the LLM judges make reliable decisions.
 >
 > LLM-as-judge validation is insufficiently justified ... there is no measurement of agreement with human annotators or any estimate of judge accuracy.
@@ -48,12 +50,16 @@ During development, we also involved a human evaluator while designing and valid
 
 ---
 
+### Releasing the pipeline prompts
+
 > Release all prompts used throughout the nine-stage pipelines, including prompts for query generation, schema generation, data generation, feedback reconciliation, and system prompt construction.
 
 The link to the code repository in the paper now points to the current code version, where we have made every prompt easy to locate. The repository has a top-level `PROMPTS.md` index that maps each pipeline stage to the exact prompt it uses: the v1 stages one through nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts. Each stage described in the paper is directly linked to its corresponding prompt. 
 <!-- A reader can go from a stage in the text to its prompt in one step. -->
 
 ---
+
+### Benchmark diversity and failure analysis
 
 > Analyze benchmark diversity more quantitatively. Statistics on reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, and template diversity ...
 
@@ -143,6 +149,8 @@ These analyses distinguish models with similar final-answer accuracy but differe
 
 ---
 
+### Construction cost, compute, and runtime
+
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
 
 Construction uses no paid human annotation, since it is fully automated; the cost is LLM API usage, which we measured directly by replaying each stage with the models the paper used.
@@ -156,6 +164,8 @@ Construction uses no paid human annotation, since it is fully automated; the cos
 The three-judge panel dominates v1 cost at about 81%, roughly 13500 judgements across three reasoning-model calls; the two o3 code-generation stages dominate v2 at about 65%. Construction is API-only with no GPU. The single H100 in the paper is used only at evaluation time to serve the open-source agents, and backing stores are in-memory SQLite. Both pipelines run 8-way parallel, with wall-clock of about 24 hours for v1 and 5 hours for v2, and per-model evaluation cost of about $0.005 per example for open models up to about $0.06 for frontier ones. The construction and evaluation code is reproducible, and we plan to release all of it as open source with the benchmark.
 
 ---
+
+### Potential bias from proprietary models
 
 > Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
 
@@ -184,6 +194,8 @@ We thank the reviewer for raising important questions about the benchmark’s sc
 
 
 ---
+
+### Fundamental NLP capability advanced
 
 > While the benchmark targets agentic financial analysis, it remains unclear what fundamental NLP capability it advances beyond a domain-specific evaluation resource.
 
@@ -236,6 +248,8 @@ We therefore view FinOpsBench as evaluating planning, retrieval, and tool-use ca
 
 ---
 
+### Novelty versus recent agentic-finance benchmarks
+
 > multiple recent benchmarks have already moved in this direction. It remains somewhat unclear what fundamentally new evaluation capability FinOpsBench provides.
 
 <!-- What is new is not agentic financial tool use itself, but a controllable, hermetic decomposition of agentic competence that realism-oriented benchmarks cannot offer.  -->
@@ -280,6 +294,8 @@ That realism is genuinely useful, but it costs reproducibility and control. FinO
 
 ---
 
+### Diagnostics beyond final-answer accuracy
+
 > the reported analyses are primarily based on final-answer accuracy. More fine-grained diagnostic metrics or failure analyses ...
 
 <!-- We thank the reviewer for pushing on this.  -->
@@ -319,6 +335,8 @@ Per-model process metrics separate models that land on the same accuracy but beh
 On v1, the observed failures are primarily semantic rather than syntactic: SQL errors are near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. On v2 the profile moves to tool use under distractors. One trace makes the diagnostic value concrete: Qwen3-235B on a Citigroup contractual-obligations ratio first emitted a malformed percentage call, got a nonsense 0.0%, then self-corrected and computed compute_percentage(88472, 260754) = 33.9%, the gold answer. The taxonomy records both the slip and the recovery, which a final-answer metric would collapse into a single "correct".
 
 ---
+
+### Dependence on LLM-generated data and judgments
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 

@@ -162,16 +162,17 @@ The three-judge panel dominates v1 cost at about 81%, roughly 13500 judgements a
 <!-- We would like to thank the reviewer for a fair concern for any pipeline built with proprietary models, and we will expand the Discussion around it.  -->
 Several design choices already reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance. Generation and judging use different models. The v2 ground truth is execution-based and independent of any model's opinion. And we kept a human in the loop while designing and tuning the generation and validation stages. The human study above supports this as well: our automatic scoring agrees with a human judge with knowledge of the domain 85.1% of the time (κ = 0.67), so acceptance is not an artefact of one model's preferences.
 
-There is also direct empirical evidence against a generator-family advantage. If the benchmark favoured its generator's family, since the v1 generator is GPT-4.1-mini from OpenAI, that family should top the leaderboard. It does not:
+There is also direct empirical evidence against a generator advantage, and it is best read off v1 itself, the half the generator produced. The v1 generator is GPT-4.1-mini. If the pipeline rewarded its own generator, GPT-4.1-mini should score unusually high on v1; instead it is the lowest-scoring frontier model on v1 (Table 2):
 
-| Model | Family | v2 accuracy |
-|---|---|---|
-| Claude Sonnet 4.5 | Anthropic | 68.6% |
-| GPT-4.1 | OpenAI (generator family) | 66.0% |
-| GPT-4.1-mini | OpenAI (generator) | 60.0% |
+| Model (v1 frontier tier) | v1 accuracy |
+|---|---|
+| GPT-5 | 68.9% |
+| o4-mini | 67.1% |
+| GPT-5-mini | 65.8% |
+| GPT-4.1 | 62.4% |
+| GPT-4.1-mini (the generator) | 61.5% |
 
-A non-OpenAI model sits at the very top, above the generator's own family (GPT-4.1 is used for generation by default settings). These results do not indicate a measurable advantage for the generator family.
-<!-- A pipeline biased toward its generator would show the opposite ordering. -->
+The generator gains no advantage on the data it built; it sits at the bottom of the frontier tier. The remaining differences track base-model capability, the log-linear size-accuracy relationship reported in the paper, rather than vendor identity, and the judge panel is cross-vendor, so acceptance is not decided by any single provider.
 
 ---
 

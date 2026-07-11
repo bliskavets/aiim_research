@@ -40,7 +40,7 @@ We release all of them. The paper's repo link now points to the current version,
 
 > Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
 
-Construction is fully automated, with no paid human annotation; the cost is LLM API usage, measured by replaying each stage with the paper's models.
+Construction is fully automated, with no paid human annotation; the cost is LLM API usage, measured by replaying each stage.
 
 |Version|Candidates to final|Est. construction cost|$/final example|
 |-|-|-|-|
@@ -48,7 +48,7 @@ Construction is fully automated, with no paid human annotation; the cost is LLM 
 |v2 (9-stage execution pipeline)|1247 to 1108|~$340|$0.307|
 |Total|7087 final|~$790|n/a|
 
-The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements across three reasoning-model calls); the two o3 code-generation stages dominate v2 (about 65%). Construction is API-only, no GPU: the single H100 serves the open-source agents only at evaluation; backing stores are in-memory SQLite. Both run 8-way parallel, wall-clock about 24 hours (v1) and 5 hours (v2); per-model evaluation costs about $0.005 per example for open models, up to $0.06 for frontier ones. We release all construction and evaluation code with the benchmark, so these measurements are reproducible.
+The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements); the two o3 code-generation stages dominate v2 (about 65%). Construction is API-only, no GPU: the single H100 serves the open-source agents only at evaluation; backing stores are in-memory SQLite. Both run 8-way parallel, wall-clock about 24 hours (v1) and 5 hours (v2); per-model evaluation costs about $0.005 per example for open models, up to $0.06 for frontier ones. We release all construction and evaluation code with the benchmark.
 
 ### Potential bias from proprietary models
 
@@ -66,7 +66,7 @@ Direct evidence against a generator advantage is best read off v1, the half the 
 |GPT-4.1|62.4%|
 |GPT-4.1-mini (the generator)|61.5%|
 
-The generator gains no advantage on the data it built, at the bottom of the frontier tier. The remaining differences track base-model capability (the log-linear size-accuracy relationship in the paper), not vendor identity, and the cross-vendor panel means no single provider decides acceptance.
+The generator gains no advantage on the data it built, at the bottom of the frontier tier. The remaining differences track base-model capability (the log-linear size-accuracy relationship in the paper), not vendor identity.
 
 ### Benchmark diversity and failure analysis
 

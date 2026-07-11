@@ -333,6 +333,18 @@ The two halves are designed to be read together, and deriving v2 from FinQA is a
 
 ---
 
+### "Outdated smolagents" / framework noise
+
+> Adopts outdated smolagents as agent harness, which may introduce framework noise and interfere with reliable tool-use performance measurement.
+
+Three clarifications:
+
+- **smolagents is current and actively maintained.** It is a 2025 Hugging Face library, not a deprecated framework, and we chose it because it is a *minimal* harness.
+- **v1 does not use smolagents at all.** v1 runs a minimal native tool-calling loop (and a ReAct variant) directly over the model API, so any smolagents-specific concern cannot apply to more than half the benchmark.
+- **Framework noise is addressed empirically.** We evaluate under two protocols (native tool calling and ReAct) and two independent stacks; the model ranking is consistent across all, and per-model accuracies agree across the two versions (mean absolute difference 2.6 pp). If harness artifacts drove results, this cross-harness, cross-version agreement would not hold.
+
+---
+
 ### Missing top agent models and finance-specialized LLMs
 
 > Experiment evaluation is incomplete: missing top agent/code models (Claude Code, Codex, OpenCode); baselines only cover tiny open-source models without finance-specialized LLMs.
@@ -353,18 +365,6 @@ Two parts to this.
 |Llama-3.3-70B|Meta (open-weight)|**19.8%**|reads 57%, acts 20%|
 
 **On finance-specialized LLMs:** open finance models are continued-pretrained on financial *text* and do not support reliable function calling, the exact capability under test, so they cannot run as tool-using agents without external scaffolding (which reintroduces the harness-conflation problem above). We treat this as an open call for finance models trained for agentic tool use.
-
----
-
-### "Outdated smolagents" / framework noise
-
-> Adopts outdated smolagents as agent harness, which may introduce framework noise and interfere with reliable tool-use performance measurement.
-
-Three clarifications:
-
-- **smolagents is current and actively maintained.** It is a 2025 Hugging Face library, not a deprecated framework, and we chose it because it is a *minimal* harness.
-- **v1 does not use smolagents at all.** v1 runs a minimal native tool-calling loop (and a ReAct variant) directly over the model API, so any smolagents-specific concern cannot apply to more than half the benchmark.
-- **Framework noise is addressed empirically.** We evaluate under two protocols (native tool calling and ReAct) and two independent stacks; the model ranking is consistent across all, and per-model accuracies agree across the two versions (mean absolute difference 2.6 pp). If harness artifacts drove results, this cross-harness, cross-version agreement would not hold.
 
 ---
 

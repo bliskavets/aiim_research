@@ -1,23 +1,91 @@
 {
   "n": 170,
-  "cost": 0.778,
-  "per_judge": {
-    "o4-mini": {
-      "agreement_with_human_pct": 84.1,
-      "cohen_kappa_vs_human": 0.665
-    },
+  "runs": 3,
+  "cost": 2.319,
+  "o4-mini": {
+    "agreement_with_human_pct": 84.1,
+    "cohen_kappa_vs_human": 0.665,
+    "note": "single stored run (paper's judge)"
+  },
+  "per_model": {
     "anthropic/claude-sonnet-4.5": {
-      "agreement_with_human_pct": 78.2,
-      "cohen_kappa_vs_human": 0.507
+      "runs": [
+        {
+          "agreement_with_human_pct": 76.5,
+          "cohen_kappa_vs_human": 0.465
+        },
+        {
+          "agreement_with_human_pct": 75.9,
+          "cohen_kappa_vs_human": 0.451
+        },
+        {
+          "agreement_with_human_pct": 74.1,
+          "cohen_kappa_vs_human": 0.409
+        }
+      ],
+      "mean_agreement_pct": 75.5,
+      "best_agreement_pct": 76.5,
+      "agreement_min_max": [
+        74.1,
+        76.5
+      ],
+      "mean_kappa": 0.442,
+      "best_kappa": 0.465
     },
     "google/gemini-2.5-flash": {
-      "agreement_with_human_pct": 81.2,
-      "cohen_kappa_vs_human": 0.58
+      "runs": [
+        {
+          "agreement_with_human_pct": 82.4,
+          "cohen_kappa_vs_human": 0.61
+        },
+        {
+          "agreement_with_human_pct": 79.4,
+          "cohen_kappa_vs_human": 0.541
+        },
+        {
+          "agreement_with_human_pct": 78.2,
+          "cohen_kappa_vs_human": 0.512
+        }
+      ],
+      "mean_agreement_pct": 80.0,
+      "best_agreement_pct": 82.4,
+      "agreement_min_max": [
+        78.2,
+        82.4
+      ],
+      "mean_kappa": 0.554,
+      "best_kappa": 0.61
     },
     "deepseek/deepseek-chat": {
-      "agreement_with_human_pct": 80.0,
-      "cohen_kappa_vs_human": 0.548
+      "runs": [
+        {
+          "agreement_with_human_pct": 77.1,
+          "cohen_kappa_vs_human": 0.474
+        },
+        {
+          "agreement_with_human_pct": 78.2,
+          "cohen_kappa_vs_human": 0.504
+        },
+        {
+          "agreement_with_human_pct": 80.0,
+          "cohen_kappa_vs_human": 0.546
+        }
+      ],
+      "mean_agreement_pct": 78.4,
+      "best_agreement_pct": 80.0,
+      "agreement_min_max": [
+        77.1,
+        80.0
+      ],
+      "mean_kappa": 0.508,
+      "best_kappa": 0.546
     }
   },
-  "inter_judge_fleiss": 0.687
+  "inter_judge_fleiss_per_run": [
+    0.645,
+    0.632,
+    0.665
+  ],
+  "inter_judge_fleiss_mean": 0.647,
+  "reporting": "Reported numbers are the MEAN over the 3 runs per added judge (o4-mini is the paper judge, single stored run). Per-item verdicts for the 3 runs are in judge_swap_runs.jsonl; o4-mini verdicts are the stored judge_correct in disagreements_for_human_annotation.jsonl and e3_human_eval/data/sample_v1_judge.jsonl."
 }

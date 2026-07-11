@@ -114,36 +114,61 @@ def fleiss(cols):
     return round((pbar - pe) / (1 - pe), 3) if pe != 1 else 1.0
 
 
+def agree_kappa(col, human):
+    agree = [x == h for x, h in zip(col, human) if x is not None]
+    return round(100 * sum(agree) / len(agree), 1), kappa(col, human)
+
+
 async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", nargs="+", required=True)
+    ap.add_argument("--runs", type=int, default=3, help="repeat each model N times to control judge non-determinism")
     ap.add_argument("--concurrency", type=int, default=8)
     a = ap.parse_args()
     items = load_items()
-    print(f"loaded {len(items)} human-labelled items")
+    human = [it["human"] for it in items]
+    print(f"loaded {len(items)} human-labelled items; {a.runs} runs per model")
     client = AsyncOpenAI(base_url=API, api_key=os.environ["OPENROUTER_API_KEY"])
     sem = asyncio.Semaphore(a.concurrency)
     cost = 0.0
-    for model in a.models:
-        res = await asyncio.gather(*[judge(client, model, it, sem) for it in items])
-        for it, (v, c) in zip(items, res):
-            it[model] = v
-            cost += c
-        got = sum(1 for it in items if it[model] is not None)
-        print(f"  {model}: {got}/{len(items)} verdicts")
-    judges = ["o4-mini"] + a.models
-    human = [it["human"] for it in items]
-    summary = {"n": len(items), "cost": round(cost, 3), "per_judge": {}, "inter_judge_fleiss": None}
-    for jm in judges:
-        col = [it.get(jm) for it in items]
-        agree = [x == h for x, h in zip(col, human) if x is not None]
-        summary["per_judge"][jm] = {"agreement_with_human_pct": round(100 * sum(agree) / len(agree), 1),
-                                    "cohen_kappa_vs_human": kappa(col, human)}
-    summary["inter_judge_fleiss"] = fleiss([[it.get(jm) for it in items] for jm in judges])
-    # pairwise agreement among judges (mean)
-    (HERE / "results" / "judge_swap.json").write_text(json.dumps(summary, indent=2))
-    (HERE / "results" / "judge_swap_items.jsonl").write_text(
-        "\n".join(json.dumps(it) for it in items))
+    # per_run_verdicts[model] = list over runs of per-item verdict lists
+    per_run = {m: [] for m in a.models}
+    per_run_stats = {m: [] for m in a.models}
+    incr = (HERE / "results" / "judge_swap_runs.jsonl").open("w")
+    for r in range(a.runs):
+        for model in a.models:
+            res = await asyncio.gather(*[judge(client, model, it, sem) for it in items])
+            col = [v for v, _ in res]
+            cost += sum(c for _, c in res)
+            per_run[model].append(col)
+            ag, kp = agree_kappa(col, human)
+            per_run_stats[model].append({"agreement_with_human_pct": ag, "cohen_kappa_vs_human": kp})
+            incr.write(json.dumps({"run": r + 1, "model": model, "agreement_with_human_pct": ag,
+                                   "cohen_kappa_vs_human": kp, "verdicts": col}) + "\n")
+            incr.flush()
+            print(f"  run {r+1} {model}: agreement {ag}% kappa {kp}", flush=True)
+    incr.close()
+    # o4-mini: single stored run from the source data
+    o4 = [it.get("o4-mini") for it in items]
+    o4_ag, o4_kp = agree_kappa(o4, human)
+    summary = {"n": len(items), "runs": a.runs, "cost": round(cost, 3),
+               "o4-mini": {"agreement_with_human_pct": o4_ag, "cohen_kappa_vs_human": o4_kp, "note": "single stored run (paper's judge)"},
+               "per_model": {}}
+    for m in a.models:
+        ags = [s["agreement_with_human_pct"] for s in per_run_stats[m]]
+        kps = [s["cohen_kappa_vs_human"] for s in per_run_stats[m]]
+        summary["per_model"][m] = {
+            "runs": per_run_stats[m],
+            "mean_agreement_pct": round(sum(ags) / len(ags), 1),
+            "best_agreement_pct": max(ags),
+            "agreement_min_max": [min(ags), max(ags)],
+            "mean_kappa": round(sum(kps) / len(kps), 3),
+            "best_kappa": max(kps),
+        }
+    # inter-judge Fleiss on the FIRST run of each model + o4-mini (a single coherent labelling)
+    first_run_cols = [o4] + [per_run[m][0] for m in a.models]
+    summary["inter_judge_fleiss_run1"] = fleiss(first_run_cols)
+    (HERE / "results" / "judge_swap_multirun.json").write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2))
 
 

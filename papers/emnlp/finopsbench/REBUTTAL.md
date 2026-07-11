@@ -350,16 +350,16 @@ Furthermore, we analyze the level of consensus among the judgement models at dif
 
 The judges converge on the objective criteria and split most on the subjective one, answer soundness, which is exactly why acceptance is a majority vote of three models rather than a single call. The same robustness holds for the scoring judge on its hardest cases: on the 92 items where our judge and a strict exact-match check disagree, a human sides with the judge on 82.6% of them (Cohen's κ = 0.64), so even where automatic scorers conflict, the retained judgement is the one a knowledgeable reader endorses.
 
-In addition, the scoring verdict does not depend on which model does the judging. We re-scored the same 170 human-labelled v1 items with three further judges from different vendors, using the identical evaluation prompt:
+In addition, the scoring verdict does not depend on which model does the judging. We re-scored the same 170 human-labelled v1 items with three further judges from different vendors, using the identical evaluation prompt and averaging each over three runs to control for the judge's own non-determinism:
 
 | Judge model | agreement with human | Cohen's κ vs human |
 |---|---|---|
-| o4-mini (paper's judge) | 84% | 0.67 |
-| Claude-Sonnet-4.5 | 79% | 0.57 |
-| Gemini-2.5-Flash | 82% | 0.61 |
-| DeepSeek-V3 | 80% | 0.55 |
+| o4-mini (paper's judge) | 84.1% | 0.67 |
+| Claude-Sonnet-4.5 | 75.5% | 0.44 |
+| Gemini-2.5-Flash | 80.0% | 0.55 |
+| DeepSeek-V3 | 78.4% | 0.51 |
 
-All four judges agree with the human evaluator within a few points (79 to 84%) and with one another at Fleiss κ = 0.69, indicating that the verdict reflects the answer rather than the choice of judge model.
+The added judges are means over three runs (individual runs span 74 to 84%). All four judges agree with the human at comparable rates, from 75.5% for Claude-Sonnet-4.5 up to 84.1% for o4-mini, and with one another at Fleiss κ ≈ 0.65, indicating that the verdict reflects the answer rather than the choice of judge model.
 
 The two halves also act as mutual controls: per-model accuracies agree across them within 2.6 points on average, which would be unlikely if the synthetic construction of v1 were injecting systematic artifacts. The pipeline is LLM-assisted, but its output is gated by execution and calibrated against a human judge.
 

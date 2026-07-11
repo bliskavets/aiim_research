@@ -36,6 +36,38 @@ With no unique target string for such answers, semantic evaluation is necessary 
 
 We release all of them. The paper's repo link now points to the current version, with a top-level `PROMPTS.md` mapping each stage to its exact prompt: v1 stages one to nine and final filtering, the v1 evaluation prompts including the judge grading prompt, and the full v2 environment-generator prompts.
 
+### Construction cost, compute, and runtime
+
+> Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
+
+Construction is fully automated, with no paid human annotation; the cost is LLM API usage, measured by replaying each stage with the paper's models.
+
+|Version|Candidates to final|Est. construction cost|$/final example|
+|-|-|-|-|
+|v1 (9-stage panel pipeline)|10000 to 5979|~$450|$0.075|
+|v2 (9-stage execution pipeline)|1247 to 1108|~$340|$0.307|
+|Total|7087 final|~$790|n/a|
+
+The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements across three reasoning-model calls); the two o3 code-generation stages dominate v2 (about 65%). Construction is API-only, no GPU: the single H100 serves the open-source agents only at evaluation; backing stores are in-memory SQLite. Both run 8-way parallel, wall-clock about 24 hours (v1) and 5 hours (v2); per-model evaluation costs about $0.005 per example for open models, up to $0.06 for frontier ones. We release all construction and evaluation code with the benchmark, so these measurements are reproducible.
+
+### Potential bias from proprietary models
+
+> Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
+
+Several design choices reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance; generation and judging use different models; the v2 ground truth is execution-based, independent of any model's opinion. The study above supports this: acceptance tracks a domain-knowledgeable human, not one model's preferences.
+
+Direct evidence against a generator advantage is best read off v1, the half the generator (GPT-4.1-mini) produced: if the pipeline rewarded its generator, GPT-4.1-mini should top v1; instead it is the lowest frontier model on v1 (Table 2):
+
+|Model (v1 frontier tier)|v1 acc.|
+|-|-|
+|GPT-5|68.9%|
+|o4-mini|67.1%|
+|GPT-5-mini|65.8%|
+|GPT-4.1|62.4%|
+|GPT-4.1-mini (the generator)|61.5%|
+
+The generator gains no advantage on the data it built, at the bottom of the frontier tier. The remaining differences track base-model capability (the log-linear size-accuracy relationship in the paper), not vendor identity, and the cross-vendor panel means no single provider decides acceptance.
+
 ### Benchmark diversity and failure analysis
 
 > Analyze benchmark diversity more quantitatively: reasoning operations, SQL complexity, tool-chain depth, numerical operations, financial concepts, template diversity ...
@@ -110,38 +142,6 @@ For the failure ask, we classified 779 failing traces into eight categories with
 |DeepSeek-V3|v2|7%|16%|23%|14%|25%|
 
 v1 failures are primarily semantic, not syntactic: SQL errors near zero, while wrong predicates and incomplete retrieval dominate, so models fail at data selection, not arithmetic. v2 shifts to tool use: wrong-tool selection rises under distractors, and DeepSeek-V3 hits the step limit in a quarter of its failures. Process metrics match: v1 frontier models fail fast, 1.3 to 1.9 calls with no round-exhaustion, while v2 agents make about four calls and hit the step limit 7 to 11% of the time. This separates models at similar final-answer accuracy but different failure profiles. On "Which invoices have duplicate payment records, and what is the total overpaid?" GPT-4.1 aggregated at the invoice level instead of detecting repeated identical payments, reporting only Invoice 4 at $0.01 and missing the real duplicates on Invoices 1, 3 and 5 of $600, $200 and $450.
-
-### Construction cost, compute, and runtime
-
-> Report annotation or generation costs, computational resources, and runtime required to construct the benchmark.
-
-Construction is fully automated, with no paid human annotation; the cost is LLM API usage, measured by replaying each stage with the paper's models.
-
-|Version|Candidates to final|Est. construction cost|$/final example|
-|-|-|-|-|
-|v1 (9-stage panel pipeline)|10000 to 5979|~$450|$0.075|
-|v2 (9-stage execution pipeline)|1247 to 1108|~$340|$0.307|
-|Total|7087 final|~$790|n/a|
-
-The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements across three reasoning-model calls); the two o3 code-generation stages dominate v2 (about 65%). Construction is API-only, no GPU: the single H100 serves the open-source agents only at evaluation; backing stores are in-memory SQLite. Both run 8-way parallel, wall-clock about 24 hours (v1) and 5 hours (v2); per-model evaluation costs about $0.005 per example for open models, up to $0.06 for frontier ones. We release all construction and evaluation code with the benchmark, so these measurements are reproducible.
-
-### Potential bias from proprietary models
-
-> Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
-
-Several design choices reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance; generation and judging use different models; the v2 ground truth is execution-based, independent of any model's opinion. The study above supports this: acceptance tracks a domain-knowledgeable human, not one model's preferences.
-
-Direct evidence against a generator advantage is best read off v1, the half the generator (GPT-4.1-mini) produced: if the pipeline rewarded its generator, GPT-4.1-mini should top v1; instead it is the lowest frontier model on v1 (Table 2):
-
-|Model (v1 frontier tier)|v1 acc.|
-|-|-|
-|GPT-5|68.9%|
-|o4-mini|67.1%|
-|GPT-5-mini|65.8%|
-|GPT-4.1|62.4%|
-|GPT-4.1-mini (the generator)|61.5%|
-
-The generator gains no advantage on the data it built, at the bottom of the frontier tier. The remaining differences track base-model capability (the log-linear size-accuracy relationship in the paper), not vendor identity, and the cross-vendor panel means no single provider decides acceptance.
 
 ---
 

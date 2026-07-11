@@ -25,10 +25,7 @@ This also clarifies why v1 uses an LLM judge: most v1 answers are not single num
 ```
 Exceptions indicating possible processing errors:
 - Invoice 102 (Beta LLC): paid 5 days before the invoice date.
-- Invoice 103 (Gamma Inc): partially paid, 500 of 1500, no further payments.
-- Invoice 104 (Delta Ltd): paid late, 2025-06-15 vs due 2025-05-31.
-- Invoice 108 (Gamma Inc): overpaid, 900 vs 800.
-- Invoice 105 (Epsilon Co): no payment 3+ months after due date.
+- ... 4 more, each a different type: partial payment, late payment, overpayment, missing payment ...
 - Payment 1006: refers to invalid invoice_id 999, likely a data-entry error.
 These signal processing issues in the timing or volume of payments relative to invoices.
 ```
@@ -180,27 +177,23 @@ It also requires writing real analytic SQL, not single-table lookups:
 And it has to turn an open-ended request into an analysis over many tool calls. One v1 item:
 
 ```
-Prompt (Management Accountant):
-Analyze the fluctuations in the Raw Materials ledger account from Q2 2023 to
-Q2 2024, and explain the volume and price variances and their effect on gross margin.
+Prompt (Management Accountant): analyze the fluctuations in the Raw Materials
+ledger account from Q2 2023 to Q2 2024, and explain the volume and price
+variances and their effect on gross margin.
 
-Golden answer:
-Unit cost is stable near 10.0 in Q2 2023, spikes to 12.0 in Q3, then moves
-between 11.0 and 12.5 through Q2 2024; rising cost squeezes gross margin, falling
-cost improves it. The Finished-Goods rows and a mislinked product_raw_materials
-row are distractors.
+Golden answer: unit cost is stable near 10.0, spikes to 12.0 in Q3 2023, then
+moves between 11.0 and 12.5 through Q2 2024; rising cost squeezes gross margin,
+falling cost improves it. The Finished-Goods rows and a mislinked
+product_raw_materials row are distractors.
 
-Model's SQL (10 calls; quarter = a strftime date bucket):
-1  SELECT id FROM ledger_accounts WHERE name = 'Raw Materials';
-3  SELECT quarter, SUM(quantity), AVG(unit_cost) FROM ledger_entries
-     WHERE account_id = 1 AND entry_date BETWEEN '2023-04-01' AND '2024-06-30' GROUP BY quarter;
-5  SELECT quarter, p.name, AVG(s.unit_price) FROM sales s
-     JOIN products p ON s.product_id = p.id GROUP BY quarter, p.name;
-   ... calls 2, 4, 6-10: id lookups and per-quarter revenue/cost/quantity totals ...
+Model's SQL (10 calls; quarter = a strftime date bucket), e.g.:
+  SELECT quarter, p.name, AVG(s.unit_price) FROM sales s
+    JOIN products p ON s.product_id = p.id GROUP BY quarter, p.name;
+  ... other calls: id lookups and per-quarter revenue/cost/quantity totals ...
 
-Model's response (abridged): per-quarter ledger, consumption and per-product sales
-tables, concluding the Q1 2024 cost peak compresses margin while stable selling
-prices cushion it.
+Model's response (abridged): per-quarter ledger, consumption and per-product
+sales tables, concluding the Q1 2024 cost peak compresses margin while stable
+selling prices cushion it.
 ```
 
 No single call answers this: the model must pick the right account, drop the seeded Finished-Goods distractor rows, and chain ten queries into one analysis.

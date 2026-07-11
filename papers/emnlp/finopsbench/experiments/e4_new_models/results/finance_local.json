@@ -1,0 +1,51 @@
+{
+  "summary": {
+    "model": "instruction-pretrain/finance-Llama3-8B",
+    "n": 5,
+    "tool_call_rate": 0.0,
+    "accuracy": 0.0,
+    "n_ok_status": 0
+  },
+  "rows": [
+    {
+      "agent": "agent_338",
+      "status": "no-output",
+      "tool_called": false,
+      "passed": false,
+      "pred": "",
+      "gold": "-5.8%"
+    },
+    {
+      "agent": "agent_404",
+      "status": "no-output",
+      "tool_called": false,
+      "passed": false,
+      "pred": "",
+      "gold": "247"
+    },
+    {
+      "agent": "agent_194",
+      "status": "no-output",
+      "tool_called": false,
+      "passed": false,
+      "pred": "",
+      "gold": "-5821"
+    },
+    {
+      "agent": "agent_280",
+      "status": "no-output",
+      "tool_called": false,
+      "passed": false,
+      "pred": "",
+      "gold": "773%"
+    },
+    {
+      "agent": "agent_1300",
+      "status": "no-output",
+      "tool_called": false,
+      "passed": false,
+      "pred": "",
+      "gold": "26%"
+    }
+  ]
+}

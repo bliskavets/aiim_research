@@ -351,9 +351,9 @@ Three clarifications:
 
 Two parts to this.
 
-**(1) Claude Code, Codex and OpenCode are agent products, not base models, and the base models they run on are already in our evaluation.** Claude Code runs on Claude, Codex on OpenAI models, and we evaluate exactly those under our fixed harness (Claude Sonnet 4.5, GPT-5, GPT-4.1, and others). These products add scaffolding: their own system prompts, retry logic, file and shell tooling, plus a bespoke protocol to expose our tools. A score through them measures product engineering, not the model, and is not reproducible as products update. The paper already shows the harness alone moves the number: on v1, switching only the tool-calling protocol from native to ReAct shifts accuracy up to 6.4 pp and can flip its sign, helping non-thinking models and hurting thinking ones; a full product harness adds far more. Evaluating base models under one fixed, open harness is standard for agentic benchmarks (AgentBench, τ-bench) and keeps the comparison controlled and reproducible.
+**(1) Claude Code, Codex and OpenCode are agent products, not base models, and the base models they run on are already in our evaluation.** Claude Code runs on Claude, Codex on OpenAI models; we evaluate those base models under our fixed harness (Claude Sonnet 4.5, GPT-5, GPT-4.1, and others). These products add scaffolding (their own system prompts, retry logic, file and shell tooling, a bespoke protocol to expose our tools), so a score through them measures product engineering, not the model, and is not reproducible as products update. The paper already shows the harness alone moves the number: on v1, switching only the tool-calling protocol from native to ReAct shifts accuracy up to 6.4 pp and can flip its sign; a full product harness adds far more. Evaluating base models under one open harness is the standard for agentic benchmarks (AgentBench, τ-bench).
 
-**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage.** Table 2 already includes GPT-5, o4-mini and GPT-4.1 alongside open-source models; across the paper and this rebuttal we report more than a dozen models across five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness and scoring, our controlled 200-item evaluation spans five families; the additions below land where the size-accuracy trend predicts, and a small model (Haiku) shows tool-use quality is training-bound, not size-bound:
+**(2) The paper already evaluates frontier models, not only small open ones, and we broadened coverage.** Table 2 already includes GPT-5, o4-mini and GPT-4.1 alongside open-source models; across the paper and this rebuttal we report more than a dozen models across five vendors (OpenAI, Anthropic, Alibaba, DeepSeek, Meta). Under the paper's exact v2 harness, the additions below land where the size-accuracy trend predicts, and a small model (Haiku) shows tool-use quality is training-bound, not size-bound:
 
 |Model|Family|agentic acc.|note|
 |-|-|-|-|
@@ -364,7 +364,7 @@ Two parts to this.
 |DeepSeek-V4-Flash|DeepSeek (open-weight)|**54.3%**|reads 68%, acts 54%|
 |Llama-3.3-70B|Meta (open-weight)|**19.8%**|reads 57%, acts 20%|
 
-**On finance-specialized LLMs:** open finance models are continued-pretrained on financial *text* and do not support reliable function calling, the exact capability under test, so they cannot run as tool-using agents without external scaffolding (which reintroduces the harness-conflation problem above). We treat this as an open call for finance models trained for agentic tool use.
+**On finance-specialized LLMs:** open finance models are continued-pretrained on financial *text* and do not support reliable function calling, the capability under test, so they cannot run as tool-using agents without external scaffolding (reintroducing the harness-conflation problem above). We treat this as an open call for finance models trained for agentic tool use.
 
 ---
 
@@ -374,7 +374,7 @@ Two parts to this.
 
 This is an important concern, which we evaluate directly in three ways:
 
-**(1) Closed-book baseline (full benchmark).** We give the model the entire v2 environment prompt (scenario + tool signatures + question) but **no callable tools**, requiring it to answer from the prompt and its memory: a *conservative* upper bound on memorization (it sees strictly more than plain closed-book, and some scenarios contain a needed figure, which is why this floor sits above the stricter *question-only* floor in (2)). Result (v2 scoring unchanged; the agentic column is full-benchmark accuracy, not comparable to the 200-item figures in (2)):
+**(1) Closed-book baseline (full benchmark).** We give the model the entire v2 environment prompt (scenario + tool signatures + question) but **no callable tools**, requiring it to answer from the prompt and its memory: a *conservative* upper bound on memorization (it sees strictly more than plain closed-book, so this floor sits above the stricter *question-only* floor in (2)). Result (agentic column = full-benchmark accuracy, not comparable to the 200-item figures in (2)):
 
 |Model|closed-book|agentic|Δ|
 |-|-|-|-|
@@ -382,10 +382,10 @@ This is an important concern, which we evaluate directly in three ways:
 |GPT-4.1 (n=300)|**13.3%**|60.6%|−47.3 pp|
 |Qwen3-30B-A3B (n=1174)|**13.8%**|53.0%|−39.2 pp|
 
-Closed-book accuracy is **flat at ~14%** across model families and capability levels, while agentic accuracy varies by 15 points, so memorization does not drive the agentic differences. We attribute the residual closed-book score partly to figures in the scenario text, though this cannot rule out all contamination.
+Closed-book accuracy is **flat at ~14%** across families and capability levels, while agentic accuracy varies by 15 points, so memorization does not drive the agentic differences. We attribute the residual closed-book score partly to figures in the scenario text, though this cannot rule out all contamination.
 
 **(2) Access-mode dependence (200-item ladder).**
-If memorization were the primary driver, question-only performance would be much higher and less access-dependent. Instead, accuracy rises *monotonically* with more direct access:
+If memorization drove results, question-only performance would be much higher and less access-dependent. Instead, accuracy rises *monotonically* with more direct access:
 
 |Model|question-only|agentic (tools)|FinQA-native (gold facts in-context)|
 |-|-|-|-|
@@ -393,7 +393,7 @@ If memorization were the primary driver, question-only performance would be much
 |DeepSeek-V3.2|4.0%|38.6%|69.0%|
 |Llama-3.3-70B|3.0%|19.8%|57.0%|
 
-A recall-driven score would be high and flat across all three columns; instead we see a steep monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2-4%) nor free even when the gold facts are given (~57-69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
+A recall-driven score would be high and flat; instead we see a steep monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2-4%) nor free even when the gold facts are given (~57-69%, not ~100%); the agentic re-instantiation (split tables, distractor rows, a bespoke multi-hop plan) adds real difficulty on top.
 
 **(3) Half the benchmark is substantially less exposed to contamination by construction.**
-FinOpsBench-v1 (5979 examples) is generated end-to-end against freshly created per-example databases and was never published, so direct instance-level contamination is unlikely. Since v1 and v2 give **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty on v2 is corroborated by a half far less exposed to contamination. Familiarity with public FinQA items thus gives no answer pathway in v2: the prompt exposes neither the source table nor its values, and the required multi-hop plan appears in no training corpus.
+FinOpsBench-v1 (5979 examples) is generated end-to-end against freshly created per-example databases and was never published, so instance-level contamination is unlikely. Since v1 and v2 give **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty on v2 is corroborated by a half far less exposed. Familiarity with public FinQA items thus gives no answer pathway in v2: the required multi-hop plan appears in no training corpus.

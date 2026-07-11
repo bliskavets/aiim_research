@@ -388,14 +388,14 @@ We thank the reviewer for their detailed review. Several concerns revolve around
 
 > v1 lacks machine-verifiable hard ground truth; fully relies on LLM panel judges, leading to subjective, biased evaluation results.
 
-Two clarifications. **(a) Every v1 example does carry a hard expected answer** `expected_output`, created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter. The panel is an additional quality gate *on top of* this ground truth, not a replacement for it. **(b) We measured how far purely machine-verifiable scoring can go**: deterministic numeric matching is well-defined for only **4.4%** of v1 expected answers — the remaining 95.6% are multi-entity analyst deliverables (ranked invoice-exception lists, per-supplier variance tables, policy conclusions; verbatim examples in our response to Reviewer PVoW) for which token/numeric matching is simply undefined. On the scalar subset where it *is* defined, the judge agrees with numeric matching on 74.3% of items; on the 92 disagreement cases, a **human judge with knowledge of the domain sides with the judge in 82.6% (κ = 0.64)** and with numeric matching in only 17.4%. More directly, we compared the automatic judge against the same human on a stratified v1 sample:
+Two clarifications. **(a) Every v1 example does carry a hard expected answer** `expected_output`, created jointly with the data in Stage 3 and enforced by execution-based validation (Stage 4) plus an answer-consistency filter. The panel is an additional quality gate *on top of* this ground truth, not a replacement for it. **(b) We measured how far purely machine-verifiable scoring can go**: deterministic numeric matching is well-defined for only **4.4%** of v1 expected answers; the remaining 95.6% are multi-entity analyst deliverables (ranked invoice-exception lists, per-supplier variance tables, policy conclusions; verbatim examples in our response to Reviewer PVoW) for which token/numeric matching is simply undefined. On the scalar subset where it *is* defined, the judge agrees with numeric matching on 74.3% of items; on the 92 disagreement cases, a **human judge with knowledge of the domain sides with the judge in 82.6% (κ = 0.64)** and with numeric matching in only 17.4%. More directly, we compared the automatic judge against the same human on a stratified v1 sample:
 
 | v1 evaluation check | agreement with the human |
 |---|---|
 | judge vs a human judge with domain knowledge (overall) | 85.1%, Cohen's κ = 0.67 |
 | the 92 hardest items, where judge and numeric matching disagree | 82.6%, Cohen's κ = 0.64 |
 
-<!-- So the judge is not a source of subjectivity — it is a necessity created by free-form financial answers,  -->
+<!-- So the judge is not a source of subjectivity: it is a necessity created by free-form financial answers,  -->
 These results support the use of semantic evaluation for v1, where most expected outputs cannot be evaluated reliably through exact or numeric matching alone. Where machine-only scoring conflicts with it, the judge is the *more accurate* scorer by ~5×. v2, whose answers are numeric by construction, is scored **fully deterministically** against executable reference plans (no LLM).
 
 ---
@@ -412,8 +412,8 @@ enables causal attribution.**
 **The FinQA derivation enables a controlled comparison between reading-based and tool-mediated access.**
 <!-- We hold the *question content* fixed (human-authored, community-familiar, with known static-setting numbers) and change only the *access mode* from reading to tool use.  -->
 We hold the *question content* fixed and vary the access mode from in-context reading to tool-based retrieval. This helps isolate the additional difficulty introduced by planning, retrieval, and tool use.
-This lets us attribute any performance drop specifically to the agentic component: state-of-the-art systems reach roughly 80–85% on static FinQA, yet the best agent reaches only ~69% on the *same questions* in our environments. The "artificially added multi-hop logic" is precisely the measurement instrument — it converts a reading task into a planning-and-tool-use task on identical content, which is what isolates the agentic skill. Our access ladder (see Reviewer 6zfv) quantifies exactly this: the same model that reads FinQA at 57–69% acts at 20–54% with tools, and the gap is model-discriminating.
-- **"Native business-driven agent tasks" are exactly what v1 provides — at scale.** v1 contains 5,979 analyst-style tasks
+This lets us attribute any performance drop specifically to the agentic component: state-of-the-art systems reach roughly 80-85% on static FinQA, yet the best agent reaches only ~69% on the *same questions* in our environments. The "artificially added multi-hop logic" is precisely the measurement instrument: it converts a reading task into a planning-and-tool-use task on identical content, which is what isolates the agentic skill. Our access ladder (see Reviewer 6zfv) quantifies exactly this: the same model that reads FinQA at 57-69% acts at 20-54% with tools, and the gap is model-discriminating.
+- **"Native business-driven agent tasks" are exactly what v1 provides at scale.** v1 contains 5979 analyst-style tasks
 <!-- v1 is 5979 analyst-authored tasks -->
 spanning AP aging, reconciliation, variance analysis, and revenue recognition (see the Controller/Management-Accountant examples above), each against a freshly generated database. The breadth-and-realism axis is carried by v1; the controlled-verifiability axis by v2. Neither half alone would make the argument; together they cover both.
 - **On "monotonous":** we now report v2's operation-type distribution (aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%; median 5 tool calls over 9 available tools), and v1's 742 distinct roles / zero duplicate queries provide the lexical and structural breadth.
@@ -434,7 +434,7 @@ Two parts to this.
 |---|---|---|---|
 | gpt-oss-120b | OpenAI (open-weight) | **69.9%** | tied top |
 | Claude-Sonnet-4.5 | Anthropic (frontier) | **68.6%** | non-OpenAI vendor at the top |
-| Claude-Haiku-4.5 | Anthropic (small) | **65.5%** | small model, ~0 read−act gap |
+| Claude-Haiku-4.5 | Anthropic (small) | **65.5%** | small model, ~0 read-act gap |
 | Qwen3-235B-A22B | Alibaba (open-weight) | **65.0%** | large open MoE, mid-table |
 | DeepSeek-V4-Flash | DeepSeek (open-weight) | **54.3%** | reads 68%, acts 54% |
 | Llama-3.3-70B | Meta (open-weight) | **19.8%** | reads 57%, acts 20% |
@@ -463,7 +463,7 @@ We would like to clarify three points:
 This is an important concern, which we directly evaluate in three ways:
 <!-- ; all three point in the same direction. -->
 
-**(1) Closed-book baseline (full benchmark).** We give the model the entire v2 environment prompt (scenario + tool signatures + question) but **no callable tools**, and require it to answer from the prompt and its own memory — a *conservative* upper bound on what memorization can deliver (the model sees strictly more than plain closed-book, and some scenario narratives legitimately contain a needed figure; this is also why this floor sits above the stricter *question-only* floor in analysis (2), which strips the scenario text entirely). Result (v2 scoring unchanged; agentic column is full-benchmark accuracy, not directly comparable to the 200-item subset figures in (2)):
+**(1) Closed-book baseline (full benchmark).** We give the model the entire v2 environment prompt (scenario + tool signatures + question) but **no callable tools**, and require it to answer from the prompt and its own memory, a *conservative* upper bound on what memorization can deliver (the model sees strictly more than plain closed-book, and some scenario narratives legitimately contain a needed figure; this is also why this floor sits above the stricter *question-only* floor in analysis (2), which strips the scenario text entirely). Result (v2 scoring unchanged; agentic column is full-benchmark accuracy, not directly comparable to the 200-item subset figures in (2)):
 
 | Model | closed-book | agentic | Δ |
 |---|---|---|---|
@@ -484,12 +484,12 @@ If memorization were the primary driver, we would expect substantially higher qu
 | DeepSeek-V3.2 | 4.0% | 38.6% | 69.0% |
 | Llama-3.3-70B | 3.0% | 19.8% | 57.0% |
 
-A recall-driven score would be high and flat across all three columns; we observe the opposite — a steep, monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2–4%) nor free even when the gold facts are handed over (~57–69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
+A recall-driven score would be high and flat across all three columns; we observe the opposite: a steep, monotonic dependence on access. The FinQA answer is neither recoverable from memory (~2-4%) nor free even when the gold facts are handed over (~57-69%, not ~100%), and the agentic re-instantiation (split tables, distractor tools/rows, a bespoke multi-hop plan) adds real difficulty on top.
 
 **(3) Half the benchmark is substantially less exposed to contamination by construction.** 
 <!-- contamination-proof by construction.**  -->
 FinOpsBench-v1 (5979 examples) is generated end-to-end against freshly created per-example databases and was never published. Because these newly generated instances were not publicly released before submission, direct instance-level contamination is unlikely.
-<!-- — it cannot appear in any training corpus, so contamination there is impossible.  -->
+<!-- it cannot appear in any training corpus, so contamination there is impossible.  -->
 Since v1 and v2 produce **consistent per-model rankings** (mean abs. diff 2.6 pp), the agentic difficulty we measure on v2 is corroborated by a half that cannot be contaminated.
 
 Familiarity with the public FinQA items therefore does not translate into an answer pathway in v2: the system prompt contains neither the source table nor its values, the backing store is re-instantiated with distractor rows, and the required multi-hop tool plan exists in no training corpus.

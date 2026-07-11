@@ -404,7 +404,7 @@ This lets us attribute any performance drop specifically to the agentic componen
 - **"Native business-driven agent tasks" are exactly what v1 provides — at scale.** v1 contains 5,979 analyst-style tasks
 <!-- v1 is 5979 analyst-authored tasks -->
 spanning AP aging, reconciliation, variance analysis, and revenue recognition (see the Controller/Management-Accountant examples above), each against a freshly generated database. The breadth-and-realism axis is carried by v1; the controlled-verifiability axis by v2. Neither half alone would make the argument; together they cover both.
-- **On "monotonous":** we now report v2's operation-type distribution (aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%; median 5 tool calls over 9 available tools, `experiments/e6_diversity/`), and v1's 742 distinct roles / zero duplicate queries provide the lexical and structural breadth.
+- **On "monotonous":** we now report v2's operation-type distribution (aggregation 51%, difference/YoY 41%, ratio 32%, average 11%, percent-change 11%; median 5 tool calls over 9 available tools), and v1's 742 distinct roles / zero duplicate queries provide the lexical and structural breadth.
 
 ---
 

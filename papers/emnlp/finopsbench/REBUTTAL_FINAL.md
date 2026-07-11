@@ -91,7 +91,7 @@ v1 concentrates on accounts payable, controls and variance; v2 on financial-stat
 
 Reasoning operations differ too. v1 analyst intent: enumeration 22%, anomaly search 16%, comparison 4%, quantification 2%; by task category: Accounts Payable 52%, financial reporting 25%, variance 13%, revenue recognition 8%.
 
-On template diversity, 12 seed queries expand to 8233 examples (686x, filtered at cosine 0.9), 100% distinct: distinct-3-gram ratio 0.52, distinct-4-gram 0.74, 0.0% high-overlap pairs. v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
+On template diversity, 12 seed queries expand to 8233 examples (686x, filtered at cosine 0.9), 100% distinct (distinct-4-gram 0.74, 0.0% high-overlap pairs). v2 keeps the FinQA questions verbatim, so its phrasing is human, not templated.
 
 Difficulty also rises with required tool-chain depth: bucketed by depth, accuracy falls monotonically:
 
@@ -129,7 +129,7 @@ The three-judge panel dominates v1 cost (about 81%, roughly 13500 judgements acr
 
 > Discuss potential biases introduced by using proprietary models throughout the generation and validation pipeline.
 
-Several design choices reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance; generation and judging use different models; the v2 ground truth is execution-based, independent of any model's opinion; and we kept a human in the loop while designing and tuning the stages. The study above supports this: acceptance tracks a domain-knowledgeable human, not one model's preferences.
+Several design choices reduce single-vendor influence. The construction quality panel is cross-vendor, so no one vendor decides acceptance; generation and judging use different models; the v2 ground truth is execution-based, independent of any model's opinion. The study above supports this: acceptance tracks a domain-knowledgeable human, not one model's preferences.
 
 Direct evidence against a generator advantage is best read off v1, the half the generator (GPT-4.1-mini) produced: if the pipeline rewarded its generator, GPT-4.1-mini should top v1; instead it is the lowest frontier model on v1 (Table 2):
 
@@ -273,14 +273,7 @@ On v1, failures are primarily semantic, not syntactic (SQL errors near zero, wro
 
 > the final benchmark quality still depends substantially on LLM-generated queries, schemas, data, and judgments.
 
-We share the goal of keeping quality independent of any single model. The dependence is asymmetric across the halves: the v2 questions are human-authored, from FinQA, and v2 is validated by execution, not judgement. Only the environment scaffolding is generated, accepted only if running the reference plan reproduces the gold answer. The human validation:
-
-|Half|check|agreement|
-|-|-|-|
-|v1|judge vs a human judge w/ domain knowl.|85.1%, Cohen's κ = 0.67|
-|v2|ref. plan reproduces gold under execution|89%|
-
-The judge therefore agrees substantially with the domain-knowledgeable human. The released set is also what survives the funnel, not raw generation: about 40% of v1 and 11% of v2 candidates are discarded by execution checks, the answer-consistency filter, and the panel:
+We share the goal of keeping quality independent of any single model. The dependence is asymmetric across the halves: the v2 questions are human-authored, from FinQA, and v2 is validated by execution, not judgement. Only the environment scaffolding is generated, accepted only if running the reference plan reproduces the gold answer (89% of a 200-item sample); and the human study above shows the v1 judge agrees with a domain-knowledgeable human on 85.1% of items (κ 0.67). The released set is also what survives the funnel, not raw generation: about 40% of v1 and 11% of v2 candidates are discarded by execution checks, the answer-consistency filter, and the panel:
 
 |Version|generated|released|
 |-|-|-|

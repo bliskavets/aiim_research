@@ -11,7 +11,7 @@ We thank the reviewer for the thorough review. We ran additional analyses during
 
 > Evaluation methodology is relatively weak. FinOpsBench-v1 evaluation itself relies on another LLM judge rather than deterministic correctness whenever possible.
 
-We ran the human evaluation the reviewer asked for on both halves, measuring how far our automatic scoring departs from a human's. A human judge with domain knowledge annotated random samples, in the reviewer's suggested 200 to 300 range.
+To address the reviewer's concern, we ran the human evaluation they asked for on both halves, measuring how far our automatic scoring departs from a human's. A human judge with domain knowledge annotated random samples, in the reviewer's suggested 200 to 300 range.
 
 |Part|assessment criteria|n|human vs auto scoring|
 |-|-|-|-|
@@ -44,7 +44,7 @@ We release all of them. The paper's repo link now points to the current version,
 
 > Provide qualitative examples of common model failures beyond overall accuracy, including tool misuse, reasoning mistakes, planning failures, and financial misunderstandings.
 
-Part of this is in the paper: Appendix C gives per-item statistics (query lengths, table counts, data rows, assistant turns and tool calls, prompt lengths and tool counts), Appendix D example queries, Appendix G the v1 category distribution. We add one measurement per axis the reviewer named.
+Part of this is in the paper: Appendix C gives per-item statistics (query lengths, table counts, data rows, assistant turns and tool calls, prompt lengths and tool counts), Appendix D example queries, Appendix G the v1 category distribution. To address the request directly, we add one measurement per axis the reviewer named.
 
 v1 lexical diversity and SQL surface, over the 8233-task pool:
 
@@ -78,7 +78,7 @@ v2 tool-use structure, over the released environments:
 
 Questions come from 124 companies across more than 1000 FinQA filings.
 
-The two halves cover complementary concepts, not one topic:
+To address the concern that the benchmark sits on one topic, the two halves cover complementary concepts:
 
 |Financial concept, share of examples|v1|v2|
 |-|-|-|
@@ -233,7 +233,7 @@ Another comparison runs one model across both settings. Static finance QA hands 
 
 Reading a static benchmark and operating in FinOpsBench are different skills: static benchmarks measure reading over provided context; FinOpsBench also measures retrieval planning and tool use, unneeded when the evidence is given directly.
 
-For comparison we looked at three of the newest, FinAgentBench, FinGAIA, and Herculean, which emphasize different goals: FinAgentBench retrieval and ranking, FinGAIA and Herculean realistic interactions with external systems. That realism is useful but costs reproducibility and control. FinOpsBench keeps both: hermetic synthetic environments that rerun identically, answers scored against an executable ground truth rather than a ranking or rubric, and difficulty exposed as a knob through released construction code. The two are complementary: realism-oriented benchmarks evaluate deployment-like behavior, FinOpsBench enables controlled, reproducible diagnosis.
+The reviewer rightly points to recent agentic finance benchmarks, so for comparison we looked at three of the newest, FinAgentBench, FinGAIA, and Herculean, which emphasize different goals: FinAgentBench retrieval and ranking, FinGAIA and Herculean realistic interactions with external systems. That realism is useful but costs reproducibility and control. FinOpsBench keeps both: hermetic synthetic environments that rerun identically, answers scored against an executable ground truth rather than a ranking or rubric, and difficulty exposed as a knob through released construction code. The two are complementary: realism-oriented benchmarks evaluate deployment-like behavior, FinOpsBench enables controlled, reproducible diagnosis.
 
 ---
 
@@ -382,7 +382,7 @@ Three clarifications:
 
 > High risk of data contamination for v2, as core questions come from widely publicized FinQA training corpus.
 
-An important concern, which we evaluate in three ways:
+This is an important concern, which we evaluate directly in three ways:
 
 **(1) Closed-book baseline (full benchmark).** We give the model the entire v2 environment prompt (scenario + tool signatures + question) but **no callable tools**, and require it to answer from the prompt and its memory, a *conservative* upper bound on what memorization can deliver (the model sees strictly more than plain closed-book, and some scenario narratives legitimately contain a needed figure; this is also why this floor sits above the stricter *question-only* floor in (2), which strips the scenario text). Result (v2 scoring unchanged; the agentic column is full-benchmark accuracy, not directly comparable to the 200-item figures in (2)):
 

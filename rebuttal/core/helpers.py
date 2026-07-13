@@ -27,7 +27,17 @@ class ExpressionsAreEqualSchema(BaseModel):
 
 
 _MODEL_ID = os.getenv("MATH_CRITIC_MODEL", "o3")
-_openai_client = OpenAI()
+
+# Lazily construct the client so importing this module never requires a key.
+# Honors OPENAI_BASE_URL (e.g. an OpenRouter endpoint) via the OpenAI SDK env vars.
+_openai_client = None
+
+
+def _get_client() -> OpenAI:
+    global _openai_client
+    if _openai_client is None:
+        _openai_client = OpenAI()
+    return _openai_client
 
 _CACHE_DIR = Path(os.getenv("DISKCACHE_DIR", "experiments/diskcache"))
 _CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -73,12 +83,21 @@ def _critic_get_response(prompt: str) -> dict:
     except KeyError:
         pass
 
-    response = _openai_client.responses.parse(
+    # Use chat.completions with JSON output. This works against both the OpenAI
+    # API and OpenAI-compatible gateways (OpenRouter), which do not expose the
+    # native Responses API. max_tokens is generous so reasoning models (o3) leave
+    # room for the JSON answer after their hidden reasoning tokens.
+    response = _get_client().chat.completions.create(
         model=_MODEL_ID,
-        input=[{"role": "user", "content": prompt}],
-        text_format=ExpressionsAreEqualSchema,
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"},
+        max_tokens=4096,
     )
-    result: dict = response.output_parsed.model_dump()
+    content = response.choices[0].message.content or "{}"
+    parsed = json.loads(content)
+    result: dict = ExpressionsAreEqualSchema(
+        answers_are_equivalent=bool(parsed.get("answers_are_equivalent"))
+    ).model_dump()
     _disk_cache[prompt] = result
     return result
 

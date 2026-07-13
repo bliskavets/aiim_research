@@ -93,7 +93,10 @@ async def run_bon_random(engine, problems, answers, gen_params, n: int, out_dir:
     records = []
     for idx, (problem, gt_answer) in enumerate(zip(problems, answers)):
         prompt = build_prompt(problem, None)
-        params = {**gen_params, "n": n}
+        # BoN needs diverse samples, so it must sample (temperature>0). Greedy
+        # (temperature=0) both collapses the N candidates to identical text and
+        # is rejected by vLLM ("n must be 1 when using greedy sampling").
+        params = {**gen_params, "n": n, "temperature": 0.7, "top_p": 0.95}
         t0 = time.perf_counter()
         texts = await engine.agenerate(prompt, **params)
         elapsed = time.perf_counter() - t0
@@ -120,7 +123,9 @@ async def run_bon_sage_judge(
     records = []
     for idx, (problem, gt_answer) in enumerate(zip(problems, answers)):
         prompt = build_prompt(problem, None)
-        params = {**gen_params, "n": n}
+        # BoN needs diverse candidates for the judge to rank, so sample with
+        # temperature>0 (greedy collapses them and is rejected by vLLM).
+        params = {**gen_params, "n": n, "temperature": 0.7, "top_p": 0.95}
         t0 = time.perf_counter()
         texts = await engine.agenerate(prompt, **params)
         if isinstance(texts, str):

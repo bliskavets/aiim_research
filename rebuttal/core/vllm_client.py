@@ -97,11 +97,38 @@ class VLLMCompletionsClient:
 
 
 class AugEngine:
-    """Engine wrapper that appends /nothink to prompts (Qwen3 non-thinking mode)."""
+    """Engine wrapper that runs Qwen3 in non-thinking mode.
+
+    The prompt is wrapped in the Qwen3 chat template with the assistant turn
+    prefilled with an empty ``<think></think>`` block. This is how Qwen3
+    non-thinking mode is actually engaged. Appending a bare ``/nothink`` to a
+    raw /v1/completions prompt does NOT engage it: the switch only takes effect
+    through the chat template, so the model would otherwise emit a full chain of
+    thought that gets truncated at max_tokens before it reaches \\boxed{}.
+    The completions endpoint (not chat) is kept so token logprobs remain
+    available for SAGE contrastive scoring.
+    """
+
+    _USER_TEMPLATE = (
+        "<|im_start|>user\n{content}<|im_end|>\n"
+        "<|im_start|>assistant\n<think>\n\n</think>\n\n"
+    )
 
     def __init__(self, client: VLLMCompletionsClient):
         self.client = client
         self.verbose = False
+
+    @classmethod
+    def _prepare(cls, prompt: str, kwargs: dict) -> str:
+        """Wrap prompt in the non-thinking template and add the turn stop token."""
+        stop = kwargs.get("stop") or []
+        if isinstance(stop, str):
+            stop = [stop]
+        stop = list(stop)
+        if "<|im_end|>" not in stop:
+            stop.append("<|im_end|>")
+        kwargs["stop"] = stop
+        return cls._USER_TEMPLATE.format(content=prompt)
 
     def __call__(
         self,
@@ -111,7 +138,7 @@ class AugEngine:
         return_tokens: bool = False,
         **kwargs,
     ) -> str:
-        prompt += " /nothink"
+        prompt = self._prepare(prompt, kwargs)
         if self.verbose:
             print("--> Generating:")
             if "system_prompt" in kwargs:
@@ -145,7 +172,7 @@ class AugEngine:
         return_tokens: bool = False,
         **kwargs,
     ) -> str:
-        prompt += " /nothink"
+        prompt = self._prepare(prompt, kwargs)
         if self.verbose:
             print("--> Generating:")
             if "system_prompt" in kwargs:

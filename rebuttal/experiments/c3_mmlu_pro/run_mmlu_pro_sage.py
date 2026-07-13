@@ -159,13 +159,9 @@ async def main() -> None:
     total = 0
     print(f"[C3] Running SAGE on {len(rows)} MMLU-Pro STEM problems")
 
-    for i, row in enumerate(rows):
-        if i in done_indices:
-            continue
-
+    async def solve_one(i: int, row: Dict[str, Any]):
         prompt = format_mmlu_pro_prompt(row)
         gt_letter = get_correct_letter(row)
-
         t0 = time.perf_counter()
         result = await process_query(
             prompt,
@@ -177,28 +173,34 @@ async def main() -> None:
             number_of_gens_per_epoch=args.number_of_gens_per_epoch,
         )
         elapsed = time.perf_counter() - t0
-
         output_text = result.get("output", "")
         predicted_letter = extract_answer_letter(output_text)
         is_correct = (predicted_letter is not None and gt_letter is not None and predicted_letter == gt_letter)
-        total += 1
-        correct += int(is_correct)
+        return i, row, prompt, gt_letter, predicted_letter, output_text, is_correct, elapsed
 
-        log_record = {
-            "index": i,
-            "question": row.get("question", ""),
-            "subject": row.get("category", ""),
-            "prompt": prompt,
-            "gt_letter": gt_letter,
-            "predicted_letter": predicted_letter,
-            "output": output_text,
-            "is_correct": is_correct,
-            "time_s": elapsed,
-            "running_accuracy": correct / total,
-        }
-        append_jsonl(log_record, output_file)
-        print(f"[C3] {total}/{len(rows)} correct={is_correct} pred={predicted_letter} gt={gt_letter} "
-              f"acc={correct/total:.3f} time={elapsed:.1f}s")
+    # Evaluate problems concurrently in batches (process_query calls are independent).
+    pending = [(i, row) for i, row in enumerate(rows) if i not in done_indices]
+    for start in range(0, len(pending), args.batch_size):
+        batch = pending[start : start + args.batch_size]
+        results = await asyncio.gather(*[solve_one(i, row) for i, row in batch])
+        for i, row, prompt, gt_letter, predicted_letter, output_text, is_correct, elapsed in results:
+            total += 1
+            correct += int(is_correct)
+            log_record = {
+                "index": i,
+                "question": row.get("question", ""),
+                "subject": row.get("category", ""),
+                "prompt": prompt,
+                "gt_letter": gt_letter,
+                "predicted_letter": predicted_letter,
+                "output": output_text,
+                "is_correct": is_correct,
+                "time_s": elapsed,
+                "running_accuracy": correct / total,
+            }
+            append_jsonl(log_record, output_file)
+            print(f"[C3] {total}/{len(pending)} correct={is_correct} pred={predicted_letter} gt={gt_letter} "
+                  f"acc={correct/total:.3f} time={elapsed:.1f}s")
 
     print(f"\n[C3] MMLU-Pro STEM SAGE accuracy: {correct/total:.4f} ({correct}/{total})")
     print(f"[C3] Output file: {output_file}")

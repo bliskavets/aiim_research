@@ -40,25 +40,37 @@ CRITIQUE_PARAMS: Dict[str, Any] = {
 }
 
 FEEDBACK_TEMPLATE = (
-    "You are reviewing a candidate solution to a problem. Point out any mistakes, "
-    "unjustified steps, or ways the final answer could be wrong or improved. Be "
-    "concrete and specific. If the solution is already fully correct, say so.\n\n"
-    "Problem:\n{problem}\n\nCandidate solution:\n{answer}\n\nCritique:"
+    "You are reviewing a candidate response to a problem. Point out any mistakes, "
+    "unjustified steps, or ways the response could be wrong or improved. Be concrete "
+    "and specific. If the response is already fully correct and needs no changes, "
+    "reply with exactly the single line: NO_ERRORS\n\n"
+    "Problem:\n{problem}\n\nCandidate response:\n{answer}\n\nCritique:"
 )
 
 REFINE_TEMPLATE = (
-    "Improve the solution to the problem using the critique. Produce a complete, "
-    "self-contained solution and give the final answer in the required format.\n\n"
-    "Problem:\n{problem}\n\nPrevious solution:\n{answer}\n\nCritique:\n{feedback}\n\n"
-    "Improved solution:"
+    "Improve the response to the problem using the critique. Output ONLY the improved "
+    "response itself: complete, self-contained, and directly answering the problem in "
+    "the exact format the problem requires (for a math problem, end with the final "
+    "answer in \\boxed{{}}). Do NOT output any commentary, review, or notes about the "
+    "critique or the quality of the response.\n\n"
+    "Problem:\n{problem}\n\nCurrent response:\n{answer}\n\nCritique:\n{feedback}\n\n"
+    "Improved response:"
 )
 
 REFLEXION_REFINE_TEMPLATE = (
-    "You are retrying a problem. Below are your own reflections from previous "
-    "attempts. Use them to avoid repeating mistakes. Produce a complete, "
-    "self-contained solution and give the final answer in the required format.\n\n"
+    "You are retrying a problem. Below are your own reflections from previous attempts. "
+    "Use them to avoid repeating mistakes. Output ONLY the new response itself: "
+    "complete, self-contained, and directly answering the problem in the exact format "
+    "the problem requires (for a math problem, end with the final answer in \\boxed{{}}). "
+    "Do NOT output commentary or notes.\n\n"
     "Problem:\n{problem}\n\nMost recent attempt:\n{answer}\n\n"
-    "Reflections from previous attempts:\n{reflections}\n\nNew solution:"
+    "Reflections from previous attempts:\n{reflections}\n\nNew response:"
+)
+
+# Critique phrases that indicate the model found no errors (Self-Refine stop signal).
+_NO_ERROR_SIGNALS = (
+    "no_errors", "no errors", "no mistakes", "already correct", "already fully correct",
+    "solution is correct", "response is correct", "no issues", "no changes needed",
 )
 
 
@@ -101,11 +113,19 @@ async def refine_query(
     num_generations += 1
     all_answers.append(current)
 
+    stopped_early = False
     while num_generations < budget:
         feedback = _first(await engine.agenerate(
             FEEDBACK_TEMPLATE.format(problem=query, answer=current), **critique_params
         ))
         num_critiques += 1
+
+        # Self-Refine stop condition: if the critique reports no errors, keep the
+        # current answer rather than over-iterating into drift (Madaan 2023).
+        fb_head = feedback.strip().lower()[:80]
+        if any(sig in fb_head for sig in _NO_ERROR_SIGNALS):
+            stopped_early = True
+            break
 
         if mode == "reflexion":
             reflections.append(feedback.strip())
@@ -132,4 +152,5 @@ async def refine_query(
         "num_critiques": num_critiques,
         "all_answers": all_answers,
         "mode": mode,
+        "stopped_early": stopped_early,
     }

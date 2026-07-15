@@ -1,0 +1,113 @@
+{
+  "math_baseline_s42": {
+    "n": 500,
+    "accuracy": 0.838,
+    "correct": 419
+  },
+  "math_sage_s42": {
+    "n": 500,
+    "accuracy": 0.888,
+    "correct": 444
+  },
+  "math_sage_s7": {
+    "n": 500,
+    "accuracy": 0.876,
+    "correct": 438
+  },
+  "math_sage_s123": {
+    "n": 500,
+    "accuracy": 0.884,
+    "correct": 442
+  },
+  "math_self_refine_s42": {
+    "n": 500,
+    "accuracy": 0.866,
+    "correct": 433
+  },
+  "math_reflexion_s42": {
+    "n": 500,
+    "accuracy": 0.864,
+    "correct": 432
+  },
+  "mmlu_baseline_s42": {
+    "n": 500,
+    "accuracy": 0.71,
+    "correct": 355
+  },
+  "mmlu_baseline_s7": {
+    "n": 500,
+    "accuracy": 0.716,
+    "correct": 358
+  },
+  "mmlu_baseline_s123": {
+    "n": 500,
+    "accuracy": 0.71,
+    "correct": 355
+  },
+  "mmlu_sage_s42": {
+    "n": 500,
+    "accuracy": 0.758,
+    "correct": 379
+  },
+  "mmlu_sage_s7": {
+    "n": 500,
+    "accuracy": 0.78,
+    "correct": 390
+  },
+  "mmlu_sage_s123": {
+    "n": 500,
+    "accuracy": 0.782,
+    "correct": 391
+  },
+  "ifeval_baseline_s42": {
+    "n": 541,
+    "prompt_accuracy": 0.7375,
+    "instruction_accuracy": 0.7974
+  },
+  "ifeval_bon_s42": {
+    "n": 541,
+    "prompt_accuracy": 0.7745,
+    "instruction_accuracy": 0.8309
+  },
+  "ifeval_sage_s42": {
+    "n": 541,
+    "prompt_accuracy": 0.7634,
+    "instruction_accuracy": 0.8213
+  },
+  "ifeval_self_refine_s42": {
+    "n": 541,
+    "prompt_accuracy": 0.7708,
+    "instruction_accuracy": 0.8261
+  },
+  "ifeval_reflexion_s42": {
+    "n": 32,
+    "prompt_accuracy": 0.875,
+    "instruction_accuracy": 0.8936
+  },
+  "a2_latency_smoke_n20": {
+    "baseline": {
+      "accuracy": 0.5,
+      "mean_time_s": 28.53156197629869,
+      "mean_tokens": 2930.15,
+      "n": 20
+    },
+    "bon_random": {
+      "accuracy": 0.35,
+      "mean_time_s": 35.36208649072796,
+      "mean_tokens": 20577.35,
+      "n": 20
+    },
+    "bon_sage_judge": {
+      "accuracy": 0.55,
+      "mean_time_s": 40.983310172520575,
+      "mean_tokens": 20357.45,
+      "n": 20
+    },
+    "sage": {
+      "accuracy": 0.9,
+      "mean_time_s": 328.0360732516274,
+      "mean_tokens": 24963.0,
+      "n": 20
+    }
+  }
+}

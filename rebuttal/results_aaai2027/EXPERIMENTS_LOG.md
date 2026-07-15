@@ -1,0 +1,116 @@
+# SAGE AAAI-2027: сводный журнал экспериментов сессии
+
+Живой документ. Обновляется после каждого результата. Для paper-integration Claude:
+каждая запись содержит результат, ПОЧЕМУ он важен и КАКОЙ комментарий ревьюера лечит.
+Ревьюеры EMNLP (текст в rebuttal/Reviews.docx): R1/Y1iM (weak reject: малые модели,
+латентность), R2/qCe4 (weak reject: латентность, доверие self-judge, 70B+, verbosity),
+R3 (weak accept: сильные LLM, аспекты, m_min без доказательства, cost/time),
+R4/k8B9 (weak reject: thinking-режим 97.4 > SAGE, мало бенчмарков, устаревшая RM).
+
+Сетап всех прогонов: Qwen3-8B-FP8, vLLM 0.11.0, 1x H200, non-thinking через chat-template
+(критический фикс харнесса, см. INDEX.md), SAGE = m_min 1, 2 эпохи x 7 генераций.
+Числа со звёздочкой noted otherwise. Статзначимость: rebuttal/analyze_results.py.
+
+---
+
+## ЗАВЕРШЕНО
+
+### 1. A1: MATH-500 baseline, N=500, greedy — 83.8
+Лечит: R4-W1 (расхождение 84.4 vs 87.4 vs 97.4).
+Важно: воспроизводит заявленный в статье non-thinking baseline 84.4 (расхождение с
+tech report 87.4 — конфигурация промпта). Плюс вскрыт и исправлен баг: старый харнесс
+НЕ включал non-thinking (` /nothink` в raw completions не работает), модель писала CoT
+и обрезалась на 4096 токенах: baseline мерился 51.4. Статье нужна сноска о конфигурации.
+
+### 2. E1-MATH: SAGE на MATH-500, 3 сида — 88.3 +/- 0.6 (88.8 / 87.6 / 88.4)
+Лечит: k8B9/qCe4 «self-judge вознаграждает знакомость, а не корректность»; общий
+запрос multi-seed строгости.
+Важно: +4.5 пт над сильным baseline на ВЕРИФИЦИРУЕМОЙ задаче (exact-match против
+эталона) — self-preference не может дать такой прирост. Paired McNemar p=0.0008,
+95% CI прироста [+2.2, +7.8]. Честное замечание: статья заявляла 92.0; корректное
+multi-seed число с исправленным харнесом — 88.3 +/- 0.6, заявку скорректировать.
+
+### 3. E5: MMLU-Pro STEM, N=500, 3 сида — baseline ~71.2, SAGE 77.3 +/- 1.3
+Лечит: R4-W2 «бенчмарки слишком лёгкие / нужны сложнее»; qCe4 breadth.
+Важно: новый для статьи бенчмарк с headroom; прирост +4.8/+6.4/+7.2 пт по сидам,
+McNemar p до 3e-5. Judge-free скоринг (letter match) — снова аргумент против
+self-preference.
+
+### 4. E4: IFEval, N=541 — baseline 73.8 / BoN 77.4 / SAGE 76.3 / Self-Refine 77.1 (prompt-acc)
+Лечит: qCe4-W4 «AlpacaEval-прирост может быть от многословности».
+Важно: IFEval проверяется детерминированными скриптами — verbosity не помогает;
+SAGE +2.6 пт над baseline. ЧЕСТНО: SAGE тут НЕ лучше BoN/Self-Refine — его
+преимущество проявляется на reasoning (MATH, MMLU-Pro), не на instruction-following.
+В статью писать без overclaim; instr-acc: 79.7 / 83.1 / 82.1 / 82.6.
+
+### 5. E2: Self-Refine 86.6 и Reflexion 86.4 на MATH-500 (budget-matched 21 генерация)
+Лечит: k8B9 «нет сравнения с Self-Refine (Madaan 2023) / Reflexion (Shinn 2023)».
+Важно: тот же total-budget, та же модель. SAGE (88.3) > Self-Refine (86.6) >
+baseline (83.8): структурированный contrastive-сигнал группами даёт больше, чем
+свободная само-критика. Также методологическая находка: наивный refinement-цикл
+без enforce-формата деградирует (дрейф в мета-комментарий) — упоминание в статье
+усилит мотивацию дизайна SAGE.
+
+### 6. A2 (smoke, N=20): latency-таблица — baseline 28.5s, BoN 35-41s, SAGE 328s/задачу
+Лечит: R1-Q2, R2-Q1, R3-Q4 (wall-clock vs BoN) — ЧАСТИЧНО (мало N).
+Важно: честная цена SAGE — ~10x wall-clock к BoN (последовательный refinement).
+Полный N=100 прогон в очереди (см. ПЛАН). SAGE 0.90 vs BoN-same-judge 0.55 на этих
+20 задачах — прирост не от селекции, а от рефайнмента.
+
+---
+
+## ВЫПОЛНЯЕТСЯ
+
+### 7. E2-IFEval: Reflexion на IFEval, N=541 — [running]
+Лечит: полнота E2-сравнения.
+
+### 8. TPO (официальный репозиторий, Simplified-Reasoning/TPO == yafuly/TPO),
+###    RM sfairXC/FsfairX-LLaMA3-RM-v0.1, конфиг D2-N5 — на MMLU-Pro STEM и IFEval [queued]
+Лечит: R3-Q1/бейзлайны, R4-W3 (сравнение с RM-методом), запрос пользователя.
+Важно: TPO — главный внешний конкурент (RM-based). Тот же subset/seed, textgrad
+пропатчен на non-thinking (честное сравнение). Скоринг тем же грейдером.
+
+---
+
+## ПЛАН (очередь на оставшиеся ~48 GPU-часов, порядок исполнения)
+
+### 9. E3b+E8: судья против gold + калибровка (БЕЗ GPU, параллельно, стартует сейчас)
+Лечит: R2-Q3 «self-congratulatory loop», qCe4/k8B9 «доверять ли внутренней
+уверенности», заодно замена NDCG-как-калибровки (qCe4).
+Метод: у нас залогированы judge-скоры всех 21 кандидатов x 500 задач x 3 сида MATH;
+грейдим уникальные boxed-ответы кандидатов против gold (тот же o3-судья, кэш),
+считаем: (а) как часто существует правильный кандидат, а судья выбирает неверный
+(oracle gap); (б) ECE / Brier / reliability-кривые по margin-скорам.
+
+### 10. E9: BoN + современная RM (Skywork-Reward-Qwen2.5-7B) на MATH+IFEval (~4-5 GPU-ч)
+Лечит: R4-W3 «FsfairX RM устарела».
+
+### 11. B2: m_min sweep {2,4,8} на MATH-500 (m_min=1 уже есть = SAGE основной) (~6 GPU-ч)
+Лечит: R3-W3 «grouped vs best-worst без доказательства; какова разница при группе=1».
+
+### 12. B4: Qwen3-1.7B, MATH+IFEval, baseline+SAGE (~3-4 GPU-ч)
+Лечит: R1-Q1 «ниже 3B текст-градиент становится шумом?» — прямой запрос.
+
+### 13. C1: Qwen3-32B-FP8, MATH-500, baseline+SAGE (~9-10 GPU-ч)
+Лечит: R2-Q2 «70B+? подозреваю SAGE лучше с ростом модели», R3-W1 «нет сильных LLM».
+32B — верх того, что помещается в 1x H200; тренд 1.7B -> 8B -> 32B закрывает вопрос
+масштабирования в обе стороны.
+
+### 14. A2-full: latency-таблица N=100 (~10-11 GPU-ч, последним — усекаем если не влезет)
+Лечит: R1-Q2, R2-Q1, R3-Q4 полностью (3 ревьюера).
+
+### Отложено (не влезает в 2 дня / низкий прирост ценности)
+- Thinking-mode SAGE (R4-W1 «97.4 > 92.0») — самый дорогой (~12-18ч, длинные генерации);
+  в статье закрыть текстом: SAGE ортогонален thinking, non-thinking сеттинг = контроль
+  бюджета; при желании вернуться если останется время.
+- E3a prompt-injection probe; B3 aspect sensitivity (R3 и так weak-accept);
+  AlpacaEval LC re-run; XSTest per-category.
+
+---
+
+## Сводная таблица для статьи (обновляется)
+
+MATH-500 (N=500): baseline 83.8 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
+MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO [pending]
+IFEval prompt-acc (N=541): baseline 73.8 | BoN 77.4 | SAGE 76.3 | Self-Refine 77.1 |
+  Reflexion [running] | TPO [pending]

@@ -80,9 +80,9 @@
     "instruction_accuracy": 0.8261
   },
   "ifeval_reflexion_s42": {
-    "n": 32,
-    "prompt_accuracy": 0.875,
-    "instruction_accuracy": 0.8936
+    "n": 541,
+    "prompt_accuracy": 0.7616,
+    "instruction_accuracy": 0.8213
   },
   "a2_latency_smoke_n20": {
     "baseline": {

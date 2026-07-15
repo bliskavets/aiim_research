@@ -79,10 +79,15 @@ baseline (83.8): структурированный contrastive-сигнал г�
 
 ---
 
-## ВЫПОЛНЯЕТСЯ
+### 8. E2-IFEval полностью: Self-Refine 77.1/82.6, Reflexion 76.2/82.1 (prompt/instr-acc)
+Лечит: полнота E2-сравнения (k8B9) на instruction-following.
+Важно: на IFEval Self-Refine и Reflexion ложатся туда же, где BoN (77.4/83.1) и
+SAGE (76.3/82.1) — все refinement/selection-методы неразличимы. Подтверждает: edge
+SAGE проявляется на reasoning (MATH/MMLU-Pro), не на instruction-following.
 
-### 8. E2-IFEval: Reflexion на IFEval, N=541 — [running]
-Лечит: полнота E2-сравнения.
+---
+
+## ВЫПОЛНЯЕТСЯ (финальная очередь, run_final_queue.sh)
 
 ### 9. TPO (официальный репозиторий, Simplified-Reasoning/TPO == yafuly/TPO),
 ###    RM sfairXC/FsfairX-LLaMA3-RM-v0.1, конфиг D2-N5 — на MMLU-Pro STEM и IFEval [queued]
@@ -133,4 +138,4 @@ baseline (83.8): структурированный contrastive-сигнал г�
 MATH-500 (N=500): baseline 83.8 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
 MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO [pending]
 IFEval prompt-acc (N=541): baseline 73.8 | BoN 77.4 | SAGE 76.3 | Self-Refine 77.1 |
-  Reflexion [running] | TPO [pending]
+  Reflexion 76.2 | TPO [pending]

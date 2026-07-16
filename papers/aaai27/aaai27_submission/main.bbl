@@ -1,0 +1,254 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Azar et~al.(2024)Azar, Rowland, Piot, Guo, Calandriello, Valko, and
+  Munos}]{azar2023general}
+Azar, M.~G.; Rowland, M.; Piot, B.; Guo, D.; Calandriello, D.; Valko, M.; and
+  Munos, R. 2024.
+\newblock A general theoretical paradigm to understand learning from human
+  preferences.
+\newblock \emph{AISTATS}.
+
+\bibitem[{Chao et~al.(2024)Chao, Debenedetti, Robey, Andriushchenko, Croce,
+  Sehwag, Dobriban, Flammarion, Pappas, Tramer et~al.}]{chao2024jailbreakbench}
+Chao, P.; Debenedetti, E.; Robey, A.; Andriushchenko, M.; Croce, F.; Sehwag,
+  V.; Dobriban, E.; Flammarion, N.; Pappas, G.~J.; Tramer, F.; et~al. 2024.
+\newblock Jailbreakbench: An open robustness benchmark for jailbreaking large
+  language models.
+\newblock \emph{NeurIPS}.
+
+\bibitem[{Dekoninck et~al.(2026)Dekoninck, Jovanovi{\'c}, Gehrunger,
+  R{\"o}gnvalddson, Petrov, Sun, and Vechev}]{dekoninck2026beyond}
+Dekoninck, J.; Jovanovi{\'c}, N.; Gehrunger, T.; R{\"o}gnvalddson, K.; Petrov,
+  I.; Sun, C.; and Vechev, M. 2026.
+\newblock Beyond Benchmarks: MathArena as an Evaluation Platform for
+  Mathematics with LLMs.
+\newblock \emph{arXiv preprint arXiv:2605.00674}.
+
+\bibitem[{Dong et~al.(2024)Dong, Xiong, Pang, Wang, Zhao, Zhou, Jiang, Sahoo,
+  Xiong, and Zhang}]{dong2024rlhf}
+Dong, H.; Xiong, W.; Pang, B.; Wang, H.; Zhao, H.; Zhou, Y.; Jiang, N.; Sahoo,
+  D.; Xiong, C.; and Zhang, T. 2024.
+\newblock RLHF workflow: From reward modeling to online RLHF.
+\newblock \emph{TMLR}.
+
+\bibitem[{Dubois et~al.(2024)Dubois, Galambosi, Liang, and
+  Hashimoto}]{dubois2024length}
+Dubois, Y.; Galambosi, B.; Liang, P.; and Hashimoto, T.~B. 2024.
+\newblock Length-controlled alpacaeval: A simple way to debias automatic
+  evaluators.
+\newblock In \emph{COLM}.
+
+\bibitem[{Ethayarajh et~al.(2024)Ethayarajh, Xu, Muennighoff, Jurafsky, and
+  Kiela}]{ethayarajh2024kto}
+Ethayarajh, K.; Xu, W.; Muennighoff, N.; Jurafsky, D.; and Kiela, D. 2024.
+\newblock KTO: Model alignment as prospect theoretic optimization.
+\newblock \emph{ICML}.
+
+\bibitem[{Freitag and Al-Onaizan(2017)}]{freitag2017beam}
+Freitag, M.; and Al-Onaizan, Y. 2017.
+\newblock Beam search strategies for neural machine translation.
+\newblock In \emph{ACL}.
+
+\bibitem[{Gorbatovski et~al.(2025)Gorbatovski, Shaposhnikov, Malakhov,
+  Surnachev, Aksenov, Maksimov, Balagansky, and
+  Gavrilov}]{gorbatovski2024learn}
+Gorbatovski, A.; Shaposhnikov, B.; Malakhov, A.; Surnachev, N.; Aksenov, Y.;
+  Maksimov, I.; Balagansky, N.; and Gavrilov, D. 2025.
+\newblock Learn your reference model for real good alignment.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Grattafiori et~al.(2024)Grattafiori, Dubey, Jauhri, Pandey, Kadian,
+  Al-Dahle, Letman, Mathur, Schelten, Vaughan et~al.}]{grattafiori2024llama}
+Grattafiori, A.; Dubey, A.; Jauhri, A.; Pandey, A.; Kadian, A.; Al-Dahle, A.;
+  Letman, A.; Mathur, A.; Schelten, A.; Vaughan, A.; et~al. 2024.
+\newblock The llama 3 herd of models.
+\newblock \emph{arXiv preprint arXiv:2407.21783}.
+
+\bibitem[{Hendrycks et~al.(2021)Hendrycks, Burns, Kadavath, Arora, Basart,
+  Tang, Song, and Steinhardt}]{hendrycks2measuring}
+Hendrycks, D.; Burns, C.; Kadavath, S.; Arora, A.; Basart, S.; Tang, E.; Song,
+  D.; and Steinhardt, J. 2021.
+\newblock Measuring mathematical problem solving with the MATH dataset.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[{Holtzman et~al.(2020)Holtzman, Buys, Du, Forbes, and
+  Choi}]{holtzman2019curious}
+Holtzman, A.; Buys, J.; Du, L.; Forbes, M.; and Choi, Y. 2020.
+\newblock The curious case of neural text degeneration.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Huang et~al.(2023)Huang, Qasemi, Li, Wang, Brahman, Chen, and
+  Chaturvedi}]{huang2023affective}
+Huang, T.; Qasemi, E.; Li, B.; Wang, H.; Brahman, F.; Chen, M.; and Chaturvedi,
+  S. 2023.
+\newblock Affective and dynamic deam search for story generation.
+\newblock In \emph{EMNLP Findings}.
+
+\bibitem[{Kalai et~al.(2025)Kalai, Nachum, Vempala, and
+  Zhang}]{kalai2025language}
+Kalai, A.~T.; Nachum, O.; Vempala, S.~S.; and Zhang, E. 2025.
+\newblock Why language models hallucinate.
+\newblock \emph{arXiv preprint arXiv:2509.04664}.
+
+\bibitem[{Khanov, Burapacheep, and Li(2024)}]{khanov2024args}
+Khanov, M.; Burapacheep, J.; and Li, Y. 2024.
+\newblock {ARGS}: Alignment as Reward-Guided Search.
+\newblock In \emph{ICLR}.
+
+\bibitem[{Kim et~al.(2025)Kim, Kim, Song, Kim, Kim, Kim, and
+  Park}]{kim2025sdpo}
+Kim, D.; Kim, Y.; Song, W.; Kim, H.; Kim, Y.; Kim, S.; and Park, C. 2025.
+\newblock sDPO: Don’t use your data all at once.
+\newblock In \emph{ACL: Industry Track}.
+
+\bibitem[{Lambert et~al.(2025)Lambert, Morrison, Pyatkin, Huang, Ivison,
+  Brahman, Miranda, Liu, Dziri, Lyu et~al.}]{lambert2024tulu}
+Lambert, N.; Morrison, J.; Pyatkin, V.; Huang, S.; Ivison, H.; Brahman, F.;
+  Miranda, L. J.~V.; Liu, A.; Dziri, N.; Lyu, S.; et~al. 2025.
+\newblock T{\"U}LU 3: Pushing frontiers in open language model post-training.
+\newblock In \emph{COLM}.
+
+\bibitem[{Li et~al.(2025)Li, Hu, Qu, Li, and Cheng}]{litest}
+Li, Y.; Hu, X.; Qu, X.; Li, L.; and Cheng, Y. 2025.
+\newblock Test-time preference optimization: On-the-fly alignment via iterative
+  textual feedback.
+\newblock In \emph{ICML}.
+
+\bibitem[{Li et~al.(2024)Li, Xu, Zhang, Lin, Yu, Sun, and Luo}]{li2024remax}
+Li, Z.; Xu, T.; Zhang, Y.; Lin, Z.; Yu, Y.; Sun, R.; and Luo, Z.-Q. 2024.
+\newblock ReMax: A Simple, effective, and efficient reinforcement learning
+  method for aligning large language models.
+\newblock In \emph{ICML}.
+
+\bibitem[{Liu et~al.(2025)Liu, Zeng, Xiao, He, Liu, Wang, Yan, Shen, Zhang, Xu
+  et~al.}]{liu2025skywork}
+Liu, C.~Y.; Zeng, L.; Xiao, Y.; He, J.; Liu, J.; Wang, C.; Yan, R.; Shen, W.;
+  Zhang, F.; Xu, J.; et~al. 2025.
+\newblock Skywork-reward-v2: Scaling preference data curation via human-ai
+  synergy.
+\newblock \emph{arXiv preprint arXiv:2507.01352}.
+
+\bibitem[{Mahdavi et~al.(2025)Mahdavi, Kisacanin, Toshniwal, Du, Moshkov,
+  Armstrong, Liao, Thrampoulidis, and Gitman}]{mahdavi2025scaling}
+Mahdavi, S.; Kisacanin, B.; Toshniwal, S.; Du, W.; Moshkov, I.; Armstrong, G.;
+  Liao, R.; Thrampoulidis, C.; and Gitman, I. 2025.
+\newblock Scaling generative verifiers for natural language mathematical proof
+  verification and selection.
+\newblock In \emph{NeurIPS Workshop on Mathematical Reasoning and AI}.
+
+\bibitem[{Meng, Xia, and Chen(2024)}]{meng2024simpo}
+Meng, Y.; Xia, M.; and Chen, D. 2024.
+\newblock Simpo: Simple preference optimization with a reference-free reward.
+\newblock \emph{NeurIPS}.
+
+\bibitem[{Qiu et~al.(2025)Qiu, Lu, Zeng, Guo, Geng, Wang, Huang, Wu, and
+  Wang}]{qiu2024treebon}
+Qiu, J.; Lu, Y.; Zeng, Y.; Guo, J.; Geng, J.; Wang, H.; Huang, K.; Wu, Y.; and
+  Wang, M. 2025.
+\newblock TreeBoN: Enhancing inference-time alignment with speculative
+  tree-search and best-of-N sampling.
+\newblock In \emph{EMNLP Findings}.
+
+\bibitem[{Rafailov et~al.(2023)Rafailov, Sharma, Mitchell, Manning, Ermon, and
+  Finn}]{rafailov2023direct}
+Rafailov, R.; Sharma, A.; Mitchell, E.; Manning, C.~D.; Ermon, S.; and Finn, C.
+  2023.
+\newblock Direct preference optimization: Your language model is secretly a
+  reward model.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[{Reddy(1976)}]{lowerre1976harpy}
+Reddy, R. 1976.
+\newblock The harpy speech recognition system: performance with large
+  vocabularies.
+\newblock \emph{The Journal of the Acoustical Society of America}, 60(S1):
+  S10--S11.
+
+\bibitem[{R{\"o}ttger et~al.(2024)R{\"o}ttger, Kirk, Vidgen, Attanasio,
+  Bianchi, and Hovy}]{rottger2024xstest}
+R{\"o}ttger, P.; Kirk, H.; Vidgen, B.; Attanasio, G.; Bianchi, F.; and Hovy, D.
+  2024.
+\newblock Xstest: A test suite for identifying exaggerated safety behaviours in
+  large language models.
+\newblock In \emph{NAACL}.
+
+\bibitem[{Schulman et~al.(2017)Schulman, Wolski, Dhariwal, Radford, and
+  Klimov}]{schulman2017proximal}
+Schulman, J.; Wolski, F.; Dhariwal, P.; Radford, A.; and Klimov, O. 2017.
+\newblock Proximal policy optimization algorithms.
+\newblock \emph{arXiv preprint arXiv:1707.06347}.
+
+\bibitem[{Stiennon et~al.(2020)Stiennon, Ouyang, Wu, Ziegler, Lowe, Voss,
+  Radford, Amodei, and Christiano}]{stiennon2020learning}
+Stiennon, N.; Ouyang, L.; Wu, J.; Ziegler, D.~M.; Lowe, R.; Voss, C.; Radford,
+  A.; Amodei, D.; and Christiano, P. 2020.
+\newblock Learning to summarize from human feedback.
+\newblock In \emph{NeurIPS}.
+
+\bibitem[{Su and Collier(2023)}]{sucontrastive}
+Su, Y.; and Collier, N. 2023.
+\newblock Contrastive search is what you need for neural text generation.
+\newblock \emph{TMLR}.
+
+\bibitem[{Wang et~al.(2024)Wang, Ma, Zhang, Ni, Chandra, Guo, Ren, Arulraj, He,
+  Jiang et~al.}]{wang2024mmlu}
+Wang, Y.; Ma, X.; Zhang, G.; Ni, Y.; Chandra, A.; Guo, S.; Ren, W.; Arulraj,
+  A.; He, X.; Jiang, Z.; et~al. 2024.
+\newblock Mmlu-pro: A more robust and challenging multi-task language
+  understanding benchmark.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:
+  95266--95290.
+
+\bibitem[{Wang et~al.(2025)Wang, Zeng, Liu, Wang, Li, Wang, Shang, Jiang, Liu,
+  and Wong}]{wang2025stepwise}
+Wang, Z.; Zeng, X.; Liu, W.; Wang, Y.; Li, L.; Wang, Y.; Shang, L.; Jiang, X.;
+  Liu, Q.; and Wong, K.-F. 2025.
+\newblock Stepwise reasoning checkpoint analysis: A test time scaling method to
+  enhance LLMs' reasoning.
+\newblock In \emph{EMNLP}.
+
+\bibitem[{Xiang et~al.(2025)Xiang, Zhang, Yu, Teng, Tu, Liang, Hong, Wu, and
+  Luo}]{xiang2025self}
+Xiang, J.; Zhang, J.; Yu, Z.; Teng, F.; Tu, J.; Liang, X.; Hong, S.; Wu, C.;
+  and Luo, Y. 2025.
+\newblock Self-supervised prompt optimization.
+\newblock In \emph{EMNLP Findings}.
+
+\bibitem[{Yang et~al.(2025)Yang, Li, Yang, Zhang, Hui, Zheng, Yu, Gao, Huang,
+  Lv et~al.}]{yang2025qwen3}
+Yang, A.; Li, A.; Yang, B.; Zhang, B.; Hui, B.; Zheng, B.; Yu, B.; Gao, C.;
+  Huang, C.; Lv, C.; et~al. 2025.
+\newblock Qwen3 technical report.
+\newblock \emph{arXiv preprint arXiv:2505.09388}.
+
+\bibitem[{Zhang et~al.(2025)Zhang, Li, Long, Zhang, Lin, Yang, Xie, Yang, Liu,
+  Lin et~al.}]{zhang2025qwen3}
+Zhang, Y.; Li, M.; Long, D.; Zhang, X.; Lin, H.; Yang, B.; Xie, P.; Yang, A.;
+  Liu, D.; Lin, J.; et~al. 2025.
+\newblock Qwen3 embedding: Advancing text embedding and reranking through
+  foundation models.
+\newblock \emph{arXiv preprint arXiv:2506.05176}.
+
+\bibitem[{Zhong et~al.(2024)Zhong, Cui, Guo, Liang, Lu, Wang, Saied, Chen, and
+  Duan}]{zhongagieval}
+Zhong, W.; Cui, R.; Guo, Y.; Liang, Y.; Lu, S.; Wang, Y.; Saied, A.; Chen, W.;
+  and Duan, N. 2024.
+\newblock AGIEval: A human-centric benchmark for evaluating foundation models.
+\newblock In \emph{NAACL Findings}.
+
+\bibitem[{Zhou et~al.(2023)Zhou, Lu, Mishra, Brahma, Basu, Luan, Zhou, and
+  Hou}]{zhou2023instruction}
+Zhou, J.; Lu, T.; Mishra, S.; Brahma, S.; Basu, S.; Luan, Y.; Zhou, D.; and
+  Hou, L. 2023.
+\newblock Instruction-Following Evaluation for Large Language Models.
+\newblock \emph{arXiv e-prints}, arXiv--2311.
+
+\bibitem[{Zhu et~al.(2025)Zhu, Li, Wu, Xing, Ma, Tang, Liu, Yang, Liu, Jiang
+  et~al.}]{zhu2025scaling}
+Zhu, K.; Li, H.; Wu, S.; Xing, T.; Ma, D.; Tang, X.; Liu, M.; Yang, J.; Liu,
+  J.; Jiang, Y.~E.; et~al. 2025.
+\newblock Scaling test-time compute for LLM agents.
+\newblock \emph{arXiv preprint arXiv:2506.12928}.
+
+\end{thebibliography}

@@ -98,11 +98,19 @@ SAGE проявляется на reasoning (MATH/MMLU-Pro), не на instructio
 
 ## ВЫПОЛНЯЕТСЯ (финальная очередь, run_final_queue.sh)
 
-### 9. TPO (официальный репозиторий, Simplified-Reasoning/TPO == yafuly/TPO),
-###    RM sfairXC/FsfairX-LLaMA3-RM-v0.1, конфиг D2-N5 — на MMLU-Pro STEM и IFEval [queued]
-Лечит: R3-Q1/бейзлайны, R4-W3 (сравнение с RM-методом), запрос пользователя.
-Важно: TPO — главный внешний конкурент (RM-based). Тот же subset/seed, textgrad
-пропатчен на non-thinking (честное сравнение). Скоринг тем же грейдером.
+### 9. TPO (официальный репозиторий, RM sfairXC/FsfairX-LLaMA3-RM-v0.1, D2-N5)
+Лечит: R3/бейзлайны, R4-W3 (сравнение с RM-методом), запрос пользователя; ПЛЮС
+усиливает центральный тезис против внешних RM (k8B9/qCe4 отметили это как достоинство).
+Числа: **TPO MMLU-Pro STEM = 62.6 (313/500)**. IFEval — [running].
+Проверено: 0% ответов без извлекаемой буквы -> это НЕ артефакт скоринга, число реальное.
+ВАЖНО/интерпретация: TPO (62.6) НИЖЕ baseline (71.2) и сильно ниже SAGE (77.3) на
+MMLU-Pro. TPO оптимизирует под FsfairX — general-purpose reward-модель
+(helpfulness/chat), которая MISALIGNED с корректностью STEM-multiple-choice; итерации
+к RM-предпочтению делают ответы «более helpful-sounding», но МЕНЕЕ верными. Это прямая
+эмпирика proxy-mismatch/reward-hacking, ради ухода от которого и создан SAGE. Сильный
+довод: self-judge (SAGE) отслеживает корректность, внешняя RM — нет и даже вредит.
+Сетап честный: тот же non-thinking Qwen3 (патч textgrad), тот же subset/seed, тот же
+letter-грейдер, конфиг из README авторов (D2-N5). Файлы: external/TPO/results_aaai/.
 
 ---
 

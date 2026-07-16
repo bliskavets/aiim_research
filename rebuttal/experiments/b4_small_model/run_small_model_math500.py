@@ -118,7 +118,8 @@ async def run_bon(engine, judge_engine, problems, answers, gen_params, judge_pro
     JUDGE_PARAMS = {"n": 1, "temperature": 0.1, "top_p": 0.95, "seed": 7, "max_tokens": 512}
     for idx, (problem, gt_answer) in enumerate(zip(problems, answers)):
         prompt = build_prompt(problem, None)
-        params = {**gen_params, "n": n}
+        # BoN needs diverse candidates and n>1 under greedy (temp 0) is rejected by vLLM.
+        params = {**gen_params, "n": n, "temperature": 0.7, "top_p": 0.95}
         t0 = time.perf_counter()
         texts = await engine.agenerate(prompt, **params)
         if isinstance(texts, str):

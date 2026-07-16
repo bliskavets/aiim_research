@@ -1,0 +1,11 @@
+{
+  "num_samples": 500,
+  "num_correct": 371,
+  "accuracy": 0.742,
+  "output_file": "logs/c2_updated_rm_math500/math500_eval_20260716_102853.jsonl",
+  "method": "bon_rm",
+  "benchmark": "math500",
+  "model": "Qwen/Qwen3-8B-FP8",
+  "rm_model": "Skywork/Skywork-Reward-V2-Qwen3-8B",
+  "wall_time_s": 2195.3998825363815
+}

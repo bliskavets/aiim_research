@@ -36,7 +36,7 @@ from core.helpers import ensure_output_dir
 from experiments.sage.solver import process_query, load_prompt, load_configurations
 
 
-RM_MODEL_NAME = "Skywork/Skywork-Reward-Qwen-2.5-7B-v0.2"
+RM_MODEL_NAME = "Skywork/Skywork-Reward-V2-Qwen3-8B"
 
 
 def load_reward_model(device: str = "cuda:0"):

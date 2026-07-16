@@ -120,8 +120,18 @@ class Math500Eval:
         try:
             result = (await solver(prompt)) or {}
         except Exception as e:
-            result = {"error": f"{type(e).__name__}: {e}"}
-            raise
+            # A single flaky request (e.g. a transient vLLM 400) must not abort the
+            # whole run. Record it as an incorrect, errored problem and continue.
+            print(f"[warn] problem {idx} errored, scoring as incorrect: {type(e).__name__}: {e}")
+            return {
+                "index": int(idx),
+                "problem": problem,
+                "prompt": prompt,
+                "gt_answer": gt_answer,
+                "output": "",
+                "is_correct": False,
+                "error": f"{type(e).__name__}: {e}",
+            }
 
         output_text = str(result.get("output", ""))
         is_correct = equations_are_equal_new(prompt, gt_answer, output_text) == 1

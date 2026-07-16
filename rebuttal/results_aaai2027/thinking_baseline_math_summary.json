@@ -1,0 +1,8 @@
+{
+  "overall_acc": 0.748,
+  "n": 500,
+  "completed": 388,
+  "completed_acc": 0.9639,
+  "truncated": 112,
+  "truncated_frac": 0.224
+}

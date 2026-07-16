@@ -1,0 +1,10 @@
+{
+  "num_samples": 500,
+  "num_correct": 457,
+  "accuracy": 0.914,
+  "output_file": "logs/c1_qwen32b_math500/math500_eval_20260716_120218.jsonl",
+  "method": "sage",
+  "benchmark": "math500",
+  "model": "Qwen/Qwen3-32B-FP8",
+  "wall_time_s": 18183.57242117077
+}

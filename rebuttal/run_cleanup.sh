@@ -33,8 +33,8 @@ log "waiting for remaining queue ALL DONE"
 until grep -q "\[rem\] ALL DONE" logs/remaining_queue.log 2>/dev/null; do sleep 60; done
 log "remaining done; starting cleanup"
 
-# clear partial B4 dirs from the failed 16384 attempts so they re-run
-rm -rf logs/b4_small_math500 logs/b4_small_ifeval
+# clear only the partial b4_math dir (b4_ifeval succeeded at 16384 and is kept)
+rm -rf logs/b4_small_math500
 
 # B4 at 32768
 if start_server "Qwen/Qwen3-1.7B-FP8" 0.85 32768; then SMALL="Qwen/Qwen3-1.7B-FP8";

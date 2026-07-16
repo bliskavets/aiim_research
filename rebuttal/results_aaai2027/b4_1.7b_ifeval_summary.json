@@ -1,0 +1,30 @@
+{
+  "baseline": {
+    "prompt_total": 541,
+    "prompt_correct": 330,
+    "prompt_accuracy": 0.609981515711645,
+    "instruction_total": 834,
+    "instruction_correct": 581,
+    "instruction_accuracy": 0.6966426858513189,
+    "output_file": "logs/b4_small_ifeval/baseline/ifeval_20260716_074913.jsonl"
+  },
+  "bon": {
+    "prompt_total": 541,
+    "prompt_correct": 68,
+    "prompt_accuracy": 0.1256931608133087,
+    "instruction_total": 834,
+    "instruction_correct": 186,
+    "instruction_accuracy": 0.22302158273381295,
+    "output_file": "logs/b4_small_ifeval/bon/ifeval_20260716_075534.jsonl"
+  },
+  "sage": {
+    "prompt_total": 541,
+    "prompt_correct": 329,
+    "prompt_accuracy": 0.6081330868761553,
+    "instruction_total": 834,
+    "instruction_correct": 574,
+    "instruction_accuracy": 0.6882494004796164,
+    "output_file": "logs/b4_small_ifeval/sage/ifeval_20260716_080016.jsonl",
+    "mean_logprob_margin_variance": 44.79142717334906
+  }
+}

@@ -101,7 +101,7 @@ SAGE проявляется на reasoning (MATH/MMLU-Pro), не на instructio
 ### 9. TPO (официальный репозиторий, RM sfairXC/FsfairX-LLaMA3-RM-v0.1, D2-N5)
 Лечит: R3/бейзлайны, R4-W3 (сравнение с RM-методом), запрос пользователя; ПЛЮС
 усиливает центральный тезис против внешних RM (k8B9/qCe4 отметили это как достоинство).
-Числа: **TPO MMLU-Pro STEM = 62.6 (313/500)**. IFEval — [running].
+Числа: **TPO MMLU-Pro STEM = 62.6 (313/500)**; **TPO IFEval prompt-acc = 76.0 (411/541)**.
 Проверено: 0% ответов без извлекаемой буквы -> это НЕ артефакт скоринга, число реальное.
 ВАЖНО/интерпретация: TPO (62.6) НИЖЕ baseline (71.2) и сильно ниже SAGE (77.3) на
 MMLU-Pro. TPO оптимизирует под FsfairX — general-purpose reward-модель
@@ -111,6 +111,12 @@ MMLU-Pro. TPO оптимизирует под FsfairX — general-purpose reward
 довод: self-judge (SAGE) отслеживает корректность, внешняя RM — нет и даже вредит.
 Сетап честный: тот же non-thinking Qwen3 (патч textgrad), тот же subset/seed, тот же
 letter-грейдер, конфиг из README авторов (D2-N5). Файлы: external/TPO/results_aaai/.
+КОНТРАСТ (важно для статьи): на MMLU-Pro TPO проваливается (62.6, RM misaligned с
+STEM-корректностью), а на IFEval TPO нормальный (76.0, в группе с SAGE 76.3 / Reflexion
+76.2, ниже BoN 77.4) — потому что helpfulness-RM лучше согласована с
+instruction-following, чем с STEM. Вывод: внешняя RM помогает там, где её цель совпадает
+с задачей, и ВРЕДИТ там, где нет; self-judge SAGE устойчив на обеих. Это сильный
+единый нарратив против внешних RM.
 
 ---
 
@@ -172,6 +178,6 @@ re-queue run_rm_queue.sh) и B4+C1 упали (несовпадение имён
 ## Сводная таблица для статьи (обновляется)
 
 MATH-500 (N=500): baseline 83.8 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
-MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO [pending]
+MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO 62.6 (external RM misaligned)
 IFEval prompt-acc (N=541): baseline 73.8 | BoN 77.4 | SAGE 76.3 | Self-Refine 77.1 |
-  Reflexion 76.2 | TPO [pending]
+  Reflexion 76.2 | TPO 76.0

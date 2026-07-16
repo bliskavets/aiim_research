@@ -1,0 +1,26 @@
+{
+  "baseline": {
+    "accuracy": 0.79,
+    "mean_time_s": 5.719153096936643,
+    "mean_tokens": 502.1,
+    "n": 100
+  },
+  "bon_random": {
+    "accuracy": 0.77,
+    "mean_time_s": 9.315388684533536,
+    "mean_tokens": 3453.34,
+    "n": 100
+  },
+  "bon_sage_judge": {
+    "accuracy": 0.82,
+    "mean_time_s": 13.746249995045364,
+    "mean_tokens": 3462.22,
+    "n": 100
+  },
+  "sage": {
+    "accuracy": 0.86,
+    "mean_time_s": 71.41307397782802,
+    "mean_tokens": 9002.52,
+    "n": 100
+  }
+}

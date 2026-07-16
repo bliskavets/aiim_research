@@ -1,0 +1,14 @@
+{
+  "prompt_total": 541,
+  "prompt_correct": 410,
+  "prompt_accuracy": 0.7578558225508318,
+  "instruction_total": 834,
+  "instruction_correct": 680,
+  "instruction_accuracy": 0.815347721822542,
+  "output_file": "logs/c2_updated_rm_ifeval/ifeval_20260716_110536.jsonl",
+  "method": "bon_rm",
+  "benchmark": "ifeval",
+  "model": "Qwen/Qwen3-8B-FP8",
+  "rm_model": "Skywork/Skywork-Reward-V2-Qwen3-8B",
+  "wall_time_s": 1639.315273143351
+}

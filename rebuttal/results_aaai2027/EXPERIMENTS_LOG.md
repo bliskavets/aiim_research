@@ -151,7 +151,10 @@ margin высокая (44.8) — объясняет отсутствие при�
 ### 12. E9: BoN + СОВРЕМЕННАЯ reward-модель Skywork-Reward-V2-Qwen3-8B (MATH-500, N=500)
 Лечит: R4-W3 «FsfairX-RM устарела относительно Qwen3-8B; интересно, как современные RM
 меняют результат».
-Числа: **BoN + Skywork-V2-Qwen3-8B на MATH-500 = 74.2 (371/500)**. IFEval — [running].
+Числа: **BoN + Skywork-V2-Qwen3-8B: MATH-500 = 74.2 (371/500); IFEval prompt-acc = 75.8 (410/541), instr-acc 81.5**.
+Тот же паттерн, что у TPO: современная RM ПОМОГАЕТ на IFEval (75.8 > baseline 73.8, в общей
+группе), но ВРЕДИТ на MATH (74.2 < 83.8). Согласованность двух независимых RM-методов
+(TPO/FsfairX и BoN/Skywork-V2) на двух задачах = устойчивый вывод, не случайность.
 ВАЖНО/интерпретация (сильный довод): даже НОВЕЙШАЯ Qwen3-эпохи reward-модель при BoN-селекции
 даёт 74.2 — НИЖЕ single-gen baseline (83.8) и далеко ниже SAGE (88.3). То есть проблема не в
 ВОЗРАСТЕ RM (как предполагал ревьюер), а в самом принципе внешней RM: general-preference RM
@@ -210,4 +213,4 @@ misaligned с math-корректностью и активно мис-селе�
 MATH-500 (N=500): baseline 83.8 | BoN+SkyworkV2-RM 74.2 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
 MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO 62.6 (external RM misaligned)
 IFEval prompt-acc (N=541): baseline 73.8 | BoN 77.4 | SAGE 76.3 | Self-Refine 77.1 |
-  Reflexion 76.2 | TPO 76.0
+  Reflexion 76.2 | TPO 76.0 | BoN+SkyworkV2 75.8

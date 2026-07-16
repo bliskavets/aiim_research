@@ -601,6 +601,7 @@ async def process_query(
     number_of_gens_per_epoch: int = 7,
     m_min: int = 1,
     aspects: Optional[List[str]] = None,
+    engine_type: str = "aug",
 ) -> Dict[str, Any]:
     """Full SAGE pipeline: generate, score, refine, return best answer.
 
@@ -628,7 +629,9 @@ async def process_query(
     generation_params_list[0]["n"] = number_of_gens_per_epoch - sum(pl["n"] for pl in generation_params_list[1:])
 
     judge_params = judge_params or deepcopy(DEFAULT_JUDGE_PARAMS)
-    gen_engine = get_engine(base_url=base_url, model=model_name, timeout=300, type="aug")
+    # Generation engine honors engine_type ("aug" non-thinking default, or "think");
+    # the judge stays non-thinking (aug) for speed and stable verification tags.
+    gen_engine = get_engine(base_url=base_url, model=model_name, timeout=600, type=engine_type)
     judge_engine = get_engine(base_url=base_url, model=model_name, timeout=300, type="aug")
 
     print("[SAGE] Starting process_query")

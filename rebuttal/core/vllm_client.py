@@ -257,6 +257,18 @@ class EngineNoThink:
         return texts
 
 
+class ThinkEngine(AugEngine):
+    """Qwen3 THINKING mode: chat template WITHOUT the prefilled empty think block,
+    so the model emits its own <think>...</think> before the answer. Same completions
+    endpoint and logprobs handling as AugEngine (only the assistant-turn prefix differs).
+    Callers should pass a large max_tokens (thinking is long)."""
+
+    _USER_TEMPLATE = (
+        "<|im_start|>user\n{content}<|im_end|>\n"
+        "<|im_start|>assistant\n"
+    )
+
+
 def get_engine(
     base_url: str = "http://localhost:9090/v1",
     api_key: Optional[str] = None,
@@ -267,13 +279,16 @@ def get_engine(
     """Factory for engine instances.
 
     type:
-      "aug"      — AugEngine (appends /nothink, Qwen3 non-thinking mode)
+      "aug"      — AugEngine (Qwen3 non-thinking via chat template + empty think block)
+      "think"    — ThinkEngine (Qwen3 thinking mode; model generates its own reasoning)
       "no_think" — EngineNoThink (raw completions, no prompt modification)
     """
     client = VLLMCompletionsClient(base_url=base_url, api_key=api_key, timeout=timeout, model=model)
     if type == "aug":
         return AugEngine(client)
+    elif type == "think":
+        return ThinkEngine(client)
     elif type == "no_think":
         return EngineNoThink(client)
     else:
-        raise ValueError(f"Invalid engine type: {type!r}. Choose 'aug' or 'no_think'.")
+        raise ValueError(f"Invalid engine type: {type!r}. Choose 'aug', 'think' or 'no_think'.")

@@ -1,0 +1,10 @@
+{
+  "num_samples": 500,
+  "num_correct": 427,
+  "accuracy": 0.854,
+  "output_file": "logs/c1_qwen32b_baseline/math500_eval_20260716_192537.jsonl",
+  "method": "baseline",
+  "benchmark": "math500",
+  "model": "Qwen/Qwen3-32B-FP8",
+  "wall_time_s": 1818.6988052166998
+}

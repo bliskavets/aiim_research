@@ -169,11 +169,10 @@ misaligned с math-корректностью и активно мис-селе�
 ### 13. C1: Qwen3-32B-FP8 на MATH-500 (scaling)
 Лечит: R2-Q2 «тестировали ли на 70B+? подозреваю, SAGE работает лучше с ростом модели»;
 R3-W1 «нет сильных LLM».
-Числа: **SAGE 32B MATH-500 = 91.4 (457/500)**. 32B baseline — в очереди c1base (нужен для
-изоляции прироста; будет добавлен).
+Числа: **32B MATH-500: baseline 85.4 (427/500), SAGE 91.4 (457/500), +6.0 пт**.
 ВАЖНО: scaling-тренд SAGE по размеру (MATH-500): 1.7B 72.8(base) → 8B 88.3(SAGE)/83.8(base)
-→ 32B 91.4(SAGE). 32B — потолок для 1x H200. Показывает, что SAGE масштабируется вверх
-(не только 8B-эффект). Полная таблица base-vs-SAGE по трём размерам закроет R2-Q2/R3-W1.
+→ 32B base 85.4 / SAGE 91.4. ПРИРОСТ РАСТЁТ с масштабом: 8B +4.5 пт -> 32B +6.0 пт. Прямо
+подтверждает гипотезу R2-Q2 («SAGE лучше с ростом модели»). 32B — потолок dense для 1x H200.
 
 ---
 
@@ -223,7 +222,8 @@ R3-W1 «нет сильных LLM».
 
 ## Сводная таблица для статьи (обновляется)
 
-MATH-500 (N=500): baseline 83.8 | BoN+SkyworkV2-RM 74.2 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
+MATH-500 (N=500, 8B): baseline 83.8 | BoN+SkyworkV2-RM 74.2 | Self-Refine 86.6 | Reflexion 86.4 | SAGE 88.3+/-0.6
+MATH-500 scaling (base->SAGE): 1.7B 72.8->? | 8B 83.8->88.3 (+4.5) | 32B 85.4->91.4 (+6.0)
 MMLU-Pro STEM (N=500): baseline 71.2 | SAGE 77.3+/-1.3 | TPO 62.6 (external RM misaligned)
 IFEval prompt-acc (N=541): baseline 73.8 | BoN 77.4 | SAGE 76.3 | Self-Refine 77.1 |
   Reflexion 76.2 | TPO 76.0 | BoN+SkyworkV2 75.8

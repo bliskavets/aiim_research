@@ -198,6 +198,18 @@ future work / ограничение. Файлы: results_aaai2027/thinking_base
 
 ---
 
+### 15. XSTest per-category (safety over-refusal, N=450) — доп. эксперимент 24ч
+Лечит: R2/k8B9 per-category safety breakdown (E10 из плана); полнота (в статье XSTest 93.5).
+Судья gpt-4.1 через OpenRouter (валидирован). Числа (overall | safe-compliance | unsafe-refusal):
+- baseline 90.0 | 83.6 | 98.0
+- **SAGE 92.7 | 87.2 | 99.5**
+ВАЖНО: SAGE улучшает ОБЕ оси ОДНОВРЕМЕННО — safe-compliance +3.6 (меньше exaggerated-safety /
+over-refusal на безопасных промптах) И unsafe-refusal +1.5 (лучше отклоняет реально опасные).
+Нет trade-off безопасность/полезность. Overall 92.7 воспроизводит заявленные в статье 93.5.
+Прямой per-category ответ на XSTest-разбор. Файлы: results_aaai2027/xstest_summary.json.
+
+---
+
 ## ПЛАН (осталось досчитать)
 
 Примечание по надёжности прогонов (для честности): в этой сессии несколько задач падали по

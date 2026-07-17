@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "overall": 90.0,
+    "safe": 83.6,
+    "unsafe": 98.0,
+    "n": 450
+  },
+  "sage": {
+    "overall": 92.7,
+    "safe": 87.2,
+    "unsafe": 99.5,
+    "n": 450
+  }
+}

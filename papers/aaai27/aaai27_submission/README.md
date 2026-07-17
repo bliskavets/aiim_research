@@ -45,9 +45,20 @@ Build: `pdflatex main && bibtex main && pdflatex main && pdflatex main`
 
 - Compiles cleanly with pdfLaTeX + BibTeX (TeX Live), 0 errors, 0 overfull boxes,
   no undefined references/citations.
-- US letter, two-column AAAI layout; 15 pages total:
-  main text ≈ 6.5 pp, references start p. 7, technical appendix pp. 8–15.
+- US letter, two-column AAAI layout; 16 pages total: main content fills
+  pages 1-8 (references start in the second half of p. 8), technical appendix follows.
 - `pdffonts`: all fonts Type 1, all embedded, no Type 3, no Identity-H.
+
+## Revision state (2026-07-17)
+
+Appendix material promoted to the main text to bring content close to the
+8-page limit (ends on p. 8, does not exceed it). All moved/edited passages are
+marked BLUE (`\color{blue}` / `\textcolor{blue}`) for review:
+AIME 2026 reasoning-mode results, 1.7B/32B model scales, IFEval + MMLU-Pro STEM
+(now subsections "Reasoning mode and model scale" and "Instruction following and
+broader STEM reasoning" with Tables 3-5). The IFEval table was reformatted to
+single column. Temperature and prompt-calibration ablations stayed in the appendix.
+**Remove the blue markup before submitting** (AAAI forbids colored text).
 
 ## Before submitting — manual checklist
 

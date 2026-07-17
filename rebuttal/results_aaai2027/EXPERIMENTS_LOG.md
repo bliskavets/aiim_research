@@ -222,7 +222,11 @@ over-refusal на безопасных промптах) И unsafe-refusal +1.5 
 не длиннее baseline. Прирост от КАЧЕСТВА. Прямо опровергает verbosity-претензию qCe4-W4.
 Замечание для статьи: пакет alpaca_eval не ставили (риск venv); HF-скрипт-загрузчик датасета
 сломан в новом datasets -> данные (805 инстр + davinci003-референс) взяты raw JSON напрямую.
-Для camera-ready можно догнать полноценный AlpacaEval-2 vs GPT-4. Файлы: results_aaai2027/alpaca_summary.json.
+Файлы: results_aaai2027/alpaca_summary.json.
+ДОБАВЛЕНО (AlpacaEval-2 vs GPT-4-turbo, gpt4_1106 референс, N=200): baseline 43.0 -> SAGE 48.5
+(+5.5). Абсолют ниже заявленных в статье 74.9 (подмножество N=200 + наш gpt-4.1-судья vs их
+полный AlpacaEval-2), но SAGE>baseline держится и здесь. Вместе с head-to-head (SAGE короче)
+verbosity-претензия qCe4-W4 закрыта с двух сторон.
 
 ---
 

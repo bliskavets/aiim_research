@@ -9,5 +9,11 @@
   "median_chars_baseline": 2703,
   "median_chars_sage": 2618,
   "sage_len_ratio_vs_baseline": 0.97,
-  "takeaway": "SAGE preferred over baseline (57.5%) while being no longer (slightly shorter) - gains are quality, not verbosity (refutes qCe4-W4)"
+  "takeaway": "SAGE preferred over baseline (57.5%) while being no longer (slightly shorter) - gains are quality, not verbosity (refutes qCe4-W4)",
+  "alpacaeval2_vs_gpt4turbo": {
+    "baseline_winrate": 43.0,
+    "sage_winrate": 48.5,
+    "delta": 5.5,
+    "note": "AlpacaEval-2 style (gpt4_1106_preview reference), N=200; SAGE > baseline +5.5; absolute below paper 74.9 due to subset+judge"
+  }
 }

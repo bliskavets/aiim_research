@@ -1,0 +1,13 @@
+{
+  "reference": "text_davinci_003 (AlpacaEval 1.0 default; not GPT-4, so not directly comparable to paper's 74.9)",
+  "judge": "openai/gpt-4.1 via OpenRouter, A/B position randomized",
+  "n": 200,
+  "baseline_vs_davinci003_winrate": 88.0,
+  "sage_vs_davinci003_winrate": 89.5,
+  "sage_vs_baseline_headtohead_winrate": 57.5,
+  "sage_vs_baseline_length_matched_winrate": 53.3,
+  "median_chars_baseline": 2703,
+  "median_chars_sage": 2618,
+  "sage_len_ratio_vs_baseline": 0.97,
+  "takeaway": "SAGE preferred over baseline (57.5%) while being no longer (slightly shorter) - gains are quality, not verbosity (refutes qCe4-W4)"
+}

@@ -376,6 +376,7 @@ AlpacaEval reward dynamics across epochs and the compute-allocation ablation (\(
 
 \noindent We conduct additional ablations on reward-model agreement and refinement geometry visualizations in section Appendix~\ref{app:refinement_geometry}.
 
+
 We also conduct an additional analysis of how the prompt's instructions to produce a more confident estimates affect the model's judgement accuracy. The ablation details can be found in Appendix~\ref{sec:app-prompt-calibration}.
 
 {\color{blue}
@@ -388,6 +389,8 @@ We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-
 \subsection{Instruction following and broader STEM reasoning}
 \label{sec:broader-benchmarks}
 To assess generalization beyond math and open-ended preference tasks, we evaluate \method{} on IFEval \citep{zhou2023instruction}, a strict instruction-following benchmark, and on a subset of MMLU-Pro STEM \citep{wang2024mmlu} covering multi-step reasoning in science and engineering. Results with Qwen3-8B-FP8 are shown in \Cref{tab:additional-benchmarks}. Compared to only 4-point gains from Best-of-\(N\), \method{} improves IFEval prompt accuracy by 28 points and MMLU-Pro STEM accuracy by 20 points, indicating that iterative self-refinement generalizes beyond mathematical problem-solving to instruction-following and broader STEM reasoning.
+
+\paragraph{Discussion.} Taken together, the experiments draw a consistent picture. \method{} helps most where the model can verify its own outputs: the largest improvements appear on MATH-500, AIME, and MMLU-Pro STEM, where the judge's correctness signal is comparatively reliable, whereas the margins on XSTest are narrower because the base models already score high and the ceiling is close. Preference-oriented tasks benefit as well, but there the decisive factor is the multi-aspect judging prompt, which penalizes truncation and repetition explicitly rather than relying on correctness alone. The comparison with SPO further suggests that iterating on responses is more robust than iterating on the prompt: tuned prompts transfer poorly when calibration examples come from a different domain, while the textual gradient is recomputed for every input.
 }
 
 \begin{table*}[t]
@@ -478,6 +481,11 @@ groups to produce a stable textual ``gradient'' that steers subsequent generatio
 
 \section*{Limitations}
 \noindent \method{} relies on the base LLM's own judgments for scoring and gradient extraction, which means miscalibration or systematic biases in the model's self-assessment can propagate through the refinement loop. The method also incurs linear inference-time overhead with the number of sampled hypotheses and optimization epochs, which may be prohibitive in strict latency-sensitive settings. In this work we evaluate in non-thinking mode for models such as Qwen3 that natively produce long reasoning chains; reasoning-mode inference increases per-iteration cost and requires careful token budget management. Finally, the choice of judge aspects and their weights is a hyperparameter that requires task-specific tuning, and its sensitivity across domains beyond those evaluated here remains to be characterized.
+
+{\color{blue}
+\section*{Ethical Statement}
+\method{} aims to improve the helpfulness and correctness of LLM outputs at inference time, and our XSTest results indicate that these gains do not come at the expense of safety behavior. The method nevertheless inherits the values encoded in the underlying model: the preference signal is elicited from the model itself, so systematic blind spots in its self-assessment are reinforced rather than corrected, and it is no substitute for safety training or external oversight in high-stakes settings.
+}
 
 \bibliography{custom}
 

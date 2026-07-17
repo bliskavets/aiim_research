@@ -58,6 +58,11 @@ AIME 2026 reasoning-mode results, 1.7B/32B model scales, IFEval + MMLU-Pro STEM
 (now subsections "Reasoning mode and model scale" and "Instruction following and
 broader STEM reasoning" with Tables 3-5). The IFEval table was reformatted to
 single column. Temperature and prompt-calibration ablations stayed in the appendix.
+Added (blue): a "Discussion" paragraph closing the Experiments section and an
+unnumbered "Ethical Statement" before References. Main content now ends exactly
+at the bottom of p. 8; References start on p. 9. Note: everything before
+References (incl. Limitations and Ethical Statement) counts toward the content
+page limit per the AAAI kit.
 **Remove the blue markup before submitting** (AAAI forbids colored text).
 
 ## Before submitting — manual checklist

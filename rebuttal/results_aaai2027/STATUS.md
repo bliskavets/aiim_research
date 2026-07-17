@@ -25,17 +25,16 @@ template. SAGE = m_min 1, 2 epochs x 7 gens. Multi-seed = 42/7/123.
 | XSTest | Safety per-category (N=450) | base 90.0 -> SAGE 92.7 (safe 83.6->87.2, unsafe 98->99.5) | R2/k8B9 safety per-category (E10) |
 | AlpacaEval | vs davinci003 & GPT-4-turbo; head-to-head | SAGE 48.5 vs base 43.0 (GPT4t); SAGE>base 57.5 while SHORTER | qCe4-W4 (verbosity: quality not length) |
 | B3 | Aspect sensitivity MATH (3 configs) | default 72.4 / generic 74.6 / task_specific 71.8 (spread 2.8pt = noise -> robust) | R3-W2/Q2 (aspect formulation) |
+| SPO | Fair re-run (Qwen3-8B optimizer, not GPT-4.1) | best=seed round (opt failed to improve); eval 66.2 << SAGE 88.3 | R3-Q1 (SPO needs strong external optimizer) |
 
 Central narrative (strongest): on verifiable tasks external reward models HURT
 (TPO MMLU 62.6, BoN+Skywork-V2 MATH 74.2, both below baseline) while SAGE's self-judge
 helps and scales (MATH 8B +4.5 -> 32B +6.0). Self-judge recovers 92% of achievable
 accuracy (small oracle gap), gains are not verbosity (AlpacaEval head-to-head, SAGE shorter).
 
-## Still running (not yet finished)
+## Still running
 
-| Experiment | Status | Reviewer issue |
-|-----------|--------|----------------|
-| SPO fair re-run (Qwen3-8B optimizer, not GPT-4.1) + MATH-500 eval | QUEUED (after B3) | R3-Q1 (GPT-4.1 for SPO unfair) |
+None — all planned experiments complete.
 
 ## Deprioritized / not completed (with reason)
 
@@ -56,7 +55,7 @@ accuracy (small oracle gap), gains are not verbosity (AlpacaEval head-to-head, S
 - R2/qCe4-Q3 self-congratulatory loop: CLOSED (E3b/E8)
 - R3-W2/Q2 aspect sensitivity: CLOSED (B3 MATH, spread 2.8pt = robust)
 - R3-W3/Q3 m_min / grouping: CLOSED (B2)
-- R3-Q1 SPO GPT-4.1 unfair: RUNNING (SPO fair re-run queued)
+- R3-Q1 SPO GPT-4.1 unfair: CLOSED (SPO fair re-run: same-model optimizer fails to improve; SPO depends on strong external optimizer)
 - R4/k8B9-W1a baseline discrepancy: CLOSED (A1)
 - R4/k8B9-W1b thinking mode: ADDRESSED (thinking; honest framing, not "SAGE > thinking")
 - R4/k8B9-W2 benchmarks too easy: CLOSED (MMLU-Pro)

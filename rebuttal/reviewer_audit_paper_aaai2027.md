@@ -62,15 +62,15 @@
 | Table 1: Qwen3-8B base MATH-500 | 84.4 | Qwen3 tech report, non-thinking: 87.4; наша репликация 83.8 | ЖЁЛТЫЙ: ниже отчёта на 3 пт, объяснимо конфигом промпта; нужна сноска |
 | Table 1: SAGE MATH-500 | 92.0 | наша 3-сидовая репликация на исправленном харнессе: 88.3+/-0.6; репликация оригинального кода: 74-78 на сабсете | КРАСНЫЙ: не воспроизводится |
 | Table 4: Qwen3-8B baseline (subset) | 0.61 | tech report 87.4 non-thinking; кампания 83.8 | КРАСНЫЙ: −26 пт от официального |
-| Table 4: Qwen3-1.7B baseline | 0.56 | кампания на том же чекпойнте: 72.8; tech report ~73 | КРАСНЫЙ: −17 пт |
-| Table 4: Qwen3-32B baseline | 0.80 | кампания: 85.4 full-500 | ЖЁЛТЫЙ: −5 пт |
-| Table 5: IFEval baseline Qwen3-8B-FP8 | 42.0% prompt acc | EvalScope non-thinking: 81.9 prompt-strict; tech report (thinking): 85.0; кампания: 73.8 | КРАСНЫЙ: −30..40 пт; прирост «+28» — артефакт сломанного baseline |
-| Table 5: MMLU-Pro STEM baseline | 48.0% | EvalScope MMLU-Pro non-thinking: 68.7; кампания (STEM subset): 71.2 | КРАСНЫЙ: −20 пт |
+| Table 4: Qwen3-1.7B baseline | 0.56 | Tech report Table 20, non-thinking: 73.0; кампания: 72.8 | КРАСНЫЙ: −17 пт |
+| Table 4: Qwen3-32B baseline | 0.80 | Tech report Table 14, non-thinking: 88.6; кампания: 85.4 | ЖЁЛТЫЙ: −6..9 пт |
+| Table 5: IFEval baseline Qwen3-8B-FP8 | 42.0% prompt acc | Tech report Table 18, non-thinking: 83.0 strict-prompt (thinking, Table 17: 85.0); кампания (FP8, N=541): 73.8 | КРАСНЫЙ: −41 пт от официального non-thinking; прирост «+28» — артефакт сломанного baseline |
+| Table 5: MMLU-Pro STEM baseline | 48.0% | В tech report для 8B нет MMLU-Pro (MMLU-Redux: 79.5 non-think / 87.5 think); кампания, STEM-500, non-thinking, тот же FP8: 71.2 | КРАСНЫЙ: −23 пт от same-setup замера |
 | Table 1: Llama3-8B base AlpacaEval LC | 35.37 | официальный лидерборд AlpacaEval-2: Llama-3-8B-Instruct LC = 22.9 | ЖЁЛТЫЙ: +12 пт к лидерборду; если протокол свой — обязан быть описан |
 | Table 1: SAGE Qwen LC | 62.99 | лучшие тренированные 8B на лидерборде ~60-63 | ЖЁЛТЫЙ: extraordinary claim без интервалов |
 | Table 3: AIME 2026 | 0.57/0.77 и т.д. | официальных чисел нет (бенчмарк 2026, MathArena) | ОК с оговоркой: single seed, N мал |
 | XSTest | 89.3-95.1 | официальных референсов нет | ОК |
-| Table 1: Llama3-8B base MATH-500 | 45.6 | Llama-3-8B-Instruct MATH ~30; Llama-3.1-8B-Instruct MATH-500 ~48-52 | ЖЁЛТЫЙ: похоже на 3.1 — тогда имя модели в статье неточное |
+| Table 1: Llama3-8B base MATH-500 | 45.6 | Tech report Table 18: LLaMA-3.1-8B-Instruct MATH-500 = 54.8; Llama-3-8B (3.0) ~30 | ЖЁЛТЫЙ: 45.6 ближе к 3.1 — имя чекпойнта в статье, вероятно, неточное |
 
 ## Главный вывод
 
@@ -86,3 +86,23 @@
 Table 1, typos `</asnwer>`/«Optimizational», H200-vs-A100, определить m_min и оси
 Fig 4/5, унифицировать десятичные знаки, явно назвать протокол AlpacaEval и чекпойнт
 Llama.
+
+## Дополнение (2026-07-18): режим Table 5 и точная сверка
+
+Происхождение Table 5 установлено: это ответ ревьюерам ICML-2026 (март 2026),
+«IFEval subset» и «MMLU-Pro STEM subset», N=50, Qwen3-8B-FP8, seed 42, baseline greedy
+t=0.0. Заявленный режим — non-thinking (в том же rebuttal авторы прямо пишут «we
+evaluate in non-reasoning mode»). Фактический режим — из-за бага ` /nothink` в старом
+харнессе non-thinking НЕ включался: модель писала CoT и обрезалась на max_tokens,
+т.е. числа Table 5 не соответствуют НИ одному из режимов.
+
+Сверка Qwen3-8B в обоих режимах (Qwen3 tech report, Tables 17/18):
+
+| Бенчмарк | Table 5 (статья) | Официально non-thinking | Официально thinking | Кампания (same setup: FP8, non-think, fixed) |
+|---|---|---|---|---|
+| IFEval strict-prompt | 42.0 | 83.0 | 85.0 | 73.8 (N=541) |
+| MMLU-Pro | 48.0 (STEM subset) | нет в отчёте (MMLU-Redux 79.5) | (MMLU-Redux 87.5) | 71.2 (STEM-500) |
+
+Вывод: baseline Table 5 ниже официального non-thinking уровня на ~41 пт (IFEval) и
+ниже same-setup замера на ~23 пт (MMLU-Pro STEM). Ни thinking, ни non-thinking
+официальные числа не совместимы с Table 5; совместимо только «сломанный harness».

@@ -31,6 +31,7 @@ Central narrative (strongest): on verifiable tasks external reward models HURT
 (TPO MMLU 62.6, BoN+Skywork-V2 MATH 74.2, both below baseline) while SAGE's self-judge
 helps and scales (MATH 8B +4.5 -> 32B +6.0). Self-judge recovers 92% of achievable
 accuracy (small oracle gap), gains are not verbosity (AlpacaEval head-to-head, SAGE shorter).
+| repro | Репликация старого TTA-кода + провенанс Table 5 | старый код 74.0 (o3, seed-7-50), починенный 78.0, baseline 68.0; Table 5 = сломанный non-think, офиц. 83.0 IFEval | R4-W1a; обоснование замены чисел |
 
 ## Still running
 

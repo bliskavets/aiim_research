@@ -1,0 +1,326 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xcolor}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\method}{PACT}
+\newcommand{\ema}{\mathrm{EMA}}
+
+\title{\method{}: Polarity-Aware Confidence-Shaped Token-Level Credit Assignment for Group-Relative Policy Optimization}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+\author{Anonymous authors}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Group-relative policy optimization methods (GRPO, DAPO, Dr.GRPO, GSPO) assign a single scalar advantage to every token of a sampled response, discarding all information about \emph{which} tokens were responsible for success or failure. We propose \method{}, a per-token credit-assignment layer that is composable with any GRPO-family algorithm. \method{} redistributes the group-relative advantage across tokens using a \emph{head-truncated confidence} statistic --- the mean log-probability of the top-$k$ next-token candidates, smoothed by a causal exponential moving average --- with a \emph{polarity-aware} direction: branching (low-head-confidence) tokens are rewarded in correct rollouts, while confidently generated tokens are penalized in incorrect ones. We give a precise account of when such shaping is stable: a boundedness condition on the per-token bonus ($C_k \ge \log k$, hence bounded bonus iff $k \ge 2$), a length-invariant bonus budget that removes the length-farming attractor, and an information gate that disables shaping on zero-variance groups. Each condition is validated by a controlled collapse taxonomy: every configuration violating one of the conditions reproducibly collapses ($8{+}$ runs), and every configuration satisfying them is stable ($10{+}$ runs). We prove that \method{} conserves group reward mass, that its gradient bias vanishes as training consolidates, and that it shares the global optimum of the underlying algorithm. Empirically, on Qwen3-4B-Base across GSM8K, MATH-500, and Big-Math, \method{} improves the peak training reward of GRPO, DAPO, and Dr.GRPO ($+0.2$ to $+1.0$ absolute reward) while reaching each baseline's peak $2$--$5\times$ faster; Dr.GRPO+\method{} is the strongest overall configuration. We also delimit the method's boundary: sequence-level importance sampling (GSPO) absorbs most of the per-token signal, and cold-start policies require correctness-grounded polarity --- failure modes we analyze in detail.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Reinforcement learning with verifiable rewards has become the dominant recipe for improving the reasoning ability of large language models (LLMs) \citep{guo2025deepseek,jaech2024openai}. The workhorse algorithms are group-relative: GRPO \citep{shao2024deepseekmath} samples $G$ responses per prompt, normalizes their terminal rewards within the group, and applies a PPO-style clipped update \citep{schulman2017ppo}; DAPO \citep{yu2025dapo}, Dr.GRPO \citep{liu2025drgrpo}, and GSPO \citep{zheng2025gspo} refine the clipping, normalization, and importance-sampling granularity. All of them, however, share a coarse credit-assignment scheme: \emph{every token of a response receives the same advantage}, determined solely by the terminal reward. A rollout that reaches a correct answer through hundreds of routine tokens and a handful of decisive ones reinforces all of them equally; a rollout that fails because of one confident mistake penalizes its correct prefix just as strongly.
+
+Process reward models \citep{lightman2023let,uesato2022solving} and Monte-Carlo credit assignment \citep{kazemnejad2024vineppo} address this at the cost of extra models or extra rollouts. A cheaper family of approaches reuses the policy's own uncertainty as an intrinsic credit signal: high-entropy tokens correlate with pivotal reasoning junctures \citep{wang2025beyond,cui2025entropy}, and GTPO/GRPO-S \citep{tan2025gtpo} redistribute rewards proportionally to full-vocabulary policy entropy. But these methods leave three questions open. \emph{(i) What is the right per-token statistic?} Full-vocabulary entropy mixes the informative head of the next-token distribution with heavy-tail noise. \emph{(ii) When is reward redistribution stable?} We show that seemingly innocuous choices --- top-$1$ confidence, nucleus-adaptive truncation, unbounded multiplicative bonuses --- produce reproducible training collapses via a single mechanism, bonus farming. \emph{(iii) When is it useful at all?} On hard prompt distributions where most groups have zero reward variance, redistribution injects pure noise.
+
+This paper answers all three. We propose \textbf{\method{}} (\textbf{P}olarity-\textbf{A}ware \textbf{C}onfidence-shaped \textbf{T}oken credit), a drop-in per-token credit-assignment layer for GRPO-family algorithms, built from four components, each of which we motivate diagnostically and validate causally:
+
+\begin{enumerate}
+    \item \textbf{Head-truncated confidence.} The per-token signal is $C_{i,t} = -\tfrac{1}{k}\sum_{j\le k}\log \pi_{(j)}$, the mean log-probability of the top-$k$ candidates ($k{=}3$--$5$), smoothed by a causal EMA ($\lambda{=}0.7$). We show LLM next-token distributions are strongly bimodal (median top-1 mass $0.95$--$0.98$, yet $15$--$20\%$ of tokens need $k{>}128$ to cover $0.9$ mass), so a small-$k$ head statistic isolates the branching structure that full-vocabulary entropy dilutes. Critically, we identify a \emph{sign reversal} at $k{=}1$: top-$1$ confidence orders tokens in the \emph{opposite} direction of any $k\ge 2$ statistic, and admits an unbounded bonus ($C_k \ge \log k$, Lemma~\ref{lem:bounded}); every truncation scheme whose minimum effective $k$ is $1$ collapses.
+    \item \textbf{Polarity-aware direction.} In rollouts with positive group-relative advantage, tokens with \emph{low} head confidence (branch points) receive a bonus; in negative-advantage rollouts, tokens generated \emph{confidently} receive a larger penalty. This ``credit branching, blame confidence'' scheme conditions the direction of the per-token weight on terminal correctness, unlike polarity-independent entropy weighting \citep{tan2025gtpo}.
+    \item \textbf{Length-invariant bonus budget.} The total bonus a rollout can harvest is fixed regardless of its length, removing the length attractor \emph{by construction}; a positional discount $g(t)=\tau/(\tau+t)$ is a cheap approximation that caps harvestable credit logarithmically.
+    \item \textbf{Zero-variance gate.} When a group's rewards have zero variance the shaped signal contains no correctness information; \method{} falls back to the underlying algorithm (advantage $0$). On our hardest dataset $40$--$50\%$ of groups are gated, converting the largest failure mode of shaped credit into a no-op.
+\end{enumerate}
+
+Theoretically, \method{} is conservative: it redistributes but never creates reward mass (Proposition~\ref{prop:conserve}); its deviation from the underlying algorithm's gradient vanishes as confidence profiles consolidate (Proposition~\ref{prop:consistency}); and it therefore shares the global optimum of GRPO/DAPO (Theorem~\ref{thm:optimum}), while the EMA reduces weight variance by ${\sim}3.9\times$ at $\lambda=0.7$ (Proposition~\ref{prop:var}).
+
+Empirically, on Qwen3-4B-Base \citep{yang2025qwen3} with verifiable math rewards, \method{} composes with four algorithms. It raises peak training reward over GRPO ($+2.26 \to +2.73$ on GSM8K, $+1.51\to+2.27$ on MATH-500, $+1.86\to+2.06$ on Big-Math), DAPO ($+2.05\to+2.66$, $+1.52\to+2.29$, $+1.68\to+2.26$), and Dr.GRPO ($+2.06\to+2.67$, $+1.41\to+2.51$, $+1.39\to+2.36$), while reaching each baseline's peak in $2$--$5\times$ fewer steps, and produces markedly shorter completions. We report boundary cases with equal prominence: GSPO's sequence-level importance ratio absorbs the per-token structure (faster convergence, no final gain), the hardest dataset (Omni-MATH) is unchanged within noise, and a cold-start Llama-3.2-3B policy exposes a failure of group-relative polarity that motivates correctness-grounded polarity as future work.
+
+Our contributions: (1) a composable, hyperparameter-light per-token credit layer for GRPO-family RL with consistent accuracy and large convergence-speed gains across three algorithms; (2) a stability theory of confidence-based reward redistribution --- boundedness, budget, and gating conditions --- validated by a controlled collapse taxonomy of $18{+}$ runs rather than anecdote; (3) diagnostic evidence (distributional bimodality, positional decisiveness profiles) explaining \emph{why} head-truncated confidence is the right statistic and full-vocabulary entropy is not; (4) an honest delimitation of scope, including an implementation-correctness finding (microbatch-degenerate group statistics silently disable shaped methods in popular trainers) that affects reproducibility across the field.
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Group-relative RL for LLM reasoning.} GRPO \citep{shao2024deepseekmath} removes the critic of PPO \citep{schulman2017ppo} by normalizing terminal rewards within a group of rollouts, and underpins R1-style reasoning training \citep{guo2025deepseek}. DAPO \citep{yu2025dapo} adds clip-higher, dynamic sampling, and token-level loss aggregation; Dr.GRPO \citep{liu2025drgrpo} removes length and std normalization biases; GSPO \citep{zheng2025gspo} moves importance sampling to the sequence level. All assign uniform per-token advantages; \method{} is orthogonal and composes with each (\S\ref{sec:experiments}).
+
+\paragraph{Fine-grained credit assignment.} Process reward models score intermediate steps but require dense supervision or extra models \citep{lightman2023let,uesato2022solving}; VinePPO \citep{kazemnejad2024vineppo} estimates per-step values with auxiliary rollouts at significant compute cost. \method{} needs neither: its signal is computed from log-probabilities already available during scoring.
+
+\paragraph{Entropy and confidence as intrinsic signals.} High-entropy minority tokens drive most of the RL gradient signal \citep{wang2025beyond}, and entropy dynamics govern the explore--exploit balance \citep{cui2025entropy,haarnoja2018soft}. Top-$k$ confidence was introduced as a \emph{test-time} filtering signal by DeepConf \citep{fu2025deepconf}; we repurpose it as a \emph{training-time} credit signal and characterize its stability. UCAS \citep{ucas2025} weights updates multiplicatively by sampled-token uncertainty; our surprisal ablation (\S\ref{sec:ablations}) shows sampled-token signals underperform the head statistic. Closest to us, GTPO/GRPO-S \citep{tan2025gtpo} redistribute rewards proportionally to full-vocabulary entropy with a dynamic coefficient. \method{} differs in the statistic (head-truncated top-$k$ confidence, justified by distributional bimodality --- full-vocabulary entropy is the $k\to|V|$ limit that provably dilutes head contrast), in polarity (direction conditioned on terminal correctness), in temporal structure (causal EMA), and in the stability machinery (boundedness lemma, length-invariant budget, zero-variance gate) --- none of which appear in prior entropy-shaping work, and without which we show such methods are one hyperparameter away from collapse.
+
+\paragraph{Reward shaping.} Potential-based shaping preserves optimal policies \citep{ng1999policy}. \method{}'s conservation property (Proposition~\ref{prop:conserve}) plays the analogous role in the group-relative setting: shaping is zero-sum within the group at every position, so the optimum is unchanged (Theorem~\ref{thm:optimum}) while the path to it is re-weighted.
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Preliminaries}
+
+Given a prompt $q$, the policy $\pi_\theta$ samples a group of $G$ responses $\{o_1,\dots,o_G\}$, $o_i=(o_{i,1},\dots,o_{i,|o_i|})$, with terminal rewards $R_i$ from a verifiable checker. GRPO computes the group-relative advantage $\hat A_i = (R_i - \mathrm{mean}(R))/\mathrm{std}(R)$ and assigns it to \emph{every} token of $o_i$ in the clipped surrogate
+\begin{equation}
+\mathcal{J}(\theta) = \mathbb{E}\Big[\tfrac{1}{\sum_k |o_k|}\sum_{i=1}^{G}\sum_{t=1}^{|o_i|} \min\big(w_{i,t}\hat A_{i}, \mathrm{clip}(w_{i,t},1{-}\epsilon,1{+}\epsilon)\hat A_{i}\big)\Big],
+\label{eq:grpo}
+\end{equation}
+with $w_{i,t}=\pi_\theta(o_{i,t}\,|\,q,o_{i,<t})/\pi_{\theta_\mathrm{old}}(o_{i,t}\,|\,q,o_{i,<t})$. DAPO, Dr.GRPO, and GSPO modify clipping, normalization, or the granularity of $w$; all retain the token-uniform $\hat A_i$. \method{} replaces $\hat A_i$ by a per-token $\tilde A_{i,t}$ built as follows, leaving the rest of the algorithm untouched.
+
+\subsection{Head-truncated confidence}
+\label{sec:headconf}
+
+\begin{definition}[Top-$k$ head confidence]
+\label{def:conf}
+Let $\pi_{(1)} \ge \pi_{(2)} \ge \dots$ be the sorted next-token probabilities at position $t$ of rollout $i$. Define
+\begin{equation}
+C_{i,t} \;=\; -\frac{1}{k}\sum_{j=1}^{k} \log \pi_{(j)}\big(\cdot \mid q, o_{i,<t}\big).
+\end{equation}
+\end{definition}
+
+$C_{i,t}$ is \emph{low} when the head of the distribution is flat (several competitive continuations --- a branch point) and \emph{high} when it is peaked (one dominant continuation with a deep tail). Note this is the \emph{opposite} ordering of top-$1$ confidence: for $k=1$, $C=-\log \pi_{(1)}$ is near $0$ on peaked tokens. The two regimes are not different sharpnesses of the same signal but \emph{different signals with opposite sign} --- for $k\ge 2$ the runner-up log-probabilities dominate the mean. This sign reversal, invisible in the definition and fatal in practice, is analyzed in \S\ref{sec:collapse}.
+
+Two diagnostic facts motivate a small-$k$ head statistic over full-vocabulary entropy. First, next-token distributions under a reasoning policy are strongly \emph{bimodal}: in rollout-level dumps of the top-$128$ log-probabilities, the median top-$1$ mass is $0.95$--$0.98$, while $15$--$20\%$ of tokens require $k>128$ to reach $0.9$ coverage; the median nucleus ($p{=}0.9$) size is $1$ with $p_{95}\approx 20$--$28$. The ``peaked majority'' and ``flat minority'' are well-separated populations, and the discriminative quantity is the \emph{branching factor of the head}. Full-vocabulary entropy --- the weight used by GTPO \citep{tan2025gtpo} --- mixes this head structure with heavy-tail noise. Second, a $k$-sweep ($k\in\{1,3,5,10,20,40\}$) exhibits a clean inverted-U: $k{=}1$ collapses on every dataset, $k{=}3$--$5$ is optimal, and $k{=}20$--$40$ degrades gracefully as tail ranks (log-probabilities $-8$ to $-14$) dilute the head contrast.
+
+\begin{definition}[Causal EMA]
+\label{def:ema}
+$\hat C_{i,0}=C_{i,0}$ and $\hat C_{i,t} = \lambda\,\hat C_{i,t-1} + (1-\lambda)\,C_{i,t}$ with $\lambda\in(0,1)$.
+\end{definition}
+
+The EMA smears credit backward over the tokens that \emph{led to} a decision region and reduces the variance of the weight (Proposition~\ref{prop:var}). A sweep over $\lambda\in\{0.1,\dots,0.9\}$ on four datasets finds $\lambda\in[0.5,0.7]$ uniformly good and $\lambda=0.7$ the dataset-agnostic default; large $\lambda$ (${=}0.9$) oversmooths.
+
+\subsection{Polarity-aware redistribution}
+\label{sec:polarity}
+
+Partition the group by advantage polarity: $O^+=\{i: \hat A_i > 0\}$, $O^-=\{i: \hat A_i \le 0\}$. Let $g(t)=\tau/(\tau+t)$ be a positional discount applied to the bonus only. With mixing weights $\alpha_1+\alpha_2=1$ (we use $\alpha_1{=}0.9,\ \alpha_2{=}0.1$):
+\begin{align}
+i \in O^+:\quad & \tilde A_{i,t} \;=\; \alpha_1 \;+\; \alpha_2\, g(t)\, B_{i,t}, \qquad B_{i,t} \;=\; \frac{d_t\,/\,(\hat C_{i,t}+\varepsilon)}{\sum_{k\in O^+_t} 1/(\hat C_{k,t}+\varepsilon)},
+\label{eq:pos}\\
+j \in O^-:\quad & \tilde A_{j,t} \;=\; -\Big(\alpha_1 \;+\; \alpha_2\, g(t)\, P_{j,t}\Big), \qquad P_{j,t} \;=\; \frac{h_t\, \hat C_{j,t}}{\sum_{k\in O^-_t} \hat C_{k,t}},
+\label{eq:neg}
+\end{align}
+where $O^{\pm}_t$ are the rollouts still active at position $t$ and $d_t=|O^+_t|$, $h_t=|O^-_t|$. Each polarity is then z-normalized over its active tokens. Intuitively: \emph{credit branching, blame confidence}. In successful rollouts the bonus concentrates on tokens where the head was flat --- genuine decision points; in failed rollouts the penalty concentrates on tokens generated with a peaked head --- the confident steps that committed the trajectory to a wrong path. Both weights are group-normalized \emph{per position}, so shaping is a zero-sum redistribution within each polarity (Proposition~\ref{prop:conserve}).
+
+Two implementation details are load-bearing. \textbf{(a) Group visibility:} the normalizations in Eqs.~(\ref{eq:pos})--(\ref{eq:neg}) must be computed over the \emph{full} generation group. Computing them inside a per-microbatch loss (batch size $1$) silently degenerates every group statistic to a singleton --- the shaped method reduces to noise or, in some trainer stacks, is bypassed entirely. We found and fixed both failure modes in a widely used trainer combination; we flag this as a reproducibility hazard for the field (Appendix~\ref{app:impl}). \textbf{(b) Structural-token masking:} format tokens (chat template, \texttt{<think>} tags, \texttt{\textbackslash boxed\{}) are excluded from shaping.
+
+\subsection{Stability: budget and gate}
+\label{sec:stability}
+
+\begin{lemma}[Bounded bonus]
+\label{lem:bounded}
+Since $\sum_j \pi_{(j)} \le 1$, the top-$k$ head satisfies $C_k \ge \log k$, with equality iff the head is uniform. Hence the reciprocal bonus weight $1/\hat C \le 1/\log k$ is bounded for $k\ge 2$ and unbounded for $k=1$.
+\end{lemma}
+
+Lemma~\ref{lem:bounded} is the boundary between stable and collapsing configurations: any truncation scheme whose minimum effective $k$ is $1$ (fixed $k{=}1$; nucleus truncation, whose median size is $1$; sampled-rank truncation, where ${\sim}83\%$ of tokens are the argmax) admits an unbounded harvestable bonus on deterministic tokens and reproducibly collapses (\S\ref{sec:collapse}).
+
+\paragraph{Length-invariant bonus budget.} Even with a bounded per-token bonus, the \emph{total} bonus a rollout harvests grows linearly with its length, creating a length attractor (we observed $640\to3400$-token explosions in unregularized variants). \method{} bounds the harvestable credit: the positional discount $g(t)=\tau/(\tau+t)$ caps $\sum_t g(t) = O(\tau\log(1+T/\tau))$; the fully principled variant renormalizes the bonus within each rollout so that $\sum_t \alpha_2\,b_{i,t} = \alpha_2 B_\mathrm{const}$ exactly. The budgeted variant is the most robust across difficulty levels; the discount variant is the strongest on learnable datasets (\S\ref{sec:ablations}).
+
+\paragraph{Zero-variance gate.} When $\mathrm{std}(R)=0$ the group carries no correctness information, yet Eqs.~(\ref{eq:pos})--(\ref{eq:neg}) would still emit a full-strength directional gradient (all rollouts land in $O^-$): pure noise. \method{} detects such groups and emits advantage $0$, exactly matching the underlying algorithm's behavior. On Omni-MATH, $40$--$50\%$ of early-training groups are zero-variance; the gate is free on easy datasets (fires ${<}15\%$, no regression) and removes the dominant noise source on hard ones.
+
+\subsection{Theoretical properties}
+\label{sec:theory}
+
+Proofs are in Appendix~\ref{app:proofs}. Throughout, $\alpha_1+\alpha_2=1$.
+
+\begin{proposition}[Conservation of reward mass]
+\label{prop:conserve}
+At every position $t$, $\sum_{i\in O^+_t} \tilde r^+_{i,t} = \sum_{i\in O^+_t} r_i = d_t$: shaping redistributes reward among rollouts but neither creates nor destroys total reward. The deviation of rollout $i$ satisfies $\delta_{i,t} = \alpha_2\big(\bar C_t / \hat C_{i,t}^{\mathrm{(norm)}} - 1\big)$-type zero-mean form; in particular $\sum_{i} \delta_{i,t} = 0$.
+\end{proposition}
+
+\begin{proposition}[Vanishing gradient bias]
+\label{prop:consistency}
+Assume that as training consolidates, confidence profiles of same-polarity rollouts equalize ($\hat C_{i,t}/\bar C_t \to 1$ a.s.), the score function is bounded, and advantages are bounded. Then $\|\nabla\mathcal{J}_{\method{}} - \nabla\mathcal{J}_{\mathrm{GRPO}}\| \to 0$.
+\end{proposition}
+
+\begin{theorem}[Shared global optimum]
+\label{thm:optimum}
+Under the assumptions of Proposition~\ref{prop:consistency}, \method{} shares the global optimum of GRPO and DAPO: shaping changes the \emph{path} of optimization, not its destination.
+\end{theorem}
+
+\begin{proposition}[Variance reduction]
+\label{prop:var}
+For i.i.d.\ $C_{i,t}$ with variance $\sigma_C^2$, $\mathrm{Var}(\hat C_{i,t}) \to \tfrac{1-\lambda}{1+\lambda}\sigma_C^2$; at $\lambda=0.7$ this is a ${\sim}5.7\times$ reduction ($19\times$ at $\lambda=0.9$). Positive temporal correlation makes the bound conservative.
+\end{proposition}
+
+\begin{remark}
+The \method{} gradient decomposes as $\mathbb{E}[\nabla\mathcal{J}_{\mathrm{GRPO}}] + \mathbb{E}[\mathrm{Cov}(\delta, \nabla\log\pi_\theta)]$; since $\sum\delta_{i,t}=0$, the policy cannot increase the shaping bonus without producing correct answers --- the bonus is unfarmable \emph{across} rollouts, and the budget of \S\ref{sec:stability} makes it unfarmable \emph{within} a rollout.
+\end{remark}
+
+\section{A collapse taxonomy of confidence-shaped credit}
+\label{sec:collapse}
+
+Reward-redistribution methods are typically reported at their best configuration; how far that configuration is from a cliff is rarely measured. We systematically mapped the cliff. Table~\ref{tab:collapse} summarizes $18{+}$ controlled runs: every configuration violating one of the three stability conditions (bounded bonus, length-invariant budget, informative group signal) collapsed; every configuration satisfying all three was stable. The separation is perfect and the mechanism is singular: \emph{bonus farming}.
+
+\begin{table}[t]
+\caption{Collapse taxonomy. Each row is a controlled configuration on Qwen3-4B-Base; ``collapse'' = completion length $\to$ max ($3584$) and boxed-answer reward $\to \le 0$. The stability boundary exactly tracks Lemma~\ref{lem:bounded} ($k_{\min}\ge2$) plus the budget and gate conditions.}
+\label{tab:collapse}
+\begin{center}
+\small
+\begin{tabular}{llll}
+\toprule
+Configuration & Effective $k_{\min}$ & Violated condition & Outcome \\
+\midrule
+fixed $k{=}1$ & 1 & bounded bonus & collapse (all 4 datasets) \\
+nucleus $p\in\{0.7,0.8,0.9,0.95\}$ & 1 (median size 1) & bounded bonus & collapse (all $p$) \\
+sampled-rank $k{=}\min(\mathrm{rank},5)$ & 1 (${\sim}83\%$ argmax) & bounded bonus & collapse (all 4 datasets) \\
+confidence-multiplied discount & --- & bounded bonus & collapse \\
+unbudgeted bonus, $B{=}1$ microbatch & --- & budget + group stats & length explosion $640{\to}3400$ \\
+\midrule
+fixed $k{=}3,5$ + discount & $\ge 3$ & none & stable, best accuracy \\
+rank-floor $k{=}\max(\mathrm{rank},5)$ & 5 & none & stable, $\approx$ fixed $k{=}5$ \\
+bounded branch signal $H_k/\log k$ & any & none & stable ($k$ up to 20) \\
+budgeted bonus & $\ge 3$ & none & stable, most robust \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+The $k{=}1$ mechanism deserves emphasis because it inverts the intended semantics. With $k{=}1$, a near-deterministic token has $C\approx 0$, so the reciprocal bonus $1/(\hat C+\varepsilon)$ explodes: in correct rollouts, \emph{deterministic filler} absorbs the entire per-position bonus budget, while in incorrect rollouts the same filler receives near-zero penalty ($P\propto\hat C\approx 0$). Filler is thus over-rewarded when right and under-penalized when wrong --- a repetition/length spiral. With $k\ge2$ the runner-up log-probabilities dominate the mean and the ordering flips: peaked tokens have \emph{high} $C$ and branch points \emph{low} $C$, yielding the intended ``credit branching, blame confidence'' semantics with a bonus bounded by $1/\log k$. Nucleus and sampled-rank adaptivity collapse for the same reason --- their median effective $k$ is $1$ --- which the coverage bimodality (\S\ref{sec:headconf}) predicts a priori. We propose $k_{\min}\ge2$ (practically $k\in[3,5]$), an explicit bonus budget, and zero-variance gating as \emph{necessary design conditions} for any confidence- or entropy-based redistribution scheme, including retrofits of prior work.
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Setup}
+\label{sec:setup}
+
+\textbf{Models.} Qwen3-4B-Base (main), Llama-3.2-3B (transfer study). \textbf{Training.} LoRA (r=64) \citep{hu2022lora}, group size $G{=}4$, lr $5{\times}10^{-6}$, no KL penalty, $300$ steps ($500$ for Llama), max completion $3584$ tokens; details in Appendix~\ref{app:setup}. \textbf{Datasets.} Integer-answer, exact-match subsets of GSM8K \citep{cobbe2021gsm8k}, MATH-500 \citep{hendrycks2021math}, Big-Math \citep{albalak2025bigmath}, and Omni-MATH \citep{gao2024omnimath} (hardest; mean difficulty $4.16$). \textbf{Reward.} Format reward (thinking tags) + verifiable boxed-integer reward. \textbf{Metrics.} Peak rolling training reward on the boxed-answer component; steps to reach the \emph{baseline's} peak (convergence speed); last-50-step mean (L50); completion length. \textbf{Baselines.} GRPO \citep{shao2024deepseekmath}, DAPO \citep{yu2025dapo} (clip-higher, token-level loss, truncation masking), GSPO \citep{zheng2025gspo}, Dr.GRPO \citep{liu2025drgrpo} --- each run identically with and without the \method{} layer, same seeds and budgets. \method{} uses one configuration everywhere: $k{=}5$, $\lambda{=}0.7$, $\alpha_1{=}0.9$, $\alpha_2{=}0.1$, $\tau{=}1024$, zero-variance gate.
+
+\subsection{Main results: composability across four algorithms}
+\label{sec:main-results}
+
+\begin{table}[t]
+\caption{Peak boxed-answer reward and steps to reach the corresponding baseline's peak (lower is faster), Qwen3-4B-Base, 300 steps, identical budgets. \method{} uses the same configuration in all cells. Bold = better within each pair.}
+\label{tab:main}
+\begin{center}
+\small
+\begin{tabular}{llcccccc}
+\toprule
+& & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH-500} & \multicolumn{2}{c}{Big-Math} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Base & Method & peak & steps & peak & steps & peak & steps \\
+\midrule
+\multirow{2}{*}{GRPO} & baseline & $+2.26$ & 261 & $+1.51$ & 222 & $+1.86$ & 385 \\
+ & +\method{} & $\mathbf{+2.73}$ & $\mathbf{94}$ & $\mathbf{+2.27}$ & $\mathbf{87}$ & $\mathbf{+2.06}$ & $\mathbf{120}$ \\
+\midrule
+\multirow{2}{*}{DAPO} & baseline & $+2.05$ & 257 & $+1.52$ & 199 & $+1.68$ & 259 \\
+ & +\method{} & $\mathbf{+2.66}$ & $\mathbf{54}$ & $\mathbf{+2.29}$ & $\mathbf{97}$ & $\mathbf{+2.26}$ & $\mathbf{74}$ \\
+\midrule
+\multirow{2}{*}{GSPO} & baseline & $\mathbf{+2.41}$ & 257 & $+1.05$ & 213 & $+1.55$ & 241 \\
+ & +\method{} & $+2.06$ & --- & $\mathbf{+1.56}$ & $\mathbf{30}$ & $\mathbf{+1.81}$ & $\mathbf{62}$ \\
+\midrule
+\multirow{2}{*}{Dr.GRPO} & baseline & $+2.06$ & 223 & $+1.41$ & 182 & $+1.39$ & 259 \\
+ & +\method{} & $\mathbf{+2.67}$ & $\mathbf{115}$ & $\mathbf{+2.51}$ & $\mathbf{99}$ & $\mathbf{+2.36}$ & $\mathbf{71}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+Table~\ref{tab:main} shows the headline result. For the three token-level algorithms (GRPO, DAPO, Dr.GRPO), adding \method{} improves the peak reward in $9/9$ dataset--algorithm cells (by $+0.20$ to $+1.10$ absolute) and reaches the baseline's peak in $2.0$--$5.2\times$ fewer steps. Dr.GRPO+\method{} is the strongest configuration in the study ($+2.67/+2.51/+2.36$). Gains persist at L50 (end-of-run): e.g.\ on Big-Math, DAPO $+1.33\to+2.02$ (best end-of-run result in the study) and Dr.GRPO $+1.18\to+2.00$. Shaped runs are also consistently \emph{shorter} (e.g.\ $620\to328$ tokens on GSM8K under DAPO): concentrating credit on branch points removes the incentive to pad.
+
+\textbf{The GSPO boundary case.} GSPO is the informative exception: with sequence-level importance ratios and tight clipping ($\epsilon\sim3{\times}10^{-4}$), per-token advantage structure is largely averaged out of the update. \method{} still accelerates early convergence dramatically ($4$--$7\times$ on MATH-500/Big-Math) but the final rewards are marginally below GSPO alone ($\Delta$ L50 $-0.05$ to $-0.22$), and on GSM8K the shaped run never reaches GSPO's peak. This is consistent with the mechanism, not an anomaly: token-level credit requires a token-level update channel. We report it as a scope condition of the method.
+
+\textbf{Hard-distribution behavior.} On Omni-MATH every method, shaped or not, is within noise of GRPO ($\le\pm0.3$, all runs near-zero reward): when ${\sim}40$--$50\%$ of groups are zero-variance there is little signal to redistribute. The gate ensures \method{} degrades \emph{to} GRPO rather than below it (ungated shaping loses up to $-0.3$); we consider closing the hard-distribution gap an open problem rather than claiming it.
+
+\subsection{Ablations and diagnostics}
+\label{sec:ablations}
+
+\textbf{Component ablation (L50 boxed reward, GRPO base).} Starting from plain GRPO ($+2.02$/$+0.94$/$+1.51$/$-0.23$ on GSM8K/MATH-500/Big-Math/Omni-MATH): the polarity-flipped EMA layer alone (group-visible, $\lambda{=}0.9$, $k{=}20$) is roughly reward-neutral but cuts length; the positional discount is the single most valuable addition ($+2.50$/$+1.34$/$+1.54$/$-0.38$); tuning $\lambda{=}0.7$ and $k{=}3$--$5$ yields the best learnable-set results ($+2.62$/$+1.67$/$+1.93$); the zero-variance gate adds robustness on hard data at no cost elsewhere ($+2.49$/$+1.55$/$+1.84$/$-0.48\to$ transiently $-0.07$). The fully principled variant (bounded branch signal $H_k/\log k$ + budget + gate) is the most robust across all four datasets ($+2.35$/$+1.49$/$+1.78$/$-0.34$) but does not beat the tuned discount heuristic on learnable sets --- we report both.
+
+\textbf{$k$-sweep and $\lambda$-sweep.} Inverted-U in $k$ with optimum at $3$--$5$ and collapse at $k{=}1$ (\S\ref{sec:collapse}); $\lambda\in[0.5,0.7]$ uniformly best, $\lambda{=}0.9$ oversmooths, $\lambda{=}0.7$ default.
+
+\textbf{Signal ablation: is the head statistic necessary?} Replacing $C_k$ with the sampled token's surprisal $-\log p(o_t)$ (the cheapest signal, no top-$k$ pass) \emph{underperforms plain GRPO} on 3/4 datasets ($+2.06$/$+0.51$/$+0.81$/$-0.63$): the value lies specifically in the top-$k$ head structure, not in generic per-token uncertainty. This also separates \method{} from surprisal-weighting heuristics.
+
+\textbf{Positional diagnostics.} Under plain GRPO, per-position sampled log-probability rises monotonically ($-0.44\to-0.14$) while mean head confidence is flat; the discriminative pattern is that \emph{correct rollouts are decisive early} (head-confidence spike at positions $200$--$500$) whereas incorrect rollouts start uncertain and become confidently wrong late (crossover at $600$--$1000$). The positional discount thus both caps the harvestable budget and concentrates credit where polarities are most separated.
+
+\subsection{Cold-start transfer: where group-relative polarity breaks}
+\label{sec:llama}
+
+On Llama-3.2-3B-Instruct --- a much weaker math policy --- the same configuration \emph{anti-learns}: completions degenerate while GRPO learns normally. The mechanism is instructive. \method{}'s polarity is group-relative ($O^+ = \{\hat A_i > 0\}$). On a cold-start policy where nothing in the group is correct, $O^+$ is merely ``less bad junk,'' and the bonus faithfully reinforces it. The failure is not in the confidence signal but in the polarity source. This predicts the fix --- ground polarity in verifiable correctness ($O^+$ iff the answer reward is positive) with shaping warm-up gated on group success rate --- which we leave as the primary direction for extending the method to weak policies. We include this negative result because composable RL layers are typically validated only on strong base models, and the polarity-source distinction is invisible in that regime.
+
+\section{Limitations}
+\label{sec:limitations}
+
+(1) Results are single-seed at 300--500 steps with LoRA on 3--4B models; multi-seed variance and full-finetune scaling are unverified. (2) Our primary metric is training reward on verifiable checkers rather than held-out benchmark accuracy; while reward hacking is limited by exact-match verification, held-out evaluation (AIME, MATH test splits) is needed for external validity. (3) The strongest configuration uses a tuned heuristic discount; the principled budgeted variant is close but not equal. (4) The method presently requires a token-level importance channel (GSPO absorbs it) and a warm-enough policy (\S\ref{sec:llama}). (5) The top-$k$ statistic requires the top-$k$ log-probabilities at scoring time; in our stack these are available at negligible cost, but some inference engines expose only sampled-token log-probabilities.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\method{} turns the uniform per-rollout advantage of GRPO-family algorithms into per-token credit using a bounded, head-truncated, polarity-aware confidence statistic with a length-invariant budget and an information gate. The layer is composable --- it improves GRPO, DAPO, and Dr.GRPO simultaneously in accuracy and $2$--$5\times$ in convergence speed under one fixed configuration --- and comes with a stability theory whose conditions are validated by a perfect-separation collapse taxonomy rather than anecdote. We believe the design conditions (bounded per-token bonus, length-invariant budget, informative-signal gating, correctness-conditioned polarity) apply to intrinsic-signal credit assignment broadly, and that the documented failure modes --- including the microbatch group-statistics hazard --- will save the community real compute.
+
+\subsubsection*{Reproducibility statement}
+All training scripts, per-experiment configurations, seeds, and analysis notebooks will be released. Appendix~\ref{app:impl} documents two silent-failure hazards in popular trainer stacks (loss-path bypass; microbatch-degenerate group statistics) and the injection pattern that fixes them.
+
+\bibliography{references}
+\bibliographystyle{iclr2026_conference}
+
+\appendix
+
+\section{Proofs}
+\label{app:proofs}
+
+\subsection{Proof of Proposition~\ref{prop:conserve}}
+Write the positive-polarity shaped reward as $\tilde r^+_{i,t} = \alpha_1 r_i + \alpha_2 B_{i,t}$ with $B_{i,t}$ as in Eq.~(\ref{eq:pos}) and $r_i = 1$ for $i \in O^+_t$. Non-negativity of $\hat C$ (a convex combination of non-negative $C$'s) makes the normalization well-defined, and the weights $B_{i,t}/d_t$ sum to $1$ over $O^+_t$ by construction. Hence
+$\sum_{i\in O^+_t} \tilde r^+_{i,t} = \alpha_1 d_t + \alpha_2 d_t = d_t$ when $\alpha_1+\alpha_2=1$. The deviation $\delta_{i,t} = \tilde r^+_{i,t} - r_i = \alpha_2 (B_{i,t} - 1)$ satisfies $\sum_i \delta_{i,t} = 0$. The argument holds verbatim for any non-negative weight function, including the branch-entropy variant. \qed
+
+\subsection{Proof of Proposition~\ref{prop:consistency}}
+By the consolidation assumption, $B_{i,t}\to1$ a.s., so $\delta_{i,t} = \alpha_2(B_{i,t}-1) \to 0$ and $\tilde A_{i,t} \to \hat A_i$ by continuity of the z-normalization at non-degenerate limits. With bounded score function $\|\nabla_\theta \log\pi_\theta\|\le M$ and bounded advantages, $\|\nabla\mathcal{J}_{\method} - \nabla\mathcal{J}_{\mathrm{GRPO}}\| \le M\,\mathbb{E}\big[\tfrac1G\sum_i |\tilde A_{i,t} - \hat A_i|\big] \to 0$ by dominated convergence. \qed
+
+\subsection{Proof of Theorem~\ref{thm:optimum}}
+At a critical point $\theta^*$ of $\mathcal{J}_{\method}$, Proposition~\ref{prop:consistency} gives $\nabla\mathcal{J}_{\mathrm{GRPO}}(\theta^*)=0$. GRPO and DAPO differ in the constant assigned to incorrect answers ($0$ vs $-1$), a baseline shift that rescales gradient magnitudes but preserves signs and the maximizer $\theta^*=\arg\max \Pr[\text{correct}\mid q,\pi_\theta]$. \qed
+
+\subsection{Proof of Lemma~\ref{lem:bounded}}
+$C_k = -\tfrac1k\sum_{j\le k}\log \pi_{(j)} \ge -\log\big(\tfrac1k\sum_{j\le k}\pi_{(j)}\big) \ge -\log(1/k) = \log k$ by Jensen and $\sum_{j\le k}\pi_{(j)}\le1$; equality iff the head is uniform with total mass 1. For $k=1$, $C_1 = -\log\pi_{(1)} \to 0$ as $\pi_{(1)}\to1$, so $1/(C_1+\varepsilon)\to1/\varepsilon$ is unbounded as $\varepsilon\to0$. \qed
+
+\subsection{Proof of Proposition~\ref{prop:var}}
+$\hat C_{i,t} = (1-\lambda)\sum_{s=0}^{t}\lambda^s C_{i,t-s}$, so for i.i.d.\ $C$, $\mathrm{Var}(\hat C_{i,t}) = (1-\lambda)^2 \tfrac{1-\lambda^{2(t+1)}}{1-\lambda^2}\sigma_C^2 \to \tfrac{1-\lambda}{1+\lambda}\sigma_C^2$. At $\lambda=0.7$: $0.3/1.7 \approx 0.176$; at $\lambda=0.9$: $0.1/1.9\approx0.053$. \qed
+
+\section{Implementation hazards and the injection pattern}
+\label{app:impl}
+
+We document two silent failure modes encountered in a widely used trainer combination (TRL GRPOTrainer + compiled-kernel patches), both of which produce runs that \emph{look} like the shaped method but are not.
+
+\textbf{Hazard 1: loss-path bypass.} Kernel-patching layers may replace the trainer's \texttt{compute\_loss} with a compiled implementation, so a shaped advantage computed in an overridden \texttt{\_compute\_loss} is never used: the run silently trains plain GRPO. Detection: log a fingerprint of the advantage tensor inside the actual loss path and verify it differs from the group-uniform baseline.
+
+\textbf{Hazard 2: microbatch-degenerate group statistics.} Computing group normalizations (Eqs.~\ref{eq:pos}--\ref{eq:neg}) inside the per-microbatch loss with effective batch size $1$ reduces every group statistic to a singleton: normalized weights become constants, z-norms divide by near-zero variances, and the method degenerates --- in our measurements this produced both length explosions ($640\to3400$ tokens) on strong models and, on weaker models, occasionally \emph{better-looking} results than the correct implementation, for the wrong reason (\S\ref{sec:llama}).
+
+\textbf{Fix (injection pattern).} Compute the full shaped advantage matrix once per generation group in the scoring step (\texttt{\_generate\_and\_score}), where all $G$ rollouts are visible, and inject it as a 2-D per-token advantage into whatever loss implementation the stack executes. We verified gradient-path correctness with a $\beta_2{=}0$ control run that tracks plain GRPO exactly.
+
+\section{Experimental details}
+\label{app:setup}
+
+Qwen3-4B-Base with LoRA r=64, $\alpha{=}64$ on 7 projection modules; AdamW-8bit, lr $5{\times}10^{-6}$ cosine with $0.1$ warmup, weight decay $0.1$; group size $G{=}4$, batch 1 with gradient accumulation 4; max sequence 4096 (512 prompt / 3584 completion); no KL penalty ($\beta{=}0$); seed 3407; 300 steps ($\approx$1200 gradient rollout groups). Reward: thinking-format reward ($+2.5$ well-formed / $-2.0$ malformed) plus boxed-integer exact-match ($+3.0$ correct / $-1.5$ wrong) plus numeric-answer reward ($+1.5$/$-0.5$). Datasets: GSM8K main split; MATH-500 integer-answer subset (312 problems, levels 3--5); Big-Math-RL-Verified integer subset (2000); Omni-MATH integer subset (1971, mean difficulty 4.16). DAPO: $\epsilon_{\mathrm{low}}{=}0.2$, $\epsilon_{\mathrm{high}}{=}0.28$, token-level loss, truncated-completion masking (dynamic sampling not available in the trainer version). GSPO: sequence-level ratios, $\epsilon = 3{\times}10^{-4}/4{\times}10^{-4}$. Dr.GRPO: unbiased loss, no reward scaling. \method{}: $k{=}5$, $\lambda{=}0.7$, $\alpha_1{=}0.9$, $\alpha_2{=}0.1$, $\tau{=}1024$, $\varepsilon{=}10^{-4}$, zero-variance gate on, structural-token mask on.
+
+\section{Additional results}
+\label{app:more}
+
+\textbf{L50 (end-of-run) rewards, GRPO family.} GSM8K: GRPO $+2.02$, +\method{} $+2.60$; DAPO $+1.57\to+2.46$; Dr.GRPO $+1.73\to+2.44$; GSPO $+1.89\to+1.81$. MATH-500: $+0.94\to+1.39$; $+1.02\to+1.44$; $+0.89\to+1.59$; $+0.91\to+0.85$. Big-Math: $+1.51\to+1.67$ (best single-layer variant $+1.93$); $+1.33\to+2.02$; $+1.18\to+2.00$; $+1.18\to+0.96$. Omni-MATH: all methods within $[-0.6, -0.0]$, differences within noise; gate prevents shaped regression.
+
+\textbf{Completion lengths.} Shaping consistently shortens completions on learnable datasets (e.g.\ GSM8K GRPO $414\to\sim310$; DAPO $620\to328$; Big-Math $622\to548$), consistent with the removal of the length attractor.
+
+\end{document}

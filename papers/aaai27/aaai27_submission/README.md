@@ -65,6 +65,21 @@ References (incl. Limitations and Ethical Statement) counts toward the content
 page limit per the AAAI kit.
 **Remove the blue markup before submitting** (AAAI forbids colored text).
 
+## Revision 2 (2026-07-18): campaign results woven in (GREEN)
+
+Safe (non-contradicting) results from the July-2026 experiment campaign are
+integrated in GREEN (`\textcolor{green!50!black}`): oracle/judge-vs-gold analysis,
+modern-RM Best-of-N failure on MATH, aspect/m_min robustness, SPO same-model
+optimizer failure, AlpacaEval head-to-head + length check, XSTest per-category
+deltas, inference cost note, thinking-mode positioning, and the missing
+citations (Self-Refine, Reflexion, Jiang/Wataoka/Pan/Tian). Absolute numbers
+that clash with the paper's current tables were deliberately NOT added (see
+rebuttal/results_summary_aaai2027.md for the contradicting list). To fit the
+8-page content limit the filler "Discussion" paragraph and the "Ethical
+Statement" were removed and redundant prose was tightened. Blue = moved from
+appendix (rev 1), green = new campaign results (rev 2); remove all color
+before submission.
+
 ## Before submitting — manual checklist
 
 - [ ] Check AAAI-27 page limit and whether the technical appendix may stay in the

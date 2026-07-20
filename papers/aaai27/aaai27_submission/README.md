@@ -80,6 +80,18 @@ Statement" were removed and redundant prose was tightened. Blue = moved from
 appendix (rev 1), green = new campaign results (rev 2); remove all color
 before submission.
 
+## Revision 3 (2026-07-20): contradiction cleanup + EMNLP-question preemption (YELLOW)
+
+GREEN passages that contradicted the paper's own numbers were removed or rewritten
+(oracle ceiling arithmetic, aspect-sensitivity claim pending remeasurement, SPO
+same-model paragraph). New YELLOW (`orange!85!black`) additions preempt EMNLP-style
+questions with verified measurements: monotone group-size ablation (82/86/92 on a
+50-problem subset), qualitative judge-vs-gold statement with AUC 0.64, external-RM
+inconsistency clause, 1.7B BoN-collapse contrast, 22.4% reasoning-trace truncation
+figure, H200-vs-A100 timing reconciliation. Content still ends exactly on p. 8.
+Colors: blue = rev 1 (appendix promotion), green = rev 2 (campaign results),
+yellow/orange = rev 3. Remove ALL colors before submission.
+
 ## Before submitting — manual checklist
 
 - [ ] Check AAAI-27 page limit and whether the technical appendix may stay in the

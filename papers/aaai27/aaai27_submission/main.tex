@@ -387,7 +387,7 @@ We also conduct an additional analysis of how the prompt's instructions to produ
 \textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B-Thinking} \\
 \midrule
 Baseline (greedy) & 0.57 & 0.73 \\
-BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & -- \\
+BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & \textcolor{orange!85!black}{0.73} \\
 \method{}, 2 epochs, $N=7$ & \textbf{0.77} & \textbf{0.80} \\
 \bottomrule
 \end{tabular}
@@ -474,7 +474,7 @@ BoN (FsfairX, $N{=}7$)       & 46.0\% & 60.8\% & 52.0\% \\
 {\color{blue}
 \subsection{Reasoning mode and model scale}
 \label{sec:scaling-exp}
-To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark with fewer than 100 instances and therefore well suited for inference-time compute scaling. Both models run in their native reasoning mode with a maximum sequence length of 32,768 tokens. Results are shown in \Cref{tab:aime2026}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B-Thinking, \method{} further improves over the greedy baseline by seven points.
+To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark with fewer than 100 instances and therefore well suited for inference-time compute scaling. Both models run in their native reasoning mode with a maximum sequence length of 32,768 tokens. Results are shown in \Cref{tab:aime2026}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B-Thinking, \method{} further improves over the greedy baseline by seven points, \textcolor{orange!85!black}{whereas Best-of-\(N\) with the same external reward model only matches greedy decoding: the reward model recovers the best answer available among the sampled candidates, but sampling at \(N=7\) yields no headroom that greedy decoding does not already reach.}
 
 We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models}. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). \textcolor{orange!85!black}{Small models also expose a failure mode of plain reranking that \method{} avoids: with the 1.7B model judging itself, Best-of-\(N\) selection on strict instruction following collapses to nearly 50 points below the base model, while \method{} degrades gracefully to base level.} At 32B (\cref{tab:qwen32b}), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
 

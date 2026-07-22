@@ -552,3 +552,14 @@ multi-бандла (0.84); последние два едва над baseline (0
 использует именно verification-only, а multi-аспект — для open-ended (AlpacaEval/XSTest);
 и с уже имеющейся строкой Limitations «judge aspects remain task-specific». R3-W2/Q2
 закрывается ЧЕСТНО: аспекты task-specific, и для math это verification. Файлы: repro_out/aspect_ablation/.
+
+## 33. Провенанс Table 4 (held-out seed=42 subset) — baseline ПОДТВЕРЖДЁН (2026-07-22)
+KRIT issue 1. Перезамер greedy baseline (temp=0) на том же сабсете seed=42, N=50, orig-движок,
+судья gpt-4.1-mini. Результат: **26/48 = 0.54** (2 задачи хвоста зависли на eval-судье и были
+отброшены; полный диапазон 0.52-0.56). ВЫВОД: заявленный в Table 4 baseline 0.61 на этом
+held-out сабсете ПРАВДОПОДОБЕН — сабсет объективно тяжёлый (0.54-0.61 против 84.4 на полном
+MATH-500), число в статье честное. SAGE-половина пары досчитывается отдельно.
+ИНЦИДЕНТ: ночная очередь NQ3 (21.07) потеряна из-за зависания eval-судьи — 8 потоков делили
+httpx-клиент без bound на pool-acquire, пара полуоткрытых коннектов исчерпала пул -> вечный
+стопор на хвосте. Фикс: httpx.Timeout(connect/pool) + 4 ретрая + exact-match fallback в
+eval_module/helpers.py и eq_evaluator_fast.py; плюс внешний per-job timeout в перезапуске.

@@ -138,7 +138,7 @@
   {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$\\[3mm] \trophyicon};
 
 % ================= ARROWS =================
-\draw[flow] (user.east) -- ++(0.35,0) |- (genprompt.west);
+\draw[flow] (user.north) |- (genprompt.west);
 \draw[flow] (genprompt.east) -- (genllm.west);
 \draw[flow] (genllm.east) -- (hj.west);
 \draw[flow] (hj.east) -- ++(0.55,0) |- (judllm.west);

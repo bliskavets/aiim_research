@@ -77,20 +77,22 @@
   {later iterations condition\\ on the textual gradient $\nabla$};
 
 % ================= JUDGE =================
-\node[card, minimum width=30mm, minimum height=17mm] at (12.6,7.83) {};
-\node[card, minimum width=30mm, minimum height=17mm] at (12.6,7.99) {};
 \node[card, text width=27mm] (judprompt) at (12.65,8.15)
   {\hd{judge prompt} $P^{(k)}_j$\\[2pt]
    Does $h_j$ meet criterion $k$? Answer inside tags.};
 \node[llm] (judllm) at (12.65,10.35) {LLM};
-\node[card, minimum width=31mm, minimum height=18mm] at (15.45,9.98) {};
-\node[card, minimum width=31mm, minimum height=18mm] at (15.45,10.14) {};
 \node[card, text width=26mm] (judresp) at (15.45,10.3)
   {\hd{judge response}\\[2pt]
    {\ttfamily\footnotesize <criteria$_k$>}\\
    \hspace*{2mm}$\ell_k \in \{\text{yes},\,\text{no}\}$\\
    {\ttfamily\footnotesize </criteria$_k$>}};
 \node[note, anchor=west] at (15.7,8.98) {$\times K$ aspects};
+\begin{scope}[on background layer]
+  \draw[card] ([shift={(0.10,0.10)}]judprompt.south west) rectangle ([shift={(0.10,0.10)}]judprompt.north east);
+  \draw[card] ([shift={(0.20,0.20)}]judprompt.south west) rectangle ([shift={(0.20,0.20)}]judprompt.north east);
+  \draw[card] ([shift={(0.10,0.10)}]judresp.south west) rectangle ([shift={(0.10,0.10)}]judresp.north east);
+  \draw[card] ([shift={(0.20,0.20)}]judresp.south west) rectangle ([shift={(0.20,0.20)}]judresp.north east);
+\end{scope}
 \node[chip, fill=posF, draw=refA] (yes) at (18.3,10.8) {yes\,/\,correct};
 \node[chip, fill=negF, draw=genA] (no)  at (18.3,9.8)  {no\,/\,false};
 \node[note, anchor=west] at (19.15,10.8) {$\Pi_k$};

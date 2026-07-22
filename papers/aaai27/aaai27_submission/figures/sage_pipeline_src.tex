@@ -62,16 +62,16 @@
 \node[hdr, fill=refA] at (9.8,5.7)   {3\,\ $\cdot$\ \,REFLECT};
 
 % ================= USER =================
-\node[card, align=center, minimum width=26mm, minimum height=26mm] (user) at (1.15,2.95)
+\node[card, align=center, minimum width=26mm, minimum height=26mm] (user) at (2.025,2.95)
   {\hd{User prompt} $p$\\[12mm]};
 % person + speech-bubble icon, BELOW the text; head centred over shoulders
 % shoulders: dome centred at x=1.02 (arc centre = start point + radius)
-\fill[color=P7B90B2] (0.58,2.08) arc (180:0:0.44) -- cycle;
+\fill[color=P7B90B2] (1.455,2.08) arc (180:0:0.44) -- cycle;
 % head: circle centred at the same x=1.02
-\fill[color=E8C39E] (1.02,2.80) circle (0.24);
+\fill[color=E8C39E] (1.895,2.80) circle (0.24);
 % speech bubble to the upper right
-\fill[color=genA, rounded corners=2.4pt] (1.46,2.76) rectangle (2.18,3.20);
-\fill[color=genA] (1.58,2.76) -- (1.78,2.76) -- (1.58,2.56) -- cycle;
+\fill[color=genA, rounded corners=2.4pt] (2.335,2.76) rectangle (3.055,3.20);
+\fill[color=genA] (2.455,2.76) -- (2.655,2.76) -- (2.455,2.56) -- cycle;
 
 % ================= GENERATE =================
 \node[card, text width=32mm] (genprompt) at (4.95,9.3)

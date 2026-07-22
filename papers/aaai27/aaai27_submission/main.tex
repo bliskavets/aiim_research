@@ -134,9 +134,9 @@ In contrast, \method{} uses the base LLM as both generator and soft judge and re
 \subsection{Notation and Problem setup}
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.68\textwidth]{figures/figure2_new_28012026.pdf}
+\includegraphics[width=\textwidth]{figures/sage_pipeline.pdf}
 \caption{
-  {The SAGE framework: The LLM acts as generator, self-judge, and reflector. It extracts a textual gradient $\nabla$ from grouped candidates to iteratively refine the output.}
+  {The SAGE framework: a single LLM acts as generator, self-judge, and reflector. Candidates are scored with contrastive label margins, partitioned into good and bad groups, and a textual gradient $\nabla$ extracted from the groups guides the next generation round.}
 }
 \label{fig:sage_arch}
 \end{figure*}

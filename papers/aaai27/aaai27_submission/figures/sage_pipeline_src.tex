@@ -1,125 +1,139 @@
-\documentclass[tikz,border=6pt]{standalone}
+\documentclass[tikz,border=4pt]{standalone}
 \usepackage{tikz}
 \usepackage[T1]{fontenc}
 \usepackage{newtxtext,newtxmath}
-\usetikzlibrary{positioning,arrows.meta,backgrounds,fit,calc,shapes.geometric}
+\usetikzlibrary{arrows.meta,backgrounds,calc}
 
-% ---- soft pastel palette ----
-\definecolor{genA}{HTML}{C0504D} % generate accent (muted red)
-\definecolor{genF}{HTML}{FCF3F2} % generate fill (very light)
-\definecolor{judA}{HTML}{3B6FB0} % judge accent (muted blue)
-\definecolor{judF}{HTML}{F1F7FC}
-\definecolor{refA}{HTML}{4E8C5B} % reflect accent (muted green)
-\definecolor{refF}{HTML}{F2F8F4}
-\definecolor{ambA}{HTML}{C88A2E} % gradient / terminal accent
-\definecolor{ambF}{HTML}{FBF2E2}
-\definecolor{ink}{HTML}{2C2C2C}   % text
-\definecolor{arw}{HTML}{8A8A8A}   % arrows
-\definecolor{llmF}{HTML}{E6EEF9}
-\definecolor{posF}{HTML}{E4F1E6}
-\definecolor{negF}{HTML}{FBE9E7}
-\definecolor{cardB}{HTML}{C9CCD1}  % card border
+% ---- palette: three muted accents + amber, near-white fills ----
+\definecolor{genA}{HTML}{B65A56}
+\definecolor{genF}{HTML}{FDF4F3}
+\definecolor{judA}{HTML}{44699D}
+\definecolor{judF}{HTML}{F3F7FC}
+\definecolor{refA}{HTML}{4F8A5F}
+\definecolor{refF}{HTML}{F3F9F5}
+\definecolor{ambA}{HTML}{C08A3E}
+\definecolor{ambF}{HTML}{FDF6E9}
+\definecolor{ink}{HTML}{262626}
+\definecolor{arw}{HTML}{7A7A7A}
+\definecolor{llmF}{HTML}{E8F0FA}
+\definecolor{posF}{HTML}{E7F3E9}
+\definecolor{negF}{HTML}{FBEAE8}
+\definecolor{cardB}{HTML}{BFC3C9}
 
 \tikzset{
   every node/.style={font=\small, text=ink},
-  panel/.style={rounded corners=11pt, line width=0.8pt, inner sep=10pt},
-  hdr/.style={rounded corners=8pt, inner xsep=12pt, inner ysep=5pt, font=\bfseries\small, text=white},
-  card/.style={rounded corners=5pt, draw=cardB, line width=0.7pt, fill=white, align=left, inner sep=7pt},
-  title/.style={font=\bfseries\small},
-  llm/.style={rounded corners=6pt, draw=judA, line width=1pt, fill=llmF, font=\bfseries, text=judA, minimum width=15mm, minimum height=11mm, align=center},
-  hbox/.style={rounded corners=4pt, draw=cardB, line width=0.7pt, fill=white, minimum width=13mm, minimum height=7mm, font=\small},
-  chip/.style={rounded corners=4pt, line width=0.7pt, minimum width=11mm, minimum height=6.5mm, font=\small},
-  note/.style={font=\it\footnotesize, text=arw, align=left},
-  flow/.style={-{Stealth[length=2.6mm]}, line width=1pt, color=arw, rounded corners=3pt},
+  card/.style={rounded corners=4.5pt, draw=cardB, line width=0.6pt, fill=white,
+               align=left, inner xsep=7pt, inner ysep=6pt},
+  llm/.style={rounded corners=5pt, draw=judA, line width=0.9pt, fill=llmF,
+              font=\bfseries\small, text=judA, minimum width=13mm, minimum height=9mm, align=center},
+  hbox/.style={rounded corners=3.5pt, draw=cardB, line width=0.6pt, fill=white,
+               minimum width=11mm, minimum height=6.5mm},
+  chip/.style={rounded corners=3.5pt, line width=0.6pt, minimum width=16mm, minimum height=6.5mm},
+  gchip/.style={rounded corners=3.5pt, line width=0.6pt, minimum width=9mm, minimum height=6.5mm},
+  hdr/.style={rounded corners=7pt, inner xsep=11pt, inner ysep=4.5pt,
+              font=\bfseries\small, text=white},
+  note/.style={font=\itshape\footnotesize, text=arw, align=center},
+  flow/.style={-{Stealth[length=2.4mm,width=1.9mm]}, line width=0.85pt, color=arw, rounded corners=2.5pt},
 }
-
 \newcommand{\hd}[1]{{\bfseries #1}}
-\newcommand{\subnote}[1]{{\itshape\footnotesize\textcolor{arw}{#1}}}
+
 \begin{document}
-\begin{tikzpicture}[node distance=6mm]
+\begin{tikzpicture}[x=1cm,y=1cm]
 
-% ============ USER PROMPT ============
-\node[card, minimum width=26mm, align=center] (user)
-  {\textbf{User prompt} $p$};
-
-% ============ 1 GENERATE ============
-\node[card, right=34mm of user, yshift=26mm, text width=42mm] (genprompt)
-  {\hd{guided generation prompt}\\[2pt]
-   Given $p$, the current best answers, and the improvement recommendations (gradient), generate an improved answer.};
-\node[llm, right=9mm of genprompt] (genllm) {LLM\\[-1pt]\footnotesize$*$};
-\node[hbox, right=10mm of genllm, yshift=9mm]  (h1) {$h_1$};
-\node[hbox, right=10mm of genllm]              (hj) {$h_j$};
-\node[hbox, right=10mm of genllm, yshift=-9mm] (hN) {$h_N$};
-\node at ($(hj)!0.5!(hN)+(0,4.5mm)$) {\footnotesize$\vdots$};
-\node[note, below=7mm of genprompt.south west, anchor=north west, text width=44mm] (gennote)
-  {answers $\{h\}$ are conditioned on $p$ and, in later\\ iterations, on the textual gradient $\nabla$};
-
-% ============ 2 JUDGE ============
-\node[llm, right=42mm of hj] (judllm) {LLM\\[-1pt]\footnotesize$*$};
-\node[card, right=9mm of judllm, text width=30mm] (judresp)
-  {\hd{judge response}\\[2pt]\ttfamily\footnotesize <criteria$_k$>\\ $\ell_k\in\{$yes,no$\}$\\ </criteria$_k$>};
-\node[card, below=7mm of judllm, text width=33mm] (judprompt)
-  {\hd{judge prompt} $P^{(k)}_j$\\[2pt]
-   Does answer $h_j$ meet criterion $k$? Answer inside tags.};
-\node[chip, fill=posF, draw=refA, right=12mm of judresp, yshift=5mm] (yes) {yes / correct};
-\node[chip, fill=negF, draw=genA, right=12mm of judresp, yshift=-6mm] (no) {no / false};
-\node[note, right=1mm of yes, xshift=-1mm] {$\Pi_k$};
-\node[note, right=1mm of no, xshift=-1mm] {$\Sigma_k$};
-\node[card, below=16mm of judresp, text width=34mm] (labels)
-  {\hd{hard labels}\ \ $\ell_1(h),\dots,\ell_K(h)$};
-\node[card, right=8mm of labels, text width=44mm, fill=ambF, draw=ambA] (margins)
-  {\hd{contrastive margins}\\[1pt] $s_k(h)=\overline{\log P(\Pi_k)}-\overline{\log P(\Sigma_k)}$};
-
-% ============ 3 REFLECT ============
-\node[card, below=52mm of judprompt, text width=46mm] (rank)
-  {\centering\hd{rank all candidates}\\[2pt] $s(h)=\textstyle\sum_k w_k\,s_k(h)$\\[1pt]\subnote{weighted multi-aspect score}};
-\node[card, below=7mm of rank, text width=46mm] (groups)
-  {\centering\hd{contrastive groups}\\[3pt]
-   \begin{tikzpicture}[baseline]
-     \node[chip,fill=posF,draw=refA] (gp){$h^+$};\node[right=2mm of gp]{$\cdots$};\node[chip,fill=posF,draw=refA,right=8mm of gp](gp2){$h^+$};
-     \node[left=2mm of gp,font=\bfseries,text=refA]{good $\mathcal{G}$};
-     \node[chip,fill=negF,draw=genA,below=3mm of gp](bp){$h^-$};\node[right=2mm of bp]{$\cdots$};\node[chip,fill=negF,draw=genA,right=8mm of bp](bp2){$h^-$};
-     \node[left=2mm of bp,font=\bfseries,text=genA]{bad $\mathcal{B}$};
-   \end{tikzpicture}};
-\node[card, left=12mm of groups, text width=36mm] (gcprompt)
-  {\hd{gradient-calculator prompt}\\[2pt] You are a preference gradient calculator. Given $\mathcal{G}$ and $\mathcal{B}$, explain what makes $\mathcal{G}$ better.};
-\node[llm, above=8mm of gcprompt] (refllm) {LLM\\[-1pt]\footnotesize$*$};
-\node[card, above=8mm of refllm, text width=36mm, fill=ambF, draw=ambA] (grad)
-  {\hd{textual gradient} $\nabla$\\[2pt]\itshape ``Here are recommendations on how to improve the answer\,\dots''};
-
-% ============ RETURN ============
-\node[card, right=30mm of rank, fill=ambF, draw=ambA, minimum width=26mm, align=center] (ret)
-  {\textbf{return} $h_{\text{best}}$};
-
-% ============ PANELS (background) ============
+% ================= PANELS (fixed rectangles) =================
 \begin{scope}[on background layer]
-  \node[panel, fill=genF, draw=genA, fit=(genprompt)(genllm)(h1)(hN)(gennote)] (Pgen) {};
-  \node[panel, fill=judF, draw=judA, fit=(judllm)(judresp)(judprompt)(yes)(no)(labels)(margins)] (Pjud) {};
-  \node[panel, fill=refF, draw=refA, fit=(rank)(groups)(gcprompt)(refllm)(grad)] (Pref) {};
+  \draw[fill=genF, draw=genA, line width=0.8pt, rounded corners=10pt] (3.0,6.7) rectangle (10.6,11.6);
+  \draw[fill=judF, draw=judA, line width=0.8pt, rounded corners=10pt] (11.0,6.7) rectangle (19.6,11.6);
+  \draw[fill=refF, draw=refA, line width=0.8pt, rounded corners=10pt] (4.2,0.2) rectangle (15.4,5.7);
 \end{scope}
-% panel headers
-\node[hdr, fill=genA, anchor=north] at (Pgen.north) {1\, $\cdot$\, GENERATE};
-\node[hdr, fill=judA, anchor=north] at (Pjud.north) {2\, $\cdot$\, JUDGE};
-\node[hdr, fill=refA, anchor=north] at (Pref.north) {3\, $\cdot$\, REFLECT};
+\node[hdr, fill=genA] at (6.8,11.6)  {1\,\ $\cdot$\ \,GENERATE};
+\node[hdr, fill=judA] at (15.3,11.6) {2\,\ $\cdot$\ \,JUDGE};
+\node[hdr, fill=refA] at (9.8,5.7)   {3\,\ $\cdot$\ \,REFLECT};
 
-% ============ ARROWS ============
-\draw[flow] (user.east) -- ++(0.5,0) |- (genprompt.west) node[note,pos=0.25,above,xshift=-3mm]{initial generation};
-\draw[flow] (genprompt) -- (genllm);
-\draw[flow] (genllm) -- (hj);
-\draw[flow] (hj.east) -- ++(0.5,0) |- (judllm.west) node[note,pos=0.75,above]{$\{h\}$};
+% ================= USER =================
+\node[card, align=center] (user) at (1.15,9.3) {\hd{User prompt}\\[1pt]$p$};
+
+% ================= GENERATE =================
+\node[card, text width=32mm] (genprompt) at (4.95,9.3)
+  {\hd{guided generation prompt}\\[2pt]
+   Given $p$, the current best answers and the gradient $\nabla$, generate an improved answer.};
+\node[llm] (genllm) at (7.75,9.3) {LLM};
+\node[hbox] (h1) at (9.7,10.3) {$h_1$};
+\node[hbox] (hj) at (9.7,9.3)  {$h_j$};
+\node[hbox] (hN) at (9.7,7.9)  {$h_N$};
+\node at (9.7,8.62) {$\vdots$};
+\node[note, text width=40mm] at (5.2,7.35)
+  {later iterations condition\\ on the textual gradient $\nabla$};
+
+% ================= JUDGE =================
+\node[card, text width=27mm] (judprompt) at (12.65,8.15)
+  {\hd{judge prompt} $P^{(k)}_j$\\[2pt]
+   Does $h_j$ meet criterion $k$? Answer inside tags.};
+\node[llm] (judllm) at (12.65,10.35) {LLM};
+\node[card, text width=26mm] (judresp) at (15.45,10.3)
+  {\hd{judge response}\\[2pt]
+   {\ttfamily\footnotesize <criteria$_k$>}\\
+   \hspace*{2mm}$\ell_k \in \{\text{yes},\,\text{no}\}$\\
+   {\ttfamily\footnotesize </criteria$_k$>}};
+\node[chip, fill=posF, draw=refA] (yes) at (18.3,10.8) {yes\,/\,correct};
+\node[chip, fill=negF, draw=genA] (no)  at (18.3,9.8)  {no\,/\,false};
+\node[note, anchor=west] at (19.15,10.8) {$\Pi_k$};
+\node[note, anchor=west] at (19.15,9.8) {$\Sigma_k$};
+\node[card, text width=48mm, fill=ambF, draw=ambA] (outs) at (16.75,7.72)
+  {\hd{labels \& margins}\ {\itshape\footnotesize\color{arw}(per candidate)}\\[2pt]
+   hard labels $\ell_k(h)$ from tags\\[1pt]
+   $s_k(h)=\log P(\Pi_k)-\log P(\Sigma_k)$};
+
+% ================= REFLECT =================
+\node[card, text width=34mm, align=center] (rank) at (12.2,4.3)
+  {\hd{rank all candidates}\\[2pt]
+   $s(h)=\sum_k w_k\, s_k(h)$\\[1pt]
+   {\itshape\footnotesize\color{arw} weighted multi-aspect score}};
+\node[card, text width=42mm, align=center] (groups) at (12.2,1.7)
+  {\hd{contrastive groups}\\[4pt]
+   {\color{refA}\bfseries good $\mathcal{G}$}\ \
+   \tikz[baseline=-0.6ex]{\node[gchip,fill=posF,draw=refA]{$h^{+}$};}\
+   $\cdots$\
+   \tikz[baseline=-0.6ex]{\node[gchip,fill=posF,draw=refA]{$h^{+}$};}\\[3pt]
+   {\color{genA}\bfseries bad $\mathcal{B}$}\ \ \,
+   \tikz[baseline=-0.6ex]{\node[gchip,fill=negF,draw=genA]{$h^{-}$};}\
+   $\cdots$\
+   \tikz[baseline=-0.6ex]{\node[gchip,fill=negF,draw=genA]{$h^{-}$};}};
+\node[card, text width=32mm] (gcprompt) at (6.5,1.4)
+  {\hd{gradient prompt}\\[2pt]
+   Given $\mathcal{G}$ and $\mathcal{B}$, explain what makes $\mathcal{G}$ better.};
+\node[llm] (refllm) at (6.5,3.15) {LLM};
+\node[card, text width=30mm, fill=ambF, draw=ambA] (grad) at (6.5,4.7)
+  {\hd{textual gradient} $\nabla$\\[1pt]
+   {\itshape``improve the answer by\,\dots''}};
+
+% ================= RETURN =================
+\node[card, fill=ambF, draw=ambA, align=center] (ret) at (18.1,4.3)
+  {\hd{return} $h_{\mathrm{best}}$};
+
+% ================= ARROWS =================
+\draw[flow] (user.east) -- (genprompt.west);
+\draw[flow] (genprompt.east) -- (genllm.west);
+\draw[flow] (genllm.east) -- (hj.west);
+\draw[flow] (hj.east) -- ++(0.55,0) |- (judllm.west);
+\node[note] at (10.8,8.82) {$\{h\}$};
 \draw[flow] (judprompt.north) -- (judllm.south);
-\draw[flow] (judllm) -- (judresp);
-\draw[flow] (judresp) -- (yes.west);
-\draw[flow] (judresp) -- (no.west);
-\draw[flow] (judresp.south) -- (labels.north);
-\draw[flow] ($(yes)!0.5!(no)$)++(1.4,0) |- (margins.east);
-\draw[flow] (Pjud.south) -- ++(0,-3mm) -| (rank.north) node[note,pos=0.25,above]{labels \& margins for every $h$};
-\draw[flow] (rank) -- (groups);
-\draw[flow] (groups) -- (gcprompt) node[note,pos=0.5,above]{$\mathcal{G},\mathcal{B}$};
-\draw[flow] (gcprompt) -- (refllm);
-\draw[flow] (refllm) -- (grad);
-\draw[flow] (grad.north) -- ++(0,7mm) -| (genllm.south) node[note,pos=0.25,left,align=center]{textual gradient $\nabla$\\(next iteration)};
-\draw[flow] (rank.east) -- (ret.west) node[note,pos=0.5,above]{max iters?};
+\draw[flow] (judllm.east) -- (judresp.west);
+\draw[flow] (judresp.east) -- (yes.west);
+\draw[flow] (judresp.east) -- (no.west);
+\draw[flow] (judresp.south) -- (15.45,8.55);
+\draw[flow] (no.south) -- (18.3,8.55);
+\draw[flow] (12.2,6.7) -- (rank.north);
+\node[note, anchor=west] at (12.4,6.15) {labels \& margins for every $h$};
+\draw[flow] (rank.south) -- (groups.north);
+\draw[flow] (groups.west) -- (gcprompt.east |- groups.west);
+\node[note] at (9.2,1.95) {$\mathcal{G},\mathcal{B}$};
+\draw[flow] (gcprompt.north) -- (refllm.south);
+\draw[flow] (refllm.north) -- (grad.south);
+\draw[flow] (grad.north) -- (6.5,6.2) -- (7.75,6.2) -- (genllm.south);
+\node[note, anchor=east, align=right] at (6.2,6.28) {textual gradient $\nabla$\\ (next iteration)};
+\draw[flow] (rank.east) -- (ret.west);
+\node[note] at (15.6,4.62) {max iterations?};
 
 \end{tikzpicture}
 \end{document}

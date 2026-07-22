@@ -56,12 +56,15 @@
 
 % ================= USER =================
 \node[card, align=center, minimum width=24mm, minimum height=20mm] (user) at (1.15,9.3)
-  {\vspace{9mm}\\ \hd{User prompt} $p$};
-% person icon
-\fill[color=E8C39E] (0.98,9.86) circle (0.155);
-\fill[color=P7B90B2] (0.98,9.52) arc (180:0:0.27) -- cycle;
-\fill[color=genA, rounded corners=1.2pt] (1.28,9.82) rectangle (1.72,10.06);
-\fill[color=genA] (1.34,9.84) -- (1.46,9.84) -- (1.34,9.72) -- cycle;
+  {\hd{User prompt} $p$\\[10mm]};
+% person + speech-bubble icon, BELOW the text; head centred over shoulders
+% shoulders: dome centred at x=1.02 (arc centre = start point + radius)
+\fill[color=P7B90B2] (0.80,8.68) arc (180:0:0.22) -- cycle;
+% head: circle centred at the same x=1.02
+\fill[color=E8C39E] (1.02,8.90) circle (0.12);
+% speech bubble to the upper right
+\fill[color=genA, rounded corners=1.2pt] (1.24,8.86) rectangle (1.60,9.08);
+\fill[color=genA] (1.30,8.86) -- (1.40,8.86) -- (1.30,8.76) -- cycle;
 
 % ================= GENERATE =================
 \node[card, text width=32mm] (genprompt) at (4.95,9.3)

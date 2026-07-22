@@ -97,7 +97,7 @@
 \node[chip, fill=negF, draw=genA] (no)  at (18.3,9.8)  {no\,/\,false};
 \node[note, anchor=west] at (19.15,10.8) {$\Pi_k$};
 \node[note, anchor=west] at (19.15,9.8) {$\Sigma_k$};
-\node[card, text width=48mm, fill=ambF, draw=ambA] (outs) at (16.75,7.72)
+\node[card, text width=43mm, fill=ambF, draw=ambA] (outs) at (17.05,7.72)
   {\hd{labels \& margins}\ {\itshape\footnotesize\color{arw}(per candidate)}\\[2pt]
    hard labels $\ell_k(h)$ from tags\\[1pt]
    $s_k(h)=\log P(\Pi_k)-\log P(\Sigma_k)$};
@@ -145,8 +145,8 @@
 \draw[flow] (judllm.east) -- (judresp.west);
 \draw[flow] (judresp.east) -- (yes.west);
 \draw[flow] (judresp.east) -- (no.west);
-\draw[flow] (judresp.south) -- (15.45,8.55);
-\draw[flow] (no.south) -- (18.3,8.55);
+\draw[flow] (judresp.south) -- (15.9,8.55);
+\draw[flow] (no.south) |- (18.45,8.55);
 \draw[flow] (12.2,6.7) -- (rank.north);
 \node[note, anchor=west] at (12.4,6.15) {labels \& margins for every $h$};
 \draw[flow] (rank.south) -- (groups.north);

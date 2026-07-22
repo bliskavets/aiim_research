@@ -19,6 +19,10 @@
 \definecolor{posF}{HTML}{E7F3E9}
 \definecolor{negF}{HTML}{FBEAE8}
 \definecolor{cardB}{HTML}{BFC3C9}
+\definecolor{E8C39E}{HTML}{E8C39E}
+\definecolor{P7B90B2}{HTML}{7B90B2}
+\definecolor{GOLDF}{HTML}{E3B23C}
+\definecolor{GOLDD}{HTML}{C08A3E}
 
 \tikzset{
   every node/.style={font=\small, text=ink},
@@ -51,7 +55,13 @@
 \node[hdr, fill=refA] at (9.8,5.7)   {3\,\ $\cdot$\ \,REFLECT};
 
 % ================= USER =================
-\node[card, align=center] (user) at (1.15,9.3) {\hd{User prompt}\\[1pt]$p$};
+\node[card, align=center, minimum width=24mm, minimum height=20mm] (user) at (1.15,9.3)
+  {\vspace{9mm}\\ \hd{User prompt} $p$};
+% person icon
+\fill[color=E8C39E] (0.98,9.86) circle (0.155);
+\fill[color=P7B90B2] (0.98,9.52) arc (180:0:0.27) -- cycle;
+\fill[color=genA, rounded corners=1.2pt] (1.28,9.82) rectangle (1.72,10.06);
+\fill[color=genA] (1.34,9.84) -- (1.46,9.84) -- (1.34,9.72) -- cycle;
 
 % ================= GENERATE =================
 \node[card, text width=32mm] (genprompt) at (4.95,9.3)
@@ -67,8 +77,8 @@
   {later iterations condition\\ on the textual gradient $\nabla$};
 
 % ================= JUDGE =================
-\node[card, minimum width=33mm, minimum height=17mm] at (12.65,7.83) {};
-\node[card, minimum width=33mm, minimum height=17mm] at (12.65,7.99) {};
+\node[card, minimum width=30mm, minimum height=17mm] at (12.6,7.83) {};
+\node[card, minimum width=30mm, minimum height=17mm] at (12.6,7.99) {};
 \node[card, text width=27mm] (judprompt) at (12.65,8.15)
   {\hd{judge prompt} $P^{(k)}_j$\\[2pt]
    Does $h_j$ meet criterion $k$? Answer inside tags.};
@@ -80,7 +90,7 @@
    {\ttfamily\footnotesize <criteria$_k$>}\\
    \hspace*{2mm}$\ell_k \in \{\text{yes},\,\text{no}\}$\\
    {\ttfamily\footnotesize </criteria$_k$>}};
-\node[note] at (15.45,8.98) {$\times K$ aspects};
+\node[note, anchor=west] at (15.7,8.98) {$\times K$ aspects};
 \node[chip, fill=posF, draw=refA] (yes) at (18.3,10.8) {yes\,/\,correct};
 \node[chip, fill=negF, draw=genA] (no)  at (18.3,9.8)  {no\,/\,false};
 \node[note, anchor=west] at (19.15,10.8) {$\Pi_k$};
@@ -115,7 +125,13 @@
 
 % ================= RETURN =================
 \node[card, fill=ambF, draw=ambA, align=center] (ret) at (18.35,4.3)
-  {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$};
+  {\vspace{9mm}\\ \hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$};
+% trophy icon
+\fill[color=GOLDF] (18.09,5.02) -- (18.61,5.02) -- (18.50,4.70) -- (18.20,4.70) -- cycle;
+\draw[color=GOLDD, line width=0.7pt] (18.09,4.98) arc (140:220:0.20);
+\draw[color=GOLDD, line width=0.7pt] (18.61,4.98) arc (40:-40:0.20);
+\fill[color=GOLDF] (18.31,4.70) rectangle (18.39,4.56);
+\fill[color=GOLDD] (18.22,4.56) rectangle (18.48,4.50);
 
 % ================= ARROWS =================
 \draw[flow] (user.east) -- (genprompt.west);

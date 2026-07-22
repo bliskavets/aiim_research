@@ -127,14 +127,14 @@
    {\itshape``improve the answer by\,\dots''}};
 
 % ================= RETURN =================
-\node[card, fill=ambF, draw=ambA, align=center] (ret) at (18.35,4.3)
-  {\vspace{9mm}\\ \hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$};
+\node[card, fill=ambF, draw=ambA, align=center, minimum width=30mm, minimum height=24mm] (ret) at (18.35,4.35)
+  {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$\\[11mm]};
 % trophy icon
-\fill[color=GOLDF] (18.09,5.02) -- (18.61,5.02) -- (18.50,4.70) -- (18.20,4.70) -- cycle;
-\draw[color=GOLDD, line width=0.7pt] (18.09,4.98) arc (140:220:0.20);
-\draw[color=GOLDD, line width=0.7pt] (18.61,4.98) arc (40:-40:0.20);
-\fill[color=GOLDF] (18.31,4.70) rectangle (18.39,4.56);
-\fill[color=GOLDD] (18.22,4.56) rectangle (18.48,4.50);
+\fill[color=GOLDF] (18.09,4.02) -- (18.61,4.02) -- (18.50,3.70) -- (18.20,3.70) -- cycle;
+\draw[color=GOLDD, line width=0.7pt] (18.09,3.98) arc (140:220:0.20);
+\draw[color=GOLDD, line width=0.7pt] (18.61,3.98) arc (40:-40:0.20);
+\fill[color=GOLDF] (18.31,3.70) rectangle (18.39,3.56);
+\fill[color=GOLDD] (18.22,3.56) rectangle (18.48,3.50);
 
 % ================= ARROWS =================
 \draw[flow] (user.east|-genprompt.west) -- (genprompt.west);

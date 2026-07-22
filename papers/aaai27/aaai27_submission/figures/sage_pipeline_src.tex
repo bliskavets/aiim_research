@@ -62,19 +62,25 @@
 \node[hbox] (hj) at (9.7,9.3)  {$h_j$};
 \node[hbox] (hN) at (9.7,7.9)  {$h_N$};
 \node at (9.7,8.62) {$\vdots$};
+\node[note] at (9.65,7.35) {sampled at\\ $\tau=0.7$--$0.9$};
 \node[note, text width=40mm] at (5.2,7.35)
   {later iterations condition\\ on the textual gradient $\nabla$};
 
 % ================= JUDGE =================
+\node[card, minimum width=33mm, minimum height=17mm] at (12.65,7.83) {};
+\node[card, minimum width=33mm, minimum height=17mm] at (12.65,7.99) {};
 \node[card, text width=27mm] (judprompt) at (12.65,8.15)
   {\hd{judge prompt} $P^{(k)}_j$\\[2pt]
    Does $h_j$ meet criterion $k$? Answer inside tags.};
 \node[llm] (judllm) at (12.65,10.35) {LLM};
+\node[card, minimum width=31mm, minimum height=18mm] at (15.45,9.98) {};
+\node[card, minimum width=31mm, minimum height=18mm] at (15.45,10.14) {};
 \node[card, text width=26mm] (judresp) at (15.45,10.3)
   {\hd{judge response}\\[2pt]
    {\ttfamily\footnotesize <criteria$_k$>}\\
    \hspace*{2mm}$\ell_k \in \{\text{yes},\,\text{no}\}$\\
    {\ttfamily\footnotesize </criteria$_k$>}};
+\node[note] at (15.45,8.98) {$\times K$ aspects};
 \node[chip, fill=posF, draw=refA] (yes) at (18.3,10.8) {yes\,/\,correct};
 \node[chip, fill=negF, draw=genA] (no)  at (18.3,9.8)  {no\,/\,false};
 \node[note, anchor=west] at (19.15,10.8) {$\Pi_k$};
@@ -109,7 +115,7 @@
 
 % ================= RETURN =================
 \node[card, fill=ambF, draw=ambA, align=center] (ret) at (18.35,4.3)
-  {\hd{return} $h_{\mathrm{best}}$};
+  {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$};
 
 % ================= ARROWS =================
 \draw[flow] (user.east) -- (genprompt.west);
@@ -131,9 +137,10 @@
 \draw[flow] (gcprompt.north) -- (refllm.south);
 \draw[flow] (refllm.north) -- (grad.south);
 \draw[flow] (grad.north) -- (6.5,6.2) -- (7.75,6.2) -- (genllm.south);
-\node[note, anchor=east, align=right] at (6.2,6.28) {textual gradient $\nabla$\\ (next iteration)};
+\node[note, anchor=east, align=right] at (6.2,6.28) {textual gradient $\nabla$\\ (epoch $t\!\rightarrow\!t{+}1$)};
 \draw[flow] (rank.east) -- (ret.west);
 \node[note, align=center] at (16.35,4.78) {max\\ iterations?};
 
+\node[note] at (9.8,-0.28) {$*$\ a single \emph{frozen} LLM plays all three roles --- no fine-tuning and no external reward model};
 \end{tikzpicture}
 \end{document}

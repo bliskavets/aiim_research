@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  22 JUL 2026 22:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  22 JUL 2026 22:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -519,11 +519,11 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 10.95pt on input line 108.
 [2{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc} <./figures/figure1_new_
 28012026.pdf>]
-<figures/sage_pipeline.pdf, id=26, 573.04286pt x 360.9194pt>
+<figures/sage_pipeline.pdf, id=26, 574.70808pt x 360.9194pt>
 File: figures/sage_pipeline.pdf Graphic file (type pdf)
 <use figures/sage_pipeline.pdf>
 Package pdftex.def Info: figures/sage_pipeline.pdf  used on input line 137.
-(pdftex.def)             Requested size: 505.89pt x 318.62886pt.
+(pdftex.def)             Requested size: 505.89pt x 317.70917pt.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
 (Font)              scaled to size 10.0pt on input line 169.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
@@ -797,7 +797,7 @@ live/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/newtx/ztmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx
 /ztmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmri.pfb>
-Output written on main.pdf (17 pages, 866823 bytes).
+Output written on main.pdf (17 pages, 866828 bytes).
 PDF statistics:
  335 PDF objects out of 1000 (max. 8388607)
  235 compressed objects within 3 object streams

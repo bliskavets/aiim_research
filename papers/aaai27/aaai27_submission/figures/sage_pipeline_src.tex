@@ -40,6 +40,13 @@
   flow/.style={-{Stealth[length=2.4mm,width=1.9mm]}, line width=0.85pt, color=arw, rounded corners=2.5pt},
 }
 \newcommand{\hd}[1]{{\bfseries #1}}
+\newcommand{\trophyicon}{\begin{tikzpicture}[scale=0.62,baseline=-0.5ex]
+  \fill[GOLDF] (-0.26,0.32) -- (0.26,0.32) -- (0.15,0.0) -- (-0.15,0.0) -- cycle;
+  \draw[GOLDD,line width=0.55pt] (-0.26,0.28) arc (140:220:0.20);
+  \draw[GOLDD,line width=0.55pt] (0.26,0.28) arc (40:-40:0.20);
+  \fill[GOLDF] (-0.04,0.0) rectangle (0.04,-0.13);
+  \fill[GOLDD] (-0.13,-0.13) rectangle (0.13,-0.19);
+\end{tikzpicture}}
 
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -127,14 +134,8 @@
    {\itshape``improve the answer by\,\dots''}};
 
 % ================= RETURN =================
-\node[card, fill=ambF, draw=ambA, align=center, minimum width=30mm, minimum height=24mm] (ret) at (18.35,4.35)
-  {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$\\[11mm]};
-% trophy icon
-\fill[color=GOLDF] (18.09,4.02) -- (18.61,4.02) -- (18.50,3.70) -- (18.20,3.70) -- cycle;
-\draw[color=GOLDD, line width=0.7pt] (18.09,3.98) arc (140:220:0.20);
-\draw[color=GOLDD, line width=0.7pt] (18.61,3.98) arc (40:-40:0.20);
-\fill[color=GOLDF] (18.31,3.70) rectangle (18.39,3.56);
-\fill[color=GOLDD] (18.22,3.56) rectangle (18.48,3.50);
+\node[card, fill=ambF, draw=ambA, align=center] (ret) at (18.35,4.35)
+  {\hd{return} $h_{\mathrm{best}}$\\[1pt] $=\arg\max_h s(h)$\\[3mm] \trophyicon};
 
 % ================= ARROWS =================
 \draw[flow] (user.east|-genprompt.west) -- (genprompt.west);

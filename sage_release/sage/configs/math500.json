@@ -1,0 +1,10 @@
+{
+  "math_correctness": {
+    "pos_labels": ["correct"],
+    "neg_labels": ["incorrect"],
+    "labels": ["correct", "incorrect"],
+    "opening_tag": "<verdict>",
+    "closing_tag": "</verdict>",
+    "weight": 1.0
+  }
+}

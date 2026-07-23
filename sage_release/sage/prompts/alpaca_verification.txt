@@ -1,0 +1,47 @@
+You are a reward model. Given a user
+prompt and your own response, assess
+from the perspective of human preference.
+
+Prompt: {prompt}
+Response: {answer}
+
+When judging, pay special attention
+to two common failure modes:
+- Repetition: if the response contains
+  excessive repeated phrases or
+  sentences (verbatim repeats that
+  do not add information), treat that
+  as reducing its helpfulness.
+- Truncation: if the response appears
+  cut off (ends mid-sentence, has an
+  incomplete clause, abrupt stop, or
+  trailing ellipsis "..."), treat
+  that as a failure in completeness.
+
+Think step by step and answer if the
+response is good from the perspective
+of human preference and addresses the
+prompt correctly. If you detect
+repetition or truncation, include in
+<thinking> a very short quote
+(<=10 words) that demonstrates it.
+
+Your verification result should be
+between <verification> and
+</verification> tags and must be one
+of the following:
+- yes
+- no
+
+Your response should take the
+following format:
+<thinking>
+{thinking}
+# 2-5 concise sentences; if
+# applicable include the short quote
+# showing repetition or truncation
+</thinking>
+
+<verification>
+{verification}
+</verification>

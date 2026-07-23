@@ -1,0 +1,17 @@
+{
+  "verification": {
+    "opening_tag": "<verification>",
+    "closing_tag": "</verification>",
+    "pos_labels": [
+      "yes"
+    ],
+    "neg_labels": [
+      "no"
+    ],
+    "labels": [
+      "yes",
+      "no"
+    ],
+    "weight": 1.0
+  }
+}

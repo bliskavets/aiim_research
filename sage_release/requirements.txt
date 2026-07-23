@@ -1,0 +1,5 @@
+# Runtime dependencies for the SAGE client.
+# (The model itself is served separately by vLLM; see scripts/serve_vllm.sh.)
+numpy>=1.24
+aiohttp>=3.9
+requests>=2.31

@@ -1,0 +1,47 @@
+{
+  "is_useful": {
+    "opening_tag": "<is_useful>",
+    "closing_tag": "</is_useful>",
+    "pos_labels": [
+      "yes"
+    ],
+    "neg_labels": [
+      "no"
+    ],
+    "labels": [
+      "yes",
+      "no"
+    ],
+    "weight": 0.36
+  },
+  "is_incomplete": {
+    "opening_tag": "<is_incomplete>",
+    "closing_tag": "</is_incomplete>",
+    "pos_labels": [
+      "no"
+    ],
+    "neg_labels": [
+      "yes"
+    ],
+    "labels": [
+      "yes",
+      "no"
+    ],
+    "weight": 0.24
+  },
+  "is_repetitive": {
+    "opening_tag": "<is_repetitive>",
+    "closing_tag": "</is_repetitive>",
+    "pos_labels": [
+      "no"
+    ],
+    "neg_labels": [
+      "yes"
+    ],
+    "labels": [
+      "yes",
+      "no"
+    ],
+    "weight": 0.4
+  }
+}

@@ -1,0 +1,70 @@
+You are a reward model. Given a user
+prompt and your own response, assess
+from the perspective of human preference.
+
+Prompt: <prompt>{prompt}</prompt>
+
+Response: <answer>{answer}</answer>
+
+When judging, pay strict attention to
+these failure modes and follow the
+rules below:
+
+1) Truncation / Incompletion
+   (high priority)
+   - Definition: the response ends
+     mid-clause, mid-sentence, with
+     an unfinished list, an abrupt
+     stop, or trailing ellipsis "..."
+     or shows a sudden syntactic break
+     that prevents understanding the
+     intended finish.
+   - Rule: If you detect truncation
+     or a clearly incomplete thought
+     that harms usefulness, you MUST
+     set is_incomplete = yes.
+   - To further detect incompleteness
+     assess the text's logical
+     completeness. If the last
+     paragraph doesn't contain the
+     outcome or conclusion or doesn't
+     conclude the answer in any way
+     then it is incomplete.
+   - You must then fill:
+     <is_incomplete>yes/no
+     </is_incomplete>
+
+2) Repetition (high priority)
+   - Definition: verbatim repetition
+     of phrases, sentences, or blocks
+     that does not add new information.
+   - Rule: If repetition materially
+     reduces helpfulness or obscures
+     content, set is_repetitive = yes.
+   - You must also fill:
+     <is_repetitive>yes/no
+     </is_repetitive>
+
+3) Positive qualities to reward
+   (when genuinely present)
+   - Useful detail: Prefer responses
+     that give helpful, relevant,
+     concise elaboration; penalize
+     fluff.
+   - You must also fill:
+     <is_useful>yes/no</is_useful>
+
+Answer whether the response is good
+from the perspective of human
+preference and addresses the prompt
+correctly.
+
+Your response should take the
+following format exactly:
+
+<is_incomplete>{is_incomplete}
+</is_incomplete>
+<is_repetitive>{is_repetitive}
+</is_repetitive>
+<is_useful>{is_useful}
+</is_useful>

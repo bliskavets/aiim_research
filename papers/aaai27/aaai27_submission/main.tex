@@ -55,9 +55,6 @@ We present \method{}, a test-time alignment method for refining large language m
 Across MATH-500, AlpacaEval, and XSTest, with Qwen3-8B and Llama-3.1-8B-Instruct, \method{} consistently improves accuracy and preference metrics relative to existing test-time alignment approaches, with ablations showing that these gains are robust under fixed inference budgets and do not rely on external reward models. The approach is resource-lean and plug-and-play, and we release the code and prompts to facilitate adoption.
 \end{abstract}
 
-\begin{links}
-    \link{Code}{https://anonymous.4open.science/r/SAGE2026-8309}
-\end{links}
 
 \section{Introduction}
 
@@ -81,7 +78,7 @@ We summarize our contributions as follows:
     \item We design a grouped selection and textual-gradient mechanism that constructs good and bad sets and distills concise guidance from the judge. Compared to best–vs.–worst ranking-based feedback, this leads to more stable refinement by reducing sensitivity to outliers and improving transfer across iterations.
     \item We provide a practical self-judging recipe, called multi-aspect tagging with weights and confidence-threshold calibration, that turns discrete tags into a continuous score. This scoring scheme improves hypothesis ranking and provides a reliable correctness signal, particularly for verifiable tasks.
    
-    \item Finally, we present an iterative test-time alignment procedure that integrates self-judged scoring, grouped selection, and textual gradients to progressively improve generations. Code, prompts, and scoring configurations are released to support reproducibility at: \url{https://anonymous.4open.science/r/SAGE2026-8309}.
+    \item Finally, we present an iterative test-time alignment procedure that integrates self-judged scoring, grouped selection, and textual gradients to progressively improve generations. \textcolor{orange!85!black}{We release the code, prompts, scoring configurations, and the accompanying artifacts of our method to support reproducibility.}
 \end{itemize}
 
 

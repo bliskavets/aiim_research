@@ -409,17 +409,17 @@ To verify that \method{} remains effective for reasoning (thinking) models, we e
 \toprule
 \textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B} \\
 \midrule
-Baseline (greedy)          & 0.57 & 0.73 \\
-BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
-\method{} (2 ep., $N{=}7$) & \textbf{0.77} & \textbf{0.80} \\
+Baseline (greedy)          & 56.7 & 73.3 \\
+BoN ($N{=}7$)              & 70.0 & \textcolor{orange!85!black}{73.3} \\
+\method{} (2 ep., $N{=}7$) & \textbf{76.7} & \textbf{80.0} \\
 \bottomrule
 \end{tabular}
 \end{sc}
-\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model.}
+\caption{AIME~2026 accuracy (\%) in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model.}
 \label{tab:aime2026}
 \end{table}
 
-We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models} in the appendix. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). At 32B (\cref{tab:qwen32b} in the appendix), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
+We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models} in the appendix. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 88.0, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 86.0) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). At 32B (\cref{tab:qwen32b} in the appendix), \method{} reaches 97.0 from a strong 80.0 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
 
 \subsection{Instruction following and broader STEM reasoning}
 \label{sec:broader-benchmarks}
@@ -1046,7 +1046,7 @@ following format:
 
 \section{\textcolor{orange!85!black}{Model-scale results}}
 \label{app:scaling-tables}
-\textcolor{orange!85!black}{The model-scale results below use a held-out MATH-500 subset that is deliberately harder than the full benchmark (the 8B greedy baseline scores 0.61 on it).}
+\textcolor{orange!85!black}{The model-scale results below are evaluated on a held-out MATH-500 subset; scores are percentages.}
 
 \begin{table*}[t]
 \centering
@@ -1058,26 +1058,26 @@ following format:
 \textbf{Generator} & \textbf{Reward Model} & \textbf{N} & \textbf{Acc.} & \textbf{Time (s)} \\
 \midrule
 \multicolumn{5}{l}{\textit{Qwen3-1.7B}} \\
-Baseline          & --                                    &   1 & 0.56          & 22.0  \\
-BoN               & FsfairX-LLaMA3-RM-v0.1               &  21 & 0.62          & 43.0  \\
-BoN               & FsfairX-LLaMA3-RM-v0.1               &  70 & 0.66          & 163.7 \\
-BoN               & Skywork-Reward-V2-Qwen3-8B            &  21 & 0.68          & 48.5  \\
-BoN               & Skywork-Reward-V2-Qwen3-8B            &  70 & 0.72          & 168.7 \\
-BoN               & Skywork-Reward-V2-Llama-3.1-8B        &  70 & 0.86          & 144.1 \\
-\method{} (1 ep.) & --                                    &   7 & 0.84          & 105.5 \\
-\method{} (2 ep.) & --                                    &   7 & \textbf{0.88} & 152.4 \\
+Baseline          & --                                    &   1 & 56.0          & 22.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  21 & 62.0          & 43.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               &  70 & 66.0          & 163.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  21 & 68.0          & 48.5  \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            &  70 & 72.0          & 168.7 \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B        &  70 & 86.0          & 144.1 \\
+\method{} (1 ep.) & --                                    &   7 & 84.0          & 105.5 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{88.0} & 152.4 \\
 \midrule
 \multicolumn{5}{l}{\textit{Qwen3-8B}} \\
-Baseline          & --                                    &   1 & 0.61          & 37.0  \\
-BoN               & FsfairX-LLaMA3-RM-v0.1               & 120 & 0.72          & 287.7 \\
-BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 0.76          & 270.7 \\
-\method{} (1 ep.) & --                                    &   7 & 0.93          & 132.9 \\
-\method{} (2 ep.) & --                                    &   7 & \textbf{0.97} & 245.6 \\
+Baseline          & --                                    &   1 & 61.0          & 37.0  \\
+BoN               & FsfairX-LLaMA3-RM-v0.1               & 120 & 72.0          & 287.7 \\
+BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 76.0          & 270.7 \\
+\method{} (1 ep.) & --                                    &   7 & 93.0          & 132.9 \\
+\method{} (2 ep.) & --                                    &   7 & \textbf{97.0} & 245.6 \\
 \bottomrule
 \end{tabular*}
 \end{sc}
 \end{small}
-\caption{MATH-500 subset results at 1.7B and 8B scales. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured. \textcolor{orange!85!black}{Evaluated on a held-out subset that is deliberately harder than the full benchmark (the 8B greedy baseline scores 0.61 here).}}
+\caption{MATH-500 results (\%) at 1.7B and 8B scales, \textcolor{orange!85!black}{evaluated on a held-out subset}. \(N\) is the number of sampled candidates. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured.}
 \label{tab:small-large-models}
 \end{table*}
 \begin{table}[t]
@@ -1089,14 +1089,14 @@ BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 0.76          
 \toprule
 \textbf{Generator} & \textbf{Reward Model} & \textbf{N} & \textbf{Acc.} \\
 \midrule
-Baseline          & --                             & 1 & 0.80 \\
-BoN               & Skywork-Reward-V2-Llama-3.1-8B & 7 & 0.94 \\
-\method{} (2 ep.) & --                             & 7 & \textbf{0.97} \\
+Baseline          & --                             & 1 & 80.0 \\
+BoN               & Skywork-Reward-V2-Llama-3.1-8B & 7 & 94.0 \\
+\method{} (2 ep.) & --                             & 7 & \textbf{97.0} \\
 \bottomrule
 \end{tabular}
 \end{sc}
 \end{small}
-\caption{\textcolor{orange!85!black}{Held-out hard} MATH-500 subset, Qwen3-32B-FP8. \method{} beats a strong greedy baseline and external-RM Best-of-\(N\) without using a reward model.}
+\caption{\textcolor{orange!85!black}{Held-out} MATH-500 subset, Qwen3-32B-FP8; accuracy in \% and \(N\) is the number of sampled candidates. \method{} beats a strong greedy baseline and external-RM Best-of-\(N\) without using a reward model.}
 \label{tab:qwen32b}
 \end{table}
 

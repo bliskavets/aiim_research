@@ -39,3 +39,22 @@ judge the self-judge ranks with NDCG ~0.72-0.79, so SAGE selection should recove
 CAVEAT: the NDCG table above was produced with the judge in chat mode (the good mode). The
 SAGE run that scored 0.34 used the orig raw-completion judge. A fully aligned rerun would use
 the chat-mode judge inside SAGE.
+
+## SAGE selection on the initial 7 with a FIXED (chat-mode) judge — reusing gens.json
+Reused the 7 initial generations per problem; scored self-judge margins under the two
+reasoning judges (chat mode) and selected argmax. 48 problems, hard seed-7 subset.
+| method | accuracy |
+|---|---|
+| oracle@7 (any of 7 correct = selection ceiling) | 0.792 |
+| SAGE-select@7, v2_brief judge  | 0.542 |
+| SAGE-select@7, v3_strict judge | 0.542 |
+| random-pick expectation        | 0.455 |
+| greedy baseline (ref)          | 0.420 |
+| SAGE with broken orig-mode judge (v10 run) | ~0.34 |
+Conclusion: fixing the judge (chat mode + reasoning prompt) turns SAGE selection from
+BELOW baseline (0.34, broken raw-completion judge that re-solves) to clearly ABOVE baseline
+(0.542, +12pt over greedy). Both reasoning judges tie on top-1 selection (0.542) despite a
+small NDCG gap (v2 0.79 vs v3 0.77); v3_strict is preferable (100% tag coverage, ~4.4k chars
+vs 13k). Still well below oracle 0.79 -> the self-judge captures part, not all, of the signal.
+This is the SELECTION step only (initial epoch, no textual-gradient refinement); full SAGE
+with refinement on the fixed judge would likely be higher and is a separate longer run.

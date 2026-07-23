@@ -445,7 +445,7 @@ BoN               & Skywork-Reward-V2-Llama-3.1-8B & 7 & 0.94 \\
 \end{tabular}
 \end{sc}
 \end{small}
-\caption{MATH-500 subset, Qwen3-32B-FP8. \method{} beats a strong greedy baseline and external-RM Best-of-\(N\) without using a reward model.}
+\caption{\textcolor{orange!85!black}{Held-out hard} MATH-500 subset, Qwen3-32B-FP8. \method{} beats a strong greedy baseline and external-RM Best-of-\(N\) without using a reward model.}
 \label{tab:qwen32b}
 \end{table}
 {\color{blue}
@@ -849,7 +849,7 @@ mean & 7.3\% & 0.641 & 0.198 & 0.294 \\
 
 \section{Prompt calibration heuristic}
 \label{sec:app-prompt-calibration}
-\noindent We observe a useful effect when the judging prompt explicitly states the evaluation criteria. Following \citet{kalai2025language}, the confidence distribution of instruction-tuned models is more separable between correct and incorrect answers. Inspired by this observation, we add a confidence-threshold instruction to the judge prompt that gates positive labels by confidence: ``Return yes if and only if you are X\% sure the response is correct.'' \Cref{tab:judge-threshold-ndcg} summarizes ranking quality (NDCG@\(N\)) at iteration 0 on a MATH-500 subset as \(X\) varies, with an optimum around \(X\!\approx\!75\). This prompt-level calibration complements our contrastive scoring and improves early-stage ranking quality. \textcolor{orange!85!black}{The threshold is selected once on this small development subset and reused unchanged across all benchmarks, models, and judge prompts; we do not re-tune it per task.}
+\noindent We observe a useful effect when the judging prompt explicitly states the evaluation criteria. Following \citet{kalai2025language}, the confidence distribution of instruction-tuned models is more separable between correct and incorrect answers. Inspired by this observation, we add a confidence-threshold instruction to the judge prompt that gates positive labels by confidence: ``Return yes if and only if you are X\% sure the response is correct.'' \Cref{tab:judge-threshold-ndcg} summarizes ranking quality (NDCG@\(N\)) at iteration 0 on the \textcolor{orange!85!black}{50-problem development} MATH-500 subset as \(X\) varies, with an optimum around \(X\!\approx\!75\). This prompt-level calibration complements our contrastive scoring and improves early-stage ranking quality. \textcolor{orange!85!black}{The threshold is selected once on this small development subset and reused unchanged across all benchmarks, models, and judge prompts; we do not re-tune it per task.}
 \begin{table}[t]
 \centering
 \begin{small}
@@ -923,7 +923,7 @@ TPO (FsfairX RM)             & 76.0\% & -- & 62.6\% \\
 \label{tab:additional-benchmarks}
 \end{table}
 
-\textcolor{orange!85!black}{\paragraph{Aspect choice.} Judge aspects are task-specific hyperparameters. On the same MATH-500 subset, a single task-relevant \emph{verification} aspect performs best: substituting a generic overall-quality aspect, or diluting verification with generic usefulness and completeness aspects, lowers accuracy from 92 to 84 in both cases (greedy baseline: 82). We therefore use verification alone on verifiable tasks and reserve multi-aspect weighting for open-ended ones (AlpacaEval, XSTest).}
+\textcolor{orange!85!black}{\paragraph{Aspect choice.} Judge aspects are task-specific hyperparameters. On the same 50-problem development MATH-500 subset, a single task-relevant \emph{verification} aspect performs best: substituting a generic overall-quality aspect, or diluting verification with generic usefulness and completeness aspects, lowers accuracy from 92 to 84 in both cases (greedy baseline: 82). We therefore use verification alone on verifiable tasks and reserve multi-aspect weighting for open-ended ones (AlpacaEval, XSTest).}
 
 
 \begin{figure}[h]

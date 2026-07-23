@@ -1033,25 +1033,25 @@ following format:
 \label{app:scaling-tables}
 \textcolor{orange!85!black}{Unlike \cref{tab:results-by-model}, which reports full-benchmark scores, the results in this appendix are computed on small evaluation sets: AIME~2026 (30 problems, \cref{tab:aime2026}) and a held-out hard MATH-500 subset (\cref{tab:small-large-models,tab:qwen32b}). Absolute values are therefore not comparable to the main results table---for instance, the 8B greedy baseline scores only 0.61 on the held-out subset versus 84.4 on full MATH-500---and only comparisons within each individual table are meaningful.}
 
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \color{blue}
-\begin{small}
+\small
+\setlength{\tabcolsep}{5pt}
 \begin{sc}
 \begin{tabular}{lcc}
 \toprule
-\textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B (thinking)} \\
+\textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B} \\
 \midrule
-Baseline (greedy) & 0.57 & 0.73 \\
-BoN (Skywork-Reward-V2-Llama-3.1-8B, $N=7$) & 0.70 & \textcolor{orange!85!black}{0.73} \\
-\method{}, 2 epochs, $N=7$ & \textbf{0.77} & \textbf{0.80} \\
+Baseline (greedy)          & 0.57 & 0.73 \\
+BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
+\method{} (2 ep., $N{=}7$) & \textbf{0.77} & \textbf{0.80} \\
 \bottomrule
 \end{tabular}
 \end{sc}
-\end{small}
-\caption{AIME~2026 accuracy in reasoning (thinking) mode. \method{} requires no external reward model. \textcolor{orange!85!black}{Scores are on the 30-problem AIME~2026 set and are not comparable to the full-benchmark results in \cref{tab:results-by-model}.}}
+\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model. \textcolor{orange!85!black}{Scores are on the 30-problem AIME~2026 set and are not comparable to the full-benchmark results in \cref{tab:results-by-model}.}}
 \label{tab:aime2026}
-\end{table*}
+\end{table}
 \begin{table*}[t]
 \centering
 \color{blue}

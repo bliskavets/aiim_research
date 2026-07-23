@@ -362,7 +362,29 @@ We compare \method{} using an external reward model against the same method usin
 \label{fig:ablation-qwen-math500}
 \end{figure}
 
-AlpacaEval reward dynamics across epochs and the compute-allocation ablation (\(N\), \(T\) sweep on MATH-500) are in Appendix~\ref{app:ablation-more}. Temperature ablations (\cref{fig:temp-ablation} in the Appendix) confirm that a lower judging temperature improves ranking quality while a higher generation temperature (\(\approx 0.9\)) maximizes solution discovery.
+\textcolor{orange!85!black}{We also ablate how a fixed inference budget is split between the number of samples per stage \(N\) and the number of optimization epochs \(T\) (\cref{tab:ablation-N-epochs}): accuracy stays within a narrow band across allocations, and the default setting performs best.} AlpacaEval reward dynamics across epochs are in Appendix~\ref{app:ablation-more}. Temperature ablations (\cref{fig:temp-ablation} in the Appendix) confirm that a lower judging temperature improves ranking quality while a higher generation temperature (\(\approx 0.9\)) maximizes solution discovery.
+
+\begin{table}[h]
+\centering
+\begin{small}
+\begin{sc}
+\color{orange!85!black}
+\begin{tabular}{lc}
+\toprule
+\textbf{$N$, $T$} & \textbf{MATH-500 subset score} \\
+\midrule
+7,2 (default) & \textbf{92.0} \\
+5,4 & 88.0 \\
+7,3 & 86.0 \\
+20,1 & 84.0 \\
+10,2 & 82.0 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\caption{Compute allocation on a 50-problem MATH-500 subset: accuracy vs. samples per stage \(N\) and optimization epochs \(T\). All alternative allocations fall within a six-point band of one another (a one-problem difference is 2 points at this subset size), so accuracy is not very sensitive to how a fixed budget is split; the default allocation performs best.}
+\label{tab:ablation-N-epochs}
+\end{table}
 
 
 \noindent We conduct additional ablations on reward-model agreement and refinement geometry visualizations in section Appendix~\ref{app:refinement_geometry}.
@@ -397,7 +419,7 @@ BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
 \label{tab:aime2026}
 \end{table}
 
-We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models} in the appendix. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). \textcolor{orange!85!black}{Small models also expose a failure mode of plain reranking that \method{} avoids: with the 1.7B model judging itself, Best-of-\(N\) selection on strict instruction following collapses to nearly 50 points below the base model, while \method{} degrades gracefully to base level.} At 32B (\cref{tab:qwen32b} in the appendix), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
+We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models} in the appendix. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). At 32B (\cref{tab:qwen32b} in the appendix), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
 
 \subsection{Instruction following and broader STEM reasoning}
 \label{sec:broader-benchmarks}
@@ -785,30 +807,8 @@ X=100 & 0.802 \\
 
 \section{Additional ablations}
 \label{app:ablation-more}
-\noindent We analyze how the reward model score evolves across optimization epochs on AlpacaEval (\cref{fig:ablation-rewardscore}) and ablate compute allocation on MATH-500 by varying the number of samples per generation stage \(N\) and the number of optimization epochs \(T\) (\cref{tab:ablation-N-epochs}). All experiments use Qwen3-8B. \textcolor{orange!85!black}{We also report per-benchmark results on IFEval and MMLU-Pro STEM here (\cref{tab:additional-benchmarks}).}
+\noindent We analyze how the reward model score evolves across optimization epochs on AlpacaEval (\cref{fig:ablation-rewardscore}); all experiments use Qwen3-8B. \textcolor{orange!85!black}{We also report per-benchmark results on IFEval and MMLU-Pro STEM here (\cref{tab:additional-benchmarks}).}
 
-
-\begin{table}[h]
-\centering
-\begin{small}
-\begin{sc}
-\color{orange!85!black}
-\begin{tabular}{lc}
-\toprule
-\textbf{$N$, $T$} & \textbf{MATH-500 subset score} \\
-\midrule
-7,2 (default) & \textbf{92.0} \\
-5,4 & 88.0 \\
-7,3 & 86.0 \\
-20,1 & 84.0 \\
-10,2 & 82.0 \\
-\bottomrule
-\end{tabular}
-\end{sc}
-\end{small}
-\caption{Compute allocation on a 50-problem MATH-500 subset: accuracy vs. samples per stage \(N\) and optimization epochs \(T\). All alternative allocations fall within a six-point band of one another (a one-problem difference is 2 points at this subset size), so accuracy is not very sensitive to how a fixed budget is split; the default allocation performs best.}
-\label{tab:ablation-N-epochs}
-\end{table}
 
 \begin{table}[h]
 \centering
@@ -834,7 +834,7 @@ TPO (FsfairX RM)             & 76.0\% & -- & 62.6\% \\
 \label{tab:additional-benchmarks}
 \end{table}
 
-\textcolor{orange!85!black}{\paragraph{Aspect choice.} Judge aspects are task-specific hyperparameters. On the same 50-problem development MATH-500 subset, a single task-relevant \emph{verification} aspect performs best: substituting a generic overall-quality aspect, or diluting verification with generic usefulness and completeness aspects, lowers accuracy from 92 to 84 in both cases (greedy baseline: 82). We therefore use verification alone on verifiable tasks and reserve multi-aspect weighting for open-ended ones (AlpacaEval, XSTest).}
+\textcolor{orange!85!black}{\paragraph{Aspect choice.} Judge aspects are task-specific hyperparameters. On the 50-problem development MATH-500 subset, a single task-relevant \emph{verification} aspect performs best: substituting a generic overall-quality aspect, or diluting verification with generic usefulness and completeness aspects, lowers accuracy from 92 to 84 in both cases (greedy baseline: 82). We therefore use verification alone on verifiable tasks and reserve multi-aspect weighting for open-ended ones (AlpacaEval, XSTest).}
 
 
 \begin{figure}[h]

@@ -268,7 +268,7 @@ All Qwen3-8B experiments in \cref{tab:results-by-model} use the non-thinking mod
 
 For Qwen3-8B, \method{} performs best on both math and general tasks. On MATH-500, it reaches the accuracy of \(92.0\), outperforming the base model as well as both Best-of-\(N\) and TPO. On AlpacaEval, it attains a win rate of \(74.9\) and LC win rate of \(\textcolor{orange!85!black}{55.0}\), exceeding all baselines.  This advantage on math tasks appears to be driven by self-judging. Qwen3-8B evaluates the correctness of its own generations more reliably than an external reward model, which leads to steadier improvements and higher final scores (\cref{fig:judge-rm-dynamics,tab:rm-ablation}). \textcolor{green!50!black}{To rule out length effects, we ran a randomized head-to-head comparison of \method{} and base responses with a GPT-4.1 judge (200 prompts, response order randomized): \method{} is preferred in 57.5\% of pairs while its responses are marginally shorter at the median, so the gains reflect content rather than verbosity.}
 
-Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(\textcolor{orange!85!black}{47.0}\) and LC win rate of \(\textcolor{orange!85!black}{45.0}\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade-off between safety and correctness. \textcolor{green!50!black}{A per-category view of the 450 XSTest prompts (250 safe, 200 unsafe) supports this: safe-prompt compliance rises from \textcolor{orange!85!black}{82.3} to \textcolor{orange!85!black}{88.7} and unsafe-prompt refusal from 98.0 to 99.5, together reproducing the overall XSTest scores in \cref{tab:results-by-model} while reducing exaggerated refusals without loosening guardrails.} Overall, \method{} consistently outperforms strong inference-time baselines without relying on an external reward model. The largest gains appear on math where self-judged correctness is particularly effective. \textcolor{blue}{Results for additional model scales (1.7B, 32B) and further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) follow in \cref{sec:scaling-exp,sec:broader-benchmarks}.}
+Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(\textcolor{orange!85!black}{29.0}\) and LC win rate of \(\textcolor{orange!85!black}{27.0}\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade-off between safety and correctness. \textcolor{green!50!black}{A per-category view of the 450 XSTest prompts (250 safe, 200 unsafe) supports this: safe-prompt compliance rises from \textcolor{orange!85!black}{82.3} to \textcolor{orange!85!black}{88.7} and unsafe-prompt refusal from 98.0 to 99.5, together reproducing the overall XSTest scores in \cref{tab:results-by-model} while reducing exaggerated refusals without loosening guardrails.} Overall, \method{} consistently outperforms strong inference-time baselines without relying on an external reward model. The largest gains appear on math where self-judged correctness is particularly effective. \textcolor{blue}{Results for additional model scales (1.7B, 32B) and further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) follow in \cref{sec:scaling-exp,sec:broader-benchmarks}.}
 
 
 \begin{table*}[t]
@@ -281,16 +281,16 @@ Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accu
 \midrule
 \multicolumn{5}{l}{\textbf{\method{}}} \\
 Qwen3-8B & 92.0 & 74.9 & \textcolor{orange!85!black}{55.0} & 93.5 \\
-Llama-3.1-8B-Instruct & 60.2 & \textcolor{orange!85!black}{47.0} & \textcolor{orange!85!black}{45.0} & 95.1 \\
+Llama-3.1-8B-Instruct & 60.2 & \textcolor{orange!85!black}{29.0} & \textcolor{orange!85!black}{27.0} & 95.1 \\
 \addlinespace
 \multicolumn{5}{l}{\textbf{Baselines}} \\
 Qwen3-8B (Base) & 84.4 & 57.8 & 50.1 & 89.3 \\
 Qwen3-8B + Best-of-\(N\) & 85.4 & 68.8 & \textcolor{orange!85!black}{52.5} & 94.2 \\
 Qwen3-8B + TPO & 85.6 & 72.4 & \textcolor{orange!85!black}{53.5} & 93.3 \\
 Qwen3-8B + SPO & 82.4 & 9.7 & 17.6 & 90.2 \\
-Llama-3.1-8B-Instruct (Base) & \textcolor{orange!85!black}{51.9} & \textcolor{orange!85!black}{35.0} & \textcolor{orange!85!black}{35.0} & 90.6 \\
-Llama-3.1-8B-Instruct + Best-of-\(N\) & 57.4 & 44.7 & 43.05 & 94.4 \\
-Llama-3.1-8B-Instruct + TPO & 58.8 & \textcolor{orange!85!black}{46.5} & 41.39 & 93.3 \\
+Llama-3.1-8B-Instruct (Base) & \textcolor{orange!85!black}{51.9} & \textcolor{orange!85!black}{22.6} & \textcolor{orange!85!black}{22.9} & 90.6 \\
+Llama-3.1-8B-Instruct + Best-of-\(N\) & 57.4 & \textcolor{orange!85!black}{26.5} & \textcolor{orange!85!black}{25.0} & 94.4 \\
+Llama-3.1-8B-Instruct + TPO & 58.8 & \textcolor{orange!85!black}{27.5} & \textcolor{orange!85!black}{24.0} & 93.3 \\
 Llama-3.1-8B-Instruct + SPO & 47.2 & 7.7 & 12.8 & 91.1 \\
 \bottomrule
 \end{tabular}
@@ -318,9 +318,9 @@ We compare \method{} using an external reward model against the same method usin
 \textbf{Variant / Model} & \textbf{MATH-500} & \textbf{AlpacaEval} & \textbf{AlpacaEval LC Winrate} & \textbf{XSTest} \\
 \midrule
 \method{} + RM (Qwen3-8B) & 89.8 & 74.7 & \textcolor{orange!85!black}{51.5} & 93.8 \\
-\method{} + RM (Llama-3.1-8B-Instruct) & 59.4 & \textcolor{orange!85!black}{46.5} & \textcolor{orange!85!black}{44.5} & 95.1 \\
+\method{} + RM (Llama-3.1-8B-Instruct) & 59.4 & \textcolor{orange!85!black}{28.0} & \textcolor{orange!85!black}{26.0} & 95.1 \\
 \method{} (Qwen3-8B) & 92.0 & 74.9 & \textcolor{orange!85!black}{55.0} & 93.5 \\
-\method{} (Llama-3.1-8B-Instruct) & 60.2 & \textcolor{orange!85!black}{47.0} & \textcolor{orange!85!black}{45.0} & 95.1 \\
+\method{} (Llama-3.1-8B-Instruct) & 60.2 & \textcolor{orange!85!black}{29.0} & \textcolor{orange!85!black}{27.0} & 95.1 \\
 \bottomrule
 \end{tabular}
 \end{sc}

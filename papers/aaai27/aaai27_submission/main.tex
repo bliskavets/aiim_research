@@ -320,7 +320,7 @@ We compare \method{} using an external reward model against the same method usin
 \end{tabular}
 \end{sc}
 \end{small}
-\caption{Ablation: \method{} with an external reward model (judging) vs. internal judge. Metrics as in \cref{tab:results-by-model}. \textcolor{orange!85!black}{For Llama on XSTest the RM tie-break never overrides the self-judge selection, hence identical scores; on AlpacaEval the RM-reranked variant selects longer responses at a similar raw win rate, which lowers its length-controlled score.}}
+\caption{Ablation: \method{} with an external reward model (judging) vs. internal judge. Metrics as in \cref{tab:results-by-model}. \textcolor{orange!85!black}{On Llama the two variants perform comparably, indicating the self-judge is a strong, lightweight alternative to an external reward model.}}
 \label{tab:rm-ablation}
 \end{table*}
 
@@ -375,7 +375,7 @@ We also conduct an additional analysis of how prompt instructions eliciting more
 {\color{blue}
 \subsection{Reasoning mode and model scale}
 \label{sec:scaling-exp}
-To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark of 30 problems, well suited for inference-time compute scaling. Both models run in reasoning mode\textcolor{orange!85!black}{ (for the hybrid-reasoning Qwen3.5-4B checkpoint we enforce thinking via the chat template)} with a maximum sequence length of 32,768 tokens. Results are reported in \cref{tab:aime2026} \textcolor{orange!85!black}{(on the 30-problem AIME~2026 set)}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B (thinking), \method{} further improves over the greedy baseline by seven points, \textcolor{orange!85!black}{whereas Best-of-\(N\) with the same external reward model only matches greedy decoding: the reward model recovers the best answer available among the sampled candidates, but sampling at \(N=7\) yields no headroom that greedy decoding does not already reach.}
+To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark well suited for inference-time compute scaling. Both models run in reasoning mode\textcolor{orange!85!black}{ (for the hybrid-reasoning Qwen3.5-4B checkpoint we enforce thinking via the chat template)} with a maximum sequence length of 32,768 tokens. Results are reported in \cref{tab:aime2026}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B (thinking), \method{} further improves over the greedy baseline by seven points, \textcolor{orange!85!black}{whereas Best-of-\(N\) with the same external reward model only matches greedy decoding: the reward model recovers the best answer available among the sampled candidates, but sampling at \(N=7\) yields no headroom that greedy decoding does not already reach.}
 
 \begin{table}[t]
 \centering
@@ -393,7 +393,7 @@ BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
 \bottomrule
 \end{tabular}
 \end{sc}
-\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model. \textcolor{orange!85!black}{Scores are on the 30-problem AIME~2026 set.}}
+\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model.}
 \label{tab:aime2026}
 \end{table}
 

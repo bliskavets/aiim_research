@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  23 JUL 2026 21:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  23 JUL 2026 21:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -623,9 +623,9 @@ txtlf/m/n/10 tags and a 75%
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Underfull \vbox (badness 1043) has occurred while \output is active []
 
-[10]
+ [10]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -685,9 +685,6 @@ Package pdftex.def Info: figures/pearson_correlation_distribution.pdf  used on
 input line 756.
 (pdftex.def)             Requested size: 203.48668pt x 152.0328pt.
 [12 <./figures/pca_icml.pdf>]
-Underfull \vbox (badness 1348) has occurred while \output is active []
-
-
 Underfull \hbox (badness 2020) in paragraph at lines 833--833
 []\T1/ntxtlf/m/n/10 Table 6: |[]IFE-val (all 541 prompts) and MMLU-Pro
  []
@@ -773,7 +770,7 @@ L3 programming layer <2020/03/25>
 Here is how much of TeX's memory you used:
  10532 strings out of 476106
  186967 string characters out of 5793933
- 1960975 words of memory out of 5000000
+ 1959975 words of memory out of 5000000
  32361 multiletter control sequences out of 15000+600000
  613988 words of font info for 85 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
@@ -800,7 +797,7 @@ live/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/newtx/ztmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx
 /ztmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmri.pfb>
-Output written on main.pdf (18 pages, 866841 bytes).
+Output written on main.pdf (18 pages, 866456 bytes).
 PDF statistics:
  338 PDF objects out of 1000 (max. 8388607)
  237 compressed objects within 3 object streams

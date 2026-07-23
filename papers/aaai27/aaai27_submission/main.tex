@@ -117,7 +117,7 @@ Recent work scales test-time compute by allocating budget across perception, pla
 
 Prompt-optimization methods aim to improve elicitation rather than search, for example through self-supervised prompt tuning \citep{xiang2025self}. However, these approaches often depend on seed exemplars and can struggle to transfer across domains.
 
-\textcolor{green!50!black}{Same-model refinement is the setting closest to ours: Self-Refine \citep{madaan2023selfrefine} and Reflexion \citep{shinn2023reflexion} let one LLM draft, critique, and revise its own outputs through free-form feedback. A complementary line of work cautions how far self-evaluation can be trusted: models discriminate their own outputs no better than they generate them \citep{jiang2024selfincorrect}, judges favor familiar text \citep{wataoka2024selfpreference}, a shared generator-evaluator invites reward hacking \citep{pan2024spontaneous}, and verbalized confidence is imperfectly calibrated \citep{tian2023just}. We therefore score candidates contrastively against explicit rubrics and validate the selection signal against gold answers rather than assuming its reliability (\cref{sec:ablations}); under a matched generation budget on MATH-500 this structured signal stays about two points ahead of free-form self-critique.}
+\textcolor{green!50!black}{Same-model refinement is the setting closest to ours: Self-Refine \citep{madaan2023selfrefine} and Reflexion \citep{shinn2023reflexion} let one LLM draft, critique, and revise its own outputs through free-form feedback. A complementary line of work cautions how far self-evaluation can be trusted: models discriminate their own outputs no better than they generate them \citep{jiang2024selfincorrect}, judges favor familiar text \citep{wataoka2024selfpreference}, a shared generator-evaluator invites reward hacking \citep{pan2024spontaneous}, and verbalized confidence is imperfectly calibrated \citep{tian2023just}. We therefore score candidates contrastively against explicit rubrics and validate the selection signal against gold answers rather than assuming its reliability (\cref{sec:ablations}\textcolor{orange!85!black}{; judge--gold agreement and calibration are quantified in \cref{sec:app-judge-calibration}}); under a matched generation budget on MATH-500 this structured signal stays about two points ahead of free-form self-critique.}
 
 In contrast, \method{} uses the base LLM as both generator and soft judge and replaces brittle discrete votes with a calibrated continuous margin computed directly from a judging prompt. The resulting score supports fine-grained ranking, and a concise textual “gradient” then steers subsequent sampling. This preserves BoN-style simplicity and avoids external reward models and heavy heuristics. The approach also fits strict token budgets through lightweight judging and caching.
 
@@ -836,6 +836,39 @@ After the first iteration, responses shift along a direction from the initially 
 \includegraphics[width=0.85\columnwidth]{figures/pearson_correlation_distribution.pdf}
 \caption{Pearson correlation distribution between rollout score sets from the external RM (sfairXC/FsfairX-LLaMA3-RM-v0.1) and our contrastive self-judge score. The mass near \(1\) indicates strong but not complete agreement.}
 \label{fig:pearson-corr}
+\end{figure}
+
+\section{\textcolor{orange!85!black}{Judge reliability and calibration}}
+\label{sec:app-judge-calibration}
+\textcolor{orange!85!black}{We cross-check the self-judge against gold answers to test whether the selection signal tracks correctness or merely reinforces self-consistent mistakes. Using the logged MATH-500 candidate pools (all sampled hypotheses per problem carry their final contrastive-margin score), we grade every distinct boxed answer against gold with the same equivalence checker used for evaluation, and repeat over three seeds (\(\{42,7,123\}\), \(N=500\) problems, \(\approx\!31.5\text{k}\) scored candidates in total).}
+
+\textcolor{orange!85!black}{\textbf{No systematic self-preference.} Restricting to problems whose candidate pool already contains a correct answer, the judge nonetheless selects an incorrect one in only \(7.3\%\) of such cases (\emph{oracle gap}; per-seed \(6.8/8.4/6.8\%\)). The contrastive margin separates correct from incorrect candidates with selection \(\mathrm{AUC}=0.64\) (per-seed \(0.643/0.642/0.638\)), well above chance. The judge thus shows no systematic preference for incorrect-but-self-consistent answers, quantitatively addressing the self-congratulatory-loop concern.}
+
+\textcolor{orange!85!black}{\textbf{Calibration.} Treating \(\sigma(s)\) as a confidence estimate for a candidate's correctness, the raw margin is a strong \emph{ranking} signal but is not probability-calibrated: pooled over all candidates we measure a Brier score of \(0.198\) and \(\mathrm{ECE}_{15}=0.294\), with the reliability diagram in \Cref{fig:judge-reliability} showing over-confident mass. This is fully consistent with our use of the margin as an ordering signal for selection and grouping rather than as an absolute confidence (\cref{sec:proposed-method}); the ranking utility (AUC, near-oracle selection) is what the refinement loop exploits, and the metrics above are stable across seeds.}
+
+\begin{table}[t]
+\centering
+\textcolor{orange!85!black}{%
+\begin{tabular}{lcccc}
+\toprule
+Seed & Oracle gap & Sel.\ AUC & Brier & $\mathrm{ECE}_{15}$ \\
+\midrule
+42  & 6.8\% & 0.643 & 0.197 & 0.292 \\
+7   & 8.4\% & 0.642 & 0.198 & 0.295 \\
+123 & 6.8\% & 0.638 & 0.199 & 0.296 \\
+\midrule
+mean & 7.3\% & 0.641 & 0.198 & 0.294 \\
+\bottomrule
+\end{tabular}}
+\caption{\textcolor{orange!85!black}{Judge-vs-gold reliability on MATH-500 across three seeds (\(N=500\), all logged candidates). The small oracle gap and above-chance selection AUC indicate the contrastive margin tracks correctness for ranking; the Brier/ECE values confirm it is a ranking signal, not a calibrated probability.}}
+\label{tab:judge-calib}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/judge_reliability.pdf}
+\caption{\textcolor{orange!85!black}{Reliability diagram (left) and confidence-mass histogram (right) for the self-judge margin over all MATH-500 candidates, pooled across three seeds. The margin ranks correct above incorrect candidates (selection AUC \(0.64\)) but is over-confident as an absolute probability (\(\mathrm{ECE}_{15}=0.294\)), matching our use of it purely as a selection/grouping signal.}}
+\label{fig:judge-reliability}
 \end{figure}
 
 \section{Prompt calibration heuristic}

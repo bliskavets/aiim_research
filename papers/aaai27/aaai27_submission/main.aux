@@ -52,10 +52,10 @@
 \citation{litest}
 \newlabel{fig:headline_math_single}{{3}{5}{}{}{}}
 \newlabel{fig:headline_math_single@cref}{{[figure][3][]3}{[1][5][]5}}
-\newlabel{alg:method}{{1}{5}{}{}{}}
-\newlabel{alg:method@cref}{{[algorithm][1][]1}{[1][5][]5}}
 \newlabel{sec:experiments}{{4}{5}{}{}{}}
 \newlabel{sec:experiments@cref}{{[section][4][]4}{[1][5][]5}}
+\newlabel{alg:method}{{1}{5}{}{}{}}
+\newlabel{alg:method@cref}{{[algorithm][1][]1}{[1][5][]5}}
 \citation{dekoninck2026beyond}
 \citation{zhou2023instruction}
 \citation{wang2024mmlu}
@@ -68,6 +68,8 @@
 \citation{liu2025skywork}
 \newlabel{sec:ablations}{{4.4}{6}{}{}{}}
 \newlabel{sec:ablations@cref}{{[subsection][4][4]4.4}{[1][6][]6}}
+\citation{dekoninck2026beyond}
+\citation{liu2025skywork}
 \newlabel{tab:results-by-model}{{1}{7}{}{}{}}
 \newlabel{tab:results-by-model@cref}{{[table][1][]1}{[1][6][]7}}
 \newlabel{tab:rm-ablation}{{2}{7}{}{}{}}
@@ -76,8 +78,8 @@
 \newlabel{fig:judge-rm-dynamics@cref}{{[figure][4][]4}{[1][7][]7}}
 \newlabel{fig:ablation-qwen-math500}{{5}{7}{}{}{}}
 \newlabel{fig:ablation-qwen-math500@cref}{{[figure][5][]5}{[1][7][]7}}
-\citation{dekoninck2026beyond}
-\citation{liu2025skywork}
+\newlabel{sec:scaling-exp}{{4.5}{7}{}{}{}}
+\newlabel{sec:scaling-exp@cref}{{[subsection][5][4]4.5}{[1][7][]7}}
 \citation{zhou2023instruction}
 \citation{wang2024mmlu}
 \bibdata{custom}
@@ -85,12 +87,10 @@
 \bibcite{chao2024jailbreakbench}{{2}{2024}{{Chao et~al.}}{{Chao, Debenedetti, Robey, Andriushchenko, Croce, Sehwag, Dobriban, Flammarion, Pappas, Tramer et~al.}}}
 \bibcite{dekoninck2026beyond}{{3}{2026}{{Dekoninck et~al.}}{{Dekoninck, Jovanovi{\'c}, Gehrunger, R{\"o}gnvalddson, Petrov, Sun, and Vechev}}}
 \bibcite{dong2024rlhf}{{4}{2024}{{Dong et~al.}}{{Dong, Xiong, Pang, Wang, Zhao, Zhou, Jiang, Sahoo, Xiong, and Zhang}}}
-\newlabel{sec:scaling-exp}{{4.5}{8}{}{}{}}
-\newlabel{sec:scaling-exp@cref}{{[subsection][5][4]4.5}{[1][8][]8}}
-\newlabel{sec:broader-benchmarks}{{4.6}{8}{}{}{}}
-\newlabel{sec:broader-benchmarks@cref}{{[subsection][6][4]4.6}{[1][8][]8}}
 \bibcite{dubois2024length}{{5}{2024}{{Dubois et~al.}}{{Dubois, Galambosi, Liang, and Hashimoto}}}
 \bibcite{ethayarajh2024kto}{{6}{2024}{{Ethayarajh et~al.}}{{Ethayarajh, Xu, Muennighoff, Jurafsky, and Kiela}}}
+\newlabel{sec:broader-benchmarks}{{4.6}{8}{}{}{}}
+\newlabel{sec:broader-benchmarks@cref}{{[subsection][6][4]4.6}{[1][8][]8}}
 \bibcite{freitag2017beam}{{7}{2017}{{Freitag and Al-Onaizan}}{{}}}
 \bibcite{gorbatovski2024learn}{{8}{2025}{{Gorbatovski et~al.}}{{Gorbatovski, Shaposhnikov, Malakhov, Surnachev, Aksenov, Maksimov, Balagansky, and Gavrilov}}}
 \bibcite{grattafiori2024llama}{{9}{2024}{{Grattafiori et~al.}}{{Grattafiori, Dubey, Jauhri, Pandey, Kadian, Al-Dahle, Letman, Mathur, Schelten, Vaughan et~al.}}}
@@ -142,40 +142,34 @@
 \newlabel{fig:temp-ablation@cref}{{[figure][8][2147483647]8}{[1][12][]13}}
 \newlabel{fig:group-size}{{9}{13}{}{}{}}
 \newlabel{fig:group-size@cref}{{[figure][9][2147483647]9}{[1][13][]13}}
+\newlabel{sec:app-prompt-calibration}{{F}{13}{}{}{}}
+\newlabel{sec:app-prompt-calibration@cref}{{[appendix][6][2147483647]F}{[1][13][]13}}
 \newlabel{fig:pearson-corr}{{10}{13}{}{}{}}
 \newlabel{fig:pearson-corr@cref}{{[figure][10][2147483647]10}{[1][13][]13}}
-\newlabel{sec:app-judge-calibration}{{F}{13}{}{}{}}
-\newlabel{sec:app-judge-calibration@cref}{{[appendix][6][2147483647]F}{[1][13][]13}}
-\newlabel{sec:app-prompt-calibration}{{G}{13}{}{}{}}
-\newlabel{sec:app-prompt-calibration@cref}{{[appendix][7][2147483647]G}{[1][13][]13}}
-\newlabel{tab:judge-calib}{{3}{14}{}{}{}}
-\newlabel{tab:judge-calib@cref}{{[table][3][2147483647]3}{[1][13][]14}}
-\newlabel{fig:judge-reliability}{{11}{14}{}{}{}}
-\newlabel{fig:judge-reliability@cref}{{[figure][11][2147483647]11}{[1][13][]14}}
-\newlabel{app:ablation-more}{{H}{14}{}{}{}}
-\newlabel{app:ablation-more@cref}{{[appendix][8][2147483647]H}{[1][14][]14}}
-\newlabel{tab:judge-threshold-ndcg}{{4}{14}{}{}{}}
-\newlabel{tab:judge-threshold-ndcg@cref}{{[table][4][2147483647]4}{[1][13][]14}}
-\newlabel{tab:ablation-N-epochs}{{5}{14}{}{}{}}
-\newlabel{tab:ablation-N-epochs@cref}{{[table][5][2147483647]5}{[1][14][]14}}
-\newlabel{app:scaling-tables}{{I}{14}{}{}{}}
-\newlabel{app:scaling-tables@cref}{{[appendix][9][2147483647]I}{[1][14][]14}}
-\newlabel{tab:additional-benchmarks}{{6}{15}{}{}{}}
-\newlabel{tab:additional-benchmarks@cref}{{[table][6][2147483647]6}{[1][14][]15}}
-\newlabel{fig:appendix-qwen-alpaca-config}{{12}{15}{}{}{}}
-\newlabel{fig:appendix-qwen-alpaca-config@cref}{{[figure][12][2147483647]12}{[1][14][]15}}
-\newlabel{fig:appendix-qwen-alpaca-judge-attrs}{{13}{15}{}{}{}}
-\newlabel{fig:appendix-qwen-alpaca-judge-attrs@cref}{{[figure][13][2147483647]13}{[1][14][]15}}
-\newlabel{fig:ablation-rewardscore}{{14}{16}{}{}{}}
-\newlabel{fig:ablation-rewardscore@cref}{{[figure][14][2147483647]14}{[1][14][]16}}
-\newlabel{tab:aime2026}{{7}{16}{}{}{}}
-\newlabel{tab:aime2026@cref}{{[table][7][2147483647]7}{[1][14][]16}}
-\newlabel{tab:small-large-models}{{8}{16}{}{}{}}
-\newlabel{tab:small-large-models@cref}{{[table][8][2147483647]8}{[1][14][]16}}
-\newlabel{fig:appendix-qwen-alpaca-judge-verify}{{15}{17}{}{}{}}
-\newlabel{fig:appendix-qwen-alpaca-judge-verify@cref}{{[figure][15][2147483647]15}{[1][14][]17}}
-\newlabel{tab:qwen32b}{{9}{17}{}{}{}}
-\newlabel{tab:qwen32b@cref}{{[table][9][2147483647]9}{[1][14][]17}}
-\newlabel{tab:appendix-dataset-stats}{{10}{17}{}{}{}}
-\newlabel{tab:appendix-dataset-stats@cref}{{[table][10][2147483647]10}{[1][14][]17}}
-\gdef \@abspage@last{17}
+\newlabel{tab:judge-threshold-ndcg}{{3}{13}{}{}{}}
+\newlabel{tab:judge-threshold-ndcg@cref}{{[table][3][2147483647]3}{[1][13][]13}}
+\newlabel{app:ablation-more}{{G}{13}{}{}{}}
+\newlabel{app:ablation-more@cref}{{[appendix][7][2147483647]G}{[1][13][]13}}
+\newlabel{tab:ablation-N-epochs}{{4}{14}{}{}{}}
+\newlabel{tab:ablation-N-epochs@cref}{{[table][4][2147483647]4}{[1][13][]14}}
+\newlabel{tab:additional-benchmarks}{{5}{14}{}{}{}}
+\newlabel{tab:additional-benchmarks@cref}{{[table][5][2147483647]5}{[1][13][]14}}
+\newlabel{app:scaling-tables}{{H}{14}{}{}{}}
+\newlabel{app:scaling-tables@cref}{{[appendix][8][2147483647]H}{[1][14][]14}}
+\newlabel{fig:appendix-qwen-alpaca-config}{{11}{14}{}{}{}}
+\newlabel{fig:appendix-qwen-alpaca-config@cref}{{[figure][11][2147483647]11}{[1][14][]14}}
+\newlabel{tab:aime2026}{{6}{15}{}{}{}}
+\newlabel{tab:aime2026@cref}{{[table][6][2147483647]6}{[1][14][]15}}
+\newlabel{tab:small-large-models}{{7}{15}{}{}{}}
+\newlabel{tab:small-large-models@cref}{{[table][7][2147483647]7}{[1][14][]15}}
+\newlabel{tab:qwen32b}{{8}{15}{}{}{}}
+\newlabel{tab:qwen32b@cref}{{[table][8][2147483647]8}{[1][14][]15}}
+\newlabel{tab:appendix-dataset-stats}{{9}{15}{}{}{}}
+\newlabel{tab:appendix-dataset-stats@cref}{{[table][9][2147483647]9}{[1][14][]15}}
+\newlabel{fig:appendix-qwen-alpaca-judge-attrs}{{12}{16}{}{}{}}
+\newlabel{fig:appendix-qwen-alpaca-judge-attrs@cref}{{[figure][12][2147483647]12}{[1][14][]16}}
+\newlabel{fig:ablation-rewardscore}{{13}{17}{}{}{}}
+\newlabel{fig:ablation-rewardscore@cref}{{[figure][13][2147483647]13}{[1][14][]17}}
+\newlabel{fig:appendix-qwen-alpaca-judge-verify}{{14}{18}{}{}{}}
+\newlabel{fig:appendix-qwen-alpaca-judge-verify@cref}{{[figure][14][2147483647]14}{[1][14][]18}}
+\gdef \@abspage@last{18}

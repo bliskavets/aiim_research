@@ -176,3 +176,17 @@ Observations:
    external reward model -- self-containment is the advantage here, not raw accuracy.
 Bottom line on this hard Llama subset: best is selection (no refinement) with an equal-weight
 judge ensemble (0.583); refinement and RM-in-the-loop do not add value in this setting.
+
+## TPO on the same 48 problems (FsfairX RM, textgrad, sample_size=5, 2 iters)
+TPO accuracy = 28/48 = 0.5833 (its OWN generated candidates; NOT the reused initial-7).
+Full ranking: SAGE-select@7-ensemble 0.583 == TPO 0.583 > SAGE-select@7-single 0.542 >
+SAGE-full-judge 0.521 == BoN@21 0.521 > SAGE+RM 0.479 > baseline 0.420.
+Honest reading:
+- TPO is competitive as a FULL method (0.583), but the comparison is confounded: TPO generates
+  its own candidates (not the fixed initial-7), so its score reflects TPO's generation+RM
+  pipeline, not isolated RM-selection quality.
+- The ISOLATED effect of the external RM as a selector (candidates held fixed) is NEGATIVE on
+  math: SAGE+RM (same FsfairX on the same reused pool) = 0.479 << self-judge 0.521. So with
+  candidates controlled, the general-purpose RM ranks worse than the self-judge on verifiable
+  math -- consistent with the paper's thesis. TPO's strength is candidate optimisation, not
+  RM-selection alignment; SAGE reaches 0.52-0.58 with NO external RM.

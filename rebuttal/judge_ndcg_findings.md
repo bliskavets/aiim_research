@@ -116,3 +116,18 @@ Findings:
 RECOMMENDATION for the paper's self-judge recipe: use a small ensemble of complementary judge
 prompts (brief-quality + strict + corner-case) and combine their soft margins, rather than a
 single prompt or a re-derivation judge. Best single prompt: v8/v2/v3 (~0.54, v8 best NDCG).
+
+## Non-equal weights for the margin combination? -> overfits, do not.
+Offline weight search on cached margins (48 problems, 7 prompts), per-problem z-normalised,
+combined = Z @ w, argmax.
+| setting | select@7 |
+|---|---|
+| equal weights (1..1)            | 0.5417 |
+| full-data best weights (optimistic) | 0.6042 |
+| full-data best weights, 6-fold CV   | 0.4167 |
+| equal weights, 6-fold CV            | 0.5417 |
+Tuning 7 continuous weights on 48 problems overfits hard: cross-validated, the tuned weights
+drop to 0.42 (below baseline, worse than equal), while equal weights generalise (0.5417 = same
+as full data). => Non-equal weights give no honest gain at this data size; use equal weights.
+This also flags the earlier greedy-subset 0.5833 as full-data-optimistic; the honest, robust
+ensemble select@7 is ~0.54 (still +12pt over the 0.42 greedy baseline).

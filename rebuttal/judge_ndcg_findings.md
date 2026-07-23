@@ -131,3 +131,19 @@ drop to 0.42 (below baseline, worse than equal), while equal weights generalise 
 as full data). => Non-equal weights give no honest gain at this data size; use equal weights.
 This also flags the earlier greedy-subset 0.5833 as full-data-optimistic; the honest, robust
 ensemble select@7 is ~0.54 (still +12pt over the 0.42 greedy baseline).
+
+## Curated equal-weight ensemble (drop recompute/weak judges) — CV-robust 0.5833
+Dropped v4_recompute, v7_recompute_compare (counterproductive) and v6_corner (near-zero weight);
+kept {v2_brief, v3_strict, v5_unsure_no, v8_strict_recompute_corner}, equal weights on per-problem
+z-normalised margins.
+| setting | select@7 |
+|---|---|
+| equal weights, full data     | 0.5833 |
+| equal weights, 6-fold CV      | 0.5833 |
+| tuned weights, full data      | 0.6042 |
+| tuned weights, 6-fold CV      | 0.5625 |
+So the equal-weight 4-judge ensemble reaches 0.5833 AND is cross-validated (CV == full), unlike
+the all-7 equal ensemble (0.5417, diluted by the weak recompute/corner judges) and unlike tuned
+weights (overfit: CV 0.5625<0.5833). Best honest configuration found: equal-weight ensemble of
+{v2_brief, v3_strict, v5_unsure_no, v8}, select@7 = 0.5833 (+16pt over baseline 0.42; oracle 0.79).
+Weight tuning gives no honest gain at this data size.

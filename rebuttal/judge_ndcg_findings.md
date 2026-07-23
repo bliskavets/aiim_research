@@ -86,3 +86,33 @@ but in raw-completion mode rambles 18k chars and truncates before the verdict (t
 SAGE+Llama failure). v3_strict is the best compromise found (skeptical, bounded), but oracle 0.79
 >> select 0.54 shows the self-judge still leaves ~25 points of achievable accuracy on the table
 on this subset -- because it affirms rather than verifies.
+
+## Judge-prompt lab: stricter/recompute prompts + linear combination (48 problems, initial-7)
+oracle@7=0.792, baseline greedy=0.420, random~0.455.
+| judge prompt | select@7 | NDCG |
+|---|---|---|
+| v8_strict_recompute_corner | 0.5417 | 0.7750 |
+| v2_brief                   | 0.5417 | 0.7729 |
+| v3_strict                  | 0.5417 | 0.7723 |
+| v5_unsure_no               | 0.5417 | 0.7474 |
+| v6_corner                  | 0.5000 | 0.7288 |
+| v4_recompute               | 0.4583 | 0.6722 |
+| v7_recompute_compare       | 0.4375 | 0.6741 |
+
+Findings:
+1. The "cure" (make the judge RE-DERIVE the answer and compare) BACKFIRES: v4/v7 are the WORST
+   (0.44-0.46, below even random 0.455). Reason: an 8B model re-solving hard problems is itself
+   error-prone, so its "matches my answer" verdict inherits the model's own solving mistakes and
+   rejects correct candidates. A verifier is only as good as its own solving -> no free lunch.
+2. Strict / corner-case / default-no prompts (v5,v6,v8) do NOT beat the simple brief/strict
+   judges on top-1 selection (all plateau at 0.5417); v8 edges NDCG (0.7750) but not select@7.
+   The single-judge ceiling here is ~0.54.
+3. LINEAR COMBINATION of diverse judges' per-problem z-normalised margins WINS:
+   greedy subset {v2_brief, v3_strict, v6_corner} -> select@7 = 0.5833 (28/48), vs 0.5417 best
+   single and 0.42 baseline. Ensembling complementary judges recovers ~+4pt (closing ~1/6 of the
+   remaining gap to oracle 0.79). Equal-weight mean of all 7 does not help (0.5417) -- the weak
+   recompute judges dilute it; the gain needs a curated diverse subset.
+
+RECOMMENDATION for the paper's self-judge recipe: use a small ensemble of complementary judge
+prompts (brief-quality + strict + corner-case) and combine their soft margins, rather than a
+single prompt or a re-derivation judge. Best single prompt: v8/v2/v3 (~0.54, v8 best NDCG).

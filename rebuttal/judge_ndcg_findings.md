@@ -58,3 +58,31 @@ small NDCG gap (v2 0.79 vs v3 0.77); v3_strict is preferable (100% tag coverage,
 vs 13k). Still well below oracle 0.79 -> the self-judge captures part, not all, of the signal.
 This is the SELECTION step only (initial epoch, no textual-gradient refinement); full SAGE
 with refinement on the fixed judge would likely be higher and is a separate longer run.
+
+## Why ranking fails — case analysis (top-group had more wrong than right despite enough correct)
+Severe failures are rare: v3_strict 1/48, v2_brief 3/48 (problems 468, 341, 81). Re-scoring
+those with judge reasoning reveals ONE dominant cause:
+
+**The self-judge rubber-stamps: it emits `<verification>yes</verification>` for EVERY candidate,
+correct and wrong alike.** No candidate ever gets "no". So the contrastive margin never encodes
+a correctness verdict — it only ranks by the *confidence of the yes*, which tracks superficial
+features (fluency, decisive phrasing, formatting, even degenerate "/nothink ... Goodbye [close]"
+repetition), not the math.
+
+Concrete (prob 468: sqrt(t) in (2,3.5) -> t in (4,12.25) -> integers 5..12 = 8; gt=8):
+- wrong  boxed=7, margin 3.25 (TOP)  judge: "yes ... $\boxed{7}$ /nothink Goodbye [close]..."
+- correct boxed=8, margin 2.75       judge: "yes ... $\boxed{8}$"
+Both affirmed "yes"; the off-by-one wrong answer (7) is phrased slightly more confidently and
+outranks the correct 8. The judge cannot tell 7 from 8 because it does not actually recount --
+it just affirms. Same pattern in 341 (gt -2, wrong +1 ranked above), 81 (gt 3, wrong 3.14 top).
+
+Root pattern: failures concentrate on **plausible-wrong answers** (off-by-one 7 vs 8, sign -1 vs
+-2, alt value 1/6/15 vs the truth) -- errors that require re-doing the computation to catch. The
+brief/strict judge does NOT recompute, so it affirms all and ranks by confidence noise.
+
+The deeper tension (ties the whole investigation together): a BRIEF judge does not discriminate
+(rubber-stamps yes -> ranking = fluency noise); a VERBOSE judge that re-solves DOES discriminate
+but in raw-completion mode rambles 18k chars and truncates before the verdict (the original
+SAGE+Llama failure). v3_strict is the best compromise found (skeptical, bounded), but oracle 0.79
+>> select 0.54 shows the self-judge still leaves ~25 points of achievable accuracy on the table
+on this subset -- because it affirms rather than verifies.

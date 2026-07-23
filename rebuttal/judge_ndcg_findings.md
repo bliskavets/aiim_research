@@ -147,3 +147,32 @@ the all-7 equal ensemble (0.5417, diluted by the weak recompute/corner judges) a
 weights (overfit: CV 0.5625<0.5833). Best honest configuration found: equal-weight ensemble of
 {v2_brief, v3_strict, v5_unsure_no, v8}, select@7 = 0.5833 (+16pt over baseline 0.42; oracle 0.79).
 Weight tuning gives no honest gain at this data size.
+
+## Full-protocol comparison (2 epochs, pool 21, reuse initial-7) — 48 hard problems
+Clean re-implemented SAGE loop (chat-mode Llama), same initial 7 gens, pluggable scorer.
+| method | accuracy |
+|---|---|
+| oracle@7 (ceiling)                         | 0.792 |
+| SAGE-select@7 ensemble (initial-7, NO refine) | 0.583 |
+| SAGE-select@7 single                       | 0.542 |
+| SAGE-full ensemble judge (2 ep, pool 21)   | 0.5208 |
+| SAGE-full single judge  (2 ep, pool 21)    | 0.5208 |
+| BoN@21 (FsfairX RM)                        | 0.5208 |
+| SAGE+RM full (RM scorer in loop, pool 21)  | 0.4792 |
+| greedy baseline                            | 0.420 |
+| SAGE broken orig-judge                     | ~0.34 |
+
+Observations:
+1. Refinement does NOT help here: SAGE-full (0.52) < SAGE-select@7-ensemble (0.583). Adding 14
+   refined candidates dilutes the pool with plausible-wrong answers the rubber-stamping judge
+   cannot filter; the larger pool raises oracle but not the judge's pick. (Caveat: this is our
+   re-implemented refinement, possibly weaker than the paper's exact recipe.)
+2. Ensemble vs single judge tie in the full loop (both 0.5208) -- the ensemble's edge (0.583 vs
+   0.542 at select@7) washes out once refinement + a 21-pool are added.
+3. SAGE+RM (external FsfairX RM used INSIDE the loop) is the WORST full-protocol arm (0.4792) --
+   on verifiable math the general-purpose RM misranks, misguiding both the good/bad grouping and
+   the final pick. Mirrors the paper's core thesis (external RM hurts on math).
+4. BoN@21-with-RM (0.5208) equals SAGE-full self-judge (0.5208), but SAGE reaches it WITHOUT any
+   external reward model -- self-containment is the advantage here, not raw accuracy.
+Bottom line on this hard Llama subset: best is selection (no refinement) with an equal-weight
+judge ensemble (0.583); refinement and RM-in-the-loop do not add value in this setting.

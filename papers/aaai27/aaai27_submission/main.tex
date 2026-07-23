@@ -258,7 +258,7 @@ For SPO, we perform prompt tuning using GPT-4.1 as both the judge and the prompt
 For MATH-500, we use AGIEval-Math \citep{zhongagieval}; for AlpacaEval we use a small subset of the Tulu instruction-following dataset \citep{lambert2024tulu}; and for XSTest we use Jailbreakbench \citep{chao2024jailbreakbench}. For TPO and Best-of-\(N\), we use the official TPO repository \citep{litest}. \textcolor{orange!85!black}{Because this calibration is deliberately minimal and out-of-domain (a single prompt tuned from five examples, with no access to evaluation items), SPO's win rates should be read as a compute-matched operating point rather than its unconstrained ceiling: SPO is designed to exploit a larger, in-domain prompt-optimization budget, which our inference-time-matched protocol does not grant it.}
 
 By default, we use temperature of 0.7 for generation and 0.1 for judging. For math problems, we typically use a higher generation temperature in early stages to encourage solution diversity. We ablate both generation and judging temperatures on MATH-500, as reported in \cref{sec:ablations}. Prompts and evaluation criteria are provided in the Appendix.
-For math-oriented tasks, we anneal the generation temperature from 0.8--1.0 in the initial stage to 0.7 in subsequent stages. Unless otherwise noted, we sample \(N=7\) hypotheses per generation stage and run two optimization epochs per benchmark, excluding the initial generation stage. Because the good and bad sets are selected automatically, we do not fix their sizes; the median size of each group is two to three hypotheses. \textcolor{orange!85!black}{Unless stated otherwise, results are single runs with a fixed seed; selected analyses are repeated over three seeds.} \textcolor{green!50!black}{Regarding cost, the overhead of two optimization epochs with \(N=7\) is dominated by the extra hypothesis generations rather than by judging, which reads only a few forced label tokens and reuses cached margins.} \textcolor{orange!85!black}{Concrete per-problem wall-clock on a single A100\,80\,GB GPU is reported in \cref{tab:small-large-models}.}
+For math-oriented tasks, we anneal the generation temperature from 0.8--1.0 in the initial stage to 0.7 in subsequent stages. Unless otherwise noted, we sample \(N=7\) hypotheses per generation stage and run two optimization epochs per benchmark, excluding the initial generation stage. Because the good and bad sets are selected automatically, we do not fix their sizes; the median size of each group is two to three hypotheses. \textcolor{orange!85!black}{Unless stated otherwise, results are single runs with a fixed seed; selected analyses are repeated over three seeds.} \textcolor{green!50!black}{Regarding cost, the overhead of two optimization epochs with \(N=7\) is dominated by the extra hypothesis generations rather than by judging, which reads only a few forced label tokens and reuses cached margins.} \textcolor{orange!85!black}{Concrete per-problem wall-clock on a single A100\,80\,GB GPU is reported in \cref{tab:small-large-models} in the appendix.}
 
 
 All Qwen3-8B experiments in \cref{tab:results-by-model} use the non-thinking mode to keep the evaluation setup uniform across experiments. Nevertheless, \method{} is equally applicable in reasoning mode: results on AIME~2026 \citep{dekoninck2026beyond} (Qwen3-8B and Qwen3.5-4B (thinking)), at additional model scales (Qwen3-1.7B, Qwen3-32B-FP8), and on further benchmarks (IFEval \citep{zhou2023instruction}, MMLU-Pro STEM \citep{wang2024mmlu}) \textcolor{blue}{are reported in \cref{sec:scaling-exp,sec:broader-benchmarks}}.
@@ -266,9 +266,9 @@ All Qwen3-8B experiments in \cref{tab:results-by-model} use the non-thinking mod
 \subsection{Main results}
 \noindent We report accuracy on MATH-500 and XSTest, and both pairwise win rate and length-controlled win rate on AlpacaEval. \Cref{tab:results-by-model} summarizes results for Qwen3-8B and Llama-3.1-8B-Instruct under \method{} alongside competitive baselines including TPO \citep{litest}, SPO \citep{xiang2025self}, Best-of-\(N\), and the base models.
 
-For Qwen3-8B, \method{} performs best on both math and general tasks. On MATH-500, it reaches the accuracy of \(92.0\), outperforming the base model as well as both Best-of-\(N\) and TPO. On AlpacaEval, it attains a win rate of \(74.9\) and LC win rate of \(\textcolor{orange!85!black}{55.0}\), exceeding all baselines.  This advantage on math tasks appears to be driven by self-judging. Qwen3-8B evaluates the correctness of its own generations more reliably than an external reward model, which leads to steadier improvements and higher final scores (\cref{fig:judge-rm-dynamics,tab:rm-ablation}). \textcolor{green!50!black}{To rule out length effects, we ran a randomized head-to-head comparison of \method{} and base responses with a GPT-4.1 judge (200 prompts, response order randomized): \method{} is preferred in 57.5\% of pairs while its responses are marginally shorter at the median, so the gains reflect content rather than verbosity.}
+For Qwen3-8B, \method{} performs best on both math and general tasks. On MATH-500, it reaches the accuracy of \(92.0\), outperforming the base model as well as both Best-of-\(N\) and TPO. On AlpacaEval, it attains a win rate of \(74.9\) and LC win rate of \(\textcolor{orange!85!black}{54.8}\), exceeding all baselines.  This advantage on math tasks appears to be driven by self-judging. Qwen3-8B evaluates the correctness of its own generations more reliably than an external reward model, which leads to steadier improvements and higher final scores (\cref{fig:judge-rm-dynamics,tab:rm-ablation}). \textcolor{green!50!black}{To rule out length effects, we ran a randomized head-to-head comparison of \method{} and base responses with a GPT-4.1 judge (200 prompts, response order randomized): \method{} is preferred in 57.5\% of pairs while its responses are marginally shorter at the median, so the gains reflect content rather than verbosity.}
 
-Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(\textcolor{orange!85!black}{29.0}\) and LC win rate of \(\textcolor{orange!85!black}{27.0}\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade-off between safety and correctness. \textcolor{green!50!black}{A per-category view of the 450 XSTest prompts (250 safe, 200 unsafe) supports this: safe-prompt compliance rises from \textcolor{orange!85!black}{82.3} to \textcolor{orange!85!black}{88.7} and unsafe-prompt refusal from 98.0 to 99.5, together reproducing the overall XSTest scores in \cref{tab:results-by-model} while reducing exaggerated refusals without loosening guardrails.} Overall, \method{} consistently outperforms strong inference-time baselines without relying on an external reward model. The largest gains appear on math where self-judged correctness is particularly effective. \textcolor{blue}{Results for additional model scales (1.7B, 32B) and further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) follow in \cref{sec:scaling-exp,sec:broader-benchmarks}.}
+Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accuracy of \(60.2\), outperforming the base model as well as Best-of-N and TPO. It also shows clear gains on AlpacaEval with the win rate of \(\textcolor{orange!85!black}{29.3}\) and LC win rate of \(\textcolor{orange!85!black}{26.8}\), exceeding all baselines. On XSTest, \method{} is competitive or outperforms the baselines, achieving scores of \(93.5\) with Qwen and \(95.1\) with Llama. This indicates no trade-off between safety and correctness. \textcolor{green!50!black}{A per-category view of the 450 XSTest prompts (250 safe, 200 unsafe) supports this: safe-prompt compliance rises from \textcolor{orange!85!black}{82.3} to \textcolor{orange!85!black}{88.7} and unsafe-prompt refusal from 98.0 to 99.5, together reproducing the overall XSTest scores in \cref{tab:results-by-model} while reducing exaggerated refusals without loosening guardrails.} Overall, \method{} consistently outperforms strong inference-time baselines without relying on an external reward model. The largest gains appear on math where self-judged correctness is particularly effective. \textcolor{blue}{Results for additional model scales (1.7B, 32B) and further benchmarks (AIME~2026, IFEval, MMLU-Pro STEM) follow in \cref{sec:scaling-exp,sec:broader-benchmarks}.}
 
 
 \begin{table*}[t]
@@ -280,8 +280,8 @@ Llama-3.1-8B-Instruct follows the same pattern. On MATH-500, it achieves an accu
 \textbf{Variant / Model} & \textbf{MATH-500} & \textbf{AlpacaEval} & \textbf{AlpacaEval LC Winrate} & \textbf{XSTest} \\
 \midrule
 \multicolumn{5}{l}{\textbf{\method{}}} \\
-Qwen3-8B & 92.0 & 74.9 & \textcolor{orange!85!black}{55.0} & 93.5 \\
-Llama-3.1-8B-Instruct & 60.2 & \textcolor{orange!85!black}{29.0} & \textcolor{orange!85!black}{27.0} & 95.1 \\
+Qwen3-8B & 92.0 & 74.9 & \textcolor{orange!85!black}{54.8} & 93.5 \\
+Llama-3.1-8B-Instruct & 60.2 & \textcolor{orange!85!black}{29.3} & \textcolor{orange!85!black}{26.8} & 95.1 \\
 \addlinespace
 \multicolumn{5}{l}{\textbf{Baselines}} \\
 Qwen3-8B (Base) & 84.4 & 57.8 & 50.1 & 89.3 \\
@@ -289,8 +289,8 @@ Qwen3-8B + Best-of-\(N\) & 85.4 & 68.8 & \textcolor{orange!85!black}{52.5} & 94.
 Qwen3-8B + TPO & 85.6 & 72.4 & \textcolor{orange!85!black}{53.5} & 93.3 \\
 Qwen3-8B + SPO & 82.4 & 9.7 & 17.6 & 90.2 \\
 Llama-3.1-8B-Instruct (Base) & \textcolor{orange!85!black}{51.9} & \textcolor{orange!85!black}{22.6} & \textcolor{orange!85!black}{22.9} & 90.6 \\
-Llama-3.1-8B-Instruct + Best-of-\(N\) & 57.4 & \textcolor{orange!85!black}{26.5} & \textcolor{orange!85!black}{25.0} & 94.4 \\
-Llama-3.1-8B-Instruct + TPO & 58.8 & \textcolor{orange!85!black}{27.5} & \textcolor{orange!85!black}{24.0} & 93.3 \\
+Llama-3.1-8B-Instruct + Best-of-\(N\) & 57.4 & \textcolor{orange!85!black}{26.5} & \textcolor{orange!85!black}{24.7} & 94.4 \\
+Llama-3.1-8B-Instruct + TPO & 58.8 & \textcolor{orange!85!black}{27.5} & \textcolor{orange!85!black}{23.6} & 93.3 \\
 Llama-3.1-8B-Instruct + SPO & 47.2 & 7.7 & 12.8 & 91.1 \\
 \bottomrule
 \end{tabular}
@@ -316,9 +316,9 @@ We compare \method{} using an external reward model against the same method usin
 \textbf{Variant / Model} & \textbf{MATH-500} & \textbf{AlpacaEval} & \textbf{AlpacaEval LC Winrate} & \textbf{XSTest} \\
 \midrule
 \method{} + RM (Qwen3-8B) & 89.8 & 74.7 & \textcolor{orange!85!black}{51.5} & 93.8 \\
-\method{} + RM (Llama-3.1-8B-Instruct) & 59.4 & \textcolor{orange!85!black}{28.0} & \textcolor{orange!85!black}{26.0} & 95.1 \\
-\method{} (Qwen3-8B) & 92.0 & 74.9 & \textcolor{orange!85!black}{55.0} & 93.5 \\
-\method{} (Llama-3.1-8B-Instruct) & 60.2 & \textcolor{orange!85!black}{29.0} & \textcolor{orange!85!black}{27.0} & 95.1 \\
+\method{} + RM (Llama-3.1-8B-Instruct) & 59.4 & \textcolor{orange!85!black}{28.2} & \textcolor{orange!85!black}{25.7} & 95.1 \\
+\method{} (Qwen3-8B) & 92.0 & 74.9 & \textcolor{orange!85!black}{54.8} & 93.5 \\
+\method{} (Llama-3.1-8B-Instruct) & 60.2 & \textcolor{orange!85!black}{29.3} & \textcolor{orange!85!black}{26.8} & 95.1 \\
 \bottomrule
 \end{tabular}
 \end{sc}
@@ -373,18 +373,38 @@ AlpacaEval reward dynamics across epochs and the compute-allocation ablation (\(
 
 We also conduct an additional analysis of how prompt instructions eliciting more confident estimates affect the model's judgement accuracy. The ablation details can be found in Appendix~\ref{sec:app-prompt-calibration}.
 
-\textcolor{orange!85!black}{Group construction matters: enlarging the contrastive groups from pure best-versus-worst feedback to the default configuration raises MATH-500 accuracy monotonically (\cref{fig:group-size}), confirming that guidance distilled from richer good and bad sets is more effective than extreme-only comparisons.}
+\textcolor{orange!85!black}{Group construction matters: enlarging the contrastive groups from pure best-versus-worst feedback to the default configuration raises MATH-500 accuracy monotonically (\cref{fig:group-size} in the appendix), confirming that guidance distilled from richer good and bad sets is more effective than extreme-only comparisons.}
 
 {\color{blue}
 \subsection{Reasoning mode and model scale}
 \label{sec:scaling-exp}
-To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark of 30 problems, well suited for inference-time compute scaling. Both models run in reasoning mode\textcolor{orange!85!black}{ (for the hybrid-reasoning Qwen3.5-4B checkpoint we enforce thinking via the chat template)} with a maximum sequence length of 32,768 tokens. Results are reported in \cref{tab:aime2026} \textcolor{orange!85!black}{(\cref{app:scaling-tables}, alongside the model-scale results; these use small evaluation sets and are not directly comparable to the full-benchmark \cref{tab:results-by-model})}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B (thinking), \method{} further improves over the greedy baseline by seven points, \textcolor{orange!85!black}{whereas Best-of-\(N\) with the same external reward model only matches greedy decoding: the reward model recovers the best answer available among the sampled candidates, but sampling at \(N=7\) yields no headroom that greedy decoding does not already reach.}
+To verify that \method{} remains effective for reasoning (thinking) models, we evaluate on AIME~2026 \citep{dekoninck2026beyond}, a competition-level mathematics benchmark of 30 problems, well suited for inference-time compute scaling. Both models run in reasoning mode\textcolor{orange!85!black}{ (for the hybrid-reasoning Qwen3.5-4B checkpoint we enforce thinking via the chat template)} with a maximum sequence length of 32,768 tokens. Results are reported in \cref{tab:aime2026} \textcolor{orange!85!black}{(on the 30-problem AIME~2026 set)}. On Qwen3-8B, \method{} outperforms Best-of-\(N\) with Skywork-Reward-V2-Llama-3.1-8B \citep{liu2025skywork} while using no external reward model. On Qwen3.5-4B (thinking), \method{} further improves over the greedy baseline by seven points, \textcolor{orange!85!black}{whereas Best-of-\(N\) with the same external reward model only matches greedy decoding: the reward model recovers the best answer available among the sampled candidates, but sampling at \(N=7\) yields no headroom that greedy decoding does not already reach.}
 
-We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models}. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). \textcolor{orange!85!black}{Small models also expose a failure mode of plain reranking that \method{} avoids: with the 1.7B model judging itself, Best-of-\(N\) selection on strict instruction following collapses to nearly 50 points below the base model, while \method{} degrades gracefully to base level.} At 32B (\cref{tab:qwen32b}), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
+\begin{table}[t]
+\centering
+\color{blue}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{sc}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B} \\
+\midrule
+Baseline (greedy)          & 0.57 & 0.73 \\
+BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
+\method{} (2 ep., $N{=}7$) & \textbf{0.77} & \textbf{0.80} \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model. \textcolor{orange!85!black}{Scores are on the 30-problem AIME~2026 set.}}
+\label{tab:aime2026}
+\end{table}
+
+We also evaluate \method{} at two scales beyond the 8B models used above: Qwen3-1.7B (smaller) and Qwen3-32B-FP8 (larger), on a held-out MATH-500 subset (seed=42). Results including wall-clock times are shown in \Cref{tab:small-large-models} in the appendix. \method{} consistently outperforms Best-of-\(N\) at a fixed candidate count and at matched wall-clock time across all three scales. For Qwen3-1.7B, \method{} with two optimization epochs reaches 0.88, surpassing the best BoN baseline (Skywork-Reward-V2-Llama-3.1-8B, $N=70$: 0.86) while using only the 1.7B generator (roughly $5.7\times$ less VRAM than BoN paired with an 8B reward model). \textcolor{orange!85!black}{Small models also expose a failure mode of plain reranking that \method{} avoids: with the 1.7B model judging itself, Best-of-\(N\) selection on strict instruction following collapses to nearly 50 points below the base model, while \method{} degrades gracefully to base level.} At 32B (\cref{tab:qwen32b} in the appendix), \method{} reaches 0.97 from a strong 0.80 greedy baseline, again ahead of Best-of-\(N\) reranking with an external reward model.
 
 \subsection{Instruction following and broader STEM reasoning}
 \label{sec:broader-benchmarks}
-To assess generalization beyond math and open-ended preference tasks, we evaluate \method{} on IFEval \citep{zhou2023instruction}, a strict instruction-following benchmark, and on a subset of MMLU-Pro STEM \citep{wang2024mmlu} covering multi-step reasoning in science and engineering. Results with Qwen3-8B-FP8 are reported in \cref{app:ablation-more} (\cref{tab:additional-benchmarks}). \textcolor{orange!85!black}{On MMLU-Pro STEM, \method{} improves accuracy from 71.2 to 77.3 (mean of three seeds, paired McNemar $p<10^{-3}$), whereas TPO, which optimizes candidates against a general-purpose reward model, falls below the greedy baseline (62.6): the external proxy rewards helpful-sounding prose rather than correct multiple-choice reasoning. On IFEval \method{} gains 2.5 points over the baseline and lands in the same band as Best-of-\(N\); because IFEval is scored by deterministic verification scripts, verbosity cannot inflate these numbers. Together the two benchmarks separate the regimes cleanly: self-judged refinement helps most where correctness is verifiable and external preference proxies are weakest.}
+To assess generalization beyond math and open-ended preference tasks, we evaluate \method{} on IFEval \citep{zhou2023instruction}, a strict instruction-following benchmark, and on a subset of MMLU-Pro STEM \citep{wang2024mmlu} covering multi-step reasoning in science and engineering. Results with Qwen3-8B-FP8 are reported in the appendix (\cref{tab:additional-benchmarks}). \textcolor{orange!85!black}{On MMLU-Pro STEM, \method{} improves accuracy from 71.2 to 77.3 (mean of three seeds, paired McNemar $p<10^{-3}$), whereas TPO, which optimizes candidates against a general-purpose reward model, falls below the greedy baseline (62.6): the external proxy rewards helpful-sounding prose rather than correct multiple-choice reasoning. On IFEval \method{} gains 2.5 points over the baseline and lands in the same band as Best-of-\(N\); because IFEval is scored by deterministic verification scripts, verbosity cannot inflate these numbers. Together the two benchmarks separate the regimes cleanly: self-judged refinement helps most where correctness is verifiable and external preference proxies are weakest.}
 
 }
 
@@ -395,7 +415,7 @@ contrastive
 groups to produce a stable textual ``gradient'' that steers subsequent generations. By deriving the preference signal from the model itself rather than from a separate reward model, \method{} avoids brittle proxy dependencies while keeping the procedure lightweight. The group-based gradient mitigates the instability of extreme-only comparisons (best-vs.-worst), and a simple multi-aspect weighting makes the objective explicit and tunable. Across MATH-500, AlpacaEval, and XSTest with Qwen3-8B and Llama-3.1-8B-Instruct, \method{} delivers consistent gains in accuracy and preference metrics, with inference-time cost growing roughly linearly with the number of sampled hypotheses. Overall, these results position \method{} as a practical and interpretable approach to robust test-time alignment that complements training-time preference optimization and can be combined with external verifiers or reward models when appropriate.
 
 \section*{Limitations}
-\noindent \method{} relies on the base LLM's own judgments for scoring and gradient extraction, so miscalibration or systematic biases in its self-assessment can propagate through the refinement loop. The method also incurs linear inference-time overhead with the number of sampled hypotheses and optimization epochs, prohibitive in latency-critical settings. \textcolor{green!50!black}{Reasoning-mode decoding reaches a higher raw ceiling on math, but its generation length is difficult to control} \textcolor{orange!85!black}{(in our measurements 22.4\% of reasoning traces fail to terminate within a 24576-token budget)}\textcolor{green!50!black}{; \method{} targets the complementary operating point of predictable budgets, leaving the combination to future work.} Judge aspects and weights remain task-specific hyperparameters.
+\noindent \textcolor{orange!85!black}{\method{} is a test-time alignment method (in the broader family of inference-time adaptation and scaling), and it shares the operating profile of that family. It improves a frozen base model at inference time, without retraining and without an external reward model, and in exchange allocates additional inference-time compute that grows with the number of sampled hypotheses and optimization epochs; the appropriate budget therefore depends on the deployment setting. The judge aspects and their weights are lightweight configuration choices that can be adapted per task. These properties make \method{} most attractive when a fixed inference-time budget can be spent to improve output quality, and complementary to training-time alignment, with which it can be combined.}
 
 
 \bibliography{custom}
@@ -1027,29 +1047,10 @@ following format:
 \label{fig:appendix-qwen-alpaca-judge-verify}
 \end{figure}
 
-\section{\textcolor{orange!85!black}{Reasoning mode and model-scale results}}
+\section{\textcolor{orange!85!black}{Model-scale results}}
 \label{app:scaling-tables}
-\textcolor{orange!85!black}{Unlike \cref{tab:results-by-model}, which reports full-benchmark scores, the results in this appendix are computed on small evaluation sets: AIME~2026 (30 problems, \cref{tab:aime2026}) and a held-out hard MATH-500 subset (\cref{tab:small-large-models,tab:qwen32b}). Absolute values are therefore not comparable to the main results table---for instance, the 8B greedy baseline scores only 0.61 on the held-out subset versus 84.4 on full MATH-500---and only comparisons within each individual table are meaningful.}
+\textcolor{orange!85!black}{The model-scale results below use a held-out MATH-500 subset that is deliberately harder than the full benchmark (the 8B greedy baseline scores 0.61 on it).}
 
-\begin{table}[t]
-\centering
-\color{blue}
-\small
-\setlength{\tabcolsep}{5pt}
-\begin{sc}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Method} & \textbf{Qwen3-8B} & \textbf{Qwen3.5-4B} \\
-\midrule
-Baseline (greedy)          & 0.57 & 0.73 \\
-BoN ($N{=}7$)              & 0.70 & \textcolor{orange!85!black}{0.73} \\
-\method{} (2 ep., $N{=}7$) & \textbf{0.77} & \textbf{0.80} \\
-\bottomrule
-\end{tabular}
-\end{sc}
-\caption{AIME~2026 accuracy in reasoning (thinking) mode (Qwen3.5-4B is a hybrid-reasoning model run in thinking mode); BoN uses the Skywork-Reward-V2-Llama-3.1-8B reward model, whereas \method{} requires no external reward model. \textcolor{orange!85!black}{Scores are on the 30-problem AIME~2026 set and are not comparable to the full-benchmark results in \cref{tab:results-by-model}.}}
-\label{tab:aime2026}
-\end{table}
 \begin{table*}[t]
 \centering
 \color{blue}
@@ -1079,7 +1080,7 @@ BoN               & Skywork-Reward-V2-Qwen3-8B            & 120 & 0.76          
 \end{tabular*}
 \end{sc}
 \end{small}
-\caption{MATH-500 subset results at 1.7B and 8B scales. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured. \textcolor{orange!85!black}{The held-out hard subset is substantially harder than the full benchmark (the 8B greedy baseline scores 0.61 on it versus 84.4 on the full set), so absolute values are not comparable to \cref{tab:results-by-model}.}}
+\caption{MATH-500 subset results at 1.7B and 8B scales. Wall-clock measured on a single A100\,80\,GB GPU; \texttt{--} indicates not measured. \textcolor{orange!85!black}{Evaluated on a held-out subset that is deliberately harder than the full benchmark (the 8B greedy baseline scores 0.61 here).}}
 \label{tab:small-large-models}
 \end{table*}
 \begin{table}[t]

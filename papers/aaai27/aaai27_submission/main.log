@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  24 JUL 2026 08:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  24 JUL 2026 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -609,10 +609,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7{/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ec-tlf-pc.enc} <./fi
 gures/ablations/performance_across_epochs__tgpo_w_rm.pdf> <./figures/ablations/
-performance_across_epochs_rates_tgpo_wo_rm.pdf>]
-Underfull \vbox (badness 2856) has occurred while \output is active []
-
- (./main.bbl [8] [9])
+performance_across_epochs_rates_tgpo_wo_rm.pdf>] (./main.bbl [8] [9])
 Underfull \hbox (badness 7907) in paragraph at lines 448--449
 \T1/ntxtlf/m/n/10 We pro-vide a com-plete ex-am-ple of the math-
  []
@@ -780,7 +777,7 @@ live/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/newtx/ztmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx
 /ztmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmri.pfb>
-Output written on main.pdf (16 pages, 865710 bytes).
+Output written on main.pdf (16 pages, 865477 bytes).
 PDF statistics:
  332 PDF objects out of 1000 (max. 8388607)
  233 compressed objects within 3 object streams

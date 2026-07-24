@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  23 JUL 2026 21:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.7.16)  24 JUL 2026 08:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -504,8 +504,11 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 10.95pt on input line 105.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 10.95pt on input line 105.
-[2{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc} <./figures/figure1_new_
-28012026.pdf>]
+
+Underfull \vbox (badness 3482) has occurred while \output is active []
+
+ [2{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc} <./figures/figure1_new
+_28012026.pdf>]
 <figures/sage_pipeline.pdf, id=25, 549.81209pt x 360.9194pt>
 File: figures/sage_pipeline.pdf Graphic file (type pdf)
 <use figures/sage_pipeline.pdf>
@@ -524,9 +527,8 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 5.0pt on input line 166.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 6.0pt on input line 168.
-
-[3{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}] [4 <./figures/sa
-ge_pipeline.pdf>]
+ [3{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}] [4 <./figures/s
+age_pipeline.pdf>]
 
 pdfTeX warning: pdflatex (file ./figures/headline_math500.pdf): PDF inclusion: 
 found PDF version <1.7>, but at most version <1.5> allowed
@@ -607,7 +609,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7{/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ec-tlf-pc.enc} <./fi
 gures/ablations/performance_across_epochs__tgpo_w_rm.pdf> <./figures/ablations/
-performance_across_epochs_rates_tgpo_wo_rm.pdf>] (./main.bbl [8] [9])
+performance_across_epochs_rates_tgpo_wo_rm.pdf>]
+Underfull \vbox (badness 2856) has occurred while \output is active []
+
+ (./main.bbl [8] [9])
 Underfull \hbox (badness 7907) in paragraph at lines 448--449
 \T1/ntxtlf/m/n/10 We pro-vide a com-plete ex-am-ple of the math-
  []
@@ -775,7 +780,7 @@ live/texmf-dist/fonts/type1/public/newtx/txsys.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/newtx/ztmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx
 /ztmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/ztmri.pfb>
-Output written on main.pdf (16 pages, 865690 bytes).
+Output written on main.pdf (16 pages, 865710 bytes).
 PDF statistics:
  332 PDF objects out of 1000 (max. 8388607)
  233 compressed objects within 3 object streams
